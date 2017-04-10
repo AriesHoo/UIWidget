@@ -9,11 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/library_alert" />
-            <option value="$PROJECT_DIR$/library_loading" />
-            <option value="$PROJECT_DIR$/library_radius" />
-            <option value="$PROJECT_DIR$/library_sheet" />
-            <option value="$PROJECT_DIR$/library_title" />
+            <option value="$PROJECT_DIR$/library" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
