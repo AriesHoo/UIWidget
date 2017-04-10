@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/UIWidget.iml" filepath="$PROJECT_DIR$/UIWidget.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library_alert/library_alert.iml" filepath="$PROJECT_DIR$/library_alert/library_alert.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library_loading/library_loading.iml" filepath="$PROJECT_DIR$/library_loading/library_loading.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library_radius/library_radius.iml" filepath="$PROJECT_DIR$/library_radius/library_radius.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library_sheet/library_sheet.iml" filepath="$PROJECT_DIR$/library_sheet/library_sheet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library_title/library_title.iml" filepath="$PROJECT_DIR$/library_title/library_title.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_loadingNormal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UIProgressView-normal"/>
+
+    <Button
+        android:id="@+id/btn_loadingDimAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UIProgressView-透明背景"/>
+
+    <Button
+        android:id="@+id/btn_loadingBg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UIProgressView-自定义背景"/>
+
+    <Button
+        android:id="@+id/btn_loadingIndeterminateDrawable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UIProgressView-自定义loading样式"/>
+</LinearLayout>

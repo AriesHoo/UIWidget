@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UIAlertView-设置所有文字信息"/>
+
+    <Button
+        android:id="@+id/btn_alertNoTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UIAlertView-设置无title"/>
+
+    <Button
+        android:id="@+id/btn_alertNoMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UIAlertView-设置无title无中间按钮"/>
+
+    <Button
+        android:id="@+id/btn_alertSingle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UIAlertView-设置无title单按钮"/>
+
+    <Button
+        android:id="@+id/btn_alertCustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UIAlertView-自定义样式"/>
+</LinearLayout>
