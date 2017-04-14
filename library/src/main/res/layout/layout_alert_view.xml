@@ -27,10 +27,24 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:fitsSystemWindows="true"
-            android:gravity="center_vertical"
+            android:gravity="right"
             android:minHeight="@dimen/alert_min_height"
             android:minWidth="@dimen/alert_min_width"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+
+                <ImageView
+                    android:id="@+id/iv_deleteAlertView"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="6dp"
+                    android:src="@drawable/icon_close"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_titleAlertView"

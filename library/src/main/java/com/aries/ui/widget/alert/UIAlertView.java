@@ -8,16 +8,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.text.Html;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,6 +46,7 @@ public class UIAlertView {
     private TextView btn_left;
     private TextView btn_middle;
     private TextView btn_right;
+    private ImageView imageViewDelete;
     private View mViewLine;
     private View mViewLineRight;
     private View mViewLineHorizontal;
@@ -52,7 +56,7 @@ public class UIAlertView {
     private boolean showPosBtn = false;
     private boolean showNegBtn = false;
     private boolean showNeuBtn = false;
-
+    private boolean setMinWidth = false;
     /**
      * 是否自定义了button样式
      */
@@ -68,6 +72,8 @@ public class UIAlertView {
         View view = LayoutInflater.from(context).inflate(
                 R.layout.layout_alert_view, null);
         // 获取自定义Dialog布局中的控件
+        imageViewDelete = (ImageView) view.findViewById(R.id.iv_deleteAlertView);
+        imageViewDelete.setVisibility(View.GONE);
         txt_title = (TextView) view.findViewById(R.id.tv_titleAlertView);
         txt_title.setVisibility(View.GONE);
         txt_msg = (TextView) view.findViewById(R.id.tv_msgAlertView);
@@ -106,12 +112,35 @@ public class UIAlertView {
     }
 
     public UIAlertView builder() {
-
         return this;
     }
 
     public AlertDialog getDialog() {
         return dialog;
+    }
+
+    public ImageView getImageDelete() {
+        return imageViewDelete;
+    }
+
+    public TextView getTitleView() {
+        return txt_title;
+    }
+
+    public TextView getMessageView() {
+        return txt_msg;
+    }
+
+    public TextView getLeftButton() {
+        return btn_left;
+    }
+
+    public TextView getMiddleButton() {
+        return btn_middle;
+    }
+
+    public TextView getRightButton() {
+        return btn_right;
     }
 
     /**
@@ -160,16 +189,49 @@ public class UIAlertView {
         return this;
     }
 
+    public UIAlertView setDeleteImageBitmap(Bitmap bitmap) {
+        imageViewDelete.setImageBitmap(bitmap);
+        imageViewDelete.setVisibility(View.VISIBLE);
+        return this;
+    }
+
+    public UIAlertView setDeleteImageResource(int resource) {
+        imageViewDelete.setImageResource(resource);
+        imageViewDelete.setVisibility(View.VISIBLE);
+        return this;
+    }
+
+    public UIAlertView setDeleteImageDrawable(Drawable drawable) {
+        imageViewDelete.setImageDrawable(drawable);
+        imageViewDelete.setVisibility(View.VISIBLE);
+        return this;
+    }
+
+    public UIAlertView setDeleteImageVisibility(int visibility) {
+        imageViewDelete.setVisibility(visibility);
+        return this;
+    }
+
+    public UIAlertView setDeleteImageWidthHeight(int width, int height) {
+        setViewWidthAndHeight(imageViewDelete, width, height);
+        return this;
+    }
+
+    public UIAlertView setOnDeleteImageClickListener(OnClickListener onClickListener) {
+        imageViewDelete.setOnClickListener(onClickListener);
+        return this;
+    }
+
     /**
      * 设置标题
      *
      * @param title
      * @return
      */
-    public UIAlertView setTitle(String title) {
-        if (!title.isEmpty()) {
+    public UIAlertView setTitle(CharSequence title) {
+        if (!TextUtils.isEmpty(title)) {
             showTitle = true;
-            txt_title.setText(Html.fromHtml(title));
+            txt_title.setText(title);
         }
         return this;
     }
@@ -206,12 +268,9 @@ public class UIAlertView {
      * @param msg
      * @return
      */
-    public UIAlertView setMessage(String msg) {
+    public UIAlertView setMessage(CharSequence msg) {
         showMsg = true;
         txt_msg.setText(msg);
-        if (msg.contains("<br />")) {
-            txt_msg.setText(Html.fromHtml(msg));
-        }
         txt_msg.post(new Runnable() {
 
             @Override
@@ -232,7 +291,7 @@ public class UIAlertView {
         return this;
     }
 
-    public UIAlertView setMessage(String msg, int gravity) {
+    public UIAlertView setMessage(CharSequence msg, int gravity) {
         this.gravity = gravity;
         return setMessage(msg);
     }
@@ -294,6 +353,7 @@ public class UIAlertView {
     public UIAlertView setMinWidth(final int minWidth) {
         linearLayoutMain.setMinimumWidth(minWidth);
         linearLayoutGroup.setMinimumWidth(minWidth);
+        setMinWidth = true;
         return this;
     }
 
@@ -335,10 +395,10 @@ public class UIAlertView {
      * @param listener
      * @return
      */
-    public UIAlertView setNegativeButton(String text,
+    public UIAlertView setNegativeButton(CharSequence text,
                                          final DialogInterface.OnClickListener listener) {
         showNegBtn = true;
-        btn_left.setText(Html.fromHtml(text));
+        btn_left.setText(text);
         btn_left.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -387,10 +447,10 @@ public class UIAlertView {
         return this;
     }
 
-    public UIAlertView setNeutralButton(String text,
+    public UIAlertView setNeutralButton(CharSequence text,
                                         final DialogInterface.OnClickListener listener) {
         showNeuBtn = true;
-        btn_middle.setText(Html.fromHtml(text));
+        btn_middle.setText(text);
         btn_middle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -490,15 +550,15 @@ public class UIAlertView {
         return this;
     }
 
-    public UIAlertView setPositiveButton(String text,
+    public UIAlertView setPositiveButton(CharSequence text,
                                          final DialogInterface.OnClickListener listener) {
         return setPositiveButton(text, listener, true);
     }
 
-    public UIAlertView setPositiveButton(String text,
+    public UIAlertView setPositiveButton(CharSequence text,
                                          final DialogInterface.OnClickListener listener, final boolean isDismiss) {
         showPosBtn = true;
-        btn_right.setText(Html.fromHtml(text));
+        btn_right.setText(text);
         btn_right.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -660,5 +720,15 @@ public class UIAlertView {
             dialog.dismiss();
         }
         return this;
+    }
+
+    public void setViewWidthAndHeight(View view, int width, int height) {
+        if (view == null) {
+            return;
+        }
+        ViewGroup.LayoutParams lp = view.getLayoutParams();
+        lp.width = width;
+        lp.height = height;
+        view.setLayoutParams(lp);
     }
 }
