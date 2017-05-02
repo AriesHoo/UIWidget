@@ -22,7 +22,6 @@ public class ActionSheetActivity extends AppCompatActivity {
                         .setTitle("UIActionSheetView-normal")
                         .setCancelMessage("取消")
                         .setItemsHeight(47.5f)
-                        .setBackgroundColor(Color.BLACK)
                         .setCancelMessageMargin(0, 0, 0, 0)
                         .setItems(R.array.arrays_items_action, onActionSheetItemLister)
                         .setItemsTextColor(Color.BLACK)

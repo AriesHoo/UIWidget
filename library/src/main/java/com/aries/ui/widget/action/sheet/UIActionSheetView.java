@@ -536,9 +536,9 @@ public class UIActionSheetView {
             });
             view.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, (int) context.getResources().getDimension(R.dimen.dp_line_size)));
             if (STYLE == STYLE_NORMAL) {
-                lLayout_content.addView(textView);
+                lLayout_content.addView(view);
             }
-            lLayout_content.addView(view);
+            lLayout_content.addView(textView);
         }
     }
 
