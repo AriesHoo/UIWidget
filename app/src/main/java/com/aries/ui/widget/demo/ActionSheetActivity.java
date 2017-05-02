@@ -18,12 +18,14 @@ public class ActionSheetActivity extends AppCompatActivity {
         findViewById(R.id.btn_normal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new UIActionSheetView(ActionSheetActivity.this)
+                new UIActionSheetView(ActionSheetActivity.this, UIActionSheetView.STYLE_NORMAL)
                         .setTitle("UIActionSheetView-normal")
                         .setCancelMessage("取消")
+                        .setItemsHeight(47.5f)
                         .setBackgroundColor(Color.BLACK)
                         .setCancelMessageMargin(0, 0, 0, 0)
                         .setItems(R.array.arrays_items_action, onActionSheetItemLister)
+                        .setItemsTextColor(Color.BLACK)
                         .show();
             }
         });

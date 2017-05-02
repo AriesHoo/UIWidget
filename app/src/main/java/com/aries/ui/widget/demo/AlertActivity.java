@@ -126,6 +126,7 @@ public class AlertActivity extends AppCompatActivity {
                 }
                 uiAlertView.setTitle(Html.fromHtml(String.format(getString(R.string.format_pay_article_title), "UIAlertView")));
                 uiAlertView.setMinWidth(800);
+                uiAlertView.setMinHeight(1500);
                 uiAlertView.setMessage("1、本次更新修复多个重大BUG\n2、新增用户反馈接口", Gravity.LEFT);
                 uiAlertView.setNegativeButton("否定", onAlertClick);
                 uiAlertView.setPositiveButton("肯定", onAlertClick);

@@ -10,4 +10,6 @@
     <color name="colorActionSheetTitleText">#969696</color>
     <color name="colorActionSheetCancelText">#1382FF</color>
     <color name="colorActionSheetItemText">#1382FF</color>
+    <color name="colorActionSheetEdgePressed">#D6D3D6</color>
+    <color name="colorActionSheetEdge">#FFFFFF</color>
 </resources>

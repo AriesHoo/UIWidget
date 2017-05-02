@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:background="@android:color/transparent"
               android:orientation="vertical"
               android:padding="8dip">
 
@@ -17,6 +18,10 @@
         android:textColor="@color/colorActionSheetTitleText"
         android:textSize="14sp"
         android:visibility="gone"/>
+
+    <View
+        android:id="@+id/v_lineTitleActionSheet"
+        style="@style/LineGray.Horizontal"/>
 
     <LinearLayout
         android:id="@+id/lLayout_viewActionSheet"
@@ -49,8 +54,8 @@
         android:background="@drawable/action_sheet_single"
         android:gravity="center"
         android:text="@string/cancel"
-        android:visibility="gone"
         android:textColor="@color/colorActionSheetCancelText"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+        android:visibility="gone"/>
 
 </LinearLayout>
