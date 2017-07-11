@@ -32,13 +32,6 @@ public class TitleActivity extends Activity {
                 Toast.makeText(TitleActivity.this, "点击左边", Toast.LENGTH_SHORT).show();
             }
         });
-        titleBar.addRightAction(titleBar.new ImageAction(R.drawable.ic_arrow_right, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(TitleActivity.this, "点击", Toast.LENGTH_SHORT).show();
-            }
-        }));
-
 
     }
 

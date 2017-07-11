@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorAlertBg">#EEEAE9</color>
+    <color name="colorAlertBg">#FFFFFF</color>
     <color name="colorAlertBgPressed">#D6D3D6</color>
     <color name="colorLineGray">#DCDCDC</color>
     <color name="colorAlertButton">#1382FF</color>

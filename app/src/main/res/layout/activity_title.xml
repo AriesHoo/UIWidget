@@ -9,15 +9,17 @@
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="#343740"
+        android:background="#002efb"
+        app:title_dividerColor="#ff0101"
+        app:title_dividerHeight="2dp"
         app:title_leftText="左边"
-        app:title_leftTextBackgroundColor="#ffffff"
         app:title_leftTextDrawable="@drawable/ic_arrow_left"
         app:title_rightText="右边"
-        app:title_rightTextDrawable="@drawable/ic_arrow_right"
+        app:title_statusColor="#5573f7"
         app:title_titleMainText="主标题"
         app:title_titleMainTextSize="16dp"
         app:title_titleSubText="副标题"
-        app:title_titleSubTextSize="8dp"/>
+        app:title_titleSubTextSize="10dp"/>
+
 
 </LinearLayout>
