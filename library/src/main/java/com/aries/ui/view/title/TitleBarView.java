@@ -206,11 +206,8 @@ public class TitleBarView extends FrameLayout {
         LayoutParams dividerParams = new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, mDividerHeight);
 
         mLeftLayout = new LinearLayout(context);
-        mLeftLayout.setId(R.id.title_left_layout);
         mCenterLayout = new LinearLayout(context);
-        mCenterLayout.setId(R.id.title_center_layout);
         mRightLayout = new LinearLayout(context);
-        mRightLayout.setId(R.id.title_right_layout);
         mDividerView = new View(context);
         mStatusView = new View(context);
 
