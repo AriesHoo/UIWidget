@@ -141,7 +141,7 @@ public class TitleBarView extends FrameLayout {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initAttributes(context, attrs);
-        init(context);
+        init(context, immersible);
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
@@ -191,9 +191,19 @@ public class TitleBarView extends FrameLayout {
         mActionTextBackgroundResource = ta.getResourceId(R.styleable.TitleBarView_title_actionTextBackgroundResource, -1);
     }
 
-    private void init(Context context) {
+    private void init(final Context context, boolean immersible) {
         if (context instanceof Activity) {
-            setImmersible((Activity) context, immersible);
+            if (!immersible) {
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!TitleBarView.this.immersible)
+                            setImmersible((Activity) context, false);
+                    }
+                }, 120);
+            }
+            setImmersible((Activity) context, true);
+            this.immersible = immersible;
         }
         mScreenWidth = getScreenWidth();
         initView(context);
@@ -326,6 +336,9 @@ public class TitleBarView extends FrameLayout {
         setImmersible(activity, immersible, true);
     }
 
+    private boolean isSetImmersible = false;
+    private int statusBarColor;
+
     /**
      * 设置沉浸式状态栏，4.4以上系统支持
      *
@@ -334,9 +347,6 @@ public class TitleBarView extends FrameLayout {
      * @param isPlusStatusHeight 是否增加statusBar 高度
      */
     public void setImmersible(Activity activity, boolean immersible, boolean isPlusStatusHeight) {
-        if (this.immersible == immersible) {
-            return;
-        }
         this.immersible = immersible;
         if (immersible && isPlusStatusHeight && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mStatusBarHeight = getStatusBarHeight();
@@ -357,17 +367,24 @@ public class TitleBarView extends FrameLayout {
                     window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                     window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                     window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                    statusBarColor = window.getStatusBarColor();
                     window.setStatusBarColor(Color.TRANSPARENT);
                 }
+                isSetImmersible = true;
             }
         } else {
+            if (!isSetImmersible) {
+                return;
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 // 透明状态栏
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        window.getDecorView().setSystemUiVisibility(0);
+                    }
                     window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                    window.setStatusBarColor(Color.TRANSPARENT);
+                    window.setStatusBarColor(statusBarColor);
                 }
             }
         }
@@ -399,7 +416,6 @@ public class TitleBarView extends FrameLayout {
                 0,
                 getMeasuredWidth(), mStatusBarHeight);
     }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         measureChild(mLeftLayout, widthMeasureSpec, heightMeasureSpec);
@@ -414,6 +430,7 @@ public class TitleBarView extends FrameLayout {
                     heightMeasureSpec);
         }
         measureChild(mDividerView, widthMeasureSpec, heightMeasureSpec);
+        measureChild(mStatusView,widthMeasureSpec,heightMeasureSpec);
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec),
                 MeasureSpec.getSize(heightMeasureSpec) + mStatusBarHeight);
     }

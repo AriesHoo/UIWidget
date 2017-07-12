@@ -534,11 +534,11 @@ public class UIActionSheetView {
                     dialog.dismiss();
                 }
             });
-            view.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, (int) context.getResources().getDimension(R.dimen.dp_line_size)));
+            lLayout_content.addView(textView);
             if (STYLE == STYLE_NORMAL) {
+                view.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, (int) context.getResources().getDimension(R.dimen.dp_line_size)));
                 lLayout_content.addView(view);
             }
-            lLayout_content.addView(textView);
         }
     }
 
