@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <com.aries.ui.view.title.TitleBarView
-        android:id="@+id/titleBar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="#002efb"
-        app:title_dividerColor="#ff0101"
-        app:title_dividerHeight="2dp"
-        app:title_leftText="沉浸"
-        app:title_leftTextDrawable="@drawable/ic_arrow_left"
-        app:title_rightText="不沉浸"
-        app:title_statusColor="#5573f7"
-        app:title_titleMainText="主标题"
-        app:title_titleMainTextSize="16dp"
-        app:title_titleSubText="副标题"
-        app:title_titleSubTextSize="10dp"/>
+    <include layout="@layout/layout_title"/>
 
-
-</LinearLayout>
+    <include layout="@layout/layout_drawer"/>
+</android.support.v4.widget.DrawerLayout>

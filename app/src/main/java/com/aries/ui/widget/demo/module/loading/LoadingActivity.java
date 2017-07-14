@@ -1,19 +1,27 @@
-package com.aries.ui.widget.demo;
+package com.aries.ui.widget.demo.module.loading;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.aries.ui.widget.demo.R;
+import com.aries.ui.widget.demo.base.BaseActivity;
 import com.aries.ui.widget.progress.UIProgressView;
 
-public class LoadingActivity extends AppCompatActivity {
+public class LoadingActivity extends BaseActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading);
+    protected void setTitleBar() {
+        titleBar.setTitleMainText("UIProgressView");
+    }
 
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_loading;
+    }
+
+    @Override
+    protected void initView(Bundle var1) {
         findViewById(R.id.btn_loadingNormal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

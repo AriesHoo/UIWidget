@@ -1,42 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <include layout="@layout/layout_title_bar"/>
 
-        <Button
-            android:id="@+id/btn_alert"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="UIAlertView"/>
-
-        <Button
-            android:id="@+id/btn_sheet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/UIActionSheet"/>
-
-        <Button
-            android:id="@+id/btn_loading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="UIProgressView"/>
-
-        <Button
-            android:id="@+id/btn_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TitleBarView"/>
-
-        <Button
-            android:id="@+id/btn_radius"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="RadiusView"/>
-    </LinearLayout>
-</ScrollView>
+    <include layout="@layout/layout_recycle_view"/>
+</LinearLayout>

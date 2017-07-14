@@ -1,335 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:rv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none">
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/layout_title_bar"/>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <com.aries.ui.view.radius.RadiusTextView
-                android:id="@+id/rtv_normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="normal"
-                rv:rv_backgroundColor="@android:color/holo_blue_bright"
-                rv:rv_backgroundEnabledColor="@android:color/black"
-                rv:rv_backgroundPressedColor="#383838"
-                rv:rv_strokeColor="#383838"
-                rv:rv_strokeWidth="1dp"
-                rv:rv_textColor="@android:color/white"
-                rv:rv_textEnabledColor="@android:color/holo_blue_bright"
-                rv:rv_textPressedColor="#ffffff"/>
-
-            <com.aries.ui.view.radius.RadiusTextView
-                android:id="@+id/rtv_disable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:enabled="false"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="disabled"
-                rv:rv_backgroundColor="@android:color/holo_blue_bright"
-                rv:rv_backgroundEnabledColor="@android:color/black"
-                rv:rv_backgroundPressedColor="#383838"
-                rv:rv_strokeColor="#383838"
-                rv:rv_strokeWidth="1dp"
-                rv:rv_textColor="@android:color/white"
-                rv:rv_textEnabledColor="@android:color/holo_blue_bright"
-                rv:rv_textPressedColor="#ffffff"/>
-        </LinearLayout>
-
-        <com.aries.ui.view.radius.RadiusTextView
-            android:id="@+id/rtv_radiusHalfHeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:clickable="true"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
-            android:paddingTop="10dp"
-            android:text="Radius Half Height"
-            rv:rv_backgroundColor="#ffffff"
-            rv:rv_backgroundPressedColor="#03A9F4"
-            rv:rv_radiusHalfHeightEnable="true"
-            rv:rv_strokeColor="#03A9F4"
-            rv:rv_strokePressedColor="#6D8FB0"
-            rv:rv_strokeWidth="1dp"
-            rv:rv_textColor="#03A9F4"
-            rv:rv_textPressedColor="#ffffff"/>
-
-        <com.aries.ui.view.radius.RadiusEditText
-            android:id="@+id/ret_radius"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:hint="RadiusEditText"
-            android:paddingBottom="10dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
-            android:paddingTop="10dp"
-            android:textColor="#03A9F4"
-            android:textCursorDrawable="@null"
-            rv:rv_backgroundColor="@android:color/white"
-            rv:rv_radius="10dp"
-            rv:rv_strokeColor="#03A9F4"
-            rv:rv_strokeWidth="1dp"/>
-
-        <com.aries.ui.view.radius.RadiusEditText
-            android:id="@+id/ret_circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:hint="RadiusEditText"
-            android:paddingBottom="10dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
-            android:paddingTop="10dp"
-            android:textColor="#03A9F4"
-            android:textCursorDrawable="@null"
-            rv:rv_radiusHalfHeightEnable="true"
-            rv:rv_backgroundColor="@android:color/white"
-            rv:rv_radius="10dp"
-            rv:rv_strokeColor="#03A9F4"
-            rv:rv_strokeWidth="1dp"/>
-
-        <com.aries.ui.view.radius.RadiusTextView
-            android:id="@+id/rtv_radius"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
-            android:paddingTop="10dp"
-            android:text="RadiusTextView"
-            rv:rv_backgroundColor="#F6CE59"
-            rv:rv_backgroundPressedColor="#F6C"
-            rv:rv_radius="10dp"
-            rv:rv_textColor="#383838"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:orientation="horizontal"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp">
-
-            <com.aries.ui.view.radius.RadiusTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2.5dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="topLeftRadius"
-                android:textColor="#ffffff"
-                rv:rv_backgroundColor="#DE88A5"
-                rv:rv_topLeftRadius="10dp"/>
-
-            <com.aries.ui.view.radius.RadiusTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2.5dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="topRightRadius"
-                android:textColor="#ffffff"
-                rv:rv_backgroundColor="#F08A5D"
-                rv:rv_backgroundPressedColor="#F08A4D"
-                rv:rv_rippleEnable="true"
-                rv:rv_topRightRadius="10dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp">
-
-            <com.aries.ui.view.radius.RadiusTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="2.5dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="bottomLeftRadius"
-                android:textColor="#ffffff"
-                rv:rv_backgroundColor="#4AA0D5"
-                rv:rv_bottomLeftRadius="10dp"/>
-
-            <com.aries.ui.view.radius.RadiusTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2.5dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="10dp"
-                android:text="bottomRightRadius"
-                android:textColor="#ffffff"
-                rv:rv_backgroundColor="#7A9EAF"
-                rv:rv_bottomRightRadius="10dp"/>
-        </LinearLayout>
-
-        <com.aries.ui.view.radius.RadiusFrameLayout
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"
-            android:padding="10dp"
-            rv:rv_backgroundColor="#009688"
-            rv:rv_radius="5dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="RadiusFrameLayout"
-                android:textColor="#ffffff"/>
-        </com.aries.ui.view.radius.RadiusFrameLayout>
-
-        <com.aries.ui.view.radius.RadiusLinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
-            android:paddingTop="10dp"
-            android:textColor="#ffffff"
-            rv:rv_backgroundColor="#E45171"
-            rv:rv_radius="5dp">
+            android:padding="10dp">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@mipmap/ic_launcher"
-                android:textColor="#ffffff"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <TextView
+                <com.aries.ui.view.radius.RadiusTextView
+                    android:id="@+id/rtv_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="normal"
+                    rv:rv_backgroundColor="@android:color/holo_blue_bright"
+                    rv:rv_backgroundEnabledColor="@android:color/black"
+                    rv:rv_backgroundPressedColor="#383838"
+                    rv:rv_strokeColor="#383838"
+                    rv:rv_strokeWidth="1dp"
+                    rv:rv_textColor="@android:color/white"
+                    rv:rv_textEnabledColor="@android:color/holo_blue_bright"
+                    rv:rv_textPressedColor="#ffffff"/>
+
+                <com.aries.ui.view.radius.RadiusTextView
+                    android:id="@+id/rtv_disable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="disabled"
+                    rv:rv_backgroundColor="@android:color/holo_blue_bright"
+                    rv:rv_backgroundEnabledColor="@android:color/black"
+                    rv:rv_backgroundPressedColor="#383838"
+                    rv:rv_strokeColor="#383838"
+                    rv:rv_strokeWidth="1dp"
+                    rv:rv_textColor="@android:color/white"
+                    rv:rv_textEnabledColor="@android:color/holo_blue_bright"
+                    rv:rv_textPressedColor="#ffffff"/>
+            </LinearLayout>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_radiusHalfHeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="RadiusLinearLayout"
-                android:textColor="#ffffff"/>
-        </com.aries.ui.view.radius.RadiusLinearLayout>
-
-        <com.aries.ui.view.radius.RadiusRelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:clickable="true"
-            android:paddingBottom="10dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp"
-            android:paddingTop="10dp"
-            android:textColor="#ffffff"
-            rv:rv_backgroundColor="#655989"
-            rv:rv_radiusHalfHeightEnable="true">
-
-            <ImageView
-                android:id="@+id/iv_portrait"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/ic_launcher"
-                android:textColor="#ffffff"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/iv_portrait"
-                android:text="RadiusRelativeLayout"
-                android:textColor="#ffffff"/>
-        </com.aries.ui.view.radius.RadiusRelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <com.aries.ui.view.radius.RadiusLinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
                 android:clickable="true"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:textColor="#ffffff"
-                rv:rv_backgroundColor="#6D8FB0"
-                rv:rv_radius="5dp"
-                rv:rv_widthHeightEqualEnable="true">
+                android:paddingBottom="10dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:paddingTop="10dp"
+                android:text="Radius Half Height"
+                rv:rv_backgroundColor="#ffffff"
+                rv:rv_backgroundPressedColor="#03A9F4"
+                rv:rv_radiusHalfHeightEnable="true"
+                rv:rv_strokeColor="#03A9F4"
+                rv:rv_strokePressedColor="#6D8FB0"
+                rv:rv_strokeWidth="1dp"
+                rv:rv_textColor="#03A9F4"
+                rv:rv_textPressedColor="#ffffff"/>
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:textColor="#ffffff"/>
+            <com.aries.ui.view.radius.RadiusEditText
+                android:id="@+id/ret_radius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:hint="RadiusEditText"
+                android:paddingBottom="10dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:paddingTop="10dp"
+                android:textColor="#03A9F4"
+                android:textCursorDrawable="@null"
+                rv:rv_backgroundColor="@android:color/white"
+                rv:rv_radius="10dp"
+                rv:rv_strokeColor="#03A9F4"
+                rv:rv_strokeWidth="1dp"/>
+
+            <com.aries.ui.view.radius.RadiusEditText
+                android:id="@+id/ret_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:hint="RadiusEditText"
+                android:paddingBottom="10dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:paddingTop="10dp"
+                android:textColor="#03A9F4"
+                android:textCursorDrawable="@null"
+                rv:rv_backgroundColor="@android:color/white"
+                rv:rv_radius="10dp"
+                rv:rv_radiusHalfHeightEnable="true"
+                rv:rv_strokeColor="#03A9F4"
+                rv:rv_strokeWidth="1dp"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_radius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:paddingTop="10dp"
+                android:text="RadiusTextView"
+                rv:rv_backgroundColor="#F6CE59"
+                rv:rv_backgroundPressedColor="#F6C"
+                rv:rv_radius="10dp"
+                rv:rv_textColor="#383838"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <com.aries.ui.view.radius.RadiusTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="2.5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="topLeftRadius"
+                    android:textColor="#ffffff"
+                    rv:rv_backgroundColor="#DE88A5"
+                    rv:rv_topLeftRadius="10dp"/>
+
+                <com.aries.ui.view.radius.RadiusTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2.5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="topRightRadius"
+                    android:textColor="#ffffff"
+                    rv:rv_backgroundColor="#F08A5D"
+                    rv:rv_backgroundPressedColor="#F08A4D"
+                    rv:rv_rippleEnable="true"
+                    rv:rv_topRightRadius="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <com.aries.ui.view.radius.RadiusTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="2.5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="bottomLeftRadius"
+                    android:textColor="#ffffff"
+                    rv:rv_backgroundColor="#4AA0D5"
+                    rv:rv_bottomLeftRadius="10dp"/>
+
+                <com.aries.ui.view.radius.RadiusTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2.5dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="bottomRightRadius"
+                    android:textColor="#ffffff"
+                    rv:rv_backgroundColor="#7A9EAF"
+                    rv:rv_bottomRightRadius="10dp"/>
+            </LinearLayout>
+
+            <com.aries.ui.view.radius.RadiusFrameLayout
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:padding="10dp"
+                rv:rv_backgroundColor="#009688"
+                rv:rv_radius="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Width=Height"
-                    android:textColor="#ffffff"
-                    android:textSize="10sp"/>
-            </com.aries.ui.view.radius.RadiusLinearLayout>
+                    android:layout_gravity="center"
+                    android:text="RadiusFrameLayout"
+                    android:textColor="#ffffff"/>
+            </com.aries.ui.view.radius.RadiusFrameLayout>
 
             <com.aries.ui.view.radius.RadiusLinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"
                 android:clickable="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="18dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:paddingTop="10dp"
                 android:textColor="#ffffff"
-                rv:rv_backgroundColor="#393E46"
-                rv:rv_radiusHalfHeightEnable="true"
-                rv:rv_widthHeightEqualEnable="true">
+                rv:rv_backgroundColor="#E45171"
+                rv:rv_radius="5dp">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -341,9 +258,101 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Circle"
+                    android:text="RadiusLinearLayout"
                     android:textColor="#ffffff"/>
             </com.aries.ui.view.radius.RadiusLinearLayout>
+
+            <com.aries.ui.view.radius.RadiusRelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                android:paddingTop="10dp"
+                android:textColor="#ffffff"
+                rv:rv_backgroundColor="#655989"
+                rv:rv_radiusHalfHeightEnable="true">
+
+                <ImageView
+                    android:id="@+id/iv_portrait"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_launcher"
+                    android:textColor="#ffffff"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/iv_portrait"
+                    android:text="RadiusRelativeLayout"
+                    android:textColor="#ffffff"/>
+            </com.aries.ui.view.radius.RadiusRelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.aries.ui.view.radius.RadiusLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:textColor="#ffffff"
+                    rv:rv_backgroundColor="#6D8FB0"
+                    rv:rv_radius="5dp"
+                    rv:rv_widthHeightEqualEnable="true">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Width=Height"
+                        android:textColor="#ffffff"
+                        android:textSize="10sp"/>
+                </com.aries.ui.view.radius.RadiusLinearLayout>
+
+                <com.aries.ui.view.radius.RadiusLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="18dp"
+                    android:textColor="#ffffff"
+                    rv:rv_backgroundColor="#393E46"
+                    rv:rv_radiusHalfHeightEnable="true"
+                    rv:rv_widthHeightEqualEnable="true">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Circle"
+                        android:textColor="#ffffff"/>
+                </com.aries.ui.view.radius.RadiusLinearLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>

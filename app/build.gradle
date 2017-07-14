@@ -1,14 +1,17 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    def ext = rootProject.ext
+    compileSdkVersion ext.compileSdkVersion
+    buildToolsVersion ext.buildToolsVersion
     defaultConfig {
         applicationId "com.aries.ui.widget.demo"
-        minSdkVersion 14
-        targetSdkVersion 23
+        minSdkVersion ext.minSdkVersion
+        targetSdkVersion ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -21,10 +24,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    testCompile 'junit:junit:4.12'
+    def supportVersion = rootProject.ext.supportVersion
+    compile 'com.android.support:appcompat-v7:'.concat(supportVersion)
+    compile 'com.android.support:recyclerview-v7:'.concat(supportVersion)
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile project(':library')
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
+    compile 'com.jakewharton:butterknife:8.7.0'
 }

@@ -55,12 +55,16 @@
     </style>
 
     <style name="LineGray.Horizontal.BreakLeft">
-        <item name="android:layout_marginLeft">@dimen/dp_line_size</item>
+        <item name="android:layout_marginLeft">@dimen/dp_line_break</item>
+    </style>
+
+    <style name="LineGray.Horizontal.BreakRight">
+        <item name="android:layout_marginLeft">@dimen/dp_line_break</item>
     </style>
 
     <style name="LineGray.Horizontal.BreakAll">
-        <item name="android:layout_marginLeft">@dimen/dp_line_size</item>
-        <item name="android:layout_marginRight">@dimen/dp_line_size</item>
+        <item name="android:layout_marginLeft">@dimen/dp_line_break</item>
+        <item name="android:layout_marginRight">@dimen/dp_line_break</item>
     </style>
 
     <style name="LineGray.Vertical">

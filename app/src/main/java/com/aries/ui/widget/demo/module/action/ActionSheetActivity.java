@@ -1,20 +1,29 @@
-package com.aries.ui.widget.demo;
+package com.aries.ui.widget.demo.module.action;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.aries.ui.widget.action.sheet.UIActionSheetView;
+import com.aries.ui.widget.demo.R;
+import com.aries.ui.widget.demo.base.BaseActivity;
 
-public class ActionSheetActivity extends AppCompatActivity {
+public class ActionSheetActivity extends BaseActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_action_sheet);
+    protected void setTitleBar() {
+        titleBar.setTitleMainText("UIActionSheetView");
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_action_sheet;
+    }
+
+    @Override
+    protected void initView(Bundle var1) {
         findViewById(R.id.btn_normal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +60,7 @@ public class ActionSheetActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private UIActionSheetView.OnSheetItemListener onActionSheetItemLister = new UIActionSheetView.OnSheetItemListener() {
         @Override

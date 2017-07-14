@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorTitle"
+              android:orientation="vertical">
+
+    <include layout="@layout/layout_title_bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <com.aries.ui.view.radius.RadiusEditText
+            xmlns:rv="http://schemas.android.com/apk/res-auto"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:hint="请输入文字"
+            android:paddingLeft="16dp"
+            android:textColor="@color/colorTextBlack"
+            android:textCursorDrawable="@null"
+            android:textSize="14dp"
+            rv:rv_backgroundColor="@color/colorWhite"
+            rv:rv_radiusHalfHeightEnable="true"
+            rv:rv_strokeColor="@color/colorLineGray"
+            rv:rv_strokePressedColor="@color/colorLineGray"
+            rv:rv_strokeWidth="1dp"/>
+
+        <com.aries.ui.view.radius.RadiusTextView
+            android:id="@+id/rtv_send"
+            android:layout_width="70dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="发送"
+            android:textColor="@color/colorWhite"
+            android:textSize="14dp"
+            app:rv_backgroundColor="@android:color/holo_purple"
+            app:rv_backgroundPressedColor="@android:color/holo_purple"
+            app:rv_radiusHalfHeightEnable="true"/>
+    </LinearLayout>
+
+</LinearLayout>

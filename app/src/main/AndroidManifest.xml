@@ -3,6 +3,7 @@
           package="com.aries.ui.widget.demo">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,12 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".AlertActivity"/>
-        <activity android:name=".ActionSheetActivity"/>
-        <activity android:name=".LoadingActivity"/>
-        <activity android:name=".RadiusActivity"/>
-        <activity android:name=".TitleActivity"/>
+        <activity android:name=".module.alert.AlertActivity"/>
+        <activity android:name=".module.action.ActionSheetActivity"/>
+        <activity android:name=".module.loading.LoadingActivity"/>
+        <activity android:name=".module.radius.RadiusActivity"/>
+        <activity android:name=".module.title.TitleActivity"/>
+        <activity android:name=".module.title.TitleEditActivity">
+        </activity>
     </application>
 
 </manifest>

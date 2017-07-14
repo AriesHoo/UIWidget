@@ -1,28 +1,38 @@
-package com.aries.ui.widget.demo;
+package com.aries.ui.widget.demo.module.alert;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
 import com.aries.ui.widget.alert.UIAlertView;
+import com.aries.ui.widget.demo.R;
+import com.aries.ui.widget.demo.base.BaseActivity;
 
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static android.content.DialogInterface.BUTTON_NEUTRAL;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 
-public class AlertActivity extends AppCompatActivity {
+public class AlertActivity extends BaseActivity {
 
     UIAlertView uiAlertView = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alert);
+    protected void setTitleBar() {
+        titleBar.setTitleMainText("UIAlertView");
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_alert;
+    }
+
+    @Override
+    protected void initView(Bundle var1) {
+
         findViewById(R.id.btn_alert).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +158,7 @@ public class AlertActivity extends AppCompatActivity {
                 uiAlertView.show();
             }
         });
+
     }
 
     DialogInterface.OnClickListener onAlertClick = new DialogInterface.OnClickListener() {
