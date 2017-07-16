@@ -18,7 +18,8 @@ allprojects {
 
 ```
 dependencies {
-     compile 'com.github.AriesHoo:UIWidget:1.1.0'
+     //compile 'com.github.AriesHoo:UIWidget:1.2.1'
+     compile 'com.github.AriesHoo:UIWidget:${LATEST_VERSION}'
 }
 ```
 二、截图预览
