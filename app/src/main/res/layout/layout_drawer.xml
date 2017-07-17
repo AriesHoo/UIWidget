@@ -15,20 +15,49 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <com.aries.ui.view.radius.RadiusTextView
-            xmlns:rv="http://schemas.android.com/apk/res-auto"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="16dp"
-            rv:rv_backgroundColor="@android:color/holo_blue_light"
-            rv:rv_radiusHalfHeightEnable="true"/>
+        <FrameLayout
+            android:id="@+id/fLayout_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_drawer_header"
+            android:layout_gravity="center_horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Aries Hoo"
-            android:textColor="@color/colorTextBlackLight"
-            android:textSize="14dp"/>
+
+            <ImageView
+                android:id="@+id/iv_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_drawer_header"
+                android:scaleType="centerCrop"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                xmlns:rv="http://schemas.android.com/apk/res-auto"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="36dp"
+                rv:rv_backgroundColor="@android:color/holo_purple"
+                rv:rv_radiusHalfHeightEnable="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="@dimen/dp_margin"
+                android:text="Aries Hoo"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp"/>
+
+            <com.aries.ui.view.title.TitleBarView
+                android:id="@+id/titleBarDrawer"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"/>
+        </FrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_contentDrawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 

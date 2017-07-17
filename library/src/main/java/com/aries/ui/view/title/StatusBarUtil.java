@@ -9,12 +9,15 @@ import android.view.WindowManager;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+
 /**
- * Created: AriesHoo on 2017-02-16 14:38
- * Function: 状态栏工具
+ * Created: AriesHoo on 2017/7/17 9:52
+ * Function: 状态栏工具类(状态栏文字颜色)
  * Desc:
  */
 public class StatusBarUtil {
+
+    public static final int DEFAULT_STATUS_BAR_ALPHA = 102;//默认透明度--5.0以上优化半透明状态栏一致
 
     /**
      * 设置状态栏黑色字体图标，
@@ -38,23 +41,8 @@ public class StatusBarUtil {
         return result;
     }
 
-    /**
-     * 已知系统类型时，设置状态栏黑色字体图标。
-     * 适配4.4以上版本MIUIV、Flyme和6.0以上版本其他Android
-     *
-     * @param activity
-     * @param type     1:MIUUI 2:Flyme 3:android6.0
-     */
-    public static void StatusBarLightMode(Activity activity, int type) {
-        if (type == 1) {
-            MIUISetStatusBarLightMode(activity.getWindow(), true);
-        } else if (type == 2) {
-            FlymeSetStatusBarLightMode(activity.getWindow(), true);
-        } else if (type == 3) {
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
+    private static int systemUiVisibility;
 
-    }
 
     public static int StatusBarDarkMode(Activity activity) {
         int result = 0;
@@ -69,20 +57,6 @@ public class StatusBarUtil {
             }
         }
         return result;
-    }
-
-    /**
-     * 清除MIUI或flyme或6.0以上版本状态栏黑色字体
-     */
-    public static void StatusBarDarkMode(Activity activity, int type) {
-        if (type == 1) {
-            MIUISetStatusBarLightMode(activity.getWindow(), false);
-        } else if (type == 2) {
-            FlymeSetStatusBarLightMode(activity.getWindow(), false);
-        } else if (type == 3) {
-            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-        }
-
     }
 
 
@@ -151,5 +125,4 @@ public class StatusBarUtil {
         }
         return result;
     }
-
 }

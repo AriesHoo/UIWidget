@@ -1,8 +1,6 @@
 package com.aries.ui.widget.demo.base;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected boolean mIsFirstShow = true;
     private Unbinder mUnBinder;
     protected int type = 0;
-    protected boolean isWhite =true;
+    protected boolean isWhite = true;
 
     protected abstract void setTitleBar();
 
@@ -71,18 +69,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         type = StatusBarUtil.StatusBarLightMode(mContext);
         if (type <= 0) {//无法设置白底黑字
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0推荐使用
-                titleBar.setImmersible(mContext, true, false);// 非透明状态栏模式
-            } else {//4.4建议使用
-                if(isWhite) {
-                    titleBar.setStatusColor(Color.parseColor("#D2888888"));//可使用CF--D3 透明度灰色
-                    titleBar.setStatusColor(Color.GRAY); //常规白底模式推荐使用
-                }else {
-                    titleBar.setStatusColor(Color.TRANSPARENT);
-                }
-            }
-        }else {
-            titleBar.setImmersible(mContext,true);
+            //titleBar.setStatusAlpha(102);//5.0 半透明模式alpha-102
+            titleBar.setImmersible(mContext,true,false);
         }
         titleBar.setTitleMainText(mContext.getClass().getSimpleName());
         setTitleBar();

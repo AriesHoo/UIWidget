@@ -192,22 +192,16 @@ public class TitleBarView extends FrameLayout {
     }
 
     private void init(final Context context, boolean immersible) {
+        mScreenWidth = getScreenWidth();
+        mStatusBarHeight = getStatusBarHeight();
+        initView(context);
         if (context instanceof Activity) {
-            if (!immersible) {
-                postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!TitleBarView.this.immersible)
-                            setImmersible((Activity) context, false);
-                    }
-                }, 120);
-            }
             setImmersible((Activity) context, true);
+            if (!immersible) {
+                setImmersible((Activity) context, false);
+            }
             this.immersible = immersible;
         }
-        mScreenWidth = getScreenWidth();
-        initView(context);
-
     }
 
 
@@ -340,8 +334,7 @@ public class TitleBarView extends FrameLayout {
         setImmersible(activity, immersible, isTransStatusBar, true);
     }
 
-    private boolean isSetImmersible = false;
-    private int statusBarColor;
+    private int systemUiVisibility;
 
     /**
      * 设置沉浸式状态栏，4.4以上系统支持
@@ -353,7 +346,7 @@ public class TitleBarView extends FrameLayout {
      */
     public void setImmersible(Activity activity, boolean immersible, boolean isTransStatusBar, boolean isPlusStatusBar) {
         this.immersible = immersible;
-        if (immersible && isPlusStatusBar && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (isPlusStatusBar && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mStatusBarHeight = getStatusBarHeight();
         } else {
             mStatusBarHeight = 0;
@@ -363,39 +356,19 @@ public class TitleBarView extends FrameLayout {
         }
         //透明状态栏
         Window window = activity.getWindow();
-        if (immersible) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                // 透明状态栏
-                window.addFlags(
-                        WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (isTransStatusBar) {
-                        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                    }
-                    window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                    statusBarColor = window.getStatusBarColor();
-                    window.setStatusBarColor(Color.TRANSPARENT);
-                }
-                isSetImmersible = true;
-            }
-        } else {
-            if (!isSetImmersible) {
-                return;
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                // 透明状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // 透明状态栏
+            window.addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        window.getDecorView().setSystemUiVisibility(0);
-                    }
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                    window.setStatusBarColor(statusBarColor);
-                }
+                systemUiVisibility = window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+                window.getDecorView().setSystemUiVisibility(systemUiVisibility);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(Color.TRANSPARENT);
             }
         }
-        invalidate();
+        setStatusAlpha(immersible ? isTransStatusBar ? 0 : 102 : 255);
     }
 
     @Override
@@ -463,6 +436,20 @@ public class TitleBarView extends FrameLayout {
 
     public void setStatusColor(int color) {
         mStatusView.setBackgroundColor(color);
+    }
+
+    /**
+     * 透明度 0-255
+     *
+     * @param statusBarAlpha
+     */
+    public void setStatusAlpha(int statusBarAlpha) {
+        if (statusBarAlpha < 0) {
+            statusBarAlpha = 0;
+        } else if (statusBarAlpha > 255) {
+            statusBarAlpha = 255;
+        }
+        setStatusColor(Color.argb(statusBarAlpha, 0, 0, 0));
     }
 
     public void setStatusResource(int resource) {

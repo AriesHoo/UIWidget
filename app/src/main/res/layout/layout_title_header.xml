@@ -6,6 +6,16 @@
               android:background="@color/colorWhite"
               android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="本控件通过添加一个状态栏高度View作为状态栏操作,默认沉浸通过单独设置View颜色来控制是否沉浸;并可以设置透明度以达到5.0半透明效果(实际上只要4.4以上系统均设置沉浸效果)"
+        android:textColor="@color/colorTextBlack"
+        android:textSize="@dimen/dp_text_size_main"/>
+
+    <View style="@style/LineGray.Horizontal.BreakAll"/>
+
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/sBtn_immersible"
         android:layout_width="match_parent"
@@ -15,7 +25,7 @@
         android:padding="12dp"
         android:text="沉浸"
         android:textColor="@color/colorTextBlack"
-        android:textSize="14dp"/>
+        android:textSize="@dimen/dp_text_size_main"/>
 
     <View style="@style/LineGray.Horizontal.BreakAll"/>
 
@@ -28,9 +38,10 @@
         android:padding="12dp"
         android:text="5.0以上全透明"
         android:textColor="@color/colorTextBlack"
-        android:textSize="14dp"/>
+        android:textSize="@dimen/dp_text_size_main"/>
 
     <View style="@style/LineGray.Horizontal.BreakAll"/>
+
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/sBtn_line"
@@ -41,8 +52,40 @@
         android:padding="12dp"
         android:text="显示下划线"
         android:textColor="@color/colorTextBlack"
-        android:textSize="14dp"/>
+        android:textSize="@dimen/dp_text_size_main"/>
 
     <View style="@style/LineGray.Horizontal.BreakAll"/>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="透明度"
+            android:textColor="@color/colorTextBlack"
+            android:textSize="@dimen/dp_text_size_main"/>
+
+        <SeekBar
+            android:id="@+id/sBar_alpha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:progress="102"/>
+
+        <TextView
+            android:id="@+id/tv_statusAlpha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="102"
+            android:textColor="@color/colorTextBlack"
+            android:textSize="@dimen/dp_text_size_main"/>
+    </LinearLayout>
+
+    <View style="@style/LineGray.Horizontal.BreakAll"/>
 </LinearLayout>
