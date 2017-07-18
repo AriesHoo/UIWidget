@@ -240,7 +240,7 @@ public class UIActionSheetView {
 
 
     public UIActionSheetView setCancelMessageMargin(int left, int top, int right, int bottom) {
-        setViewMargin(txt_cancel, left, left, left, left, LayoutParams.MATCH_PARENT, getItemHeight());
+        setViewMargin(txt_cancel, left, top, right, bottom, LayoutParams.MATCH_PARENT, getItemHeight());
         return this;
     }
 

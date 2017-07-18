@@ -1,34 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <include layout="@layout/layout_title_bar"/>
 
-    <Button
-        android:id="@+id/btn_loadingNormal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UIProgressView-normal"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
-    <Button
-        android:id="@+id/btn_loadingDimAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UIProgressView-透明背景"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_loadingBg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UIProgressView-自定义背景"/>
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_msgLoading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="显示Message"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
 
-    <Button
-        android:id="@+id/btn_loadingIndeterminateDrawable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="UIProgressView-自定义loading样式"/>
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_viewBackLoading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="自定义View背景"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_progressLoading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="自定义Progress"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_backLoading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="背景半透明"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_showLoading"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="Show"
+                android:textSize="@dimen/dp_text_size_main"
+                app:rv_backgroundColor="@color/colorWhite"
+                app:rv_backgroundPressedColor="@color/colorWhitePressed"
+                app:rv_radiusHalfHeightEnable="true"
+                app:rv_strokeColor="@color/colorTextBlack"
+                app:rv_strokePressedColor="@color/colorTextBlackLight"
+                app:rv_strokeWidth="@dimen/dp_line_size"
+                app:rv_textColor="@color/colorTextBlack"
+                app:rv_textPressedColor="@color/colorTextBlackLight"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

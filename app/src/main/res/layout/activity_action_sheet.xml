@@ -1,27 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <include layout="@layout/layout_title_bar"/>
 
-    <Button
-        android:id="@+id/btn_normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="默认样式-title+item+cancel"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="none">
 
-    <Button
-        android:id="@+id/btn_normalColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="默认样式-title+item+cancel-文本变色"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_noTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="默认样式-item+cancel"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_styleActionSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="圆角模式"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_marginActionSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="cancel按钮与item之间有间隙"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"
+                android:visibility="gone"/>
+
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_titleActionSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="显示title"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_titleColorActionSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="自定义title文本颜色"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_itemColorActionSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="自定义Item文本颜色"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_cancelColorActionSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="自定义Cancel文本颜色"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_backActionSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="背景半透明"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_showActionSheet"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="Show"
+                android:textSize="@dimen/dp_text_size_main"
+                app:rv_backgroundColor="@color/colorWhite"
+                app:rv_backgroundPressedColor="@color/colorWhitePressed"
+                app:rv_radiusHalfHeightEnable="true"
+                app:rv_strokeColor="@color/colorTextBlack"
+                app:rv_strokePressedColor="@color/colorTextBlackLight"
+                app:rv_strokeWidth="@dimen/dp_line_size"
+                app:rv_textColor="@color/colorTextBlack"
+                app:rv_textPressedColor="@color/colorTextBlackLight"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -1,9 +1,15 @@
-UIWidget
+# UIWidget
 --------------------------
-一、简介：
+### 一、简介：
 
-一个集成[UIAlertView](https://github.com/AriesHoo/UIAlertView)、[UIActionSheetView](https://github.com/AriesHoo/UIActionSheetView)、[UIProgressView](https://github.com/AriesHoo/UIProgressView)、[TitleBarView](https://github.com/AriesHoo/TitleBarView)、[RadiusView](https://github.com/AriesHoo/RadiusView)
-等项目常用库
+一个集成[UIAlertView](https://github.com/AriesHoo/UIAlertView)、[UIActionSheetView](https://github.com/AriesHoo/UIActionSheetView)、[UIProgressView](https://github.com/AriesHoo/UIProgressView)、[RadiusView](https://github.com/AriesHoo/RadiusView)、[TitleBarView](https://github.com/AriesHoo/TitleBarView)
+等项目常用UI库
+
+[[Sample PC Download]](https://github.com/AriesHoo/UIWidget/blob/master/apk/sample.apk)
+
+[[Sample Mobile Download]](https://fir.im/pmb2)
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/apk/qr.png)
 
 1.1 Gradle集成**
 
@@ -18,22 +24,32 @@ allprojects {
 
 ```
 dependencies {
-     //compile 'com.github.AriesHoo:UIWidget:1.2.5'
+     //compile 'com.github.AriesHoo:UIWidget:1.3.0'
      compile 'com.github.AriesHoo:UIWidget:${LATEST_VERSION}'
 }
 ```
-二、截图预览
+### 二、录屏预览
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/00.png)
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/widget.gif)
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/01.png)
+[UIAlertView](https://github.com/AriesHoo/UIAlertView)
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/02.png)
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/alert.gif)
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/03.png)
+[UIActionSheetView](https://github.com/AriesHoo/UIActionSheetView)
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/04.png)
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/action.gif)
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/05.png)
+[UIProgressView](https://github.com/AriesHoo/UIProgressView)
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/06.png)
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/loading.gif)
+
+[RadiusView](https://github.com/AriesHoo/RadiusView)
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/radius.gif)
+
+[TitleBarView](https://github.com/AriesHoo/TitleBarView)
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/title.gif)
+
+

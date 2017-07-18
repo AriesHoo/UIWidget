@@ -251,7 +251,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/ic_logo"
                     android:textColor="#ffffff"/>
 
                 <TextView
@@ -280,7 +280,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/ic_logo"
                     android:textColor="#ffffff"/>
 
                 <TextView
@@ -293,66 +293,32 @@
                     android:textColor="#ffffff"/>
             </com.aries.ui.view.radius.RadiusRelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.aries.ui.view.radius.RadiusLinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="true"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:textColor="#ffffff"
+                rv:rv_backgroundColor="#6D8FB0"
+                rv:rv_radius="5dp"
+                rv:rv_widthHeightEqualEnable="true">
 
-                <com.aries.ui.view.radius.RadiusLinearLayout
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_logo"
+                    android:textColor="#ffffff"/>
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp"
+                    android:layout_marginTop="2dp"
+                    android:text="Width=Height"
                     android:textColor="#ffffff"
-                    rv:rv_backgroundColor="#6D8FB0"
-                    rv:rv_radius="5dp"
-                    rv:rv_widthHeightEqualEnable="true">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@mipmap/ic_launcher"
-                        android:textColor="#ffffff"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Width=Height"
-                        android:textColor="#ffffff"
-                        android:textSize="10sp"/>
-                </com.aries.ui.view.radius.RadiusLinearLayout>
-
-                <com.aries.ui.view.radius.RadiusLinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="18dp"
-                    android:textColor="#ffffff"
-                    rv:rv_backgroundColor="#393E46"
-                    rv:rv_radiusHalfHeightEnable="true"
-                    rv:rv_widthHeightEqualEnable="true">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@mipmap/ic_launcher"
-                        android:textColor="#ffffff"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Circle"
-                        android:textColor="#ffffff"/>
-                </com.aries.ui.view.radius.RadiusLinearLayout>
-            </LinearLayout>
+                    android:textSize="10sp"/>
+            </com.aries.ui.view.radius.RadiusLinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
