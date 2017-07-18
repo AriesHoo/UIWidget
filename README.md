@@ -7,7 +7,7 @@
 
 [[Sample PC Download]](https://github.com/AriesHoo/UIWidget/blob/master/apk/sample.apk)
 
-[[Sample Mobile Download]](https://fir.im/pmb2)
+[[Sample Mobile Download]](http://fir.im/r84v)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/apk/qr.png)
 
