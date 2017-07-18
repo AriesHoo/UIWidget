@@ -11,7 +11,7 @@
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/apk/qr.png)
 
-1.1 Gradle集成**
+**1.1 Gradle集成**
 
 ```
 allprojects {
