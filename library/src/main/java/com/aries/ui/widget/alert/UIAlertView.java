@@ -245,6 +245,19 @@ public class UIAlertView {
         return this;
     }
 
+    public UIAlertView setTitleTextColorResource(int colorRes) {
+        int color = -1;
+        try {
+            color = context.getResources().getColor(colorRes);
+        } catch (Exception e) {
+
+        }
+        if (color == -1) {
+            return this;
+        }
+        return setTitleTextColor(color);
+    }
+
     public UIAlertView setTitleTextColor(ColorStateList color) {
         txt_title.setTextColor(color);
         return this;
@@ -309,6 +322,19 @@ public class UIAlertView {
     public UIAlertView setMessageTextColor(int color) {
         txt_msg.setTextColor(color);
         return this;
+    }
+
+    public UIAlertView setMessageTextColorResource(int colorRes) {
+        int color = -1;
+        try {
+            color = context.getResources().getColor(colorRes);
+        } catch (Exception e) {
+
+        }
+        if (color == -1) {
+            return this;
+        }
+        return setMessageTextColor(color);
     }
 
     public UIAlertView setMessageTextColor(ColorStateList color) {
@@ -442,6 +468,19 @@ public class UIAlertView {
         return this;
     }
 
+    public UIAlertView setNegativeButtonTextColorResource(int colorRes) {
+        int color = -1;
+        try {
+            color = context.getResources().getColor(colorRes);
+        } catch (Exception e) {
+
+        }
+        if (color == -1) {
+            return this;
+        }
+        return setNegativeButtonTextColor(color);
+    }
+
     public UIAlertView setNegativeButtonTextColor(ColorStateList color) {
         btn_left.setTextColor(color);
         return this;
@@ -471,6 +510,19 @@ public class UIAlertView {
     public UIAlertView setNeutralButtonTextColor(int color) {
         btn_middle.setTextColor(color);
         return this;
+    }
+
+    public UIAlertView setNeutralButtonTextColorResource(int colorRes) {
+        int color = -1;
+        try {
+            color = context.getResources().getColor(colorRes);
+        } catch (Exception e) {
+
+        }
+        if (color == -1) {
+            return this;
+        }
+        return setNeutralButtonTextColor(color);
     }
 
     public UIAlertView setNeutralButtonTextColor(ColorStateList color) {
@@ -543,6 +595,19 @@ public class UIAlertView {
     public UIAlertView setPositiveButtonTextColor(int color) {
         btn_right.setTextColor(color);
         return this;
+    }
+
+    public UIAlertView setPositiveButtonTextColorResource(int colorRes) {
+        int color = -1;
+        try {
+            color = context.getResources().getColor(colorRes);
+        } catch (Exception e) {
+
+        }
+        if (color == -1) {
+            return this;
+        }
+        return setPositiveButtonTextColor(color);
     }
 
     public UIAlertView setPositiveButtonTextColor(ColorStateList color) {

@@ -129,7 +129,7 @@ public class ActionSheetActivity extends BaseActivity {
     private UIActionSheetView.OnSheetItemListener onActionSheetItemLister = new UIActionSheetView.OnSheetItemListener() {
         @Override
         public void onClick(int item) {
-            Toast.makeText(ActionSheetActivity.this, "item position:" + item, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "item position:" + item, Toast.LENGTH_SHORT).show();
         }
     };
 

@@ -178,7 +178,7 @@ public class AlertActivity extends BaseActivity {
                     msg = "中性";
                     break;
             }
-            Toast.makeText(AlertActivity.this, msg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
         }
     };
 }
