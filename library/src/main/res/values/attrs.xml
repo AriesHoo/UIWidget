@@ -143,18 +143,17 @@
         <attr name="rv_rippleEnable"/>
     </declare-styleable>
 
-
     <declare-styleable name="TitleBarView">
-
+        <attr name="title_immersible" format="boolean"/>
         <attr name="title_outPadding" format="dimension"/>
         <attr name="title_actionPadding" format="dimension"/>
-        <attr name="title_immersible" format="boolean"/>
 
+        <attr name="title_statusColor" format="color"/>
+        <attr name="title_statusResource" format="reference"/>
         <attr name="title_dividerColor" format="color"/>
         <attr name="title_dividerResource" format="reference"/>
         <attr name="title_dividerHeight" format="dimension"/>
         <attr name="title_dividerVisible" format="boolean"/>
-        <attr name="title_statusColor" format="color"/>
 
         <attr name="title_leftText" format="string"/>
         <attr name="title_leftTextSize" format="dimension"/>
@@ -170,12 +169,15 @@
         <attr name="title_titleMainTextBackgroundColor" format="color"/>
         <attr name="title_titleMainTextBackgroundResource" format="reference"/>
         <attr name="title_titleMainTextFakeBold" format="boolean"/>
+        <attr name="title_titleMainTextMarquee" format="boolean"/>
 
         <attr name="title_titleSubText" format="string"/>
         <attr name="title_titleSubTextSize" format="dimension"/>
         <attr name="title_titleSubTextColor" format="color"/>
         <attr name="title_titleSubTextBackgroundColor" format="color"/>
         <attr name="title_titleSubTextBackgroundResource" format="reference"/>
+        <attr name="title_titleSubTextFakeBold" format="boolean"/>
+        <attr name="title_titleSubTextMarquee" format="boolean"/>
 
         <attr name="title_rightText" format="string"/>
         <attr name="title_rightTextSize" format="dimension"/>
@@ -189,6 +191,5 @@
         <attr name="title_actionTextColor" format="color"/>
         <attr name="title_actionTextBackgroundColor" format="color"/>
         <attr name="title_actionTextBackgroundResource" format="reference"/>
-
     </declare-styleable>
 </resources>

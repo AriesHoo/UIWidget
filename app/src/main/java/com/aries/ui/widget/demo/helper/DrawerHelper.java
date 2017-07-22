@@ -5,9 +5,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.aries.ui.widget.demo.WebViewActivity;
 import com.aries.ui.widget.demo.adapter.DrawerAdapter;
 import com.aries.ui.widget.demo.entity.DrawerEntity;
-import com.aries.ui.widget.demo.util.AppUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 
@@ -43,7 +43,7 @@ public class DrawerHelper {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 DrawerEntity entity = (DrawerEntity) mAdapterDrawer.getItem(position);
-                AppUtil.startBrower(mContext, entity.url);
+                WebViewActivity.start(mContext,entity.url);
             }
         });
         mAdapterDrawer.setNewData(list);

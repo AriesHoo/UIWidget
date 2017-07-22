@@ -47,6 +47,7 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> {
         titleBar.setTitleMainText(R.string.app_name);
         titleBar.setTitleSubText(R.string.app_title_content);
         titleBar.setLeftTextDrawable(0);
+        titleBar.setTitleSubTextMarquee(true);
     }
 
     @Override

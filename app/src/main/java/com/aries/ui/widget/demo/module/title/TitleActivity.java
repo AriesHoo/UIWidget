@@ -54,7 +54,6 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     private boolean canLight = true;
 
     private BaseQuickAdapter mAdapter;
-    private BaseQuickAdapter mAdapterDrawer;
     protected View vHeader;
     private int mAlpha = 102;
 

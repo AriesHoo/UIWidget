@@ -11,14 +11,13 @@
     app:title_immersible="true"
     app:title_leftTextColor="@color/colorAccent"
     app:title_leftTextDrawable="@drawable/ic_arrow_left"
-    app:title_leftTextDrawablePadding="4dp"
     app:title_leftTextSize="14dp"
     app:title_outPadding="12dp"
     app:title_titleSubTextColor="@color/colorTextBlack"
     app:title_rightTextColor="@color/colorAccent"
-    app:title_rightTextDrawablePadding="4dp"
     app:title_rightTextSize="14dp"
     app:title_titleMainTextColor="@color/colorAccent"
+    app:title_actionTextColor="@color/colorAccent"
     app:title_titleMainTextSize="18dp"/>
 
 

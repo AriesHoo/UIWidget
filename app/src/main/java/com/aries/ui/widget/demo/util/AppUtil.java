@@ -34,15 +34,6 @@ public class AppUtil {
             e.printStackTrace();
         }
     }
-
-    public static void startBrower(Context context, String url) {
-        Intent intent = new Intent();
-        intent.setAction("android.intent.action.VIEW");
-        intent.setData(Uri.parse(url));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
     /**
      * @param activity
      * @param bundle
@@ -64,4 +55,23 @@ public class AppUtil {
         startActivity(mContext, activity, null);
     }
 
+    public static void startBrower(Context context, String url) {
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        intent.setData(Uri.parse(url));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    public static void shareShareText(Activity mActivity, String url) {
+        if (mActivity == null) {
+            return;
+        }
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, url);
+        shareIntent.setType("text/plain");
+        //设置分享列表的标题，并且每次都显示分享列表
+        mActivity.startActivity(Intent.createChooser(shareIntent, "分享到"));
+    }
 }
