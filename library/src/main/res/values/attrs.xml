@@ -147,6 +147,7 @@
         <attr name="title_immersible" format="boolean"/>
         <attr name="title_outPadding" format="dimension"/>
         <attr name="title_actionPadding" format="dimension"/>
+        <attr name="title_centerGravityLeft" format="boolean"/>
 
         <attr name="title_statusColor" format="color"/>
         <attr name="title_statusResource" format="reference"/>

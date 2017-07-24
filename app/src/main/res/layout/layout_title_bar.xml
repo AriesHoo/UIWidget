@@ -6,19 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:background="@color/colorTitle"
+    app:title_actionTextColor="@color/colorTextBlack"
     app:title_dividerColor="@color/colorLineGray"
-    app:title_dividerHeight="@dimen/dp_line_size"
-    app:title_immersible="true"
-    app:title_leftTextColor="@color/colorAccent"
+    app:title_leftTextColor="@color/colorTextBlack"
     app:title_leftTextDrawable="@drawable/ic_arrow_left"
-    app:title_leftTextSize="14dp"
-    app:title_outPadding="12dp"
-    app:title_titleSubTextColor="@color/colorTextBlack"
-    app:title_rightTextColor="@color/colorAccent"
-    app:title_rightTextSize="14dp"
-    app:title_titleMainTextColor="@color/colorAccent"
-    app:title_actionTextColor="@color/colorAccent"
-    app:title_titleMainTextSize="18dp"/>
+    app:title_rightTextColor="@color/colorTextBlack"
+    app:title_titleMainTextColor="@color/colorTextBlack"
+    app:title_titleSubTextColor="@color/colorTextBlack"/>
 
 
 
