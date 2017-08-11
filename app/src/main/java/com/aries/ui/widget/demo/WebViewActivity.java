@@ -71,12 +71,12 @@ public class WebViewActivity extends BaseActivity {
                 .setReceivedTitleCallback(mCallback)
                 .setWebChromeClient(mWebChromeClient)
                 .setWebViewClient(mWebViewClient)
-                .setSecutityType(AgentWeb.SecurityType.strict)
+                .setSecutityType(AgentWeb.SecurityType.default_check)
                 .createAgentWeb()//
                 .ready()
                 .go(url);
 
-        mAgentWeb.getLoader().loadUrl(url);
+//        mAgentWeb.getLoader().loadUrl(url);
     }
 
     private void showDialog() {
