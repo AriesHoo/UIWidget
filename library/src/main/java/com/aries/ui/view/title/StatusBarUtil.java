@@ -20,39 +20,41 @@ public class StatusBarUtil {
     public static final int DEFAULT_STATUS_BAR_ALPHA = 102;//默认透明度--5.0以上优化半透明状态栏一致
 
     /**
-     * 设置状态栏黑色字体图标，
-     * 适配4.4以上版本MIUIV、Flyme和6.0以上版本其他Android
+     * 设置状态栏浅色模式--黑色字体图标，
      *
      * @param activity
-     * @return 1:MIUUI 2:Flyme 3:android6.0
+     * @return 1:Android 6.0及以上 2:MIUI 3:FlyMe
      */
     public static int StatusBarLightMode(Activity activity) {
         int result = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (MIUISetStatusBarLightMode(activity.getWindow(), true)) {
-                result = 1;
-            } else if (FlymeSetStatusBarLightMode(activity.getWindow(), true)) {
-                result = 2;
-            } else if (Build.VERSION.SDK_INT >= 23) {
+            if (Build.VERSION.SDK_INT >= 23) {
                 activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | 0x00002000);
+                result = 1;
+            } else if (setStatusBarLightModeForMIUI(activity.getWindow(), true)) {
+                result = 2;
+            } else if (setStatusBarLightModeForFlyMe(activity.getWindow(), true)) {
                 result = 3;
             }
         }
         return result;
     }
 
-    private static int systemUiVisibility;
-
-
+    /**
+     * 设置状态栏深色模式--白色字体图标，
+     *
+     * @param activity
+     * @return 1:Android 6.0及以上 2:MIUI 3:FlyMe
+     */
     public static int StatusBarDarkMode(Activity activity) {
         int result = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (MIUISetStatusBarLightMode(activity.getWindow(), false)) {
-                result = 1;
-            } else if (FlymeSetStatusBarLightMode(activity.getWindow(), false)) {
-                result = 2;
-            } else if (Build.VERSION.SDK_INT >= 23) {
+            if (Build.VERSION.SDK_INT >= 23) {
                 activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_VISIBLE);
+                result = 1;
+            } else if (setStatusBarLightModeForMIUI(activity.getWindow(), false)) {
+                result = 2;
+            } else if (setStatusBarLightModeForFlyMe(activity.getWindow(), false)) {
                 result = 3;
             }
         }
@@ -68,7 +70,7 @@ public class StatusBarUtil {
      * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
      */
-    public static boolean FlymeSetStatusBarLightMode(Window window, boolean dark) {
+    private static boolean setStatusBarLightModeForFlyMe(Window window, boolean dark) {
         boolean result = false;
         if (window != null) {
             try {
@@ -103,7 +105,7 @@ public class StatusBarUtil {
      * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
      */
-    public static boolean MIUISetStatusBarLightMode(Window window, boolean dark) {
+    private static boolean setStatusBarLightModeForMIUI(Window window, boolean dark) {
         boolean result = false;
         if (window != null) {
             Class clazz = window.getClass();
