@@ -10,7 +10,7 @@ android {
         minSdkVersion ext.minSdkVersion
         targetSdkVersion ext.targetSdkVersion
         versionCode 7
-        versionName "1.7.0"
+        versionName "1.7.1"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
