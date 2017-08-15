@@ -13,7 +13,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.aries.ui.view.title.StatusBarUtil;
+import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.adapter.TitleAdapter;
@@ -73,6 +73,9 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
                 drawerRoot.openDrawer(svSlide);
             }
         });
+        if (StatusBarUtil.isMIUI()) {
+            titleBar.setTitleSubText("MIUI" + StatusBarUtil.getMIUIVersionName());
+        }
     }
 
     @Override
@@ -155,12 +158,12 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
                 if (!isImmersible) {
                     sBtnLight.setChecked(false);
                     sBarAlpha.setProgress(255);
-                    StatusBarUtil.StatusBarDarkMode(mContext);
+                    StatusBarUtil.setStatusBarDarkMode(mContext);
                 } else {
                     if (isWhite) {
-                        StatusBarUtil.StatusBarLightMode(mContext);
+                        StatusBarUtil.setStatusBarLightMode(mContext);
                     } else {
-                        StatusBarUtil.StatusBarDarkMode(mContext);
+                        StatusBarUtil.setStatusBarDarkMode(mContext);
                     }
                 }
             }
@@ -178,12 +181,12 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
                 titleBar.setImmersible(mContext, isImmersible, isLight);//一般情况下使用
                 titleBarDrawer.setImmersible(mContext, isImmersible, isLight);
                 if (!isImmersible) {
-                    StatusBarUtil.StatusBarDarkMode(mContext);
+                    StatusBarUtil.setStatusBarDarkMode(mContext);
                 } else {
                     if (isWhite) {
-                        StatusBarUtil.StatusBarLightMode(mContext);
+                        StatusBarUtil.setStatusBarLightMode(mContext);
                     } else {
-                        StatusBarUtil.StatusBarDarkMode(mContext);
+                        StatusBarUtil.setStatusBarDarkMode(mContext);
                     }
                 }
                 sBtnLight.setText(isChecked ? "状态栏全透明" : "状态栏半透明");
@@ -205,10 +208,10 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
                 sBtnLight.setChecked(mAlpha == 0);
                 titleBar.setStatusAlpha(mAlpha);
                 if (mAlpha > 225 && isWhite) {
-                    StatusBarUtil.StatusBarDarkMode(mContext);
+                    StatusBarUtil.setStatusBarDarkMode(mContext);
                 } else {
                     if (isWhite) {
-                        StatusBarUtil.StatusBarLightMode(mContext);
+                        StatusBarUtil.setStatusBarLightMode(mContext);
                     }
                 }
             }
@@ -228,7 +231,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 if (type > 0) {
-                    StatusBarUtil.StatusBarDarkMode(mContext);
+                    StatusBarUtil.setStatusBarDarkMode(mContext);
                 }
             }
 
@@ -237,16 +240,16 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
                 super.onDrawerClosed(drawerView);
                 if (type > 0) {
                     if (isWhite && isImmersible) {
-                        StatusBarUtil.StatusBarLightMode(mContext);
+                        StatusBarUtil.setStatusBarLightMode(mContext);
                     } else {
-                        StatusBarUtil.StatusBarDarkMode(mContext);
+                        StatusBarUtil.setStatusBarDarkMode(mContext);
                     }
                 }
             }
         });
         if (canLight && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             sBtnLight.setChecked(false);
-            sBarAlpha.setProgress(StatusBarUtil.DEFAULT_STATUS_BAR_ALPHA);
+            sBarAlpha.setProgress(titleBarDrawer.DEFAULT_STATUS_BAR_ALPHA);
         } else {
             sBarAlpha.setProgress(0);
         }
@@ -265,9 +268,9 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
             titleBar.setTitleSubTextColor(isWhite ? getResources().getColor(R.color.colorTextBlack) : Color.WHITE);
             if (type > 0 && isImmersible) {
                 if (isWhite) {
-                    StatusBarUtil.StatusBarLightMode(mContext);
+                    StatusBarUtil.setStatusBarLightMode(mContext);
                 } else {
-                    StatusBarUtil.StatusBarDarkMode(mContext);
+                    StatusBarUtil.setStatusBarDarkMode(mContext);
                 }
             }
         } else if (entity.activity != null) {

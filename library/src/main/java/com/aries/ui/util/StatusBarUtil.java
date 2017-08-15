@@ -1,0 +1,184 @@
+package com.aries.ui.util;
+
+import android.app.Activity;
+import android.os.Build;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+
+/**
+ * Created: AriesHoo on 2017/7/17 9:52
+ * Function: 状态栏工具类(状态栏文字颜色)
+ * Desc:
+ */
+public class StatusBarUtil {
+
+    /**
+     * 设置状态栏浅色模式--黑色字体图标，
+     *
+     * @param activity
+     * @return 1:MIUI 2:FlyMe;3:Android 6.0及以上
+     */
+    public static int setStatusBarLightMode(Activity activity) {
+        int result = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (setStatusBarModeForMIUI(activity.getWindow(), true)) {
+                result = 2;
+            } else if (setStatusBarModeForFlyMe(activity.getWindow(), true)) {
+                result = 3;
+            } else if (setStatusBarModeForAndroidM(activity.getWindow(), true)) {
+                result = 3;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 设置状态栏深色模式--白色字体图标，
+     *
+     * @param activity
+     * @return 1:MIUI 2:FlyMe;3:Android 6.0及以上
+     */
+    public static int setStatusBarDarkMode(Activity activity) {
+        int result = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (setStatusBarModeForMIUI(activity.getWindow(), false)) {
+                result = 1;
+            } else if (setStatusBarModeForFlyMe(activity.getWindow(), false)) {
+                result = 2;
+            } else if (setStatusBarModeForAndroidM(activity.getWindow(), false)) {
+                result = 3;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 设置状态栏字体图标为深色，需要MIUIV6以上
+     *
+     * @param window   需要设置的窗口
+     * @param darkText 是否把状态栏字体及图标颜色设置为深色
+     * @return boolean 成功执行返回true
+     */
+    private static boolean setStatusBarModeForMIUI(Window window, boolean darkText) {
+        if (!isMIUI()) {
+            return false;
+        }
+        boolean result = false;
+        if (getMIUIVersionCode() >= 9) {//MIUI 9版本开始状态栏文字颜色恢复为系统原生方案
+            result = setStatusBarModeForAndroidM(window, darkText);
+        } else {
+            if (window != null) {
+                Class clazz = window.getClass();
+                try {
+                    int darkModeFlag = 0;
+                    Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+                    Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+                    darkModeFlag = field.getInt(layoutParams);
+                    Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+                    if (darkText) {
+                        extraFlagField.invoke(window, darkModeFlag, darkModeFlag);//状态栏透明且黑色字体
+                    } else {
+                        extraFlagField.invoke(window, 0, darkModeFlag);//清除黑色字体
+                    }
+                    result = true;
+                } catch (Exception e) {
+
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 设置状态栏图标为深色和魅族特定的文字风格
+     * 可以用来判断是否为Flyme用户
+     *
+     * @param window   需要设置的窗口
+     * @param darkText 是否把状态栏字体及图标颜色设置为深色
+     * @return boolean 成功执行返回true
+     */
+    private static boolean setStatusBarModeForFlyMe(Window window, boolean darkText) {
+        boolean result = false;
+        if (window != null) {
+            try {
+                WindowManager.LayoutParams lp = window.getAttributes();
+                Field darkFlag = WindowManager.LayoutParams.class
+                        .getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+                Field meizuFlags = WindowManager.LayoutParams.class
+                        .getDeclaredField("meizuFlags");
+                darkFlag.setAccessible(true);
+                meizuFlags.setAccessible(true);
+                int bit = darkFlag.getInt(null);
+                int value = meizuFlags.getInt(lp);
+                if (darkText) {
+                    value |= bit;
+                } else {
+                    value &= ~bit;
+                }
+                meizuFlags.setInt(lp, value);
+                window.setAttributes(lp);
+                result = true;
+            } catch (Exception e) {
+
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 设置原生Android 6.0以上系统状态栏
+     *
+     * @param window
+     * @param darkText 是否把状态栏字体及图标颜色设置为深色
+     * @return
+     */
+    private static boolean setStatusBarModeForAndroidM(Window window, boolean darkText) {
+        boolean result = false;
+        if (Build.VERSION.SDK_INT >= 23) {
+            window.getDecorView().setSystemUiVisibility(darkText ? View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | 0x00002000 : View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_VISIBLE);
+            result = true;
+        }
+        return result;
+    }
+
+    /**
+     * 获取MIUI版本-数字用于大小判断
+     *
+     * @return
+     */
+    private static int getMIUIVersionCode() {
+        int code = -1;
+        String property = getMIUIVersionName();
+        try {
+            property = property.trim().toUpperCase().replace("V", "");
+            code = Integer.parseInt(property);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return code;
+    }
+
+    /**
+     * 获取MIUI版本号-如V5
+     *
+     * @return
+     */
+    public static String getMIUIVersionName() {
+        return SystemUtil.getSystemProperty("ro.miui.ui.version.name");
+    }
+
+    /**
+     * 通过检查MIUI版本号属性检测是否为小米手机
+     *
+     * @return
+     */
+    public static boolean isMIUI() {
+        return !TextUtils.isEmpty(getMIUIVersionName());
+    }
+}

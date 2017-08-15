@@ -28,6 +28,7 @@ import com.aries.ui.widget.R;
  */
 public class TitleBarView extends ViewGroup {
 
+    public static final int DEFAULT_STATUS_BAR_ALPHA = 102;//默认透明度--5.0以上优化半透明状态栏一致
     private static final int DEFAULT_TEXT_COLOR = Color.WHITE;//默认文本颜色
     private static final int DEFAULT_TEXT_BG_COLOR = Color.TRANSPARENT;//默认子View背景色
     private static final int DEFAULT_MAIN_TEXT_SIZE = 18;//主标题size dp
@@ -386,7 +387,7 @@ public class TitleBarView extends ViewGroup {
         int right = mRightLayout.getMeasuredWidth();
         int center = mCenterLayout.getMeasuredWidth();
         boolean isMuchScreen = left + right + center >= mScreenWidth;
-        if(!mCenterGravityLeft) {
+        if (!mCenterGravityLeft) {
             if (left > right) {
                 mCenterLayout.measure(MeasureSpec.makeMeasureSpec(isMuchScreen ? mScreenWidth - left - right : mScreenWidth - 2 * left, MeasureSpec.EXACTLY), heightMeasureSpec);
             } else {
