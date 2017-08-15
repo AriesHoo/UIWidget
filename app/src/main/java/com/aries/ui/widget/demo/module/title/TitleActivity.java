@@ -9,6 +9,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     private SwitchCompat sBtnImmersible;
     private SwitchCompat sBtnLight;
     private SwitchCompat sBtnLine;
+    private LinearLayout lLayoutAlpha;
     private SeekBar sBarAlpha;
     private TextView tvStatusAlpha;
 
@@ -103,6 +105,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
         sBtnImmersible = (SwitchCompat) vHeader.findViewById(R.id.sBtn_immersible);
         sBtnLight = (SwitchCompat) vHeader.findViewById(R.id.sBtn_light);
         sBtnLine = (SwitchCompat) vHeader.findViewById(R.id.sBtn_line);
+        lLayoutAlpha = (LinearLayout) vHeader.findViewById(R.id.lLayout_alpha);
         sBarAlpha = (SeekBar) vHeader.findViewById(R.id.sBar_alpha);
         tvStatusAlpha = (TextView) vHeader.findViewById(R.id.tv_statusAlpha);
         initView();
@@ -146,6 +149,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
             sBtnLight.setClickable(false);
             sBtnLight.setChecked(false);
             sBtnLight.setText("4.4以下不支持全透明");
+            lLayoutAlpha.setVisibility(View.GONE);
         }
         sBarAlpha.setMax(255);
         sBtnImmersible.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -204,8 +208,12 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 tvStatusAlpha.setText(progress + "");
                 mAlpha = progress;
-                sBtnImmersible.setChecked(mAlpha < 225);
-                sBtnLight.setChecked(mAlpha == 0);
+                if (canImmersible) {
+                    sBtnImmersible.setChecked(mAlpha < 230);
+                }
+                if (canLight) {
+                    sBtnLight.setChecked(mAlpha == 0);
+                }
                 titleBar.setStatusAlpha(mAlpha);
                 if (mAlpha > 225 && isWhite) {
                     StatusBarUtil.setStatusBarDarkMode(mContext);
