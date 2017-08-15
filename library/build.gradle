@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 25
@@ -10,7 +9,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 25
         versionCode 8
-        versionName "1.8.0"
+        versionName "1.8.1"
     }
     buildTypes {
         release {
