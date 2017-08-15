@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     def ext = rootProject.ext
@@ -29,7 +29,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:'.concat(supportVersion)
     compile project(':library')
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
-    compile 'com.jakewharton:butterknife:8.7.0'
     compile 'com.just.agentweb:agentweb:1.2.5'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
