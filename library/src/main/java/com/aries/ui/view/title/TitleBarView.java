@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.widget.R;
 
 
@@ -43,15 +44,16 @@ public class TitleBarView extends ViewGroup {
     /**
      * 自定义View
      */
-    private View mStatusView;//状态栏View
+    private View mStatusView;//状态栏View-用于单独设置颜色
     private LinearLayout mLeftLayout;//左边容器
     private LinearLayout mCenterLayout;//中间容器
     private LinearLayout mRightLayout;//右边容器
-    private TextView mLeftTv;//左边Text
+    private TextView mLeftTv;//左边TextView
     private TextView mTitleTv;//主标题
     private TextView mSubTitleText;//副标题
-    private View mDividerView;//下方分割线
-    private TextView mRightTv;//右边Text
+    private TextView mRightTv;//右边TextView
+    private View mDividerView;//下方下划线
+
 
     /**
      * xml属性
@@ -60,6 +62,8 @@ public class TitleBarView extends ViewGroup {
     private int mOutPadding;
     private int mActionPadding;
     private boolean mCenterGravityLeft = false;//中间部分是否左对齐--默认居中
+    private boolean mStatusBarLightMode = false;//是否浅色状态栏(黑色文字及图标)
+    private int mStatusBarModeType = StatusBarUtil.STATUS_BAR_TYPE_DEFAULT;//设置状态栏浅色或深色模式类型标记;>0则表示支持模式切换
 
     private int mStatusColor;
     private int mStatusResource;
@@ -106,10 +110,6 @@ public class TitleBarView extends ViewGroup {
     private String mLeftText;
     private String mRightText;
 
-
-    private boolean isAddTitleMain = false;//是否已设置主标题
-    private boolean isAddTitleSub = false;//是否设置副标题
-
     public TitleBarView(Context context) {
         this(context, null, 0);
     }
@@ -132,6 +132,7 @@ public class TitleBarView extends ViewGroup {
         mOutPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_outPadding, dip2px(context, 12));
         mActionPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_actionPadding, dip2px(context, 1));
         mCenterGravityLeft = ta.getBoolean(R.styleable.TitleBarView_title_centerGravityLeft, false);
+        mStatusBarLightMode = ta.getBoolean(R.styleable.TitleBarView_title_statusBarLightMode, false);
 
         mStatusColor = ta.getColor(R.styleable.TitleBarView_title_statusColor, -1);
         mStatusResource = ta.getResourceId(R.styleable.TitleBarView_title_statusResource, -1);
@@ -143,8 +144,8 @@ public class TitleBarView extends ViewGroup {
         mLeftText = ta.getString(R.styleable.TitleBarView_title_leftText);
         mLeftTextSize = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextSize, dip2px(context, DEFAULT_TEXT_SIZE));
         mLeftTextColor = ta.getColor(R.styleable.TitleBarView_title_leftTextColor, DEFAULT_TEXT_COLOR);
-        mLeftTextBackgroundResource = ta.getResourceId(R.styleable.TitleBarView_title_leftTextBackgroundResource, -1);
         mLeftTextBackgroundColor = ta.getColor(R.styleable.TitleBarView_title_leftTextBackgroundColor, DEFAULT_TEXT_BG_COLOR);
+        mLeftTextBackgroundResource = ta.getResourceId(R.styleable.TitleBarView_title_leftTextBackgroundResource, -1);
         mLeftDrawable = ta.getResourceId(R.styleable.TitleBarView_title_leftTextDrawable, -1);
         mLeftDrawablePadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawablePadding, dip2px(context, 1));
 
@@ -228,6 +229,8 @@ public class TitleBarView extends ViewGroup {
         mStatusBarHeight = getStatusBarHeight();
         if (context instanceof Activity) {
             setImmersible((Activity) context, mImmersible);
+            if (mStatusBarLightMode)
+                setStatusBarLightMode((Activity) context, mStatusBarLightMode);
         }
         setOutPadding(mOutPadding);
         setActionPadding(mActionPadding);
@@ -315,6 +318,15 @@ public class TitleBarView extends ViewGroup {
         return mStatusView;
     }
 
+    /**
+     * 获取设置状态栏文字图标样式模式
+     *
+     * @return >0则表示设置成功
+     */
+    public int getStatusBarModeType() {
+        return mStatusBarModeType;
+    }
+
     public void setImmersible(Activity activity, boolean immersible) {
         setImmersible(activity, immersible, true);
     }
@@ -386,14 +398,21 @@ public class TitleBarView extends ViewGroup {
         int left = mLeftLayout.getMeasuredWidth();
         int right = mRightLayout.getMeasuredWidth();
         int center = mCenterLayout.getMeasuredWidth();
+        //判断左、中、右实际占用宽度是否等于或者超过屏幕宽度
         boolean isMuchScreen = left + right + center >= mScreenWidth;
-        if (!mCenterGravityLeft) {
-            if (left > right) {
-                mCenterLayout.measure(MeasureSpec.makeMeasureSpec(isMuchScreen ? mScreenWidth - left - right : mScreenWidth - 2 * left, MeasureSpec.EXACTLY), heightMeasureSpec);
+        if (!mCenterGravityLeft) {//不设置中间布局左对齐才进行中间布局重新测量
+            if (isMuchScreen) {
+                center = mScreenWidth - left - right;
             } else {
-                mCenterLayout.measure(MeasureSpec.makeMeasureSpec(isMuchScreen ? mScreenWidth - left - right : mScreenWidth - 2 * right, MeasureSpec.EXACTLY), heightMeasureSpec);
+                if (left > right) {
+                    center = mScreenWidth - 2 * left;
+                } else {
+                    center = mScreenWidth - 2 * right;
+                }
             }
+            mCenterLayout.measure(MeasureSpec.makeMeasureSpec(center, MeasureSpec.EXACTLY), heightMeasureSpec);
         }
+        //重新测量宽高--增加状态栏及下划线的高度
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec) + mStatusBarHeight + mDividerHeight);
     }
 
@@ -408,6 +427,21 @@ public class TitleBarView extends ViewGroup {
         mTitleTv.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
         mCenterLayout.setGravity(mCenterGravityLeft ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
         mSubTitleText.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
+    }
+
+    public boolean setStatusBarLightMode(Activity mActivity, boolean mStatusBarLightMode) {
+        boolean result = false;
+        this.mStatusBarLightMode = mStatusBarLightMode;
+        if (mActivity != null) {
+            if (mStatusBarLightMode) {
+                mStatusBarModeType = StatusBarUtil.setStatusBarLightMode(mActivity);
+                result = mStatusBarModeType > 0;
+            } else {
+                mStatusBarModeType = StatusBarUtil.setStatusBarDarkMode(mActivity);
+                result = mStatusBarModeType > 0;
+            }
+        }
+        return result;
     }
 
     public void setActionPadding(int actionPadding) {
@@ -526,9 +560,8 @@ public class TitleBarView extends ViewGroup {
 
     public void setTitleMainText(CharSequence charSequence) {
         mTitleTv.setText(charSequence);
-        if (!TextUtils.isEmpty(charSequence) && !isAddTitleMain) {//非空且还未添加主标题
+        if (!TextUtils.isEmpty(charSequence) && !hasChildView(mCenterLayout, mTitleTv)) {//非空且还未添加主标题
             mCenterLayout.addView(mTitleTv, 0);
-            isAddTitleMain = true;
         }
     }
 
@@ -605,13 +638,12 @@ public class TitleBarView extends ViewGroup {
             mSubTitleText.setVisibility(VISIBLE);
         }
         mSubTitleText.setText(charSequence);
-        if (!TextUtils.isEmpty(charSequence) && !isAddTitleSub) {//非空且还未添加副标题
-            if (isAddTitleMain) {
+        if (!TextUtils.isEmpty(charSequence) && !hasChildView(mCenterLayout, mSubTitleText)) {//非空且还未添加副标题
+            if (hasChildView(mCenterLayout, mTitleTv)) {
                 mTitleTv.setSingleLine();
                 mSubTitleText.setSingleLine();
             }
             mCenterLayout.addView(mSubTitleText);
-            isAddTitleSub = true;
         }
     }
 
@@ -976,25 +1008,19 @@ public class TitleBarView extends ViewGroup {
     }
 
     /**
-     * 将sp值转换为px值
+     * 判断父控件是否包含某个子View
      *
-     * @param spValue
+     * @param father
+     * @param child
      * @return
      */
-    public static int sp2px(Context context, float spValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (spValue * fontScale + 0.5f);
+    private boolean hasChildView(ViewGroup father, View child) {
+        boolean had = false;
+        try {
+            had = father.indexOfChild(child) != -1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return had;
     }
-
-    /**
-     * 将px值转换为sp值
-     *
-     * @param pxValue
-     * @return
-     */
-    public static int px2sp(Context context, float pxValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
-        return (int) (pxValue / fontScale + 0.5f);
-    }
-
 }

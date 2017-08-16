@@ -18,21 +18,26 @@ import java.lang.reflect.Method;
  */
 public class StatusBarUtil {
 
+    public static final int STATUS_BAR_TYPE_DEFAULT = 0;
+    public static final int STATUS_BAR_TYPE_MI_UI = 1;
+    public static final int STATUS_BAR_TYPE_FLY_ME = 2;
+    public static final int STATUS_BAR_TYPE_ANDROID_M = 3;
+
     /**
      * 设置状态栏浅色模式--黑色字体图标，
      *
      * @param activity
-     * @return 1:MIUI 2:FlyMe;3:Android 6.0及以上
+     * @return
      */
     public static int setStatusBarLightMode(Activity activity) {
-        int result = 0;
+        int result = STATUS_BAR_TYPE_DEFAULT;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (setStatusBarModeForMIUI(activity.getWindow(), true)) {
-                result = 2;
+                result = STATUS_BAR_TYPE_MI_UI;
             } else if (setStatusBarModeForFlyMe(activity.getWindow(), true)) {
-                result = 3;
+                result = STATUS_BAR_TYPE_FLY_ME;
             } else if (setStatusBarModeForAndroidM(activity.getWindow(), true)) {
-                result = 3;
+                result = STATUS_BAR_TYPE_ANDROID_M;
             }
         }
         return result;
@@ -42,17 +47,17 @@ public class StatusBarUtil {
      * 设置状态栏深色模式--白色字体图标，
      *
      * @param activity
-     * @return 1:MIUI 2:FlyMe;3:Android 6.0及以上
+     * @return
      */
     public static int setStatusBarDarkMode(Activity activity) {
-        int result = 0;
+        int result = STATUS_BAR_TYPE_DEFAULT;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (setStatusBarModeForMIUI(activity.getWindow(), false)) {
-                result = 1;
+                result = STATUS_BAR_TYPE_MI_UI;
             } else if (setStatusBarModeForFlyMe(activity.getWindow(), false)) {
-                result = 2;
+                result = STATUS_BAR_TYPE_FLY_ME;
             } else if (setStatusBarModeForAndroidM(activity.getWindow(), false)) {
-                result = 3;
+                result = STATUS_BAR_TYPE_ANDROID_M;
             }
         }
         return result;

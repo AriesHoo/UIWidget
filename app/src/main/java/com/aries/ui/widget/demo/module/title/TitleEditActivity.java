@@ -1,6 +1,7 @@
 package com.aries.ui.widget.demo.module.title;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.aries.ui.view.radius.RadiusTextView;
@@ -42,7 +43,9 @@ public class TitleEditActivity extends BaseActivity {
         //设置根布局setFitsSystemWindows(true)
         getRootView().setFitsSystemWindows(true);
         //根布局背景色保持和titleBar背景一致
-        getRootView().setBackground(titleBar.getBackground());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            getRootView().setBackground(titleBar.getBackground());
+        }
         //注:软键盘弹起会透出根布局背景(即:TitleBarView背景色)
     }
 

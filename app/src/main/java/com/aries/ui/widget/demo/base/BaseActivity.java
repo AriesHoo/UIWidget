@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.util.AppUtil;
@@ -67,10 +66,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (titleBar == null) {
             return;
         }
-        type = StatusBarUtil.setStatusBarLightMode(mContext);
+        type = titleBar.getStatusBarModeType();
         if (type <= 0) {//无法设置白底黑字
-            //titleBar.setStatusAlpha(102);//5.0 半透明模式alpha-102
-            titleBar.setImmersible(mContext,true,false);
+            titleBar.setStatusAlpha(102);//5.0 半透明模式alpha-102
         }
         titleBar.setTitleMainText(mContext.getClass().getSimpleName());
         setTitleBar();
@@ -114,7 +112,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             this.mIsFirstShow = false;
             this.loadData();
         }
-
         super.onResume();
     }
 

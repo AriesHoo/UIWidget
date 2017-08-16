@@ -5,6 +5,7 @@
     android:id="@+id/titleBar"
     android:layout_width="match_parent"
     android:layout_height="48dp"
+    app:title_statusBarLightMode="true"
     android:background="@color/colorTitle"
     app:title_actionTextColor="@color/colorTextBlack"
     app:title_dividerColor="@color/colorLineGray"
