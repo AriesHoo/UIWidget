@@ -126,8 +126,9 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     private void setDrawerList() {
         List<DrawerEntity> listDrawer = new ArrayList<>();
         listDrawer.add(new DrawerEntity("AriesHoo", "点击跳转GitHub个人主页", "https://github.com/AriesHoo"));
-        listDrawer.add(new DrawerEntity("TitleBarView", "点击跳转GitHub项目页", "https://github.com/AriesHoo/TitleBarView"));
-        listDrawer.add(new DrawerEntity("UIWidget", "点击跳转GitHub项目页", "https://github.com/AriesHoo/UIWidget"));
+        listDrawer.add(new DrawerEntity("TitleBarView", "点击跳转GitHub项目页", "https://github.com/AriesHoo/TitleBarView/blob/master/README.md"));
+        listDrawer.add(new DrawerEntity("简书-TitleBarView解析", "点击跳转简书", "http://www.jianshu.com/p/34ace867b29f"));
+        listDrawer.add(new DrawerEntity("UIWidget", "点击跳转GitHub项目页", "https://github.com/AriesHoo/UIWidget/blob/master/README.md"));
         DrawerHelper.getInstance().initRecyclerView(mContext, mRecyclerViewDrawer, listDrawer);
     }
 
