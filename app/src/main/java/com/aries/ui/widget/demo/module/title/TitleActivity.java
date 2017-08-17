@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.aries.ui.util.RomUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.demo.R;
@@ -67,7 +68,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     @Override
     protected void setTitleBar() {
         titleBar.setTitleMainText("主标题");
-        titleBar.setTitleSubText("副标题");
+        titleBar.setTitleSubText(getSubText());
         titleBar.setRightTextDrawable(isWhite ? R.drawable.ic_menu : R.drawable.ic_menu_white);
         titleBar.setOnRightTextClickListener(new View.OnClickListener() {
             @Override
@@ -75,9 +76,18 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
                 drawerRoot.openDrawer(svSlide);
             }
         });
-        if (StatusBarUtil.isMIUI()) {
-            titleBar.setTitleSubText("MIUI" + StatusBarUtil.getMIUIVersionName());
+    }
+
+    private String getSubText() {
+        String text = "Android" + Build.VERSION.RELEASE;
+        if (RomUtil.isMIUI()) {
+            text += "-MIUI" + RomUtil.getMIUIVersion();
+        } else if (RomUtil.isFlyme()) {
+            text += "-Flyme" + RomUtil.getFlymeVersionCode();
+        } else if (RomUtil.isEMUI()) {
+            text += "-EMUI" + RomUtil.getEMUIVersion();
         }
+        return text;
     }
 
     @Override

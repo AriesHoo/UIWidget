@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aries.ui.util.KeyboardUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.widget.R;
 
@@ -227,10 +229,11 @@ public class TitleBarView extends ViewGroup {
     private void setViewAttributes(final Context context) {
         mScreenWidth = getScreenWidth();
         mStatusBarHeight = getStatusBarHeight();
+        Log.d("setViewAttributes", "isActivity:" + (context instanceof Activity));
         if (context instanceof Activity) {
             setImmersible((Activity) context, mImmersible);
             if (mStatusBarLightMode)
-                setStatusBarLightMode((Activity) context, mStatusBarLightMode);
+                setStatusBarLightMode(mStatusBarLightMode);
         }
         setOutPadding(mOutPadding);
         setActionPadding(mActionPadding);
@@ -427,6 +430,13 @@ public class TitleBarView extends ViewGroup {
         mTitleTv.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
         mCenterLayout.setGravity(mCenterGravityLeft ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
         mSubTitleText.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
+    }
+
+    public boolean setStatusBarLightMode(boolean mStatusBarLightMode) {
+        if (mContext instanceof Activity) {
+            return setStatusBarLightMode((Activity) mContext, mStatusBarLightMode);
+        }
+        return false;
     }
 
     public boolean setStatusBarLightMode(Activity mActivity, boolean mStatusBarLightMode) {
@@ -794,6 +804,19 @@ public class TitleBarView extends ViewGroup {
 
     public void setActionTextBackgroundResource(int mActionTextBackgroundResource) {
         this.mActionTextBackgroundResource = mActionTextBackgroundResource;
+    }
+
+    /**
+     * 设置底部有输入框控制方案--IM常见
+     */
+    public void setBottomEditTextControl(Activity mActivity) {
+        KeyboardUtil.with(mActivity).setEnable();
+    }
+
+    public void setBottomEditTextControl() {
+        if (mContext instanceof Activity) {
+            setBottomEditTextControl((Activity) mContext);
+        }
     }
 
     public View addLeftAction(Action action, int position) {

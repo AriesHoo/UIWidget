@@ -2,7 +2,6 @@ package com.aries.ui.util;
 
 import android.app.Activity;
 import android.os.Build;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -71,11 +70,11 @@ public class StatusBarUtil {
      * @return boolean 成功执行返回true
      */
     private static boolean setStatusBarModeForMIUI(Window window, boolean darkText) {
-        if (!isMIUI()) {
+        if (!RomUtil.isMIUI()) {
             return false;
         }
         boolean result = false;
-        if (getMIUIVersionCode() >= 9) {//MIUI 9版本开始状态栏文字颜色恢复为系统原生方案
+        if (RomUtil.getMIUIVersionCode() >= 9) {//MIUI 9版本开始状态栏文字颜色恢复为系统原生方案
             result = setStatusBarModeForAndroidM(window, darkText);
         } else {
             if (window != null) {
@@ -152,38 +151,17 @@ public class StatusBarUtil {
         return result;
     }
 
-    /**
-     * 获取MIUI版本-数字用于大小判断
-     *
-     * @return
-     */
-    private static int getMIUIVersionCode() {
-        int code = -1;
-        String property = getMIUIVersionName();
-        try {
-            property = property.trim().toUpperCase().replace("V", "");
-            code = Integer.parseInt(property);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return code;
-    }
 
     /**
-     * 获取MIUI版本号-如V5
+     * 判断系统是否支持状态栏文字及图标颜色变化
      *
      * @return
      */
-    public static String getMIUIVersionName() {
-        return SystemUtil.getSystemProperty("ro.miui.ui.version.name");
-    }
-
-    /**
-     * 通过检查MIUI版本号属性检测是否为小米手机
-     *
-     * @return
-     */
-    public static boolean isMIUI() {
-        return !TextUtils.isEmpty(getMIUIVersionName());
+    public static boolean isSupportStatusBarFontChange() {
+        if (RomUtil.getMIUIVersionCode() >= 6 || RomUtil.getFlymeVersionCode() >= 4
+                || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+            return true;
+        } else
+            return false;
     }
 }
