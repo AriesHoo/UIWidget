@@ -32,4 +32,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.just.agentweb:agentweb:1.2.5'
     apt 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile 'com.sunfusheng:glideimageview:1.0.0'
+
 }
