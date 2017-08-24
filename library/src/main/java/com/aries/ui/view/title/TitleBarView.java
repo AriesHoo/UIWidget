@@ -229,7 +229,6 @@ public class TitleBarView extends ViewGroup {
     private void setViewAttributes(final Context context) {
         mScreenWidth = getScreenWidth();
         mStatusBarHeight = getStatusBarHeight();
-        Log.d("setViewAttributes", "isActivity:" + (context instanceof Activity));
         if (context instanceof Activity) {
             setImmersible((Activity) context, mImmersible);
             if (mStatusBarLightMode)
