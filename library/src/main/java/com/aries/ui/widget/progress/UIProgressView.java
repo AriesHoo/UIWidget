@@ -1,15 +1,13 @@
 package com.aries.ui.widget.progress;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.ProgressDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Rect;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -17,76 +15,131 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.aries.ui.widget.R;
 
 /**
  * Created: AriesHoo on 2017-01-18 13:16
- * Function: ProgressDialog加载工具
+ * Function: Loading加载工具
  * Desc:
  */
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-public class UIProgressView {
-    private ProgressDialog progressDialog;
-    private View rootView;
+public class UIProgressView extends Dialog {
+    private Context mContext;
     private LinearLayout layoutProgress;
     private ProgressBar progressBar;
     private TextView textView;
-    private Context mContext;
     private Window window;
     private WindowManager.LayoutParams lp;
 
-    /**
-     *
-     */
-    @SuppressLint("InflateParams")
+    private int orientation = LinearLayout.HORIZONTAL;
+    private CharSequence text;
+    private int textUnit;
+    private float textSize; //14dp
+    private int textColor;
+    private int loadingColor = Color.BLUE;//MD有效
+    private Drawable mIndeterminateDrawable;
+    private int mBackColor;
+    private int mBackResource;
+    public float alpha = 1.0f;
+    public float dimAmount = 0.5f;
+    private static int mStyle;
+
+    public static final int STYLE_NORMAL = 0;
+    public static final int STYLE_MATERIAL_DESIGN = 1;
+    public static final int STYLE_WEI_BO = 2;
+    public static final int STYLE_WEI_XIN = 3;
+
     public UIProgressView(Context context) {
+        this(context, STYLE_NORMAL);
+    }
+
+    public UIProgressView(Context context, int style) {
+        super(context, R.style.ProgressViewDialogStyle);
+        this.mStyle = style;
         this.mContext = context;
-        rootView = LayoutInflater.from(context).inflate(R.layout.layout_progress_view, null);// 得到加载view
+        this.textUnit = TypedValue.COMPLEX_UNIT_PX;
+        this.textSize = MaterialProgressBar.dip2px(context, 14);
+        this.textColor = context.getResources().getColor(R.color.colorLoadingText);
+        this.loadingColor = Color.BLUE;
+        this.window = getWindow();
+        this.lp = window.getAttributes();
+        if (mStyle == STYLE_WEI_BO) {//微博样式
+            mIndeterminateDrawable = mContext.getResources().getDrawable(R.drawable.dialog_loading_wei_bo);
+            mBackResource = R.drawable.loading_bg;
+            textColor = mContext.getResources().getColor(R.color.colorLoadingTextWeiBo);
+        } else if (mStyle == STYLE_WEI_XIN) {//微信样式
+            mIndeterminateDrawable = mContext.getResources().getDrawable(R.drawable.dialog_loading_wei_xin);
+            mBackResource = R.drawable.loading_bg;
+            textColor = Color.WHITE;
+        } else if (mStyle == STYLE_MATERIAL_DESIGN) {
+            textColor = loadingColor;
+        }
+    }
 
-        layoutProgress = (LinearLayout) rootView.findViewById(R.id.lLayout_mainProgressView);
-        textView = (TextView) rootView.findViewById(R.id.tv_loadingProgressView);// 提示文字
-        progressBar = (ProgressBar) rootView.findViewById(R.id.pb_mainProgressView);// loading
-        progressDialog = new ProgressDialog(context, R.style.ProgressViewDialogStyle);// 创建自定义样式dialog
-        progressDialog.show();
-        progressDialog.setContentView(rootView);// 设置布局
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout_progress_view);
+        initView();
+    }
 
-        window = progressDialog.getWindow();
-        lp = window.getAttributes();
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        window.setGravity(Gravity.CENTER);
-        window.setAttributes(lp);
+    protected void initView() {
+        layoutProgress = (LinearLayout) findViewById(R.id.lLayout_mainProgressView);
+        textView = (TextView) findViewById(R.id.tv_loadingProgressView);// 提示文字
+        progressBar = (ProgressBar) findViewById(R.id.pb_mainProgressView);// loading
+        progressBar.setVisibility(mStyle != STYLE_MATERIAL_DESIGN ? View.VISIBLE : View.GONE);
+
+        layoutProgress.setOrientation(orientation);
+        if (mStyle == STYLE_WEI_BO) {
+            layoutProgress.setOrientation(LinearLayout.VERTICAL);
+            layoutProgress.setGravity(Gravity.CENTER);
+            layoutProgress.setMinimumHeight(MaterialProgressBar.dip2px(mContext, 110));
+            layoutProgress.setMinimumWidth(MaterialProgressBar.dip2px(mContext, 150));
+            textView.setPadding(0, MaterialProgressBar.dip2px(mContext, 15), 0, 0);
+        } else {
+            layoutProgress.setMinimumWidth(MaterialProgressBar.dip2px(mContext, TextUtils.isEmpty(text) ? 65 : 180));
+            textView.setPadding(mStyle != STYLE_WEI_XIN ? MaterialProgressBar.dip2px(mContext, 10) : 0, 0, 0, 0);
+        }
+        if (mStyle == STYLE_MATERIAL_DESIGN) {
+            MaterialProgressBar materialProgressBar = new MaterialProgressBar(mContext);
+            materialProgressBar.setArcColor(loadingColor);
+            layoutProgress.addView(materialProgressBar, 0, new ViewGroup.LayoutParams(MaterialProgressBar.dip2px(mContext, 32), MaterialProgressBar.dip2px(mContext, 32)));
+            textColor = loadingColor;
+        } else if (mStyle == STYLE_WEI_XIN) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) progressBar.getLayoutParams();
+            params.setMargins(MaterialProgressBar.dip2px(mContext, 15), MaterialProgressBar.dip2px(mContext, 15), MaterialProgressBar.dip2px(mContext, 15), MaterialProgressBar.dip2px(mContext, 15));
+            progressBar.setLayoutParams(params);
+        }
+        textView.setVisibility(TextUtils.isEmpty(text) ? View.GONE : View.VISIBLE);
+        textView.setText(text);
+        textView.setTextSize(textUnit, textSize);
+        textView.setTextColor(textColor);
+        lp.alpha = alpha;
+        lp.dimAmount = dimAmount;
         window.setWindowAnimations(R.style.PopWindowAnimStyle);
-    }
-
-    /**
-     * 获取布局根视图
-     *
-     * @return
-     */
-    public View getRootView() {
-        rootView = ((ViewGroup) progressDialog.findViewById(android.R.id.content)).getChildAt(0);
-        return rootView;
-    }
-
-    /**
-     * ProgressDialog 添加根布局
-     *
-     * @param layoutResID
-     * @return
-     */
-    public UIProgressView setContentView(int layoutResID) {
-        progressDialog.show();
-        progressDialog.setContentView(layoutResID);
-        return this;
-    }
-
-    public ProgressDialog getProgressDialog() {
-        return progressDialog;
-    }
-
-    public ProgressBar getProgressBar() {
-        return progressBar;
+        if (mStyle == STYLE_WEI_XIN) {//不知
+            textView.post(new Runnable() {
+                @Override
+                public void run() {
+                    int min = MaterialProgressBar.dip2px(mContext, 180);
+                    int minimumHeight = MaterialProgressBar.dip2px(mContext, 65);
+                    int minimumWidth = MaterialProgressBar.dip2px(mContext, 65) + textView.getWidth();
+                    layoutProgress.setMinimumHeight(minimumHeight);
+                    layoutProgress.setMinimumWidth(TextUtils.isEmpty(text) || minimumWidth > min ? minimumWidth : min);
+                    textView.getWidth();
+                }
+            });
+        }
+        if (mIndeterminateDrawable != null && progressBar.getVisibility() == View.VISIBLE) {
+            mIndeterminateDrawable.setBounds(progressBar.getIndeterminateDrawable().getBounds());
+            progressBar.setIndeterminateDrawable(mIndeterminateDrawable);
+        }
+        if (mBackResource != 0) {
+            layoutProgress.setBackgroundResource(mBackResource);
+        }
+        if (mBackColor != 0) {
+            layoutProgress.setBackgroundColor(mBackColor);
+        }
     }
 
     /**
@@ -96,10 +149,7 @@ public class UIProgressView {
      * @return
      */
     public UIProgressView setMessage(CharSequence message) {
-        if (!message.toString().isEmpty()) {
-            textView.setText(message);
-            textView.setVisibility(View.VISIBLE);
-        }
+        this.text = message;
         return this;
     }
 
@@ -111,6 +161,16 @@ public class UIProgressView {
         return setMessage(mContext.getString(message));
     }
 
+    /**
+     * 设置MD风格颜色
+     *
+     * @param color
+     * @return
+     */
+    public UIProgressView setLoadingColor(int color) {
+        loadingColor = color;
+        return this;
+    }
 
     /**
      * 设置文字大小
@@ -120,7 +180,7 @@ public class UIProgressView {
      * @return
      */
     public UIProgressView setTextSize(int unit, float size) {
-        textView.setTextSize(unit, size);
+        textUnit = unit;
         return this;
     }
 
@@ -128,53 +188,26 @@ public class UIProgressView {
         return setTextSize(TypedValue.COMPLEX_UNIT_SP, size);
     }
 
-    public UIProgressView setIndeterminateDrawable(Drawable drawable) {
-        Drawable mDrawable = progressBar.getIndeterminateDrawable();
-        Rect rect = mDrawable.getBounds();
-        drawable.setBounds(rect);
-        progressBar.setIndeterminateDrawable(drawable);
-        return this;
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public UIProgressView setIndeterminateDrawable(int resId) {
-        Drawable drawable = progressBar.getIndeterminateDrawable();
-        try {
-            drawable = mContext.getDrawable(resId);
-        } catch (Exception e) {
-
-        }
-        return setIndeterminateDrawable(drawable);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public UIProgressView setProgressDrawable(int resId) {
-        Drawable drawable = progressBar.getProgressDrawable();
-        try {
-            drawable = mContext.getDrawable(resId);
-        } catch (Exception e) {
-
-        }
-        return setIndeterminateDrawable(drawable);
-    }
-
-    public UIProgressView setProgressDrawable(Drawable drawable) {
-        Drawable mDrawable = progressBar.getProgressDrawable();
-        Rect rect = mDrawable.getBounds();
-        drawable.setBounds(rect);
-        progressBar.setProgressDrawable(drawable);
+    public UIProgressView setTextColor(int color) {
+        textColor = color;
         return this;
     }
 
     /**
-     * 设置文字颜色
+     * 默认模式有效
      *
-     * @param color
+     * @param drawable
      * @return
      */
-    public UIProgressView setTextColor(int color) {
-        textView.setTextColor(color);
+    public UIProgressView setIndeterminateDrawable(Drawable drawable) {
+        if (mStyle == STYLE_NORMAL)
+            mIndeterminateDrawable = drawable;
         return this;
+    }
+
+    public UIProgressView setIndeterminateDrawable(int resId) {
+        Drawable drawable = mContext.getResources().getDrawable(resId);
+        return setIndeterminateDrawable(drawable);
     }
 
     /**
@@ -184,13 +217,8 @@ public class UIProgressView {
      * @return
      */
     public UIProgressView setBackgroundResource(int background) {
-        layoutProgress.setBackgroundResource(background);
-        return this;
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    public UIProgressView setBackground(Drawable background) {
-        layoutProgress.setBackground(background);
+        if (mStyle == STYLE_NORMAL)
+            mBackResource = background;
         return this;
     }
 
@@ -199,7 +227,8 @@ public class UIProgressView {
      * @return
      */
     public UIProgressView setBackgroundColor(int color) {
-        layoutProgress.setBackgroundColor(color);
+        if (mStyle == STYLE_NORMAL)
+            mBackColor = color;
         return this;
     }
 
@@ -210,8 +239,7 @@ public class UIProgressView {
      * @return
      */
     public UIProgressView setAlpha(float alpha) {
-        lp.alpha = alpha;// 透明度
-        window.setAttributes(lp);
+        this.alpha = alpha;
         return this;
     }
 
@@ -222,69 +250,7 @@ public class UIProgressView {
      * @return
      */
     public UIProgressView setDimAmount(float dimAmount) {
-        lp.dimAmount = dimAmount;// 黑暗度
-        window.setAttributes(lp);
-        return this;
-    }
-
-    /**
-     * 设置是否点击back键关闭窗口
-     *
-     * @param flag
-     * @return
-     */
-    public UIProgressView setCancelable(boolean flag) {
-        progressDialog.setCancelable(flag);
-        return this;
-    }
-
-    /**
-     * 设置区域外是否关闭
-     *
-     * @param flag
-     * @return
-     */
-    public UIProgressView setCanceledOnTouchOutside(boolean flag) {
-        progressDialog.setCanceledOnTouchOutside(flag);
-        return this;
-    }
-
-    /**
-     * 关闭
-     *
-     * @return
-     */
-    public UIProgressView dismiss() {
-        if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-        return this;
-    }
-
-    /**
-     * @return
-     * @返回值 UIProgressView
-     * @所属类 UIProgressView.java
-     * @创建者 Aries_Hoo
-     * @作用 结束窗口
-     * @创建时间 2015年3月11日上午10:07:29
-     */
-    public UIProgressView cancel() {
-        if (progressDialog.isShowing()) {
-            progressDialog.cancel();
-        }
-        return this;
-    }
-
-    /**
-     * 显示
-     *
-     * @return
-     */
-    public UIProgressView show() {
-        if (!progressDialog.isShowing()) {
-            progressDialog.show();
-        }
+        this.dimAmount = dimAmount;
         return this;
     }
 

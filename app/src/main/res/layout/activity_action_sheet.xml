@@ -31,9 +31,12 @@
                 android:padding="12dp"
                 android:text="圆角模式"
                 android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
+                android:textSize="@dimen/dp_text_size_main"
+                android:visibility="gone"/>
 
-            <View style="@style/LineGray.Horizontal"/>
+            <View
+                style="@style/LineGray.Horizontal"
+                android:visibility="gone"/>
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/sBtn_marginActionSheet"
@@ -116,10 +119,48 @@
                 android:id="@+id/rtv_showActionSheet"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:padding="12dp"
-                android:text="Show"
+                android:text="ShowNormalStyle"
+                android:textSize="@dimen/dp_text_size_main"
+                app:rv_backgroundColor="@color/colorWhite"
+                app:rv_backgroundPressedColor="@color/colorWhitePressed"
+                app:rv_radiusHalfHeightEnable="true"
+                app:rv_strokeColor="@color/colorTextBlack"
+                app:rv_strokePressedColor="@color/colorTextBlackLight"
+                app:rv_strokeWidth="@dimen/dp_line_size"
+                app:rv_textColor="@color/colorTextBlack"
+                app:rv_textPressedColor="@color/colorTextBlackLight"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_showIOSActionSheet"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="ShowIOSStyle"
+                android:textSize="@dimen/dp_text_size_main"
+                app:rv_backgroundColor="@color/colorWhite"
+                app:rv_backgroundPressedColor="@color/colorWhitePressed"
+                app:rv_radiusHalfHeightEnable="true"
+                app:rv_strokeColor="@color/colorTextBlack"
+                app:rv_strokePressedColor="@color/colorTextBlackLight"
+                app:rv_strokeWidth="@dimen/dp_line_size"
+                app:rv_textColor="@color/colorTextBlack"
+                app:rv_textPressedColor="@color/colorTextBlackLight"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_showWeiXinActionSheet"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="微信风格(类BottomSheet)"
                 android:textSize="@dimen/dp_text_size_main"
                 app:rv_backgroundColor="@color/colorWhite"
                 app:rv_backgroundPressedColor="@color/colorWhitePressed"

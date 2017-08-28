@@ -134,7 +134,8 @@ public class ActionSheetActivity extends BaseActivity {
     };
 
 
-    @OnClick({R.id.sBtn_styleActionSheet, R.id.sBtn_titleActionSheet, R.id.rtv_showActionSheet})
+    @OnClick({R.id.sBtn_styleActionSheet, R.id.sBtn_titleActionSheet, R.id.rtv_showActionSheet
+            , R.id.rtv_showIOSActionSheet, R.id.rtv_showWeiXinActionSheet})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.sBtn_styleActionSheet:
@@ -142,33 +143,41 @@ public class ActionSheetActivity extends BaseActivity {
             case R.id.sBtn_titleActionSheet:
                 break;
             case R.id.rtv_showActionSheet:
-                UIActionSheetView action = new UIActionSheetView(mContext, isRoundStyle ? UIActionSheetView.STYLE_ROUND : UIActionSheetView.STYLE_NORMAL);
-                action.setCancelMessage("取消");
-                action.setItems(R.array.arrays_items_action, onActionSheetItemLister);
-                if (!isRoundStyle) {
-                    action.setCancelMessageMargin(0, isShowMargin ? 16 : 0, 0, 0);
-                }
-                if (isShowTitle) {
-                    action.setTitle("Title");
-                }
-                if (!isDefaultTitleColor) {
-                    action.setTitleColor(Color.BLACK);
-                }
-                if (!isDefaultItemColor) {
-                    action.setItemsTextColor(Color.BLACK);
-                    action.setItemTextColor(0, Color.BLUE);
-                    action.setItemTextColor(2, Color.GREEN);
-                    action.setItemTextColor(4, Color.RED);
-                    action.setItemTextColor(6, Color.YELLOW);
-                }
-                if (!isDefaultCancelColor) {
-                    action.setCancelColor(Color.BLACK);
-                }
-                if (!isBackDim) {
-                    action.setDimAmount(0f);
-                }
-                action.show();
+                showAction(UIActionSheetView.STYLE_NORMAL);
+                break;
+            case R.id.rtv_showIOSActionSheet:
+                showAction(UIActionSheetView.STYLE_IOS);
+                break;
+            case R.id.rtv_showWeiXinActionSheet:
+                showAction(UIActionSheetView.STYLE_WEI_XIN);
                 break;
         }
+    }
+
+
+    private void showAction(int style) {
+        UIActionSheetView action = new UIActionSheetView(mContext, style);
+        action.setItems(R.array.arrays_items_action, onActionSheetItemLister);
+        action.setCancelMessageMargin(0, isShowMargin ? 10 : 0, 0, 0);
+        if (isShowTitle) {
+            action.setTitle("Title");
+        }
+        if (!isDefaultTitleColor) {
+            action.setTitleColor(Color.BLACK);
+        }
+        if (!isDefaultItemColor) {
+            action.setItemsTextColor(Color.BLACK);
+            action.setItemTextColor(0, Color.BLUE);
+            action.setItemTextColor(2, Color.GREEN);
+            action.setItemTextColor(4, Color.RED);
+            action.setItemTextColor(6, Color.YELLOW);
+        }
+        if (!isDefaultCancelColor) {
+            action.setCancelColor(Color.BLACK);
+        }
+        if (!isBackDim) {
+            action.setDimAmount(0f);
+        }
+        action.show();
     }
 }

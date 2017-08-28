@@ -14,14 +14,15 @@
         android:background="@drawable/action_sheet_top_normal"
         android:gravity="center"
         android:minHeight="20dip"
-        android:text="@string/UIActionSheet"
+        android:text="@string/app_name"
         android:textColor="@color/colorActionSheetTitleText"
-        android:textSize="14sp"
+        android:textSize="14dp"
         android:visibility="gone"/>
 
     <View
         android:id="@+id/v_lineTitleActionSheet"
-        style="@style/LineGray.Horizontal"/>
+        style="@style/LineGray.Horizontal"
+        android:background="@color/colorActionSheetEdgeLineGray"/>
 
     <LinearLayout
         android:id="@+id/lLayout_viewActionSheet"
@@ -50,12 +51,11 @@
         android:id="@+id/tv_cancelActionSheet"
         android:layout_width="match_parent"
         android:layout_height="45dip"
-        android:layout_marginTop="8dip"
+        android:layout_marginTop="8dp"
         android:background="@drawable/action_sheet_single"
         android:gravity="center"
         android:text="@string/cancel"
         android:textColor="@color/colorActionSheetCancelText"
-        android:textSize="18sp"
-        android:visibility="gone"/>
+        android:textSize="18dp"/>
 
 </LinearLayout>

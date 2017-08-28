@@ -29,19 +29,13 @@
                 android:background="@android:color/darker_gray"
                 android:scaleType="centerCrop"/>
 
-            <com.sunfusheng.glideimageview.GlideImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/giv_headDrawer"
+            <ImageView
+                android:id="@+id/iv_headDrawer"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_marginBottom="36dp"
-                android:scaleType="centerCrop"
-                app:siv_border_color="@android:color/holo_purple"
-                app:siv_border_width="1dp"
-                app:siv_pressed_alpha="0.5"
-                app:siv_pressed_color="@android:color/transparent"
-                app:siv_shape_type="circle"/>
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animated-rotate xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:drawable="@drawable/loading_icon"
+                 android:drawable="@drawable/img_loading_wei_xin"
                  android:pivotX="50%"
                  android:pivotY="50%"/>

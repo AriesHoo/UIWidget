@@ -31,12 +31,14 @@ public class StatusBarUtil {
     public static int setStatusBarLightMode(Activity activity) {
         int result = STATUS_BAR_TYPE_DEFAULT;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //MIUI 9版本开始状态栏文字颜色恢复为系统原生方案-为防止反复修改先进行6.0方案
+            if (setStatusBarModeForAndroidM(activity.getWindow(), true)) {
+                result = STATUS_BAR_TYPE_ANDROID_M;
+            }
             if (setStatusBarModeForMIUI(activity.getWindow(), true)) {
                 result = STATUS_BAR_TYPE_MI_UI;
             } else if (setStatusBarModeForFlyMe(activity.getWindow(), true)) {
                 result = STATUS_BAR_TYPE_FLY_ME;
-            } else if (setStatusBarModeForAndroidM(activity.getWindow(), true)) {
-                result = STATUS_BAR_TYPE_ANDROID_M;
             }
         }
         return result;
@@ -51,12 +53,14 @@ public class StatusBarUtil {
     public static int setStatusBarDarkMode(Activity activity) {
         int result = STATUS_BAR_TYPE_DEFAULT;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //MIUI 9版本开始状态栏文字颜色恢复为系统原生方案-为防止反复修改先进行6.0方案
+            if (setStatusBarModeForAndroidM(activity.getWindow(), false)) {
+                result = STATUS_BAR_TYPE_ANDROID_M;
+            }
             if (setStatusBarModeForMIUI(activity.getWindow(), false)) {
                 result = STATUS_BAR_TYPE_MI_UI;
             } else if (setStatusBarModeForFlyMe(activity.getWindow(), false)) {
                 result = STATUS_BAR_TYPE_FLY_ME;
-            } else if (setStatusBarModeForAndroidM(activity.getWindow(), false)) {
-                result = STATUS_BAR_TYPE_ANDROID_M;
             }
         }
         return result;
@@ -70,30 +74,23 @@ public class StatusBarUtil {
      * @return boolean 成功执行返回true
      */
     private static boolean setStatusBarModeForMIUI(Window window, boolean darkText) {
-        if (!RomUtil.isMIUI()) {
-            return false;
-        }
         boolean result = false;
-        if (RomUtil.getMIUIVersionCode() >= 9) {//MIUI 9版本开始状态栏文字颜色恢复为系统原生方案
-            result = setStatusBarModeForAndroidM(window, darkText);
-        } else {
-            if (window != null) {
-                Class clazz = window.getClass();
-                try {
-                    int darkModeFlag = 0;
-                    Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
-                    Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-                    darkModeFlag = field.getInt(layoutParams);
-                    Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-                    if (darkText) {
-                        extraFlagField.invoke(window, darkModeFlag, darkModeFlag);//状态栏透明且黑色字体
-                    } else {
-                        extraFlagField.invoke(window, 0, darkModeFlag);//清除黑色字体
-                    }
-                    result = true;
-                } catch (Exception e) {
-
+        if (window != null) {
+            Class clazz = window.getClass();
+            try {
+                int darkModeFlag = 0;
+                Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+                Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+                darkModeFlag = field.getInt(layoutParams);
+                Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+                if (darkText) {
+                    extraFlagField.invoke(window, darkModeFlag, darkModeFlag);//状态栏透明且黑色字体
+                } else {
+                    extraFlagField.invoke(window, 0, darkModeFlag);//清除黑色字体
                 }
+                result = true;
+            } catch (Exception e) {
+
             }
         }
         return result;

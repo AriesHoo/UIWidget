@@ -237,4 +237,13 @@
         <!--添加TextView文字背景资源,默认-1-->
         <attr name="title_actionTextBackgroundResource" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="MaterialProgressBar">
+        <!--圆弧颜色-默认Colo.BLUE-->
+        <attr name="progress_arcColor" format="reference|color"/>
+        <!--圆弧宽度-默认3dp-->
+        <attr name="progress_borderWidth" format="reference|dimension"/>
+        <!--圆弧转动时间-越小越快默认600(建议200-1000)-->
+        <attr name="progress_duration" format="reference|integer"/>
+    </declare-styleable>
 </resources>

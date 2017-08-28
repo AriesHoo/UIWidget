@@ -73,7 +73,7 @@ public class ActionSheetUtil {
     }
 
     private static UIActionSheetView getActionSheetView(Context context) {
-        UIActionSheetView actionSheetView = new UIActionSheetView(context).builder();
+        UIActionSheetView actionSheetView = new UIActionSheetView(context);
         actionSheetView.setTitleTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
         actionSheetView.setCancelMessageTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
         actionSheetView.setItemsTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);

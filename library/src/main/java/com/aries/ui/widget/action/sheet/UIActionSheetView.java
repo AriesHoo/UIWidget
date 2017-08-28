@@ -13,14 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.aries.ui.widget.R;
@@ -49,12 +45,13 @@ public class UIActionSheetView {
 
     private Window window;
     private WindowManager.LayoutParams lp;
-    private int unitItems = TypedValue.COMPLEX_UNIT_SP;
+    private int unitItems = TypedValue.COMPLEX_UNIT_DIP;
     private float textSizeItems = 18;
     private float itemHeight = 45;
     private int STYLE = STYLE_NORMAL;
     public final static int STYLE_NORMAL = 0;
-    public final static int STYLE_ROUND = 1;
+    public final static int STYLE_IOS = 1;
+    public final static int STYLE_WEI_XIN = 2;
 
     public interface OnSheetItemListener {
         void onClick(int position);
@@ -66,9 +63,6 @@ public class UIActionSheetView {
         // 获取Dialog布局
         rootView = LayoutInflater.from(context).inflate(
                 R.layout.layout_action_sheet_view, null);
-        if (STYLE == STYLE_NORMAL) {
-            rootView.setPadding(0, 0, 0, 0);
-        }
         // 获取自定义Dialog布局中的控件
         lLayout_content = (LinearLayout) rootView
                 .findViewById(R.id.lLayout_itemActionSheet);
@@ -83,13 +77,28 @@ public class UIActionSheetView {
                 dialog.dismiss();
             }
         });
-
+        txt_cancel.setVisibility(STYLE == STYLE_WEI_XIN ? View.GONE : View.VISIBLE);
+        if (STYLE != STYLE_IOS) {
+            setPadding(0, 0, 0, 0);
+        }
+        if (STYLE == STYLE_WEI_XIN) {
+            setViewMargin(txt_cancel, 0, 0, 0, 0);
+            txt_cancel.setGravity(Gravity.CENTER_VERTICAL);
+            txt_title.setGravity(Gravity.CENTER_VERTICAL);
+            setTitleColorResource(R.color.colorActionSheetWeiXinText);
+            setCancelColorResource(R.color.colorActionSheetWeiXinText);
+            txt_title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+            txt_cancel.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+            textSizeItems = 16;
+        }
+        txt_title.setPadding(dip2px(15), 0, dip2px(15), 0);
+        txt_cancel.setPadding(dip2px(15), 0, dip2px(15), 0);
         vLineTitle.setVisibility(View.GONE);
         // 定义Dialog布局和参数
-        dialog = new Dialog(context, R.style.ActionSheet);
+        dialog = new Dialog(context, R.style.ActionSheetViewDialogStyle);
         dialog.setContentView(rootView);
         window = dialog.getWindow();
-        window.setGravity(Gravity.LEFT | Gravity.BOTTOM);
+        window.setGravity(Gravity.BOTTOM);
         lp = window.getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -105,11 +114,7 @@ public class UIActionSheetView {
     }
 
     public UIActionSheetView(Context context) {
-        this(context, STYLE_ROUND);
-    }
-
-    public UIActionSheetView builder() {
-        return this;
+        this(context, STYLE_NORMAL);
     }
 
     public Dialog getDialog() {
@@ -137,12 +142,6 @@ public class UIActionSheetView {
     public UIActionSheetView setDimAmount(float dimAmount) {
         lp.dimAmount = dimAmount;// 黑暗度
         window.setAttributes(lp);
-        return this;
-    }
-
-    public UIActionSheetView setContentView(int layoutResID) {
-        dialog.show();
-        dialog.setContentView(layoutResID);
         return this;
     }
 
@@ -239,8 +238,18 @@ public class UIActionSheetView {
     }
 
 
-    public UIActionSheetView setCancelMessageMargin(int left, int top, int right, int bottom) {
-        setViewMargin(txt_cancel, left, top, right, bottom, LayoutParams.MATCH_PARENT, getItemHeight());
+    /**
+     * 设置cancel 间隙 --normal模式有效
+     *
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     * @return
+     */
+    public UIActionSheetView setCancelMessageMargin(float left, float top, float right, float bottom) {
+        if (STYLE == STYLE_NORMAL)
+            setViewMargin(txt_cancel, dip2px(left), dip2px(top), dip2px(right), dip2px(bottom));
         return this;
     }
 
@@ -300,7 +309,9 @@ public class UIActionSheetView {
         }
         List<SheetItem> list = new ArrayList<>();
         for (CharSequence item : items) {
-            list.add(new SheetItem(item, null, onItemSelected));
+            list.add(new SheetItem(item,
+                    STYLE == STYLE_WEI_XIN ? context.getResources().getColor(R.color.colorActionSheetWeiXinText) : null
+                    , onItemSelected));
         }
         return setItems(list);
     }
@@ -474,6 +485,7 @@ public class UIActionSheetView {
         if (listSheetItem == null || listSheetItem.size() <= 0) {
             return;
         }
+        lLayout_content.setGravity(STYLE == STYLE_WEI_XIN ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
         lLayout_content.removeAllViews();
         // 循环添加条目
         for (int i = 0; i <= listSheetItem.size() - 1; i++) {
@@ -485,11 +497,11 @@ public class UIActionSheetView {
             TextView textView = new TextView(context);
             textView.setText(sheetItem.name);
             textView.setTextSize(unitItems, textSizeItems);
-            textView.setGravity(Gravity.CENTER);
-
+            textView.setGravity(STYLE == STYLE_WEI_XIN ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
+            textView.setPadding(dip2px(15), 0, dip2px(15), 0);
             vLineTitle.setVisibility(showTitle && STYLE == STYLE_NORMAL ? View.VISIBLE : View.GONE);
             // 背景图片
-            if (STYLE == STYLE_ROUND) {
+            if (STYLE == STYLE_IOS) {
                 if (listSheetItem.size() == 1) {
                     if (showTitle) {
                         textView.setBackgroundResource(R.drawable.action_sheet_bottom);
@@ -517,12 +529,14 @@ public class UIActionSheetView {
                 textView.setBackgroundResource(R.drawable.action_sheet_edge);
                 txt_cancel.setBackgroundResource(R.drawable.action_sheet_edge);
                 txt_title.setBackgroundResource(R.drawable.action_sheet_edge);
-                view.setBackgroundResource(R.color.colorLineGray);
+                view.setBackgroundResource(R.color.colorActionSheetEdgeLineGray);
             }
             // 字体颜色
             textView.setTextColor(sheetItem.color);
+            LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, getItemHeight());
             // 高度
-            textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, getItemHeight()));
+            textView.setLayoutParams(params);
+            txt_title.setMinimumHeight(getItemHeight());
 
             // 点击事件
             textView.setOnClickListener(new OnClickListener() {
@@ -564,24 +578,11 @@ public class UIActionSheetView {
         }
     }
 
-    public ViewGroup.MarginLayoutParams setViewMargin(View view, int left, int top, int right, int bottom, int width, int height) {
+    public ViewGroup.MarginLayoutParams setViewMargin(View view, int left, int top, int right, int bottom) {
         if (view == null) {
             return null;
         }
-        ViewParent parent = view.getParent();
-        if (parent == null) {
-            return null;
-        }
-        ViewGroup.MarginLayoutParams lp;
-        if (parent instanceof LinearLayout) {
-            lp = new LinearLayout.LayoutParams(width, height);
-        } else if (parent instanceof RelativeLayout) {
-            lp = new RelativeLayout.LayoutParams(width, height);
-        } else if (parent instanceof FrameLayout) {
-            lp = new FrameLayout.LayoutParams(width, height);
-        } else {
-            lp = new TableLayout.LayoutParams(width, height);
-        }
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         if (lp != null) {
             lp.setMargins(left, top, right, bottom);
             view.setLayoutParams(lp);
@@ -593,5 +594,14 @@ public class UIActionSheetView {
         float scale = context.getResources().getDisplayMetrics().density;
         int height = (int) (itemHeight * scale + 0.5f);
         return height;
+    }
+
+    private int dip2px(float dipValue) {
+        return dip2px(context, dipValue);
+    }
+
+    public static int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
     }
 }
