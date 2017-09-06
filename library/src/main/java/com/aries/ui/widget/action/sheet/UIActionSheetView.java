@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -38,6 +39,7 @@ public class UIActionSheetView {
     private View vLineTitle;
     private TextView txt_cancel;
     private View rootView;
+    private View vTop;
     private LinearLayout lLayout_content;
     private LinearLayout lLayout_view;
     private boolean showTitle = false;
@@ -68,6 +70,7 @@ public class UIActionSheetView {
                 .findViewById(R.id.lLayout_itemActionSheet);
         lLayout_view = (LinearLayout) rootView
                 .findViewById(R.id.lLayout_viewActionSheet);
+        vTop = rootView.findViewById(R.id.v_topActionSheet);
         txt_title = (TextView) rootView.findViewById(R.id.tv_titleActionSheet);
         vLineTitle = rootView.findViewById(R.id.v_lineTitleActionSheet);
         txt_cancel = (TextView) rootView.findViewById(R.id.tv_cancelActionSheet);
@@ -81,18 +84,21 @@ public class UIActionSheetView {
         if (STYLE != STYLE_IOS) {
             setPadding(0, 0, 0, 0);
         }
+        txt_title.setPadding(dip2px(15), 0, dip2px(15), 0);
+        txt_cancel.setPadding(dip2px(15), 0, dip2px(15), 0);
         if (STYLE == STYLE_WEI_XIN) {
             setViewMargin(txt_cancel, 0, 0, 0, 0);
             txt_cancel.setGravity(Gravity.CENTER_VERTICAL);
             txt_title.setGravity(Gravity.CENTER_VERTICAL);
             setTitleColorResource(R.color.colorActionSheetWeiXinText);
             setCancelColorResource(R.color.colorActionSheetWeiXinText);
-            txt_title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-            txt_cancel.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-            textSizeItems = 16;
+            txt_title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+            txt_cancel.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+            txt_title.setPadding(dip2px(18), 0, dip2px(18), 0);
+            txt_cancel.setPadding(dip2px(18), 0, dip2px(18), 0);
+            itemHeight = 48;
+            vTop.setMinimumHeight((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.4));
         }
-        txt_title.setPadding(dip2px(15), 0, dip2px(15), 0);
-        txt_cancel.setPadding(dip2px(15), 0, dip2px(15), 0);
         vLineTitle.setVisibility(View.GONE);
         // 定义Dialog布局和参数
         dialog = new Dialog(context, R.style.ActionSheetViewDialogStyle);
@@ -109,6 +115,12 @@ public class UIActionSheetView {
             public void onDismiss(DialogInterface dialog) {
                 lLayout_view.removeAllViews();
                 lLayout_content.removeAllViews();
+            }
+        });
+        vTop.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
     }
@@ -498,7 +510,7 @@ public class UIActionSheetView {
             textView.setText(sheetItem.name);
             textView.setTextSize(unitItems, textSizeItems);
             textView.setGravity(STYLE == STYLE_WEI_XIN ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
-            textView.setPadding(dip2px(15), 0, dip2px(15), 0);
+            textView.setPadding(dip2px(18), 0, dip2px(18), 0);
             vLineTitle.setVisibility(showTitle && STYLE == STYLE_NORMAL ? View.VISIBLE : View.GONE);
             // 背景图片
             if (STYLE == STYLE_IOS) {

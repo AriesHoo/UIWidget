@@ -36,6 +36,7 @@
 
             <View
                 style="@style/LineGray.Horizontal"
+                android:minHeight="20dp"
                 android:visibility="gone"/>
 
             <android.support.v7.widget.SwitchCompat
@@ -50,7 +51,6 @@
                 android:textSize="@dimen/dp_text_size_main"
                 android:visibility="gone"/>
 
-            <View style="@style/LineGray.Horizontal"/>
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/sBtn_titleActionSheet"

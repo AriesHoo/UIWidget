@@ -21,11 +21,13 @@ import butterknife.OnClick;
 public class LoadingActivity extends BaseActivity {
 
     @BindView(R.id.sBtn_msgLoading) SwitchCompat sBtnMsg;
+    @BindView(R.id.sBtn_radiusBackLoading) SwitchCompat sBtnRadiusBack;
     @BindView(R.id.sBtn_viewBackLoading) SwitchCompat sBtnViewBack;
     @BindView(R.id.sBtn_progressLoading) SwitchCompat sBtnProgress;
     @BindView(R.id.sBtn_backLoading) SwitchCompat sBtnBack;
 
     private boolean isShowMsg = true;
+    private boolean isDefaultRadiusBack = true;
     private boolean isDefaultViewBack = true;
     private boolean isDefaultProgress = true;
     private boolean isBackDim = true;
@@ -48,6 +50,14 @@ public class LoadingActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isShowMsg = isChecked;
                 sBtnMsg.setText(isShowMsg ? "显示Message" : "隐藏Message");
+            }
+        });
+
+        sBtnRadiusBack.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isDefaultRadiusBack = isChecked;
+                sBtnRadiusBack.setText(isDefaultRadiusBack ? "背景圆角" : "背景直角");
             }
         });
         sBtnViewBack.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -73,6 +83,7 @@ public class LoadingActivity extends BaseActivity {
         });
 
         sBtnMsg.setChecked(true);
+        sBtnRadiusBack.setChecked(true);
         sBtnViewBack.setChecked(true);
         sBtnProgress.setChecked(true);
         sBtnBack.setChecked(true);
@@ -99,7 +110,13 @@ public class LoadingActivity extends BaseActivity {
             loading.setMessage(R.string.loading);
         }
         if (!isDefaultViewBack) {
-            loading.setBackgroundColor(Color.MAGENTA);
+            if (isDefaultRadiusBack) {
+                loading.setBgColor(Color.MAGENTA);
+            } else
+                loading.setBackgroundColor(Color.MAGENTA);
+        }
+        if (!isDefaultRadiusBack) {
+            loading.setBgRadius(0);
         }
         if (!isDefaultProgress) {
             loading.setIndeterminateDrawable(R.drawable.progress_loading);

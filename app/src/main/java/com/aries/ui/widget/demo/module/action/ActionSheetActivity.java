@@ -158,7 +158,7 @@ public class ActionSheetActivity extends BaseActivity {
     private void showAction(int style) {
         UIActionSheetView action = new UIActionSheetView(mContext, style);
         action.setItems(R.array.arrays_items_action, onActionSheetItemLister);
-        action.setCancelMessageMargin(0, isShowMargin ? 10 : 0, 0, 0);
+        //action.setCancelMessageMargin(0, style==UIActionSheetView.STYLE_NORMAL ? 10 : 0, 0, 0);
         if (isShowTitle) {
             action.setTitle("Title");
         }

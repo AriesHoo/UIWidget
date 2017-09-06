@@ -7,6 +7,10 @@
     <attr name="rv_backgroundPressedColor" format="color"/>
     <!-- 圆角矩形背景色Enabled -->
     <attr name="rv_backgroundEnabledColor" format="color"/>
+    <!-- 圆角矩形背景色Selected -->
+    <attr name="rv_backgroundSelectedColor" format="color"/>
+    <!-- 圆角矩形背景色Checked -->
+    <attr name="rv_backgroundCheckedColor" format="color"/>
     <!-- 圆角弧度,单位dp-->
     <attr name="rv_radius" format="dimension"/>
     <!-- 圆角线框,单位dp-->
@@ -17,12 +21,20 @@
     <attr name="rv_strokePressedColor" format="color"/>
     <!-- 圆角边框颜色Enabled -->
     <attr name="rv_strokeEnabledColor" format="color"/>
+    <!-- 圆角边框颜色Selected -->
+    <attr name="rv_strokeSelectedColor" format="color"/>
+    <!-- 圆角边框颜色Checked -->
+    <attr name="rv_strokeCheckedColor" format="color"/>
     <!-- 文字颜色-->
     <attr name="rv_textColor" format="color"/>
     <!-- 文字颜色Pressed-->
     <attr name="rv_textPressedColor" format="color"/>
     <!-- 文字颜色Enabled-->
     <attr name="rv_textEnabledColor" format="color"/>
+    <!-- 文字颜色Selected-->
+    <attr name="rv_textSelectedColor" format="color"/>
+    <!-- 文字颜色Checked-->
+    <attr name="rv_textCheckedColor" format="color"/>
     <!-- 圆角弧度是高度一半-->
     <attr name="rv_radiusHalfHeightEnable" format="boolean"/>
     <!-- 圆角矩形宽高相等,取较宽高中大值-->
@@ -35,112 +47,214 @@
     <attr name="rv_bottomLeftRadius" format="dimension"/>
     <!-- 圆角弧度,单位dp,BottomRight-->
     <attr name="rv_bottomRightRadius" format="dimension"/>
+    <!-- 水波纹颜色-->
+    <attr name="rv_rippleColor" format="color"/>
     <!-- 是否有Ripple效果,api21+有效-->
     <attr name="rv_rippleEnable" format="boolean"/>
+    <!--View选中状态-->
+    <attr name="rv_selected" format="boolean"/>
 
     <declare-styleable name="RadiusTextView">
         <attr name="rv_backgroundColor"/>
         <attr name="rv_backgroundPressedColor"/>
         <attr name="rv_backgroundEnabledColor"/>
+        <attr name="rv_backgroundSelectedColor"/>
+        <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
+        <attr name="rv_strokeSelectedColor"/>
+        <attr name="rv_strokeCheckedColor"/>
         <attr name="rv_textColor"/>
         <attr name="rv_textPressedColor"/>
         <attr name="rv_textEnabledColor"/>
+        <attr name="rv_textSelectedColor"/>
+        <attr name="rv_textCheckedColor"/>
         <attr name="rv_radiusHalfHeightEnable"/>
         <attr name="rv_widthHeightEqualEnable"/>
         <attr name="rv_topLeftRadius"/>
         <attr name="rv_topRightRadius"/>
         <attr name="rv_bottomLeftRadius"/>
         <attr name="rv_bottomRightRadius"/>
+        <attr name="rv_rippleColor"/>
         <attr name="rv_rippleEnable"/>
+        <attr name="rv_selected"/>
     </declare-styleable>
 
     <declare-styleable name="RadiusEditText">
         <attr name="rv_backgroundColor"/>
         <attr name="rv_backgroundPressedColor"/>
         <attr name="rv_backgroundEnabledColor"/>
+        <attr name="rv_backgroundSelectedColor"/>
+        <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
+        <attr name="rv_strokeSelectedColor"/>
+        <attr name="rv_strokeCheckedColor"/>
         <attr name="rv_textColor"/>
         <attr name="rv_textPressedColor"/>
         <attr name="rv_textEnabledColor"/>
+        <attr name="rv_textSelectedColor"/>
+        <attr name="rv_textCheckedColor"/>
         <attr name="rv_radiusHalfHeightEnable"/>
         <attr name="rv_widthHeightEqualEnable"/>
         <attr name="rv_topLeftRadius"/>
         <attr name="rv_topRightRadius"/>
         <attr name="rv_bottomLeftRadius"/>
         <attr name="rv_bottomRightRadius"/>
+        <attr name="rv_rippleColor"/>
         <attr name="rv_rippleEnable"/>
+        <attr name="rv_selected"/>
     </declare-styleable>
 
     <declare-styleable name="RadiusLinearLayout">
         <attr name="rv_backgroundColor"/>
         <attr name="rv_backgroundPressedColor"/>
         <attr name="rv_backgroundEnabledColor"/>
+        <attr name="rv_backgroundSelectedColor"/>
+        <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
+        <attr name="rv_strokeSelectedColor"/>
+        <attr name="rv_strokeCheckedColor"/>
         <attr name="rv_textColor"/>
         <attr name="rv_textPressedColor"/>
         <attr name="rv_textEnabledColor"/>
+        <attr name="rv_textSelectedColor"/>
+        <attr name="rv_textCheckedColor"/>
         <attr name="rv_radiusHalfHeightEnable"/>
         <attr name="rv_widthHeightEqualEnable"/>
         <attr name="rv_topLeftRadius"/>
         <attr name="rv_topRightRadius"/>
         <attr name="rv_bottomLeftRadius"/>
         <attr name="rv_bottomRightRadius"/>
+        <attr name="rv_rippleColor"/>
         <attr name="rv_rippleEnable"/>
+        <attr name="rv_selected"/>
     </declare-styleable>
 
     <declare-styleable name="RadiusRelativeLayout">
         <attr name="rv_backgroundColor"/>
         <attr name="rv_backgroundPressedColor"/>
         <attr name="rv_backgroundEnabledColor"/>
+        <attr name="rv_backgroundSelectedColor"/>
+        <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
+        <attr name="rv_strokeSelectedColor"/>
+        <attr name="rv_strokeCheckedColor"/>
         <attr name="rv_textColor"/>
         <attr name="rv_textPressedColor"/>
         <attr name="rv_textEnabledColor"/>
+        <attr name="rv_textSelectedColor"/>
+        <attr name="rv_textCheckedColor"/>
         <attr name="rv_radiusHalfHeightEnable"/>
         <attr name="rv_widthHeightEqualEnable"/>
         <attr name="rv_topLeftRadius"/>
         <attr name="rv_topRightRadius"/>
         <attr name="rv_bottomLeftRadius"/>
         <attr name="rv_bottomRightRadius"/>
+        <attr name="rv_rippleColor"/>
         <attr name="rv_rippleEnable"/>
+        <attr name="rv_selected"/>
     </declare-styleable>
 
     <declare-styleable name="RadiusFrameLayout">
         <attr name="rv_backgroundColor"/>
         <attr name="rv_backgroundPressedColor"/>
         <attr name="rv_backgroundEnabledColor"/>
+        <attr name="rv_backgroundSelectedColor"/>
+        <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
+        <attr name="rv_strokeSelectedColor"/>
+        <attr name="rv_strokeCheckedColor"/>
         <attr name="rv_textColor"/>
         <attr name="rv_textPressedColor"/>
         <attr name="rv_textEnabledColor"/>
+        <attr name="rv_textSelectedColor"/>
+        <attr name="rv_textCheckedColor"/>
         <attr name="rv_radiusHalfHeightEnable"/>
         <attr name="rv_widthHeightEqualEnable"/>
         <attr name="rv_topLeftRadius"/>
         <attr name="rv_topRightRadius"/>
         <attr name="rv_bottomLeftRadius"/>
         <attr name="rv_bottomRightRadius"/>
+        <attr name="rv_rippleColor"/>
         <attr name="rv_rippleEnable"/>
+        <attr name="rv_selected"/>
+    </declare-styleable>
+
+    <declare-styleable name="RadiusCheckBox">
+        <attr name="rv_backgroundColor"/>
+        <attr name="rv_backgroundPressedColor"/>
+        <attr name="rv_backgroundEnabledColor"/>
+        <attr name="rv_backgroundSelectedColor"/>
+        <attr name="rv_backgroundCheckedColor"/>
+        <attr name="rv_radius"/>
+        <attr name="rv_strokeWidth"/>
+        <attr name="rv_strokeColor"/>
+        <attr name="rv_strokePressedColor"/>
+        <attr name="rv_strokeEnabledColor"/>
+        <attr name="rv_strokeSelectedColor"/>
+        <attr name="rv_strokeCheckedColor"/>
+        <attr name="rv_textColor"/>
+        <attr name="rv_textPressedColor"/>
+        <attr name="rv_textEnabledColor"/>
+        <attr name="rv_textSelectedColor"/>
+        <attr name="rv_textCheckedColor"/>
+        <attr name="rv_radiusHalfHeightEnable"/>
+        <attr name="rv_widthHeightEqualEnable"/>
+        <attr name="rv_topLeftRadius"/>
+        <attr name="rv_topRightRadius"/>
+        <attr name="rv_bottomLeftRadius"/>
+        <attr name="rv_bottomRightRadius"/>
+        <attr name="rv_rippleColor"/>
+        <attr name="rv_rippleEnable"/>
+        <attr name="rv_selected"/>
+    </declare-styleable>
+
+    <declare-styleable name="RadiusRadioButton">
+        <attr name="rv_backgroundColor"/>
+        <attr name="rv_backgroundPressedColor"/>
+        <attr name="rv_backgroundEnabledColor"/>
+        <attr name="rv_backgroundSelectedColor"/>
+        <attr name="rv_backgroundCheckedColor"/>
+        <attr name="rv_radius"/>
+        <attr name="rv_strokeWidth"/>
+        <attr name="rv_strokeColor"/>
+        <attr name="rv_strokePressedColor"/>
+        <attr name="rv_strokeEnabledColor"/>
+        <attr name="rv_strokeSelectedColor"/>
+        <attr name="rv_strokeCheckedColor"/>
+        <attr name="rv_textColor"/>
+        <attr name="rv_textPressedColor"/>
+        <attr name="rv_textEnabledColor"/>
+        <attr name="rv_textSelectedColor"/>
+        <attr name="rv_textCheckedColor"/>
+        <attr name="rv_radiusHalfHeightEnable"/>
+        <attr name="rv_widthHeightEqualEnable"/>
+        <attr name="rv_topLeftRadius"/>
+        <attr name="rv_topRightRadius"/>
+        <attr name="rv_bottomLeftRadius"/>
+        <attr name="rv_bottomRightRadius"/>
+        <attr name="rv_rippleColor"/>
+        <attr name="rv_rippleEnable"/>
+        <attr name="rv_selected"/>
     </declare-styleable>
 
     <declare-styleable name="TitleBarView">
@@ -180,6 +294,10 @@
         <attr name="title_leftTextBackgroundResource" format="reference"/>
         <!--左边文字drawable资源-->
         <attr name="title_leftTextDrawable" format="reference"/>
+        <!--左边文字drawable资源宽度,默认drawable原始宽度-->
+        <attr name="title_leftTextDrawableWidth" format="dimension"/>
+        <!--左边文字drawable资源高度,默认drawable原始高度-->
+        <attr name="title_leftTextDrawableHeight" format="dimension"/>
         <!--左边文字与drawable资源边距,默认1dp-->
         <attr name="title_leftTextDrawablePadding" format="dimension"/>
 
@@ -225,6 +343,10 @@
         <attr name="title_rightTextBackgroundResource" format="reference"/>
         <!--右边文字drawable资源-->
         <attr name="title_rightTextDrawable" format="reference"/>
+        <!--右边文字drawable资源宽度,默认drawable原始宽度-->
+        <attr name="title_rightTextDrawableWidth" format="dimension"/>
+        <!--右边文字drawable资源高度,默认drawable原始高度-->
+        <attr name="title_rightTextDrawableHeight" format="dimension"/>
         <!--右边文字与drawable资源边距,默认1dp-->
         <attr name="title_rightTextDrawablePadding" format="dimension"/>
 

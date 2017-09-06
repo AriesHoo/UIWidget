@@ -9,8 +9,8 @@ android {
         applicationId "com.aries.ui.widget.demo"
         minSdkVersion ext.minSdkVersion
         targetSdkVersion ext.targetSdkVersion
-        versionCode 11
-        versionName "1.9.2"
+        versionCode 12
+        versionName "1.9.5"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -30,7 +30,7 @@ dependencies {
     compile project(':library')
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
     compile 'com.jakewharton:butterknife:8.8.1'
-    compile 'com.just.agentweb:agentweb:1.2.5'
+    compile 'com.just.agentweb:agentweb:2.0.0'
     apt 'com.jakewharton:butterknife-compiler:8.8.1'
     //图片加载
     compile 'com.github.bumptech.glide:glide:4.0.0'

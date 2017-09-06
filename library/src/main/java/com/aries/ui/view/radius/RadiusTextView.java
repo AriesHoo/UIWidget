@@ -26,7 +26,9 @@ public class RadiusTextView extends TextView {
     }
 
     /**
-     * use delegate to set attr
+     * 获取代理类用于Java代码控制shape属性
+     *
+     * @return
      */
     public RadiusViewDelegate getDelegate() {
         return delegate;
@@ -48,9 +50,18 @@ public class RadiusTextView extends TextView {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (delegate.getRadiusHalfHeightEnable()) {
-            delegate.setRadius(getHeight() / 2);
+            if (delegate != null)
+                delegate.setRadius(getHeight() / 2);
         } else {
-            delegate.setBgSelector();
+            if (delegate != null)
+                delegate.setBgSelector();
         }
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        super.setSelected(selected);
+        if (delegate != null)
+            delegate.setBgSelector();
     }
 }

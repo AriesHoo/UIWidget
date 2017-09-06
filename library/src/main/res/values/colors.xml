@@ -8,14 +8,16 @@
 
     <color name="colorLoadingTextWeiBo">#f0f0f0</color>
     <color name="colorLoadingText">#393939</color>
-    <color name="colorLoadingBgMD">#ffffff</color>
+    <color name="colorLoadingBg">#f5ffffff</color>
+    <color name="colorLoadingBgWei">#a5000000</color>
 
     <color name="colorActionSheetWeiXinText">#393939</color>
-
     <color name="colorActionSheetTitleText">#969696</color>
     <color name="colorActionSheetCancelText">#1382FF</color>
     <color name="colorActionSheetItemText">#1382FF</color>
     <color name="colorActionSheetEdgePressed">#F0F0F0</color>
     <color name="colorActionSheetEdge">#FFFFFF</color>
     <color name="colorActionSheetEdgeLineGray">#DCDCDC</color>
+
+    <color name="colorRadiusDefaultRipple">#c8cccccc</color>
 </resources>

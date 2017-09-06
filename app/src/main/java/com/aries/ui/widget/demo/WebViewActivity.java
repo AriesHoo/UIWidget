@@ -20,7 +20,6 @@ import com.aries.ui.widget.demo.base.BaseActivity;
 import com.aries.ui.widget.demo.util.AppUtil;
 import com.just.library.AgentWeb;
 import com.just.library.ChromeClientCallbackManager;
-import com.just.library.LogUtils;
 
 import butterknife.BindView;
 
@@ -164,7 +163,6 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LogUtils.i("Info", "result:" + requestCode + " result:" + resultCode);
         mAgentWeb.uploadFileResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }

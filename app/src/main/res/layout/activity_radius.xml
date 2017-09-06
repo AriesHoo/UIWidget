@@ -39,7 +39,6 @@
                     android:padding="10dp"
                     android:text="normal"
                     rv:rv_backgroundColor="@android:color/holo_blue_bright"
-                    rv:rv_backgroundEnabledColor="@android:color/black"
                     rv:rv_backgroundPressedColor="#383838"
                     rv:rv_strokeColor="#383838"
                     rv:rv_strokeWidth="1dp"
@@ -66,6 +65,18 @@
                     rv:rv_textEnabledColor="@android:color/holo_blue_bright"
                     rv:rv_textPressedColor="#ffffff"/>
             </LinearLayout>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:layout_width="100dp"
+                android:layout_height="45dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="rippleColor"
+                rv:rv_backgroundPressedColor="@android:color/holo_purple"
+                android:textColor="@color/colorWhite"
+                rv:rv_backgroundColor="@android:color/holo_blue_light"
+                rv:rv_rippleColor="@android:color/holo_purple"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_radiusHalfHeight"
@@ -126,23 +137,31 @@
                 rv:rv_strokeColor="#03A9F4"
                 rv:rv_strokeWidth="1dp"/>
 
-            <com.aries.ui.view.radius.RadiusTextView
-                android:id="@+id/rtv_radius"
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.aries.ui.view.radius.RadiusRadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RadiusRadioButton"
+                    rv:rv_textCheckedColor="@android:color/holo_blue_dark"/>
+
+                <com.aries.ui.view.radius.RadiusRadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RadiusRadioButton"
+                    rv:rv_textCheckedColor="@android:color/holo_blue_dark"/>
+            </RadioGroup>
+
+            <com.aries.ui.view.radius.RadiusCheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:clickable="true"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingLeft="18dp"
-                android:paddingRight="18dp"
-                android:paddingTop="10dp"
-                android:text="RadiusTextView"
-                rv:rv_backgroundColor="#F6CE59"
-                rv:rv_backgroundPressedColor="#F6C"
-                rv:rv_radius="10dp"
-                rv:rv_textColor="#383838"/>
+                android:text="RadiusCheckBox"
+                rv:rv_textCheckedColor="@android:color/holo_red_dark"
+                rv:rv_textColor="@android:color/holo_purple"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -176,7 +195,6 @@
                     android:text="topRightRadius"
                     android:textColor="#ffffff"
                     rv:rv_backgroundColor="#F08A5D"
-                    rv:rv_backgroundPressedColor="#F08A4D"
                     rv:rv_rippleEnable="true"
                     rv:rv_topRightRadius="10dp"/>
             </LinearLayout>
@@ -190,6 +208,7 @@
                 android:paddingRight="5dp">
 
                 <com.aries.ui.view.radius.RadiusTextView
+                    android:id="@+id/rtv_testRadius"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="2.5dp"
@@ -200,7 +219,10 @@
                     android:text="bottomLeftRadius"
                     android:textColor="#ffffff"
                     rv:rv_backgroundColor="#4AA0D5"
-                    rv:rv_bottomLeftRadius="10dp"/>
+                    rv:rv_backgroundPressedColor="#b54ad5"
+                    rv:rv_bottomLeftRadius="10dp"
+                    rv:rv_selected="true"
+                    rv:rv_textPressedColor="@color/black"/>
 
                 <com.aries.ui.view.radius.RadiusTextView
                     android:layout_width="0dp"

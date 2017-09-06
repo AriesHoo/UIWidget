@@ -6,7 +6,7 @@ import android.widget.EditText;
 
 /**
  * Created: AriesHoo on 2017-02-13 16:10
- * Function:用于需要圆角矩形框背景的EditText的情况,减少直接使用TextView时引入的shape资源文件
+ * Function:用于需要圆角矩形框背景的EditText的情况,减少直接使用EditText时引入的shape资源文件
  * Desc:
  */
 public class RadiusEditText extends EditText {
@@ -27,7 +27,9 @@ public class RadiusEditText extends EditText {
     }
 
     /**
-     * use delegate to set attr
+     * 获取代理类用于Java代码控制shape属性
+     *
+     * @return
      */
     public RadiusViewDelegate getDelegate() {
         return delegate;
@@ -49,9 +51,18 @@ public class RadiusEditText extends EditText {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (delegate.getRadiusHalfHeightEnable()) {
-            delegate.setRadius(getHeight() / 2);
+            if (delegate != null)
+                delegate.setRadius(getHeight() / 2);
         } else {
-            delegate.setBgSelector();
+            if (delegate != null)
+                delegate.setBgSelector();
         }
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        super.setSelected(selected);
+        if (delegate != null)
+            delegate.setBgSelector();
     }
 }

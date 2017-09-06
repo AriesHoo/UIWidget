@@ -5,10 +5,11 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -78,6 +79,8 @@ public class TitleBarView extends ViewGroup {
     private int mLeftTextColor;
     private int mLeftTextBackgroundColor;
     private int mLeftDrawable;
+    private int mLeftTextDrawableWidth;
+    private int mLeftTextDrawableHeight;
     private int mLeftDrawablePadding;
     private int mLeftTextBackgroundResource;
 
@@ -99,6 +102,8 @@ public class TitleBarView extends ViewGroup {
     private int mRightTextColor;
     private int mRightTextBackgroundColor;
     private int mRightDrawable;
+    private int mRightTextDrawableWidth;
+    private int mRightTextDrawableHeight;
     private int mRightDrawablePadding;
     private int mRightTextBackgroundResource;
 
@@ -107,10 +112,10 @@ public class TitleBarView extends ViewGroup {
     private int mActionTextBackgroundColor;
     private int mActionTextBackgroundResource;
 
-    private String mTitleMainText;
-    private String mTitleSubText;
-    private String mLeftText;
-    private String mRightText;
+    private CharSequence mTitleMainText;
+    private CharSequence mTitleSubText;
+    private CharSequence mLeftText;
+    private CharSequence mRightText;
 
     public TitleBarView(Context context) {
         this(context, null, 0);
@@ -149,6 +154,8 @@ public class TitleBarView extends ViewGroup {
         mLeftTextBackgroundColor = ta.getColor(R.styleable.TitleBarView_title_leftTextBackgroundColor, DEFAULT_TEXT_BG_COLOR);
         mLeftTextBackgroundResource = ta.getResourceId(R.styleable.TitleBarView_title_leftTextBackgroundResource, -1);
         mLeftDrawable = ta.getResourceId(R.styleable.TitleBarView_title_leftTextDrawable, -1);
+        mLeftTextDrawableWidth = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawableWidth, -1);
+        mLeftTextDrawableHeight = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawableHeight, -1);
         mLeftDrawablePadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawablePadding, dip2px(context, 1));
 
         mTitleMainText = ta.getString(R.styleable.TitleBarView_title_titleMainText);
@@ -173,6 +180,8 @@ public class TitleBarView extends ViewGroup {
         mRightTextBackgroundResource = ta.getResourceId(R.styleable.TitleBarView_title_rightTextBackgroundResource, -1);
         mRightTextBackgroundColor = ta.getColor(R.styleable.TitleBarView_title_rightTextBackgroundColor, DEFAULT_TEXT_BG_COLOR);
         mRightDrawable = ta.getResourceId(R.styleable.TitleBarView_title_rightTextDrawable, -1);
+        mRightTextDrawableWidth = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextDrawableWidth, -1);
+        mRightTextDrawableHeight = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextDrawableHeight, -1);
         mRightDrawablePadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextDrawablePadding, dip2px(context, 1));
 
         mActionTextSize = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_actionTextSize, dip2px(context, DEFAULT_TEXT_SIZE));
@@ -254,9 +263,9 @@ public class TitleBarView extends ViewGroup {
         if (mLeftTextBackgroundResource != -1) {
             setLeftTextBackgroundResource(mLeftTextBackgroundResource);
         }
-        if (mLeftDrawable != -1) {
-            setLeftTextDrawable(mLeftDrawable);
-        }
+        setLeftTextDrawable(mLeftDrawable);
+        setLeftTextDrawableWidth(mLeftTextDrawableWidth);
+        setLeftTextDrawableHeight(mLeftTextDrawableHeight);
         setTitleMainText(mTitleMainText);
         setTitleMainTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleMainTextSize);
         setTitleMainTextColor(mTitleMainTextColor);
@@ -282,9 +291,9 @@ public class TitleBarView extends ViewGroup {
         if (mRightTextBackgroundResource != -1) {
             mRightTv.setBackgroundResource(mRightTextBackgroundResource);
         }
-        if (mRightDrawable != -1) {
-            setRightTextDrawable(mRightDrawable);
-        }
+        setRightTextDrawable(mRightDrawable);
+        setRightTextDrawableWidth(mRightTextDrawableWidth);
+        setRightTextDrawableHeight(mRightTextDrawableHeight);
     }
 
     public LinearLayout getLinearLayout(int gravity) {
@@ -458,6 +467,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public void setStatusColor(int color) {
+        mStatusColor = color;
         mStatusView.setBackgroundColor(color);
     }
 
@@ -476,15 +486,18 @@ public class TitleBarView extends ViewGroup {
     }
 
     public void setStatusResource(int resource) {
+        mStatusResource = resource;
         mStatusView.setBackgroundResource(resource);
     }
 
     public void setDividerColor(int color) {
+        mDividerColor = color;
         mDividerView.setBackgroundColor(color);
     }
 
     public void setDividerResource(int resource) {
-        if (resource != -1)
+        mDividerResource = resource;
+        if (mDividerResource != -1)
             mDividerView.setBackgroundResource(resource);
     }
 
@@ -494,10 +507,12 @@ public class TitleBarView extends ViewGroup {
     }
 
     public void setDividerVisible(boolean visible) {
+        mDividerVisible = visible;
         mDividerView.setVisibility(visible ? VISIBLE : GONE);
     }
 
     public void setLeftText(CharSequence title) {
+        mLeftText = title;
         mLeftTv.setText(title);
     }
 
@@ -538,12 +553,32 @@ public class TitleBarView extends ViewGroup {
      * @param id 资源id
      */
     public void setLeftTextDrawable(int id, int drawablePadding) {
-        mLeftTv.setCompoundDrawablesWithIntrinsicBounds(id, 0, 0, 0);
+        Drawable mDrawable = null;
+        try {
+            mDrawable = getResources().getDrawable(id);
+            Rect mRect = mDrawable.getBounds();
+            mRect.bottom = mLeftTextDrawableHeight != -1 ? mLeftTextDrawableHeight : mDrawable.getMinimumHeight();
+            mRect.right = mLeftTextDrawableWidth != -1 ? mLeftTextDrawableWidth : mDrawable.getMinimumWidth();
+            mDrawable.setBounds(mRect);
+        } catch (Exception e) {
+        }
+        mLeftTv.setCompoundDrawables(mDrawable, null, null, null);
         setLeftTextDrawablePadding(drawablePadding);
     }
 
     public void setLeftTextDrawable(int id) {
+        mLeftDrawable = id;
         setLeftTextDrawable(id, mLeftDrawablePadding);
+    }
+
+    public void setLeftTextDrawableWidth(int width) {
+        mLeftTextDrawableWidth = width;
+        setLeftTextDrawable(mLeftDrawable);
+    }
+
+    public void setLeftTextDrawableHeight(int height) {
+        mLeftTextDrawableHeight = height;
+        setLeftTextDrawable(mLeftDrawable);
     }
 
     public void setLeftTextDrawablePadding(int drawablePadding) {
@@ -764,7 +799,16 @@ public class TitleBarView extends ViewGroup {
      * @param id 资源id
      */
     public void setRightTextDrawable(int id, int drawablePadding) {
-        mRightTv.setCompoundDrawablesWithIntrinsicBounds(0, 0, id, 0);
+        Drawable mDrawable = null;
+        try {
+            mDrawable = getResources().getDrawable(id);
+            Rect mRect = mDrawable.getBounds();
+            mRect.bottom = mRightTextDrawableHeight != -1 ? mRightTextDrawableHeight : mDrawable.getMinimumHeight();
+            mRect.right = mRightTextDrawableWidth != -1 ? mRightTextDrawableWidth : mDrawable.getMinimumWidth();
+            mDrawable.setBounds(mRect);
+        } catch (Exception e) {
+        }
+        mRightTv.setCompoundDrawables(null, null, mDrawable, null);
         setRightTextDrawablePadding(drawablePadding);
     }
 
@@ -774,7 +818,18 @@ public class TitleBarView extends ViewGroup {
     }
 
     public void setRightTextDrawable(int id) {
+        mRightDrawable = id;
         setRightTextDrawable(id, mRightDrawablePadding);
+    }
+
+    public void setRightTextDrawableWidth(int width) {
+        mRightTextDrawableWidth = width;
+        setRightTextDrawable(mRightDrawable);
+    }
+
+    public void setRightTextDrawableHeight(int height) {
+        mRightTextDrawableHeight = height;
+        setRightTextDrawable(mRightDrawable);
     }
 
     public void setRightTextPadding(int left, int top, int right, int bottom) {
@@ -1041,7 +1096,6 @@ public class TitleBarView extends ViewGroup {
         try {
             had = father.indexOfChild(child) != -1;
         } catch (Exception e) {
-            e.printStackTrace();
         }
         return had;
     }

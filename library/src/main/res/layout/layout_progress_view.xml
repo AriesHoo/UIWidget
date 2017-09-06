@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="vertical">
+<com.aries.ui.view.radius.RadiusLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lLayout_mainProgressView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="15dp"
+    app:rv_radius="@dimen/dp_radius_loading"
+    app:rv_rippleEnable="false">
 
-    <LinearLayout
-        android:id="@+id/lLayout_mainProgressView"
+    <ProgressBar
+        android:id="@+id/pb_mainProgressView"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateOnly="true"/>
+
+    <TextView
+        android:id="@+id/tv_loadingProgressView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/loading_bg_md"
-        android:gravity="center_vertical"
-        android:padding="15dp"
-        android:orientation="horizontal">
-
-        <ProgressBar
-            android:id="@+id/pb_mainProgressView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:indeterminateBehavior="repeat"
-            android:indeterminateOnly="true"/>
-
-        <TextView
-            android:id="@+id/tv_loadingProgressView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorLoadingText"
-            android:textSize="14dp"
-            tools:padding="15dp"
-            tools:text="Loading..."/>
-    </LinearLayout>
-
-</LinearLayout>
+        android:paddingLeft="15dp"
+        android:textColor="@color/colorLoadingText"
+        android:textSize="14dp"
+        android:visibility="gone"
+        tools:text="Loading..."
+        tools:visibility="visible"/>
+</com.aries.ui.view.radius.RadiusLinearLayout>

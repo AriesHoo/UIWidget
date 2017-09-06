@@ -21,18 +21,6 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:lineSpacingExtra="6dp"
-                android:padding="10dp"
-                android:text="说明:只有STYLE_NORMAL模式下背景色、ProgressBar资源才可以自定义设置"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="14dp"/>
-
-            <View style="@style/LineGray.Horizontal"/>
-
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/sBtn_msgLoading"
                 android:layout_width="match_parent"
@@ -41,6 +29,19 @@
                 android:checked="false"
                 android:padding="12dp"
                 android:text="显示Message"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_radiusBackLoading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="背景圆角"
                 android:textColor="@color/colorTextBlack"
                 android:textSize="@dimen/dp_text_size_main"/>
 

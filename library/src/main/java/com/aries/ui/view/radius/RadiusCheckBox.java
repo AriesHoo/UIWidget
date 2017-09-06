@@ -2,25 +2,24 @@ package com.aries.ui.view.radius;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
+import android.widget.CheckBox;
 
 /**
- * Created: AriesHoo on 2017-02-10 14:24
- * Function:用于需要圆角矩形框背景的RelativeLayout的情况,减少直接使用RelativeLayout时引入的shape资源文件
+ * Created: AriesHoo on 2017-02-13 16:10
+ * Function:用于需要圆角矩形框背景的CheckBox的情况,减少直接使用CheckBox时引入的shape资源文件
  * Desc:
  */
-public class RadiusRelativeLayout extends RelativeLayout {
+public class RadiusCheckBox extends CheckBox {
     private RadiusViewDelegate delegate;
 
-    public RadiusRelativeLayout(Context context) {
+    public RadiusCheckBox(Context context) {
         this(context, null);
     }
 
-    public RadiusRelativeLayout(Context context, AttributeSet attrs) {
+    public RadiusCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
         delegate = new RadiusViewDelegate(this, context, attrs);
     }
-
     /**
      * 获取代理类用于Java代码控制shape属性
      *
@@ -38,7 +37,6 @@ public class RadiusRelativeLayout extends RelativeLayout {
             super.onMeasure(measureSpec, measureSpec);
             return;
         }
-
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
@@ -57,6 +55,13 @@ public class RadiusRelativeLayout extends RelativeLayout {
     @Override
     public void setSelected(boolean selected) {
         super.setSelected(selected);
+        if (delegate != null)
+            delegate.setBgSelector();
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        super.setChecked(checked);
         if (delegate != null)
             delegate.setBgSelector();
     }
