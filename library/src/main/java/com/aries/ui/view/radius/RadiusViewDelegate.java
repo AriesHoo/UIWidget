@@ -100,7 +100,7 @@ public class RadiusViewDelegate {
     }
 
     private boolean getDefaultRippleEnable() {
-        boolean enable = !(view instanceof CompoundButton)&&!(view instanceof EditText);
+        boolean enable = !(view instanceof CompoundButton) && !(view instanceof EditText);
         return enable;
     }
 
@@ -279,7 +279,7 @@ public class RadiusViewDelegate {
         setDrawable(gdBackgroundSelected, backgroundPressedColor, strokeSelectedColor);
         setDrawable(gdBackground, backgroundColor == Integer.MAX_VALUE ? Color.TRANSPARENT : backgroundColor, strokeColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && isRippleEnable && view.isEnabled()) {//5.0以上且设置水波属性并且可操作
+                && isRippleEnable && view.isEnabled() && !view.isSelected()) {//5.0以上且设置水波属性并且可操作
             RippleDrawable rippleDrawable = new RippleDrawable(
                     new ColorStateList(
                             new int[][]{
@@ -303,8 +303,6 @@ public class RadiusViewDelegate {
                         backgroundPressedColor == Integer.MAX_VALUE ? backgroundColor : backgroundPressedColor,
                         strokePressedColor == Integer.MAX_VALUE ? strokeColor : strokePressedColor);
                 bg.addState(new int[]{android.R.attr.state_pressed}, gdBackgroundPressed);
-                bg.addState(new int[]{android.R.attr.state_selected}, gdBackgroundPressed);
-                bg.addState(new int[]{android.R.attr.state_checked}, gdBackgroundPressed);
             }
             if (backgroundSelectedColor != Integer.MAX_VALUE || strokeSelectedColor != Integer.MAX_VALUE) {
                 setDrawable(gdBackgroundSelected,
@@ -346,8 +344,8 @@ public class RadiusViewDelegate {
                         getColorSelector(textColor,
                                 textPressedColor != Integer.MAX_VALUE ? textPressedColor : textColor,
                                 textEnabledColor != Integer.MAX_VALUE ? textEnabledColor : textColor,
-                                textSelectedColor != Integer.MAX_VALUE ? textSelectedColor : textPressedColor != Integer.MAX_VALUE ? textPressedColor : textColor,
-                                textCheckedColor != Integer.MAX_VALUE ? textCheckedColor : textPressedColor != Integer.MAX_VALUE ? textPressedColor : textColor);
+                                textSelectedColor != Integer.MAX_VALUE ? textSelectedColor : textColor,
+                                textCheckedColor != Integer.MAX_VALUE ? textCheckedColor : textColor);
                 textView.setTextColor(colorStateList);
             }
         }
