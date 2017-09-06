@@ -163,12 +163,12 @@ public class UIActionSheetView {
     }
 
     public UIActionSheetView setBackgroundColor(int color) {
-        rootView.setBackgroundColor(color);
+        lLayout_content.setBackgroundColor(color);
         return this;
     }
 
     public UIActionSheetView setBackgroundResource(int colorRes) {
-        rootView.setBackgroundResource(colorRes);
+        lLayout_content.setBackgroundResource(colorRes);
         return this;
     }
 
