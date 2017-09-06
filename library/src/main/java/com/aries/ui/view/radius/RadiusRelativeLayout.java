@@ -60,4 +60,11 @@ public class RadiusRelativeLayout extends RelativeLayout {
         if (delegate != null)
             delegate.setBgSelector();
     }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        if (delegate != null)
+            delegate.setBgSelector();
+    }
 }

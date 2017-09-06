@@ -67,4 +67,11 @@ public class RadiusRadioButton extends RadioButton {
         if (delegate != null)
             delegate.setBgSelector();
     }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        if (delegate != null)
+            delegate.setBgSelector();
+    }
 }

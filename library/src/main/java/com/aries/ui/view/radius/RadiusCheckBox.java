@@ -20,6 +20,7 @@ public class RadiusCheckBox extends CheckBox {
         super(context, attrs);
         delegate = new RadiusViewDelegate(this, context, attrs);
     }
+
     /**
      * 获取代理类用于Java代码控制shape属性
      *
@@ -62,6 +63,13 @@ public class RadiusCheckBox extends CheckBox {
     @Override
     public void setChecked(boolean checked) {
         super.setChecked(checked);
+        if (delegate != null)
+            delegate.setBgSelector();
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
         if (delegate != null)
             delegate.setBgSelector();
     }
