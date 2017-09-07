@@ -11,4 +11,28 @@
         <item name="android:windowNoDisplay">false</item>
     </style>
 
+    <style name="RadiusStyleButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:minWidth">200dp</item>
+        <item name="android:minHeight">45dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:textSize">@dimen/dp_text_size_main</item>
+        <item name="com.aries.ui.widget.demo:rv_backgroundColor">@color/colorWhite</item>
+        <item name="com.aries.ui.widget.demo:rv_backgroundPressedColor">@color/colorWhitePressed
+        </item>
+        <item name="com.aries.ui.widget.demo:rv_radiusHalfHeightEnable">true</item>
+        <item name="com.aries.ui.widget.demo:rv_strokeColor">@color/colorTextBlack</item>
+        <item name="com.aries.ui.widget.demo:rv_strokePressedColor">@color/colorTextBlackLight
+        </item>
+        <item name="com.aries.ui.widget.demo:rv_strokeWidth">@dimen/dp_line_size</item>
+        <item name="com.aries.ui.widget.demo:rv_textColor">@color/colorTextBlack</item>
+        <item name="com.aries.ui.widget.demo:rv_textPressedColor">@color/colorTextBlackLight</item>
+    </style>
+
 </resources>

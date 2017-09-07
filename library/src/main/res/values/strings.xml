@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">UIWidget</string>
-    <string name="ensure">ensure</string>
-    <string name="cancel">cancel</string>
+    <string name="ensure">Ensure</string>
+    <string name="cancel">Cancel</string>
 </resources>

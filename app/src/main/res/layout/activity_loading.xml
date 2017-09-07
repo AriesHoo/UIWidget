@@ -86,85 +86,24 @@
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showLoading"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="ShowNormalStyle"
-                android:textSize="@dimen/dp_text_size_main"
-                app:rv_backgroundColor="@color/colorWhite"
-                app:rv_backgroundPressedColor="@color/colorWhitePressed"
-                app:rv_radiusHalfHeightEnable="true"
-                app:rv_strokeColor="@color/colorTextBlack"
-                app:rv_strokePressedColor="@color/colorTextBlackLight"
-                app:rv_strokeWidth="@dimen/dp_line_size"
-                app:rv_textColor="@color/colorTextBlack"
-                app:rv_textPressedColor="@color/colorTextBlackLight"/>
+                style="@style/RadiusStyleButton"
+                android:text="ShowNormalStyle"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showWeiBoLoading"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="ShowWeiBoStyle"
-                android:textSize="@dimen/dp_text_size_main"
-                app:rv_backgroundColor="@color/colorWhite"
-                app:rv_backgroundPressedColor="@color/colorWhitePressed"
-                app:rv_radiusHalfHeightEnable="true"
-                app:rv_strokeColor="@color/colorTextBlack"
-                app:rv_strokePressedColor="@color/colorTextBlackLight"
-                app:rv_strokeWidth="@dimen/dp_line_size"
-                app:rv_textColor="@color/colorTextBlack"
-                app:rv_textPressedColor="@color/colorTextBlackLight"/>
+                style="@style/RadiusStyleButton"
+                android:text="ShowWeiBoStyle"/>
 
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showWeiXinLoading"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="ShowWeiXinStyle"
-                android:textSize="@dimen/dp_text_size_main"
-                app:rv_backgroundColor="@color/colorWhite"
-                app:rv_backgroundPressedColor="@color/colorWhitePressed"
-                app:rv_radiusHalfHeightEnable="true"
-                app:rv_strokeColor="@color/colorTextBlack"
-                app:rv_strokePressedColor="@color/colorTextBlackLight"
-                app:rv_strokeWidth="@dimen/dp_line_size"
-                app:rv_textColor="@color/colorTextBlack"
-                app:rv_textPressedColor="@color/colorTextBlackLight"/>
+                style="@style/RadiusStyleButton"
+                android:text="ShowWeiXinStyle"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showMaterialLoading"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="ShowMaterialStyle"
-                android:textSize="@dimen/dp_text_size_main"
-                app:rv_backgroundColor="@color/colorWhite"
-                app:rv_backgroundPressedColor="@color/colorWhitePressed"
-                app:rv_radiusHalfHeightEnable="true"
-                app:rv_strokeColor="@color/colorTextBlack"
-                app:rv_strokePressedColor="@color/colorTextBlackLight"
-                app:rv_strokeWidth="@dimen/dp_line_size"
-                app:rv_textColor="@color/colorTextBlack"
-                app:rv_textPressedColor="@color/colorTextBlackLight"/>
+                style="@style/RadiusStyleButton"
+                android:text="ShowMaterialStyle"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

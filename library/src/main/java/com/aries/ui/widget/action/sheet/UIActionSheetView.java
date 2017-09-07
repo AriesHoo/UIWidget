@@ -35,13 +35,12 @@ import java.util.List;
 public class UIActionSheetView {
     private Context context;
     private Dialog dialog;
-    private TextView txt_title;
+    private TextView tvTitle;
     private View vLineTitle;
-    private TextView txt_cancel;
+    private TextView tvCancel;
     private View rootView;
-    private View vTop;
-    private LinearLayout lLayout_content;
-    private LinearLayout lLayout_view;
+    private LinearLayout lLayoutItem;
+    private LinearLayout lLayoutView;
     private boolean showTitle = false;
     private List<SheetItem> listSheetItem;
 
@@ -54,6 +53,7 @@ public class UIActionSheetView {
     public final static int STYLE_NORMAL = 0;
     public final static int STYLE_IOS = 1;
     public final static int STYLE_WEI_XIN = 2;
+    private boolean canceledOnTouchOutside = true;
 
     public interface OnSheetItemListener {
         void onClick(int position);
@@ -66,38 +66,39 @@ public class UIActionSheetView {
         rootView = LayoutInflater.from(context).inflate(
                 R.layout.layout_action_sheet_view, null);
         // 获取自定义Dialog布局中的控件
-        lLayout_content = (LinearLayout) rootView
+        lLayoutItem = (LinearLayout) rootView
                 .findViewById(R.id.lLayout_itemActionSheet);
-        lLayout_view = (LinearLayout) rootView
+        lLayoutView = (LinearLayout) rootView
                 .findViewById(R.id.lLayout_viewActionSheet);
-        vTop = rootView.findViewById(R.id.v_topActionSheet);
-        txt_title = (TextView) rootView.findViewById(R.id.tv_titleActionSheet);
+        tvTitle = (TextView) rootView.findViewById(R.id.tv_titleActionSheet);
         vLineTitle = rootView.findViewById(R.id.v_lineTitleActionSheet);
-        txt_cancel = (TextView) rootView.findViewById(R.id.tv_cancelActionSheet);
-        txt_cancel.setOnClickListener(new OnClickListener() {
+        tvCancel = (TextView) rootView.findViewById(R.id.tv_cancelActionSheet);
+        tvCancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-        txt_cancel.setVisibility(STYLE == STYLE_WEI_XIN ? View.GONE : View.VISIBLE);
+        tvCancel.setVisibility(STYLE == STYLE_WEI_XIN ? View.GONE : View.VISIBLE);
         if (STYLE != STYLE_IOS) {
             setPadding(0, 0, 0, 0);
         }
-        txt_title.setPadding(dip2px(15), 0, dip2px(15), 0);
-        txt_cancel.setPadding(dip2px(15), 0, dip2px(15), 0);
+        tvTitle.setVisibility(STYLE == STYLE_NORMAL ? View.GONE : View.INVISIBLE);
+        setViewMargin(tvTitle, 0, dip2px(120), 0, 0);
+        tvTitle.setPadding(dip2px(15), 0, dip2px(15), 0);
+        tvCancel.setPadding(dip2px(15), 0, dip2px(15), 0);
         if (STYLE == STYLE_WEI_XIN) {
-            setViewMargin(txt_cancel, 0, 0, 0, 0);
-            txt_cancel.setGravity(Gravity.CENTER_VERTICAL);
-            txt_title.setGravity(Gravity.CENTER_VERTICAL);
+            setViewMargin(tvCancel, 0, 0, 0, 0);
+            tvCancel.setGravity(Gravity.CENTER_VERTICAL);
+            tvTitle.setGravity(Gravity.CENTER_VERTICAL);
             setTitleColorResource(R.color.colorActionSheetWeiXinText);
             setCancelColorResource(R.color.colorActionSheetWeiXinText);
-            txt_title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
-            txt_cancel.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
-            txt_title.setPadding(dip2px(18), 0, dip2px(18), 0);
-            txt_cancel.setPadding(dip2px(18), 0, dip2px(18), 0);
+            tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+            tvCancel.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+            tvTitle.setPadding(dip2px(18), 0, dip2px(18), 0);
+            tvCancel.setPadding(dip2px(18), 0, dip2px(18), 0);
             itemHeight = 48;
-            vTop.setMinimumHeight((int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.4));
+            setViewMargin(tvTitle, 0, (int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.4), 0, 0);
         }
         vLineTitle.setVisibility(View.GONE);
         // 定义Dialog布局和参数
@@ -113,14 +114,22 @@ public class UIActionSheetView {
 
             @Override
             public void onDismiss(DialogInterface dialog) {
-                lLayout_view.removeAllViews();
-                lLayout_content.removeAllViews();
+                lLayoutView.removeAllViews();
+                lLayoutItem.removeAllViews();
             }
         });
-        vTop.setOnClickListener(new OnClickListener() {
+        rootView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                if (canceledOnTouchOutside)
+                    dialog.dismiss();
+            }
+        });
+        tvTitle.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (canceledOnTouchOutside)
+                    dialog.dismiss();
             }
         });
     }
@@ -163,12 +172,14 @@ public class UIActionSheetView {
     }
 
     public UIActionSheetView setBackgroundColor(int color) {
-        lLayout_content.setBackgroundColor(color);
+        rootView.setBackgroundColor(color);
+        setViewMargin(tvTitle, 0, 0, 0, 0);
         return this;
     }
 
     public UIActionSheetView setBackgroundResource(int colorRes) {
-        lLayout_content.setBackgroundResource(colorRes);
+        rootView.setBackgroundResource(colorRes);
+        setViewMargin(tvTitle, 0, 0, 0, 0);
         return this;
     }
 
@@ -180,16 +191,16 @@ public class UIActionSheetView {
      */
     public UIActionSheetView setTitle(CharSequence title) {
         showTitle = true;
-        txt_title.setVisibility(View.VISIBLE);
-        txt_title.setText(title);
-        txt_title.post(new Runnable() {
+        tvTitle.setVisibility(View.VISIBLE);
+        tvTitle.setText(title);
+        tvTitle.post(new Runnable() {
             @Override
             public void run() {
-                if (txt_title.getLineCount() > 1) {
-                    txt_title.setGravity(Gravity.LEFT);
-                } else if (txt_title.getLineCount() > 2) {
-                    txt_title.setGravity(Gravity.LEFT);
-                    txt_title.setLayoutParams(new LayoutParams(
+                if (tvTitle.getLineCount() > 1) {
+                    tvTitle.setGravity(Gravity.LEFT);
+                } else if (tvTitle.getLineCount() > 2) {
+                    tvTitle.setGravity(Gravity.LEFT);
+                    tvTitle.setLayoutParams(new LayoutParams(
                             LayoutParams.MATCH_PARENT,
                             LayoutParams.WRAP_CONTENT));
                 }
@@ -210,12 +221,12 @@ public class UIActionSheetView {
      * @return
      */
     public UIActionSheetView setTitleTextSize(int unit, float textSize) {
-        txt_title.setTextSize(unit, textSize);
+        tvTitle.setTextSize(unit, textSize);
         return this;
     }
 
     public UIActionSheetView setTitleColor(int color) {
-        txt_title.setTextColor(color);
+        tvTitle.setTextColor(color);
         return this;
     }
 
@@ -240,8 +251,8 @@ public class UIActionSheetView {
      * @return
      */
     public UIActionSheetView setCancelMessage(CharSequence message) {
-        txt_cancel.setVisibility(View.VISIBLE);
-        txt_cancel.setText(message);
+        tvCancel.setVisibility(View.VISIBLE);
+        tvCancel.setText(message);
         return this;
     }
 
@@ -261,7 +272,7 @@ public class UIActionSheetView {
      */
     public UIActionSheetView setCancelMessageMargin(float left, float top, float right, float bottom) {
         if (STYLE == STYLE_NORMAL)
-            setViewMargin(txt_cancel, dip2px(left), dip2px(top), dip2px(right), dip2px(bottom));
+            setViewMargin(tvCancel, dip2px(left), dip2px(top), dip2px(right), dip2px(bottom));
         return this;
     }
 
@@ -274,12 +285,12 @@ public class UIActionSheetView {
      */
 
     public UIActionSheetView setCancelMessageTextSize(int unit, float textSize) {
-        txt_cancel.setTextSize(unit, textSize);
+        tvCancel.setTextSize(unit, textSize);
         return this;
     }
 
     public UIActionSheetView setCancelColor(int color) {
-        txt_cancel.setTextColor(color);
+        tvCancel.setTextColor(color);
         return this;
     }
 
@@ -298,8 +309,8 @@ public class UIActionSheetView {
     }
 
     public UIActionSheetView setView(View view) {
-        if (lLayout_view != null && view != null) {
-            lLayout_view.addView(view);
+        if (lLayoutView != null && view != null) {
+            lLayoutView.addView(view);
         }
         return this;
     }
@@ -442,6 +453,7 @@ public class UIActionSheetView {
      * @return
      */
     public UIActionSheetView setCanceledOnTouchOutside(boolean cancel) {
+        this.canceledOnTouchOutside = cancel;
         dialog.setCanceledOnTouchOutside(cancel);
         return this;
     }
@@ -454,11 +466,11 @@ public class UIActionSheetView {
      */
     public UIActionSheetView setOnDismissListener(OnDismissListener listener) {
         dialog.setOnDismissListener(listener);
-        if (lLayout_content != null) {
-            lLayout_content.removeAllViews();
+        if (lLayoutItem != null) {
+            lLayoutItem.removeAllViews();
         }
-        if (lLayout_content != null)
-            lLayout_content.removeAllViews();
+        if (lLayoutItem != null)
+            lLayoutItem.removeAllViews();
         return this;
     }
 
@@ -497,8 +509,8 @@ public class UIActionSheetView {
         if (listSheetItem == null || listSheetItem.size() <= 0) {
             return;
         }
-        lLayout_content.setGravity(STYLE == STYLE_WEI_XIN ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
-        lLayout_content.removeAllViews();
+        lLayoutItem.setGravity(STYLE == STYLE_WEI_XIN ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
+        lLayoutItem.removeAllViews();
         // 循环添加条目
         for (int i = 0; i <= listSheetItem.size() - 1; i++) {
             final int item = i;
@@ -539,8 +551,8 @@ public class UIActionSheetView {
                 }
             } else {
                 textView.setBackgroundResource(R.drawable.action_sheet_edge);
-                txt_cancel.setBackgroundResource(R.drawable.action_sheet_edge);
-                txt_title.setBackgroundResource(R.drawable.action_sheet_edge);
+                tvCancel.setBackgroundResource(R.drawable.action_sheet_edge);
+                tvTitle.setBackgroundResource(R.color.colorActionSheetEdge);
                 view.setBackgroundResource(R.color.colorActionSheetEdgeLineGray);
             }
             // 字体颜色
@@ -548,7 +560,7 @@ public class UIActionSheetView {
             LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, getItemHeight());
             // 高度
             textView.setLayoutParams(params);
-            txt_title.setMinimumHeight(getItemHeight());
+            tvTitle.setMinimumHeight(getItemHeight());
 
             // 点击事件
             textView.setOnClickListener(new OnClickListener() {
@@ -560,10 +572,10 @@ public class UIActionSheetView {
                     dialog.dismiss();
                 }
             });
-            lLayout_content.addView(textView);
+            lLayoutItem.addView(textView);
             if (STYLE == STYLE_NORMAL) {
                 view.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, (int) context.getResources().getDimension(R.dimen.dp_line_size)));
-                lLayout_content.addView(view);
+                lLayoutItem.addView(view);
             }
         }
     }
@@ -603,17 +615,11 @@ public class UIActionSheetView {
     }
 
     public int getItemHeight() {
-        float scale = context.getResources().getDisplayMetrics().density;
-        int height = (int) (itemHeight * scale + 0.5f);
-        return height;
+        return dip2px(itemHeight);
     }
 
     private int dip2px(float dipValue) {
-        return dip2px(context, dipValue);
-    }
-
-    public static int dip2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
 }
