@@ -324,7 +324,7 @@ public class TitleBarView extends ViewGroup {
         if (gravity == Gravity.TOP) {
             return mStatusView;
         } else if (gravity == Gravity.BOTTOM) {
-            return mRightLayout;
+            return mDividerView;
         }
         return mStatusView;
     }
