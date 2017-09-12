@@ -24,7 +24,7 @@ allprojects {
 
 ```
 dependencies {
-     //compile 'com.github.AriesHoo:UIWidget:1.9.5'
+     //compile 'com.github.AriesHoo:UIWidget:v1.9.5'
      compile 'com.github.AriesHoo:UIWidget:${LATEST_VERSION}'
 }
 ```
