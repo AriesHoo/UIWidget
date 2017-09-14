@@ -141,7 +141,7 @@ public class StatusBarUtil {
      */
     private static boolean setStatusBarModeForAndroidM(Window window, boolean darkText) {
         boolean result = false;
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.getDecorView().setSystemUiVisibility(darkText ? View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | 0x00002000 : View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_VISIBLE);
             result = true;
         }

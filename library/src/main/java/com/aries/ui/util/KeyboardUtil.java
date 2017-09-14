@@ -16,12 +16,13 @@ import android.view.WindowManager;
  * Desc:
  */
 public class KeyboardUtil {
+
     private Activity mActivity;
     private Window mWindow;
     private View mDecorView;
     private View mContentView;
     private boolean mFlag = false;
-    private int mKeyMode= WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED;
+    private int mKeyMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED;
 
     public static KeyboardUtil with(Activity activity) {
         if (activity == null)
@@ -102,6 +103,9 @@ public class KeyboardUtil {
         }
     }
 
+    /**
+     * 设置View变化监听
+     */
     private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {

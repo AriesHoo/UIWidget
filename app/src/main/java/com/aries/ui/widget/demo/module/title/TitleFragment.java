@@ -45,17 +45,17 @@ public class TitleFragment extends Fragment {
     }
 
     private void initView() {
-        titleBar.setTitleMainText(getClass().getSimpleName());
-        titleBar.setBackgroundResource(android.R.color.holo_purple);
-        titleBar.setTitleMainTextColor(Color.WHITE);
+        titleBar.setTitleMainText(getClass().getSimpleName())
+                .setTitleMainTextColor(Color.WHITE)
+                .setLeftTextDrawable(R.drawable.ic_arrow_back_white)
+                .setOnLeftTextClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity().onBackPressed();
+                    }
+                })
+                .setBackgroundResource(android.R.color.holo_purple);
         titleBar.setStatusBarLightMode(false);
-        titleBar.setLeftTextDrawable(R.drawable.ic_arrow_back_white);
-        titleBar.setOnLeftTextClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
 
 //        //底部有输入框时使用--最后一个参数false
 //        titleBar.setImmersible(getActivity(), true, true, false);

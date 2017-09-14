@@ -13,14 +13,16 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <LinearLayout
+    <com.aries.ui.view.radius.RadiusLinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorWhite"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        app:rv_backgroundColor="@color/colorWhite"
+        app:rv_strokeColor="@color/colorLineGray"
+        app:rv_strokeWidth="@dimen/dp_line_size">
 
         <com.aries.ui.view.radius.RadiusEditText
             xmlns:rv="http://schemas.android.com/apk/res-auto"
@@ -51,6 +53,6 @@
             app:rv_backgroundColor="@android:color/holo_purple"
             app:rv_backgroundPressedColor="@android:color/holo_purple"
             app:rv_radiusHalfHeightEnable="true"/>
-    </LinearLayout>
+    </com.aries.ui.view.radius.RadiusLinearLayout>
 
 </LinearLayout>

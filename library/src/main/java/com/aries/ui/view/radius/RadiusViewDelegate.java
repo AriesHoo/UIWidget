@@ -99,6 +99,11 @@ public class RadiusViewDelegate {
         ta.recycle();
     }
 
+    /**
+     * 是否默认开启水波纹
+     *
+     * @return
+     */
     private boolean getDefaultRippleEnable() {
         boolean enable = !(view instanceof CompoundButton) && !(view instanceof EditText);
         return enable;
@@ -241,10 +246,17 @@ public class RadiusViewDelegate {
         return isWidthHeightEqual;
     }
 
+    /**
+     * 设置 背景Drawable颜色线框色及圆角值
+     *
+     * @param gd
+     * @param color
+     * @param strokeColor
+     */
     private void setDrawable(GradientDrawable gd, int color, int strokeColor) {
         gd.setColor(color);
+        //任意值大于0执行
         if (topLeftRadius > 0 || topRightRadius > 0 || bottomRightRadius > 0 || bottomLeftRadius > 0) {
-            /**The corners are ordered top-left, top-right, bottom-right, bottom-left*/
             radiusArr[0] = topLeftRadius;
             radiusArr[1] = topLeftRadius;
             radiusArr[2] = topRightRadius;
@@ -331,6 +343,9 @@ public class RadiusViewDelegate {
         }
     }
 
+    /**
+     * 设置文本颜色
+     */
     private void setTextSelector() {
         if (view instanceof TextView) {
             TextView textView = (TextView) view;
@@ -351,6 +366,12 @@ public class RadiusViewDelegate {
         }
     }
 
+    /**
+     *  水波纹效果完成后最终展示的背景Drawable
+     * @param mDrawable
+     * @param isSetBg
+     * @return
+     */
     private Drawable getContentDrawable(Drawable mDrawable, boolean isSetBg) {
         if (view instanceof CompoundButton) {
             return !isSetBg ? mDrawable :

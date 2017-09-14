@@ -9,7 +9,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 25
         versionCode 12
-        versionName "1.9.5"
+        versionName "1.9.6"
     }
     buildTypes {
         release {
@@ -19,7 +19,7 @@ android {
     }
 
     //以下为配置library注释在打包jar后保留
-    
+
     // 打包源码jar
     task sourcesJar(type: Jar) {
         from android.sourceSets.main.java.srcDirs

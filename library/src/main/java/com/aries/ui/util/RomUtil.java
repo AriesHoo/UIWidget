@@ -14,7 +14,6 @@ public class RomUtil {
 
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     private static final String KEY_EMUI_VERSION_NAME = "ro.build.version.emui";
-//    private static final String KEY_DISPLAY = "ro.build.display.id";
 
 
     /**
