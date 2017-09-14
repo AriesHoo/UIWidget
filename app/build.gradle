@@ -9,7 +9,7 @@ android {
         applicationId "com.aries.ui.widget.demo"
         minSdkVersion ext.minSdkVersion
         targetSdkVersion ext.targetSdkVersion
-        versionCode 12
+        versionCode 13
         versionName "1.9.6"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
