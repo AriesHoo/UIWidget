@@ -1,6 +1,6 @@
 # UIWidget
 --------------------------
-### 一、简介：
+## 简介：
 
 一个集成[UIAlertView](https://github.com/AriesHoo/UIAlertView)、[UIActionSheetView](https://github.com/AriesHoo/UIActionSheetView)、[UIProgressView](https://github.com/AriesHoo/UIProgressView)、[RadiusView](https://github.com/AriesHoo/RadiusView)、[TitleBarView](https://github.com/AriesHoo/TitleBarView)
 等项目常用UI库
@@ -11,7 +11,7 @@
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/apk/qr.png)
 
-**1.1 Gradle集成**
+**Gradle集成**
 
 ```
 allprojects {
@@ -28,7 +28,7 @@ dependencies {
      compile 'com.github.AriesHoo:UIWidget:${LATEST_VERSION}'
 }
 ```
-### 二、录屏预览
+## 录屏预览
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/widget.gif)
 
@@ -51,5 +51,24 @@ dependencies {
 [TitleBarView](https://github.com/AriesHoo/TitleBarView)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/title.gif)
+
+
+## License
+
+```
+     Copyright 2016 Aries Hoo
+ 
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+ 
+        http://www.apache.org/licenses/LICENSE-2.0
+ 
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+```
 
 
