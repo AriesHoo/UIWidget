@@ -109,10 +109,10 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
 
     }
 
-
     @Override
     protected void initView(Bundle bundle) {
         super.initView(bundle);
+        mContentView.setBackgroundDrawable(null);
         GlideManager.loadCircleImg("https://avatars3.githubusercontent.com/u/19605922?v=4&s=460", ivHead);
         titleBarDrawer.setImmersible(mContext, isImmersible, isLight);
         vHeader = View.inflate(mContext, R.layout.layout_title_header, null);
