@@ -100,6 +100,7 @@ public class UIActionSheetView {
             itemHeight = 48;
             setViewMargin(tvTitle, 0, (int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.4), 0, 0);
         }
+        setCancelColorResource(STYLE == STYLE_IOS ? R.color.colorActionSheetCancelText : R.color.colorActionSheetNormalItemText);
         vLineTitle.setVisibility(View.GONE);
         // 定义Dialog布局和参数
         dialog = new Dialog(context, R.style.ActionSheetViewDialogStyle);
@@ -333,7 +334,8 @@ public class UIActionSheetView {
         List<SheetItem> list = new ArrayList<>();
         for (CharSequence item : items) {
             list.add(new SheetItem(item,
-                    STYLE == STYLE_WEI_XIN ? context.getResources().getColor(R.color.colorActionSheetWeiXinText) : null
+                    STYLE == STYLE_WEI_XIN ? context.getResources().getColor(R.color.colorActionSheetWeiXinText) :
+                            STYLE == STYLE_NORMAL ? context.getResources().getColor(R.color.colorActionSheetNormalItemText) : null
                     , onItemSelected));
         }
         return setItems(list);

@@ -609,15 +609,17 @@ public class TitleBarView extends ViewGroup {
      * @param id 资源id
      */
     public TitleBarView setLeftTextDrawable(int id, int drawablePadding) {
-        if (id >= 0) {
-            Drawable mDrawable = id != 0 ? getResources().getDrawable(id) : null;
+        Drawable mDrawable = null;
+        try {
+            mDrawable = getResources().getDrawable(id);
             if (mDrawable != null) {
                 mDrawable.setBounds(0, 0,
                         mLeftTextDrawableWidth != -1 ? mLeftTextDrawableWidth : mDrawable.getIntrinsicWidth(),
                         mLeftTextDrawableHeight != -1 ? mLeftTextDrawableHeight : mDrawable.getIntrinsicHeight());
             }
-            mLeftTv.setCompoundDrawables(mDrawable, null, null, null);
+        } catch (Exception e) {
         }
+        mLeftTv.setCompoundDrawables(mDrawable, null, null, null);
         return setLeftTextDrawablePadding(drawablePadding);
     }
 
@@ -934,18 +936,18 @@ public class TitleBarView extends ViewGroup {
      * @param id 资源id
      */
     public TitleBarView setRightTextDrawable(int id, int drawablePadding) {
-        if (id >= 0) {
-            Drawable mDrawable = id != 0 ? getResources().getDrawable(id) : null;
+        Drawable mDrawable = null;
+        try {
+            mDrawable = getResources().getDrawable(id);
             if (mDrawable != null) {
                 mDrawable.setBounds(0, 0,
                         mRightTextDrawableWidth != -1 ? mRightTextDrawableWidth : mDrawable.getIntrinsicWidth(),
                         mRightTextDrawableHeight != -1 ? mRightTextDrawableHeight : mDrawable.getIntrinsicHeight());
             }
-            mRightTv.setCompoundDrawables(null, null, mDrawable, null);
+        } catch (Exception e) {
         }
-        return
-
-                setRightTextDrawablePadding(drawablePadding);
+        mRightTv.setCompoundDrawables(null, null, mDrawable, null);
+        return setRightTextDrawablePadding(drawablePadding);
     }
 
     public TitleBarView setRightTextDrawablePadding(int drawablePadding) {
