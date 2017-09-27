@@ -1029,29 +1029,29 @@ public class TitleBarView extends ViewGroup {
         return this;
     }
 
-    public View addLeftAction(Action action, int position) {
+    public TitleBarView addLeftAction(Action action, int position) {
         View view = inflateAction(action);
         mLeftLayout.addView(view, position);
-        return view;
+        return this;
     }
 
-    public View addLeftAction(Action action) {
+    public TitleBarView addLeftAction(Action action) {
         return addLeftAction(action, -1);
     }
 
     /**
      * 自定义中间部分布局
      */
-    public View addCenterAction(Action action, int position) {
+    public TitleBarView addCenterAction(Action action, int position) {
         View view = inflateAction(action);
         mCenterLayout.addView(view, position);
-        return view;
+        return this;
     }
 
     /**
      * 自定义中间部分布局
      */
-    public View addCenterAction(Action action) {
+    public TitleBarView addCenterAction(Action action) {
         return addCenterAction(action, -1);
     }
 
@@ -1061,15 +1061,13 @@ public class TitleBarView extends ViewGroup {
      * @param action
      * @param position 添加的位置
      */
-    public View addRightAction(Action action, int position) {
+    public TitleBarView addRightAction(Action action, int position) {
         View view = inflateAction(action);
         mRightLayout.addView(view, position);
-        return view;
+        return this;
     }
 
-    public View addRightAction(Action action) {
-        View view = inflateAction(action);
-        mRightLayout.addView(view);
+    public TitleBarView addRightAction(Action action) {
         return addRightAction(action, -1);
     }
 

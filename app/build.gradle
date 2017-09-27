@@ -9,8 +9,8 @@ android {
         applicationId "com.aries.ui.widget.demo"
         minSdkVersion ext.minSdkVersion
         targetSdkVersion ext.targetSdkVersion
-        versionCode 13
-        versionName "1.9.6"
+        versionCode 14
+        versionName "1.9.7"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -28,6 +28,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:'.concat(supportVersion)
     compile 'com.android.support:recyclerview-v7:'.concat(supportVersion)
     compile project(':library')
+    //compile 'com.github.AriesHoo:UIWidget:1.9.7'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.just.agentweb:agentweb:2.0.0'

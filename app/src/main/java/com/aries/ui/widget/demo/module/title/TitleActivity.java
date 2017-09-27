@@ -112,6 +112,9 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     @Override
     protected void initView(Bundle bundle) {
         super.initView(bundle);
+
+//        drawerRoot.setScrimColor(0x00ffffff);//背景高亮
+//        drawerRoot.setDrawerElevation(40);//海拔高度
         mContentView.setBackgroundDrawable(null);
         GlideManager.loadCircleImg("https://avatars3.githubusercontent.com/u/19605922?v=4&s=460", ivHead);
         titleBarDrawer.setImmersible(mContext, isImmersible, isLight);
