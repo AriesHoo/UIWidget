@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
@@ -610,16 +609,15 @@ public class TitleBarView extends ViewGroup {
      * @param id 资源id
      */
     public TitleBarView setLeftTextDrawable(int id, int drawablePadding) {
-        Drawable mDrawable = null;
-        try {
-            mDrawable = getResources().getDrawable(id);
-            Rect mRect = mDrawable.getBounds();
-            mRect.bottom = mLeftTextDrawableHeight != -1 ? mLeftTextDrawableHeight : mDrawable.getMinimumHeight();
-            mRect.right = mLeftTextDrawableWidth != -1 ? mLeftTextDrawableWidth : mDrawable.getMinimumWidth();
-            mDrawable.setBounds(mRect);
-        } catch (Exception e) {
+        if (id >= 0) {
+            Drawable mDrawable = id != 0 ? getResources().getDrawable(id) : null;
+            if (mDrawable != null) {
+                mDrawable.setBounds(0, 0,
+                        mLeftTextDrawableWidth != -1 ? mLeftTextDrawableWidth : mDrawable.getIntrinsicWidth(),
+                        mLeftTextDrawableHeight != -1 ? mLeftTextDrawableHeight : mDrawable.getIntrinsicHeight());
+            }
+            mLeftTv.setCompoundDrawables(mDrawable, null, null, null);
         }
-        mLeftTv.setCompoundDrawables(mDrawable, null, null, null);
         return setLeftTextDrawablePadding(drawablePadding);
     }
 
@@ -936,17 +934,18 @@ public class TitleBarView extends ViewGroup {
      * @param id 资源id
      */
     public TitleBarView setRightTextDrawable(int id, int drawablePadding) {
-        Drawable mDrawable = null;
-        try {
-            mDrawable = getResources().getDrawable(id);
-            Rect mRect = mDrawable.getBounds();
-            mRect.bottom = mRightTextDrawableHeight != -1 ? mRightTextDrawableHeight : mDrawable.getMinimumHeight();
-            mRect.right = mRightTextDrawableWidth != -1 ? mRightTextDrawableWidth : mDrawable.getMinimumWidth();
-            mDrawable.setBounds(mRect);
-        } catch (Exception e) {
+        if (id >= 0) {
+            Drawable mDrawable = id != 0 ? getResources().getDrawable(id) : null;
+            if (mDrawable != null) {
+                mDrawable.setBounds(0, 0,
+                        mRightTextDrawableWidth != -1 ? mRightTextDrawableWidth : mDrawable.getIntrinsicWidth(),
+                        mRightTextDrawableHeight != -1 ? mRightTextDrawableHeight : mDrawable.getIntrinsicHeight());
+            }
+            mRightTv.setCompoundDrawables(null, null, mDrawable, null);
         }
-        mRightTv.setCompoundDrawables(null, null, mDrawable, null);
-        return setRightTextDrawablePadding(drawablePadding);
+        return
+
+                setRightTextDrawablePadding(drawablePadding);
     }
 
     public TitleBarView setRightTextDrawablePadding(int drawablePadding) {

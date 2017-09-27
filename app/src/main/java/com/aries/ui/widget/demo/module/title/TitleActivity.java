@@ -72,7 +72,12 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     protected void setTitleBar() {
         titleBar.setTitleMainText("主标题")
                 .setTitleSubText(getSubText())
+//                .setLeftTextDrawableWidth(24)
+//                .setLeftTextDrawableHeight(24)
                 .setRightTextDrawable(isWhite ? R.drawable.ic_menu : R.drawable.ic_menu_white)
+//                .setRightTextDrawableWidth(10)
+//                .setRightText("菜单")
+//                .setRightTextDrawableHeight(10)
                 .setOnRightTextClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
