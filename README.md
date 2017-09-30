@@ -5,6 +5,8 @@
 [![](https://img.shields.io/github/release/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/releases)
 [![API](https://img.shields.io/badge/API-11%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=11)
 [![GitHub license](https://img.shields.io/github/license/AriesHoo/UIWidget.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![GitHub stars](https://img.shields.io/github/stars/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/network)
 
 ## 简介：
 
