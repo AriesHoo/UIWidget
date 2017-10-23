@@ -20,7 +20,7 @@
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/apk/qr.png)
 
-**特别说明:View设置海拔(elevation)在7.1以下版本需在xml属性设置rv_strokeColor方可有效,目前不知什么造成,如有大神知晓望告知!麻烦**
+**特别说明:RadiusView设置海拔(elevation)在7.1以下版本需在xml属性设置rv_strokeColor方可有效,目前不知什么造成,如有大神知晓望告知!麻烦**
 
 **Gradle集成**
 
@@ -35,7 +35,7 @@ allprojects {
 
 ```
 dependencies {
-     //compile 'com.github.AriesHoo:UIWidget:2.0.0'
+     //compile 'com.github.AriesHoo:UIWidget:2.0.1'
      compile 'com.github.AriesHoo:UIWidget:${LATEST_VERSION}'
 }
 ```

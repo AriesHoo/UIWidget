@@ -79,7 +79,7 @@
                 rv:rv_backgroundColor="@android:color/holo_blue_light"
                 rv:rv_backgroundPressedColor="@android:color/holo_purple"
                 rv:rv_rippleColor="@android:color/holo_purple"
-                rv:rv_strokeColor="@color/black"/>
+                />
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_radiusHalfHeight"

@@ -78,7 +78,7 @@ public class RadiusViewDelegate {
         backgroundCheckedColor = ta.getColor(R.styleable.RadiusTextView_rv_backgroundCheckedColor, Integer.MAX_VALUE);
         radius = ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_radius, 0);
         strokeWidth = ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_strokeWidth, 0);
-        strokeColor = ta.getColor(R.styleable.RadiusTextView_rv_strokeColor, Integer.MAX_VALUE);
+        strokeColor = ta.getColor(R.styleable.RadiusTextView_rv_strokeColor, Color.GRAY);
         strokePressedColor = ta.getColor(R.styleable.RadiusTextView_rv_strokePressedColor, Integer.MAX_VALUE);
         strokeEnabledColor = ta.getColor(R.styleable.RadiusTextView_rv_strokeEnabledColor, Integer.MAX_VALUE);
         strokeSelectedColor = ta.getColor(R.styleable.RadiusTextView_rv_strokeSelectedColor, Integer.MAX_VALUE);
