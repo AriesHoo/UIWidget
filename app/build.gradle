@@ -10,7 +10,7 @@ android {
         minSdkVersion ext.minSdkVersion
         targetSdkVersion ext.targetSdkVersion
         versionCode 15
-        versionName "2.0.0"
+        versionName "2.0.1"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -27,8 +27,8 @@ dependencies {
     def supportVersion = rootProject.ext.supportVersion
     compile 'com.android.support:appcompat-v7:'.concat(supportVersion)
     compile 'com.android.support:recyclerview-v7:'.concat(supportVersion)
-    compile project(':library')
-    //compile 'com.github.AriesHoo:UIWidget:1.9.7'
+//    compile project(':library')
+    compile 'com.github.AriesHoo:UIWidget:2.0.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.just.agentweb:agentweb:2.0.0'

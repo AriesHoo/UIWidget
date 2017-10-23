@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,6 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected int type = 0;
     protected boolean isWhite = true;
     protected View mContentView;
+    protected String TAG = getClass().getSimpleName();
 
     protected abstract void setTitleBar();
 
@@ -53,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreate");
         this.mContext = this;
         this.beforeSetView();
         mContentView = View.inflate(mContext, getLayout(), null);

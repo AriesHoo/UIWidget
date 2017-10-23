@@ -1209,11 +1209,11 @@ public class TitleBarView extends ViewGroup {
      *
      * @return
      */
-    public int getStatusBarHeight() {
+    public static int getStatusBarHeight() {
         int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
+            result = Resources.getSystem().getDimensionPixelSize(resourceId);
         }
         return result;
     }
@@ -1223,8 +1223,8 @@ public class TitleBarView extends ViewGroup {
      *
      * @return
      */
-    private int getScreenWidth() {
-        return getResources().getDisplayMetrics().widthPixels;
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
     /**
@@ -1245,7 +1245,7 @@ public class TitleBarView extends ViewGroup {
      * @param child
      * @return
      */
-    private boolean hasChildView(ViewGroup father, View child) {
+    public static boolean hasChildView(ViewGroup father, View child) {
         boolean had = false;
         try {
             had = father.indexOfChild(child) != -1;

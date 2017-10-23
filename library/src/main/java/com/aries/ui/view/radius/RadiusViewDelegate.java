@@ -64,8 +64,9 @@ public class RadiusViewDelegate {
         this.mContext = context;
         obtainAttributes(context, attrs);
         view.setSelected(selected);
-        if (!(view instanceof CompoundButton) && !view.isClickable())
+        if (!(view instanceof CompoundButton) && !view.isClickable()) {
             view.setClickable(isRippleEnable);
+        }
     }
 
     private void obtainAttributes(Context context, AttributeSet attrs) {
@@ -77,7 +78,7 @@ public class RadiusViewDelegate {
         backgroundCheckedColor = ta.getColor(R.styleable.RadiusTextView_rv_backgroundCheckedColor, Integer.MAX_VALUE);
         radius = ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_radius, 0);
         strokeWidth = ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_strokeWidth, 0);
-        strokeColor = ta.getColor(R.styleable.RadiusTextView_rv_strokeColor, Color.TRANSPARENT);
+        strokeColor = ta.getColor(R.styleable.RadiusTextView_rv_strokeColor, Integer.MAX_VALUE);
         strokePressedColor = ta.getColor(R.styleable.RadiusTextView_rv_strokePressedColor, Integer.MAX_VALUE);
         strokeEnabledColor = ta.getColor(R.styleable.RadiusTextView_rv_strokeEnabledColor, Integer.MAX_VALUE);
         strokeSelectedColor = ta.getColor(R.styleable.RadiusTextView_rv_strokeSelectedColor, Integer.MAX_VALUE);
@@ -184,12 +185,12 @@ public class RadiusViewDelegate {
         setBgSelector();
     }
 
-    public void seTextSelectedColor(int textSelectedColor) {
+    public void setTextSelectedColor(int textSelectedColor) {
         this.textSelectedColor = textSelectedColor;
         setBgSelector();
     }
 
-    public void setTextCheckedColor(int textSelectedColor) {
+    public void setTextCheckedColor(int textCheckedColor) {
         this.textCheckedColor = textCheckedColor;
         setBgSelector();
     }
@@ -367,7 +368,8 @@ public class RadiusViewDelegate {
     }
 
     /**
-     *  水波纹效果完成后最终展示的背景Drawable
+     * 水波纹效果完成后最终展示的背景Drawable
+     *
      * @param mDrawable
      * @param isSetBg
      * @return

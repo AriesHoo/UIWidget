@@ -52,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
+                    android:elevation="10dp"
                     android:enabled="true"
                     android:gravity="center"
                     android:padding="10dp"
@@ -71,12 +72,14 @@
                 android:layout_height="45dp"
                 android:layout_marginBottom="10dp"
                 android:clickable="true"
+                android:elevation="40dp"
                 android:gravity="center"
                 android:text="rippleColor"
-                rv:rv_backgroundPressedColor="@android:color/holo_purple"
                 android:textColor="@color/colorWhite"
                 rv:rv_backgroundColor="@android:color/holo_blue_light"
-                rv:rv_rippleColor="@android:color/holo_purple"/>
+                rv:rv_backgroundPressedColor="@android:color/holo_purple"
+                rv:rv_rippleColor="@android:color/holo_purple"
+                rv:rv_strokeColor="@color/black"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_radiusHalfHeight"
