@@ -59,13 +59,13 @@ public class TitleBarView extends ViewGroup {
     private TextView mRightTv;//右边TextView
     private View mDividerView;//下方下划线
 
-
     /**
      * xml属性
      */
     private boolean mImmersible = false;
     private int mOutPadding;
     private int mActionPadding;
+    private int mCenterLayoutPadding;//中间部分是Layout左右padding
     private boolean mCenterGravityLeft = false;//中间部分是否左对齐--默认居中
     private int mCenterGravityLeftPadding;//中间部分左对齐是Layout左padding
     private boolean mStatusBarLightMode = false;//是否浅色状态栏(黑色文字及图标)
@@ -143,6 +143,7 @@ public class TitleBarView extends ViewGroup {
         mImmersible = ta.getBoolean(R.styleable.TitleBarView_title_immersible, true);
         mOutPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_outPadding, dip2px(DEFAULT_OUT_PADDING));
         mActionPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_actionPadding, dip2px(1));
+        mCenterLayoutPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_centerLayoutPadding, dip2px(2));
         mCenterGravityLeft = ta.getBoolean(R.styleable.TitleBarView_title_centerGravityLeft, false);
         mCenterGravityLeftPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_centerGravityLeftPadding, dip2px(DEFAULT_CENTER_GRAVITY_LEFT_PADDING));
         mStatusBarLightMode = ta.getBoolean(R.styleable.TitleBarView_title_statusBarLightMode, false);
@@ -251,8 +252,8 @@ public class TitleBarView extends ViewGroup {
         }
         setOutPadding(mOutPadding);
         setActionPadding(mActionPadding);
+        setCenterLayoutPadding(mCenterLayoutPadding);
         setCenterGravityLeft(mCenterGravityLeft);
-        setCenterGravityLeftPadding(mCenterGravityLeftPadding);
         setStatusColor(mStatusColor);
         setStatusResource(mStatusResource);
         setDividerColor(mDividerColor);
@@ -462,6 +463,12 @@ public class TitleBarView extends ViewGroup {
         return this;
     }
 
+    public TitleBarView setCenterLayoutPadding(int centerLayoutPadding) {
+        this.mCenterLayoutPadding = centerLayoutPadding;
+        mCenterLayout.setPadding(mCenterLayoutPadding, mCenterLayout.getTop(), mCenterLayoutPadding, mCenterLayout.getPaddingBottom());
+        return this;
+    }
+
     public TitleBarView setCenterGravityLeft(boolean enable) {
         this.mCenterGravityLeft = enable;
         mTitleMain.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
@@ -480,6 +487,8 @@ public class TitleBarView extends ViewGroup {
         if (mCenterGravityLeft) {
             mCenterGravityLeftPadding = padding;
             mCenterLayout.setPadding(mCenterGravityLeftPadding, mCenterLayout.getTop(), mCenterLayout.getPaddingRight(), mCenterLayout.getPaddingBottom());
+        } else {
+            return setCenterLayoutPadding(mCenterLayoutPadding);
         }
         return this;
     }
@@ -783,7 +792,7 @@ public class TitleBarView extends ViewGroup {
             //开启硬件加速
             mTitleMain.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         } else {
-            mTitleMain.setMaxLines(2);
+            mTitleMain.setMaxLines(1);
             mTitleMain.setEllipsize(TextUtils.TruncateAt.END);
             mTitleMain.setOnFocusChangeListener(null);
             //关闭硬件加速
@@ -895,7 +904,7 @@ public class TitleBarView extends ViewGroup {
             //开启硬件加速
             mTitleSub.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         } else {
-            mTitleSub.setMaxLines(2);
+            mTitleSub.setMaxLines(1);
             mTitleSub.setEllipsize(TextUtils.TruncateAt.END);
             mTitleSub.setOnFocusChangeListener(null);
             //关闭硬件加速

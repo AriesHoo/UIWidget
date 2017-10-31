@@ -264,6 +264,8 @@
         <attr name="title_outPadding" format="dimension" />
         <!--添加子View 内边距,默认1dp-->
         <attr name="title_actionPadding" format="dimension" />
+        <!--标题Layout左对齐时;中间Layout-左边距默认2dp;-->
+        <attr name="title_centerLayoutPadding" format="dimension" />
         <!--标题文字是否左对齐,默认false即:标题居中-->
         <attr name="title_centerGravityLeft" format="boolean" />
         <!--标题Layout左对齐时;中间Layout-左边距默认24dp;ToolBar32dp-->

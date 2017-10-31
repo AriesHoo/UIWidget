@@ -10,7 +10,7 @@ android {
         minSdkVersion ext.minSdkVersion
         targetSdkVersion ext.targetSdkVersion
         versionCode 16
-        versionName "2.0.2-alpha"
+        versionName "2.0.2"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
