@@ -23,8 +23,10 @@ import butterknife.Unbinder;
  */
 public class TitleFragment extends Fragment {
 
-    @BindView(R.id.titleBar) TitleBarView titleBar;
-    @BindView(R.id.rtv_send) RadiusTextView rtvSend;
+    @BindView(R.id.titleBar)
+    TitleBarView titleBar;
+    @BindView(R.id.rtv_send)
+    RadiusTextView rtvSend;
     private Unbinder unbinder;
     private View mContentView;
 
@@ -54,6 +56,7 @@ public class TitleFragment extends Fragment {
                         getActivity().onBackPressed();
                     }
                 })
+                .setCenterGravityLeft(true)
                 .setBackgroundResource(android.R.color.holo_purple);
         titleBar.setStatusBarLightMode(false);
 

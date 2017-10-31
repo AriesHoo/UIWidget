@@ -33,11 +33,13 @@ import com.aries.ui.widget.R;
 public class TitleBarView extends ViewGroup {
 
     public static final int DEFAULT_STATUS_BAR_ALPHA = 102;//默认透明度--5.0以上优化半透明状态栏一致
-    private static final int DEFAULT_TEXT_COLOR = Color.WHITE;//默认文本颜色
+    private static final int DEFAULT_TEXT_COLOR = Color.BLACK;//默认文本颜色
     private static final int DEFAULT_TEXT_BG_COLOR = Color.TRANSPARENT;//默认子View背景色
-    private static final int DEFAULT_MAIN_TEXT_SIZE = 18;//主标题size dp
-    private static final int DEFAULT_TEXT_SIZE = 14;//文本默认size dp
-    private static final int DEFAULT_SUB_TEXT_SIZE = 12;//副标题默认size dp
+    private static final float DEFAULT_MAIN_TEXT_SIZE = 18;//主标题size dp
+    private static final float DEFAULT_TEXT_SIZE = 14;//文本默认size dp
+    private static final float DEFAULT_SUB_TEXT_SIZE = 14;//副标题默认size dp
+    private static final float DEFAULT_OUT_PADDING = 12;//左右padding dp--ToolBar默认16dp
+    private static final float DEFAULT_CENTER_GRAVITY_LEFT_PADDING = 24;//左右padding dp--ToolBar默认32dp
 
     private int mStatusBarHeight;//状态栏高度
     private int mScreenWidth;//屏幕高度
@@ -65,6 +67,7 @@ public class TitleBarView extends ViewGroup {
     private int mOutPadding;
     private int mActionPadding;
     private boolean mCenterGravityLeft = false;//中间部分是否左对齐--默认居中
+    private int mCenterGravityLeftPadding;//中间部分左对齐是Layout左padding
     private boolean mStatusBarLightMode = false;//是否浅色状态栏(黑色文字及图标)
     private int mStatusBarModeType = StatusBarUtil.STATUS_BAR_TYPE_DEFAULT;//设置状态栏浅色或深色模式类型标记;>0则表示支持模式切换
 
@@ -79,6 +82,7 @@ public class TitleBarView extends ViewGroup {
     private int mLeftTextColor;
     private int mLeftTextBackgroundColor;
     private int mLeftDrawable;
+    private Drawable mLeftTextDrawable;
     private int mLeftTextDrawableWidth;
     private int mLeftTextDrawableHeight;
     private int mLeftDrawablePadding;
@@ -102,6 +106,7 @@ public class TitleBarView extends ViewGroup {
     private int mRightTextColor;
     private int mRightTextBackgroundColor;
     private int mRightDrawable;
+    private Drawable mRightTextDrawable;
     private int mRightTextDrawableWidth;
     private int mRightTextDrawableHeight;
     private int mRightDrawablePadding;
@@ -136,9 +141,10 @@ public class TitleBarView extends ViewGroup {
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.TitleBarView);
         mImmersible = ta.getBoolean(R.styleable.TitleBarView_title_immersible, true);
-        mOutPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_outPadding, dip2px(12));
+        mOutPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_outPadding, dip2px(DEFAULT_OUT_PADDING));
         mActionPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_actionPadding, dip2px(1));
         mCenterGravityLeft = ta.getBoolean(R.styleable.TitleBarView_title_centerGravityLeft, false);
+        mCenterGravityLeftPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_centerGravityLeftPadding, dip2px(DEFAULT_CENTER_GRAVITY_LEFT_PADDING));
         mStatusBarLightMode = ta.getBoolean(R.styleable.TitleBarView_title_statusBarLightMode, false);
 
         mStatusColor = ta.getColor(R.styleable.TitleBarView_title_statusColor, -1);
@@ -246,6 +252,7 @@ public class TitleBarView extends ViewGroup {
         setOutPadding(mOutPadding);
         setActionPadding(mActionPadding);
         setCenterGravityLeft(mCenterGravityLeft);
+        setCenterGravityLeftPadding(mCenterGravityLeftPadding);
         setStatusColor(mStatusColor);
         setStatusResource(mStatusResource);
         setDividerColor(mDividerColor);
@@ -434,6 +441,20 @@ public class TitleBarView extends ViewGroup {
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec) + mStatusBarHeight + mDividerHeight);
     }
 
+    /**
+     * 设置TitleBarView高度--不包含状态栏及下划线
+     *
+     * @param height
+     * @return
+     */
+    public TitleBarView setHeight(int height) {
+        ViewGroup.LayoutParams params = getLayoutParams();
+        if (params != null) {
+            getLayoutParams().height = height;
+        }
+        return this;
+    }
+
     public TitleBarView setOutPadding(int paddingValue) {
         mOutPadding = paddingValue;
         mLeftLayout.setPadding(mOutPadding, 0, 0, 0);
@@ -446,6 +467,20 @@ public class TitleBarView extends ViewGroup {
         mTitleMain.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
         mCenterLayout.setGravity(mCenterGravityLeft ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
         mTitleSub.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
+        return setCenterGravityLeftPadding(mCenterGravityLeftPadding);
+    }
+
+    /**
+     * 设置title 左边距--当设置setCenterGravityLeft(true)生效
+     *
+     * @param padding
+     * @return
+     */
+    public TitleBarView setCenterGravityLeftPadding(int padding) {
+        if (mCenterGravityLeft) {
+            mCenterGravityLeftPadding = padding;
+            mCenterLayout.setPadding(mCenterGravityLeftPadding, mCenterLayout.getTop(), mCenterLayout.getPaddingRight(), mCenterLayout.getPaddingBottom());
+        }
         return this;
     }
 
@@ -604,48 +639,50 @@ public class TitleBarView extends ViewGroup {
     }
 
     /**
-     * 左边文本添加图片
+     * 设置左边图片资源
      *
-     * @param id 资源id
+     * @param drawable
+     * @return
      */
-    public TitleBarView setLeftTextDrawable(int id, int drawablePadding) {
-        Drawable mDrawable = null;
+    public TitleBarView setLeftTextDrawable(Drawable drawable) {
         try {
-            mDrawable = getResources().getDrawable(id);
-            if (mDrawable != null) {
-                mDrawable.setBounds(0, 0,
-                        mLeftTextDrawableWidth != -1 ? mLeftTextDrawableWidth : mDrawable.getIntrinsicWidth(),
-                        mLeftTextDrawableHeight != -1 ? mLeftTextDrawableHeight : mDrawable.getIntrinsicHeight());
+            if (drawable != null) {
+                drawable.setBounds(0, 0,
+                        mLeftTextDrawableWidth != -1 ? mLeftTextDrawableWidth : drawable.getIntrinsicWidth(),
+                        mLeftTextDrawableHeight != -1 ? mLeftTextDrawableHeight : drawable.getIntrinsicHeight());
             }
         } catch (Exception e) {
         }
-        mLeftTv.setCompoundDrawables(mDrawable, null, null, null);
-        return setLeftTextDrawablePadding(drawablePadding);
+        mLeftTextDrawable = drawable;
+        mLeftTv.setCompoundDrawables(mLeftTextDrawable, null, null, null);
+        return this;
     }
 
     public TitleBarView setLeftTextDrawable(int id) {
         mLeftDrawable = id;
-        return setLeftTextDrawable(id, mLeftDrawablePadding);
+        Drawable drawable = null;
+        try {
+            drawable = mContext.getResources().getDrawable(id);
+        } catch (Exception e) {
+
+        }
+        return setLeftTextDrawable(drawable);
     }
 
     public TitleBarView setLeftTextDrawableWidth(int width) {
         mLeftTextDrawableWidth = width;
-        return setLeftTextDrawable(mLeftDrawable);
+        return setLeftTextDrawable(mLeftTextDrawable);
     }
 
     public TitleBarView setLeftTextDrawableHeight(int height) {
         mLeftTextDrawableHeight = height;
-        return setLeftTextDrawable(mLeftDrawable);
+        return setLeftTextDrawable(mLeftTextDrawable);
     }
 
     public TitleBarView setLeftTextDrawablePadding(int drawablePadding) {
         this.mLeftDrawablePadding = drawablePadding;
         mLeftTv.setCompoundDrawablePadding(mLeftDrawablePadding);
         return this;
-    }
-
-    public TitleBarView setLeftTextDrawablePadding(float drawablePadding) {
-        return setLeftTextDrawablePadding(dip2px(drawablePadding));
     }
 
     public TitleBarView setLeftTextPadding(int left, int top, int right, int bottom) {
@@ -933,21 +970,31 @@ public class TitleBarView extends ViewGroup {
     /**
      * 右边文本添加图片
      *
-     * @param id 资源id
+     * @param drawable 资源
      */
-    public TitleBarView setRightTextDrawable(int id, int drawablePadding) {
-        Drawable mDrawable = null;
+    public TitleBarView setRightTextDrawable(Drawable drawable) {
         try {
-            mDrawable = getResources().getDrawable(id);
-            if (mDrawable != null) {
-                mDrawable.setBounds(0, 0,
-                        mRightTextDrawableWidth != -1 ? mRightTextDrawableWidth : mDrawable.getIntrinsicWidth(),
-                        mRightTextDrawableHeight != -1 ? mRightTextDrawableHeight : mDrawable.getIntrinsicHeight());
+            if (drawable != null) {
+                drawable.setBounds(0, 0,
+                        mRightTextDrawableWidth != -1 ? mRightTextDrawableWidth : drawable.getIntrinsicWidth(),
+                        mRightTextDrawableHeight != -1 ? mRightTextDrawableHeight : drawable.getIntrinsicHeight());
             }
         } catch (Exception e) {
         }
-        mRightTv.setCompoundDrawables(null, null, mDrawable, null);
-        return setRightTextDrawablePadding(drawablePadding);
+        mRightTextDrawable = drawable;
+        mRightTv.setCompoundDrawables(null, null, mRightTextDrawable, null);
+        return this;
+    }
+
+    public TitleBarView setRightTextDrawable(int id) {
+        mRightDrawable = id;
+        Drawable drawable = null;
+        try {
+            drawable = mContext.getResources().getDrawable(id);
+        } catch (Exception e) {
+
+        }
+        return setRightTextDrawable(drawable);
     }
 
     public TitleBarView setRightTextDrawablePadding(int drawablePadding) {
@@ -956,23 +1003,14 @@ public class TitleBarView extends ViewGroup {
         return this;
     }
 
-    public TitleBarView setRightTextDrawablePadding(float drawablePadding) {
-        return setRightTextDrawablePadding(dip2px(drawablePadding));
-    }
-
-    public TitleBarView setRightTextDrawable(int id) {
-        mRightDrawable = id;
-        return setRightTextDrawable(id, mRightDrawablePadding);
-    }
-
     public TitleBarView setRightTextDrawableWidth(int width) {
         mRightTextDrawableWidth = width;
-        return setRightTextDrawable(mRightDrawable);
+        return setRightTextDrawable(mRightTextDrawable);
     }
 
     public TitleBarView setRightTextDrawableHeight(int height) {
         mRightTextDrawableHeight = height;
-        return setRightTextDrawable(mRightDrawable);
+        return setRightTextDrawable(mRightTextDrawable);
     }
 
     public TitleBarView setRightTextPadding(int left, int top, int right, int bottom) {
@@ -992,11 +1030,6 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView setActionTextSize(int mActionTextSize) {
         this.mActionTextSize = mActionTextSize;
-        return this;
-    }
-
-    public TitleBarView setActionTextSize(float mActionTextSize) {
-        setActionTextSize(dip2px(mActionTextSize));
         return this;
     }
 
@@ -1096,10 +1129,10 @@ public class TitleBarView extends ViewGroup {
                 text.setBackgroundResource(mActionTextBackgroundResource);
             }
             view = text;
-        } else if (obj instanceof Integer) {
+        } else if (obj instanceof Drawable) {
             ImageView img = new ImageView(getContext());
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            img.setImageResource((Integer) obj);
+            img.setImageDrawable((Drawable) obj);
             view = img;
         }
         view.setPadding(mActionPadding, 0, mActionPadding, 0);
@@ -1117,22 +1150,39 @@ public class TitleBarView extends ViewGroup {
         OnClickListener getOnClickListener();
     }
 
-    public class ImageAction implements Action<Integer> {
+    public class ImageAction implements Action<Drawable> {
 
-        private int mDrawable;
+
+        private Drawable mDrawable;
         private OnClickListener onClickListener;
 
-        public ImageAction(int mDrawable, OnClickListener onClickListener) {
+        public ImageAction(Drawable mDrawable, OnClickListener onClickListener) {
             this.mDrawable = mDrawable;
             this.onClickListener = onClickListener;
         }
 
-        public ImageAction(int mDrawable) {
-            this.mDrawable = mDrawable;
+        public ImageAction(int drawable, OnClickListener onClickListener) {
+            try {
+                this.mDrawable = getResources().getDrawable(drawable);
+            } catch (Exception e) {
+            }
+            this.onClickListener = onClickListener;
+        }
+
+        public ImageAction(int drawable) {
+            try {
+                this.mDrawable = getResources().getDrawable(drawable);
+            } catch (Exception e) {
+
+            }
+        }
+
+        public ImageAction(Drawable drawable) {
+            this.mDrawable = drawable;
         }
 
         @Override
-        public Integer getData() {
+        public Drawable getData() {
             return mDrawable;
         }
 

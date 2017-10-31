@@ -1,17 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/colorTitle"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorTitle"
+    android:orientation="vertical">
 
-    <include layout="@layout/layout_title_bar"/>
+    <include layout="@layout/layout_title_bar" />
+
+    <com.aries.ui.view.title.TitleBarView
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:visibility="gone"
+        app:title_centerGravityLeft="true"
+        app:title_leftTextDrawable="@drawable/ic_arrow_left"
+        app:title_titleMainText="@string/app_name"
+        app:title_titleMainTextFakeBold="true"
+        app:title_titleSubText="@string/app_name"
+        app:title_titleSubTextSize="14dp">
+
+    </com.aries.ui.view.title.TitleBarView>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:visibility="gone"
+        app:navigationIcon="@drawable/ic_arrow_left"
+        app:subtitle="@string/app_name"
+        app:title="@string/app_name">
+
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <com.aries.ui.view.radius.RadiusLinearLayout
         android:layout_width="match_parent"
@@ -24,8 +47,7 @@
         app:rv_strokeColor="@color/colorLineGray"
         app:rv_strokeWidth="@dimen/dp_line_size">
 
-        <com.aries.ui.view.radius.RadiusEditText
-            xmlns:rv="http://schemas.android.com/apk/res-auto"
+        <com.aries.ui.view.radius.RadiusEditText xmlns:rv="http://schemas.android.com/apk/res-auto"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_weight="1"
@@ -39,7 +61,7 @@
             rv:rv_radiusHalfHeightEnable="true"
             rv:rv_strokeColor="@color/colorLineGray"
             rv:rv_strokePressedColor="@color/colorLineGray"
-            rv:rv_strokeWidth="1dp"/>
+            rv:rv_strokeWidth="1dp" />
 
         <com.aries.ui.view.radius.RadiusTextView
             android:id="@+id/rtv_send"
@@ -52,7 +74,7 @@
             android:textSize="14dp"
             app:rv_backgroundColor="@android:color/holo_purple"
             app:rv_backgroundPressedColor="@android:color/holo_purple"
-            app:rv_radiusHalfHeightEnable="true"/>
+            app:rv_radiusHalfHeightEnable="true" />
     </com.aries.ui.view.radius.RadiusLinearLayout>
 
 </LinearLayout>

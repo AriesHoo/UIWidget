@@ -114,12 +114,7 @@ public class KeyboardUtil {
             int height = mDecorView.getContext().getResources().getDisplayMetrics().heightPixels; //获取屏幕密度，不包含导航栏
             int diff = height - r.bottom;
             if (diff >= 0) {
-                if (mFlag || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)) {
-                    mContentView.setPadding(0, mContentView.getPaddingTop(), 0, diff);
-                } else {
-                    mContentView.setPadding(0, mContentView.getPaddingTop(),
-                            0, diff);
-                }
+                mContentView.setPadding(0, mContentView.getPaddingTop(), 0, diff);
             }
         }
     };
