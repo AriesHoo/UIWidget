@@ -35,7 +35,7 @@ allprojects {
 
 ```
 dependencies {
-     //compile 'com.github.AriesHoo:UIWidget:2.0.1'
+     //compile 'com.github.AriesHoo:UIWidget:2.0.2'
      compile 'com.github.AriesHoo:UIWidget:${LATEST_VERSION}'
 }
 ```
@@ -67,7 +67,7 @@ dependencies {
 ## License
 
 ```
-Copyright 2016 Aries Hoo
+Copyright 2016-2017 Aries Hoo
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
