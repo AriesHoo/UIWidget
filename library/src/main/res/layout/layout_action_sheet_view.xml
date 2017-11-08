@@ -57,6 +57,6 @@
         android:gravity="center"
         android:text="@string/cancel"
         android:textColor="@color/colorActionSheetCancelText"
-        android:textSize="18dp"/>
+        android:textSize="16dp"/>
 
 </LinearLayout>

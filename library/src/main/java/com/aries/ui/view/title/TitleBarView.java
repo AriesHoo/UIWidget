@@ -584,6 +584,20 @@ public class TitleBarView extends ViewGroup {
         return this;
     }
 
+    /**
+     * 设置所有TextView的文本颜色--注意和其它方法的先后顺序
+     *
+     * @param color
+     * @return
+     */
+    public TitleBarView setTextColor(int color) {
+        return setLeftTextColor(color)
+                .setTitleMainTextColor(color)
+                .setTitleSubTextColor(color)
+                .setRightTextColor(color)
+                .setActionTextColor(color);
+    }
+
     public TitleBarView setLeftText(CharSequence title) {
         mLeftText = title;
         mLeftTv.setText(title);

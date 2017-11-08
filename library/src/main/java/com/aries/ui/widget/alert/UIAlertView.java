@@ -111,10 +111,6 @@ public class UIAlertView {
         dialog.dismiss();
     }
 
-    public UIAlertView builder() {
-        return this;
-    }
-
     public AlertDialog getDialog() {
         return dialog;
     }

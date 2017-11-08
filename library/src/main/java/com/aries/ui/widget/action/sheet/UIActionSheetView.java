@@ -47,7 +47,7 @@ public class UIActionSheetView {
     private Window window;
     private WindowManager.LayoutParams lp;
     private int unitItems = TypedValue.COMPLEX_UNIT_DIP;
-    private float textSizeItems = 18;
+    private float textSizeItems = 16;
     private float itemHeight = 45;
     private int STYLE = STYLE_NORMAL;
     public final static int STYLE_NORMAL = 0;
@@ -335,7 +335,8 @@ public class UIActionSheetView {
         for (CharSequence item : items) {
             list.add(new SheetItem(item,
                     STYLE == STYLE_WEI_XIN ? context.getResources().getColor(R.color.colorActionSheetWeiXinText) :
-                            STYLE == STYLE_NORMAL ? context.getResources().getColor(R.color.colorActionSheetNormalItemText) : null
+                            STYLE == STYLE_NORMAL ? context.getResources().getColor(R.color.colorActionSheetNormalItemText) :
+                                    context.getResources().getColor(R.color.colorActionSheetItemText)
                     , onItemSelected));
         }
         return setItems(list);
