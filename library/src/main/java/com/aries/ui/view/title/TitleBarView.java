@@ -399,6 +399,9 @@ public class TitleBarView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        //实时获取避免因横竖屏切换造成测量错误
+        mScreenWidth = getScreenWidth();
+        mStatusBarHeight = getStatusBarHeight();
         int left = mLeftLayout.getMeasuredWidth();
         int right = mRightLayout.getMeasuredWidth();
         int center = mCenterLayout.getMeasuredWidth();
@@ -416,6 +419,8 @@ public class TitleBarView extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        mScreenWidth = getScreenWidth();
+        mStatusBarHeight = getStatusBarHeight();
         measureChild(mLeftLayout, widthMeasureSpec, heightMeasureSpec);
         measureChild(mRightLayout, widthMeasureSpec, heightMeasureSpec);
         measureChild(mCenterLayout, widthMeasureSpec, heightMeasureSpec);
