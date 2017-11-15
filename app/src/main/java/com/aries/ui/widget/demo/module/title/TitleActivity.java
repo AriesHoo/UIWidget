@@ -148,6 +148,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     private void initData() {
         List<TitleEntity> list = new ArrayList<>();
         list.add(new TitleEntity("TitleBarView与底部EditText结合", "点击查看示例", TitleEditActivity.class));
+        list.add(new TitleEntity("TitleBarView结合ConstraintLayout", "点击查看示例", TitleWithConstraint.class));
         list.add(new TitleEntity("白色主题", "点击切换白色主题", android.R.color.white));
         list.add(new TitleEntity("红色主题", "点击切换红色主题", android.R.color.holo_red_light));
         list.add(new TitleEntity("橙色主题", "点击切换橙色主题", android.R.color.holo_orange_light));
@@ -293,11 +294,11 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
         TitleEntity entity = adapter.getItem(position);
         if (entity.colorRes != 0) {
             isWhite = entity.colorRes == android.R.color.white;
-            titleBar.setBackgroundResource(entity.colorRes);
-            titleBar.setLeftTextDrawable(isWhite ? R.drawable.ic_arrow_left : R.drawable.ic_arrow_back_white);
-            titleBar.setRightTextDrawable(isWhite ? R.drawable.ic_menu : R.drawable.ic_menu_white);
-            titleBar.setTitleMainTextColor(isWhite ? getResources().getColor(R.color.colorTextBlack) : Color.WHITE);
-            titleBar.setTitleSubTextColor(isWhite ? getResources().getColor(R.color.colorTextBlack) : Color.WHITE);
+            titleBar.setBgResource(entity.colorRes)
+                    .setLeftTextDrawable(isWhite ? R.drawable.ic_arrow_left : R.drawable.ic_arrow_back_white)
+                    .setRightTextDrawable(isWhite ? R.drawable.ic_menu : R.drawable.ic_menu_white)
+                    .setTitleMainTextColor(isWhite ? getResources().getColor(R.color.colorTextBlack) : Color.WHITE)
+                    .setTitleSubTextColor(isWhite ? getResources().getColor(R.color.colorTextBlack) : Color.WHITE);
             if (type > 0 && isImmersible) {
                 if (isWhite) {
                     StatusBarUtil.setStatusBarLightMode(mContext);

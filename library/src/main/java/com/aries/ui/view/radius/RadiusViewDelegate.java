@@ -20,8 +20,9 @@ import com.aries.ui.widget.R;
 
 /**
  * Created: AriesHoo on 2017-02-10 14:25
- * Function: 公共属性解析类
- * Desc:
+ * E-Mail: AriesHoo@126.com
+ * Function:  公共属性解析代理类
+ * Description: 1、2017-11-15 09:36:14添加Java属性设置链式调用支持
  */
 public class RadiusViewDelegate {
     private View view;
@@ -110,129 +111,279 @@ public class RadiusViewDelegate {
         return enable;
     }
 
-    public void setBackgroundColor(int backgroundColor) {
+    /**
+     * 设置常态背景色
+     *
+     * @param backgroundColor
+     * @return
+     */
+    public RadiusViewDelegate setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setBackgroundPressedColor(int backgroundPressedColor) {
+    /**
+     * 设置按下状态背景色
+     *
+     * @param backgroundPressedColor
+     * @return
+     */
+    public RadiusViewDelegate setBackgroundPressedColor(int backgroundPressedColor) {
         this.backgroundPressedColor = backgroundPressedColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setBackgroundEnabledColor(int backgroundEnabledColor) {
+    /**
+     * 设置不可操作状态下背景色
+     *
+     * @param backgroundEnabledColor
+     * @return
+     */
+    public RadiusViewDelegate setBackgroundEnabledColor(int backgroundEnabledColor) {
         this.backgroundEnabledColor = backgroundEnabledColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setBackgroundSelectedColor(int backgroundSelectedColor) {
+    /**
+     * 设置selected状态下背景色
+     *
+     * @param backgroundSelectedColor
+     * @return
+     */
+    public RadiusViewDelegate setBackgroundSelectedColor(int backgroundSelectedColor) {
         this.backgroundSelectedColor = backgroundSelectedColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setBackgroundCheckedColor(int backgroundCheckedColor) {
+    /**
+     * 设置checked状态背景色
+     *
+     * @param backgroundCheckedColor
+     * @return
+     */
+    public RadiusViewDelegate setBackgroundCheckedColor(int backgroundCheckedColor) {
         this.backgroundCheckedColor = backgroundCheckedColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setRadius(int radius) {
+    /**
+     * 设置整体圆角弧度
+     *
+     * @param radius
+     * @return
+     */
+    public RadiusViewDelegate setRadius(int radius) {
         this.radius = radius;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setStrokeWidth(int strokeWidth) {
+    /**
+     * 设置边框线宽度(粗细)
+     *
+     * @param strokeWidth
+     * @return
+     */
+    public RadiusViewDelegate setStrokeWidth(int strokeWidth) {
         this.strokeWidth = strokeWidth;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setStrokeColor(int strokeColor) {
+    /**
+     * 设置边框线常态颜色
+     *
+     * @param strokeColor
+     * @return
+     */
+    public RadiusViewDelegate setStrokeColor(int strokeColor) {
         this.strokeColor = strokeColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setStrokePressedColor(int strokePressedColor) {
+    /**
+     * 设置边框线按下状态颜色
+     *
+     * @param strokePressedColor
+     * @return
+     */
+    public RadiusViewDelegate setStrokePressedColor(int strokePressedColor) {
         this.strokePressedColor = strokePressedColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setStrokeEnabledColor(int strokeEnabledColor) {
+    /**
+     * 设置边框线不可点击状态下颜色
+     *
+     * @param strokeEnabledColor
+     * @return
+     */
+    public RadiusViewDelegate setStrokeEnabledColor(int strokeEnabledColor) {
         this.strokeEnabledColor = strokeEnabledColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setStrokeSelectedColor(int strokeSelectedColor) {
+    /**
+     * 设置边框线selected状态颜色
+     *
+     * @param strokeSelectedColor
+     * @return
+     */
+    public RadiusViewDelegate setStrokeSelectedColor(int strokeSelectedColor) {
         this.strokeSelectedColor = strokeSelectedColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setStrokeCheckedColor(int strokeCheckedColor) {
+    /**
+     * 设置边框checked状态颜色
+     *
+     * @param strokeCheckedColor
+     * @return
+     */
+    public RadiusViewDelegate setStrokeCheckedColor(int strokeCheckedColor) {
         this.strokeCheckedColor = strokeCheckedColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setTextColor(int textColor) {
+    /**
+     * 设置文本常态颜色
+     *
+     * @param textColor
+     * @return
+     */
+    public RadiusViewDelegate setTextColor(int textColor) {
         this.textColor = textColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setTextPressedColor(int textPressedColor) {
+    /**
+     * 设置文本按下颜色
+     *
+     * @param textPressedColor
+     * @return
+     */
+    public RadiusViewDelegate setTextPressedColor(int textPressedColor) {
         this.textPressedColor = textPressedColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setTextEnabledColor(int textEnabledColor) {
+    /**
+     * 设置文本不可点击状态颜色--setEnable(false)时的颜色{@link View#setEnabled(boolean)}
+     *
+     * @param textEnabledColor
+     * @return
+     */
+    public RadiusViewDelegate setTextEnabledColor(int textEnabledColor) {
         this.textEnabledColor = textEnabledColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setTextSelectedColor(int textSelectedColor) {
+    /**
+     * 设置文本selected颜色
+     *
+     * @param textSelectedColor
+     * @return
+     */
+    public RadiusViewDelegate setTextSelectedColor(int textSelectedColor) {
         this.textSelectedColor = textSelectedColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setTextCheckedColor(int textCheckedColor) {
+    /**
+     * 设置文本checked颜色
+     *
+     * @param textCheckedColor
+     * @return
+     */
+    public RadiusViewDelegate setTextCheckedColor(int textCheckedColor) {
         this.textCheckedColor = textCheckedColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setEadiusHalfHeightEnable(boolean isRadiusHalfHeight) {
+    /**
+     * 设置半高度圆角
+     *
+     * @param isRadiusHalfHeight
+     * @return
+     */
+    public RadiusViewDelegate setEadiusHalfHeightEnable(boolean isRadiusHalfHeight) {
         this.isRadiusHalfHeight = isRadiusHalfHeight;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setWidthHeightEqualEnable(boolean isWidthHeightEqual) {
+    /**
+     * 设置宽高相等
+     *
+     * @param isWidthHeightEqual
+     * @return
+     */
+    public RadiusViewDelegate setWidthHeightEqualEnable(boolean isWidthHeightEqual) {
         this.isWidthHeightEqual = isWidthHeightEqual;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setTopLeftRadius(int topLeftRadius) {
+    /**
+     * 设置左上圆角
+     *
+     * @param topLeftRadius
+     * @return
+     */
+    public RadiusViewDelegate setTopLeftRadius(int topLeftRadius) {
         this.topLeftRadius = topLeftRadius;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setTopRightRadius(int topRightRadius) {
+    /**
+     * 设置右上圆角
+     *
+     * @param topRightRadius
+     * @return
+     */
+    public RadiusViewDelegate setTopRightRadius(int topRightRadius) {
         this.topRightRadius = topRightRadius;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setBottomLeftRadius(int bottomLeftRadius) {
+    /**
+     * 设置左下圆角
+     *
+     * @param bottomLeftRadius
+     * @return
+     */
+    public RadiusViewDelegate setBottomLeftRadius(int bottomLeftRadius) {
         this.bottomLeftRadius = bottomLeftRadius;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setBottomRightRadius(int bottomRightRadius) {
+    /**
+     * 设置右下圆角
+     *
+     * @param bottomRightRadius
+     * @return
+     */
+    public RadiusViewDelegate setBottomRightRadius(int bottomRightRadius) {
         this.bottomRightRadius = bottomRightRadius;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setRippleColor(int rippleColor) {
+    /**
+     * 设置水波纹颜色
+     *
+     * @param rippleColor
+     * @return
+     */
+    public RadiusViewDelegate setRippleColor(int rippleColor) {
         this.rippleColor = rippleColor;
-        setBgSelector();
+        return setBgSelector();
     }
 
-    public void setRippleEnable(boolean rippleEnable) {
+    /**
+     * 设置是否支持水波纹效果--5.0及以上
+     *
+     * @param rippleEnable
+     * @return
+     */
+    public RadiusViewDelegate setRippleEnable(boolean rippleEnable) {
         this.isRippleEnable = rippleEnable;
-        setBgSelector();
+        return setBgSelector();
     }
 
     public int getRadius() {
@@ -277,7 +428,7 @@ public class RadiusViewDelegate {
     /**
      * 设置shape属性
      */
-    public void setBgSelector() {
+    public RadiusViewDelegate setBgSelector() {
         setTextSelector();
         //获取view当前drawable--用于判断是否通过默认属性设置背景
         Drawable mDrawable = view.getBackground();
@@ -309,7 +460,7 @@ public class RadiusViewDelegate {
             view.setBackground(rippleDrawable);
         } else {
             if (!isSetBg) {//避免默认background设置无效
-                return;
+                return this;
             }
             if (backgroundPressedColor != Integer.MAX_VALUE || strokePressedColor != Integer.MAX_VALUE) {
                 setDrawable(gdBackgroundPressed,
@@ -342,6 +493,7 @@ public class RadiusViewDelegate {
                 view.setBackgroundDrawable(bg);
             }
         }
+        return this;
     }
 
     /**

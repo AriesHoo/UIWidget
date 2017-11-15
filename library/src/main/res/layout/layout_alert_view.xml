@@ -55,6 +55,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingTop="10dp"
+                android:textColor="@color/colorAlertTitle"
                 android:textSize="@dimen/sp_alert_title_size"
                 android:textStyle="bold"/>
 
@@ -70,6 +71,7 @@
                     android:maxWidth="@dimen/alert_max_width"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
+                    android:textColor="@color/colorAlertMessage"
                     android:textSize="@dimen/sp_alert_message_size"/>
             </ScrollView>
 

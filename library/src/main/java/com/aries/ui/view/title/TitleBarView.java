@@ -24,11 +24,11 @@ import com.aries.ui.util.KeyboardUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.widget.R;
 
-
 /**
  * Created: AriesHoo on 2017-02-09 09:42
+ * E-Mail: AriesHoo@126.com
  * Function:定制标题栏
- * Desc:
+ * Description:
  */
 public class TitleBarView extends ViewGroup {
 
@@ -59,6 +59,10 @@ public class TitleBarView extends ViewGroup {
     private TextView mRightTv;//右边TextView
     private View mDividerView;//下方下划线
 
+    /**
+     * 是否增加状态栏高度
+     */
+    private boolean mIsPlusStatusHeight = true;
     /**
      * xml属性
      */
@@ -247,8 +251,9 @@ public class TitleBarView extends ViewGroup {
         mStatusBarHeight = getStatusBarHeight();
         if (context instanceof Activity) {
             setImmersible((Activity) context, mImmersible);
-            if (mStatusBarLightMode)
+            if (mStatusBarLightMode) {
                 setStatusBarLightMode(mStatusBarLightMode);
+            }
         }
         setOutPadding(mOutPadding);
         setActionPadding(mActionPadding);
@@ -370,11 +375,8 @@ public class TitleBarView extends ViewGroup {
      */
     public TitleBarView setImmersible(Activity activity, boolean immersible, boolean isTransStatusBar, boolean isPlusStatusBar) {
         this.mImmersible = immersible;
-        if (isPlusStatusBar && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mStatusBarHeight = getStatusBarHeight();
-        } else {
-            mStatusBarHeight = 0;
-        }
+        this.mIsPlusStatusHeight = isPlusStatusBar;
+        mStatusBarHeight = getNeedStatusBarHeight();
         if (activity == null) {
             return this;
         }
@@ -401,12 +403,12 @@ public class TitleBarView extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         //实时获取避免因横竖屏切换造成测量错误
         mScreenWidth = getScreenWidth();
-        mStatusBarHeight = getStatusBarHeight();
+        mStatusBarHeight = getNeedStatusBarHeight();
         int left = mLeftLayout.getMeasuredWidth();
         int right = mRightLayout.getMeasuredWidth();
         int center = mCenterLayout.getMeasuredWidth();
-        mLeftLayout.layout(0, mStatusBarHeight, left, mLeftLayout.getMeasuredHeight() + mStatusBarHeight);
-        mRightLayout.layout(mScreenWidth - right, mStatusBarHeight, mScreenWidth, mRightLayout.getMeasuredHeight() + mStatusBarHeight);
+        mLeftLayout.layout(0, isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2, left, mLeftLayout.getMeasuredHeight() + mStatusBarHeight);
+        mRightLayout.layout(mScreenWidth - right, isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2, mScreenWidth, mRightLayout.getMeasuredHeight() + mStatusBarHeight);
         boolean isMuchScreen = left + right + center >= mScreenWidth;
         if (left > right) {
             mCenterLayout.layout(left, mStatusBarHeight, isMuchScreen ? mScreenWidth - right : mScreenWidth - left, getMeasuredHeight() - mDividerHeight);
@@ -420,7 +422,7 @@ public class TitleBarView extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mScreenWidth = getScreenWidth();
-        mStatusBarHeight = getStatusBarHeight();
+        mStatusBarHeight = getNeedStatusBarHeight();
         measureChild(mLeftLayout, widthMeasureSpec, heightMeasureSpec);
         measureChild(mRightLayout, widthMeasureSpec, heightMeasureSpec);
         measureChild(mCenterLayout, widthMeasureSpec, heightMeasureSpec);
@@ -444,7 +446,7 @@ public class TitleBarView extends ViewGroup {
             mCenterLayout.measure(MeasureSpec.makeMeasureSpec(center, MeasureSpec.EXACTLY), heightMeasureSpec);
         }
         //重新测量宽高--增加状态栏及下划线的高度
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec) + mStatusBarHeight + mDividerHeight);
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec) + (isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2) + mDividerHeight);
     }
 
     /**
@@ -456,8 +458,27 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setHeight(int height) {
         ViewGroup.LayoutParams params = getLayoutParams();
         if (params != null) {
-            getLayoutParams().height = height;
+            params.height = height;
         }
+        return this;
+    }
+
+    public TitleBarView setBgDrawable(Drawable background) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            setBackground(background);
+        } else {
+            setBackgroundDrawable(background);
+        }
+        return this;
+    }
+
+    public TitleBarView setBgColor(int color) {
+        setBackgroundColor(color);
+        return this;
+    }
+
+    public TitleBarView setBgResource(int res) {
+        super.setBackgroundResource(res);
         return this;
     }
 
@@ -498,28 +519,47 @@ public class TitleBarView extends ViewGroup {
         return this;
     }
 
-    public boolean setStatusBarLightMode(boolean mStatusBarLightMode) {
+    public TitleBarView setStatusBarLightMode(boolean mStatusBarLightMode) {
         if (mContext instanceof Activity) {
             return setStatusBarLightMode((Activity) mContext, mStatusBarLightMode);
         }
-        return false;
+        return this;
     }
 
-    public boolean setStatusBarLightMode(Activity mActivity, boolean mStatusBarLightMode) {
-        boolean result = false;
+    /**
+     * 设置状态栏文字黑白颜色切换
+     *
+     * @param mActivity
+     * @param mStatusBarLightMode
+     * @return
+     */
+    public TitleBarView setStatusBarLightMode(Activity mActivity, boolean mStatusBarLightMode) {
         this.mStatusBarLightMode = mStatusBarLightMode;
         if (mActivity != null) {
             if (mStatusBarLightMode) {
                 mStatusBarModeType = StatusBarUtil.setStatusBarLightMode(mActivity);
-                result = mStatusBarModeType > 0;
             } else {
                 mStatusBarModeType = StatusBarUtil.setStatusBarDarkMode(mActivity);
-                result = mStatusBarModeType > 0;
             }
         }
-        return result;
+        return this;
     }
 
+    /**
+     * 返回是否支持状态栏颜色切换
+     *
+     * @return
+     */
+    public boolean isStatusBarLightModeEnable() {
+        return StatusBarUtil.isSupportStatusBarFontChange();
+    }
+
+    /**
+     * 设置view左右两边内边距
+     *
+     * @param actionPadding
+     * @return
+     */
     public TitleBarView setActionPadding(int actionPadding) {
         mActionPadding = actionPadding;
         return this;
@@ -610,7 +650,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setLeftText(int id) {
-        return setLeftText(getResources().getString(id));
+        return setLeftText(getResources().getText(id));
     }
 
     /**
@@ -729,7 +769,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setTitleMainText(int id) {
-        return setTitleMainText(getResources().getString(id));
+        return setTitleMainText(getResources().getText(id));
     }
 
     public TitleBarView setTitleMainText(CharSequence charSequence) {
@@ -843,7 +883,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setTitleSubText(int id) {
-        return setTitleSubText(getResources().getString(id));
+        return setTitleSubText(getResources().getText(id));
     }
 
     /**
@@ -943,7 +983,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setRightText(int id) {
-        return setRightText(getResources().getString(id));
+        return setRightText(getResources().getText(id));
     }
 
     /**
@@ -1221,31 +1261,31 @@ public class TitleBarView extends ViewGroup {
 
     }
 
-    public class TextAction implements Action<String> {
+    public class TextAction implements Action<CharSequence> {
 
-        private String mText;
+        private CharSequence mText;
         private OnClickListener onClickListener;
 
-        public TextAction(String mText, OnClickListener onClickListener) {
+        public TextAction(CharSequence mText, OnClickListener onClickListener) {
             this.mText = mText;
             this.onClickListener = onClickListener;
         }
 
-        public TextAction(String mText) {
+        public TextAction(CharSequence mText) {
             this.mText = mText;
         }
 
         public TextAction(int mText) {
-            this.mText = getResources().getString(mText);
+            this.mText = getResources().getText(mText);
         }
 
         public TextAction(int mText, OnClickListener onClickListener) {
-            this.mText = getResources().getString(mText);
+            this.mText = getResources().getText(mText);
             this.onClickListener = onClickListener;
         }
 
         @Override
-        public String getData() {
+        public CharSequence getData() {
             return mText;
         }
 
@@ -1280,6 +1320,28 @@ public class TitleBarView extends ViewGroup {
             return onClickListener;
         }
 
+    }
+
+    /**
+     * 获取真实需要的状态栏高度
+     *
+     * @return
+     */
+    private int getNeedStatusBarHeight() {
+        return isNeedStatusBar() ? getStatusBarHeight() : 0;
+    }
+
+    /**
+     * 当TitleBarView的父容器为ConstraintLayout(约束布局)时TitleBarView新增的高度会变成状态栏高度2倍需做特殊处理--暂不知原因
+     *
+     * @return
+     */
+    private boolean isNormalParent() {
+        return !(getParent() != null && getParent().getClass().getSimpleName().contains("ConstraintLayout"));
+    }
+
+    private boolean isNeedStatusBar() {
+        return mIsPlusStatusHeight && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
     /**

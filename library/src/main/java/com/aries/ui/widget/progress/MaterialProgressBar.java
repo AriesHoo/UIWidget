@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,11 +19,11 @@ import android.view.animation.LinearInterpolator;
 
 import com.aries.ui.widget.R;
 
-
 /**
  * Created: AriesHoo on 2017/8/27 13:21
+ * E-Mail: AriesHoo@126.com
  * Function: 自定义Material Design 风格ProgressBar
- * Desc:
+ * Description:1、2017-11-15 09:39:17 AriesHoo增加是否圆角属性控制
  */
 public class MaterialProgressBar extends View {
 
@@ -40,6 +41,7 @@ public class MaterialProgressBar extends View {
     private int arcColor = Color.BLUE;
     private float borderWidth = 3;
     private int duration = 600;//最小300(600与5.0以上接近),最大建议不超过1000
+    private boolean mRoundEnable = true;
 
     public MaterialProgressBar(Context context) {
         this(context, null, 0);
@@ -57,8 +59,9 @@ public class MaterialProgressBar extends View {
     private void initAttribute(Context context, AttributeSet attrs, int defStyle) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MaterialProgressBar, defStyle, 0);
         arcColor = typedArray.getColor(R.styleable.MaterialProgressBar_progress_arcColor, Color.BLUE);
-        borderWidth = typedArray.getDimensionPixelSize(R.styleable.MaterialProgressBar_progress_borderWidth, dip2px(context, 3));
+        borderWidth = typedArray.getDimensionPixelSize(R.styleable.MaterialProgressBar_progress_borderWidth, dip2px(3));
         duration = typedArray.getInt(R.styleable.MaterialProgressBar_progress_duration, duration);
+        mRoundEnable = typedArray.getBoolean(R.styleable.MaterialProgressBar_progress_roundEnable, false);
         typedArray.recycle();
         init();
         setViewAttributes();
@@ -70,7 +73,6 @@ public class MaterialProgressBar extends View {
         arcPaint.setStrokeWidth(borderWidth);
         arcPaint.setAntiAlias(true);
         arcPaint.setStyle(Paint.Style.STROKE);
-        arcPaint.setStrokeCap(Paint.Cap.ROUND);
         arcRect = new RectF();
     }
 
@@ -78,25 +80,58 @@ public class MaterialProgressBar extends View {
         setArcColor(arcColor);
         setBorderWidth(borderWidth);
         setDuration(duration);
+        setRoundEnable(mRoundEnable);
     }
 
-    public void setArcColor(int color) {
+    /**
+     * 设置颜色
+     *
+     * @param color
+     * @return
+     */
+    public MaterialProgressBar setArcColor(int color) {
         this.arcColor = color;
         arcPaint.setColor(arcColor);
+        return this;
     }
 
-    public void setBorderWidth(float width) {
+    /**
+     * 设置粗细
+     *
+     * @param width
+     * @return
+     */
+    public MaterialProgressBar setBorderWidth(float width) {
         this.borderWidth = width;
         arcPaint.setStrokeWidth(borderWidth);
+        return this;
     }
 
-    public void setDuration(int duration) {
+    /**
+     * 设置循环动画延迟
+     *
+     * @param duration
+     * @return
+     */
+    public MaterialProgressBar setDuration(int duration) {
         if (duration < 300) {
             duration = 300;
         }
         this.duration = duration;
+        return this;
     }
 
+    /**
+     * 设置是否圆角
+     *
+     * @param enable
+     * @return
+     */
+    public MaterialProgressBar setRoundEnable(boolean enable) {
+        this.mRoundEnable = enable;
+        arcPaint.setStrokeCap(mRoundEnable ? Paint.Cap.ROUND : Paint.Cap.SQUARE);
+        return this;
+    }
 
     private void startBound() {
         int paddingLeft = getPaddingLeft();
@@ -196,8 +231,8 @@ public class MaterialProgressBar extends View {
         return set;
     }
 
-    public static int dip2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public static int dip2px(float dipValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }
 

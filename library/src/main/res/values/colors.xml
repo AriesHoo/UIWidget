@@ -4,7 +4,9 @@
     <color name="colorAlertBg">#FFFFFF</color>
     <color name="colorAlertBgPressed">#D6D3D6</color>
     <color name="colorAlertLineGray">#DCDCDC</color>
-    <color name="colorAlertButton">#1382FF</color>
+    <color name="colorAlertTitle">#393939</color>
+    <color name="colorAlertMessage">#393939</color>
+    <color name="colorAlertButton">#393939</color>
 
     <color name="colorLoadingTextWeiBo">#f0f0f0</color>
     <color name="colorLoadingText">#393939</color>

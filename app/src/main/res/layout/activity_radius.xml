@@ -21,6 +21,14 @@
             android:orientation="vertical"
             android:padding="10dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="说明:以下所有展示的TextView、EditText、CheckBox等常用控件效果均通过xml属性控制并未设置shape文件背景"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="16dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,7 +101,7 @@
                 android:paddingLeft="18dp"
                 android:paddingRight="18dp"
                 android:paddingTop="10dp"
-                android:text="Radius Half Height"
+                android:text="RadiusTextView Half Height"
                 rv:rv_backgroundColor="#ffffff"
                 rv:rv_backgroundPressedColor="#03A9F4"
                 rv:rv_radiusHalfHeightEnable="true"

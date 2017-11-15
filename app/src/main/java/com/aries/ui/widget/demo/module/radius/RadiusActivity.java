@@ -22,7 +22,8 @@ public class RadiusActivity extends BaseActivity {
 
     @Override
     protected void setTitleBar() {
-        titleBar.setTitleMainText("RadiusView");
+        titleBar.setTitleMainText("RadiusView")
+                .setBottomEditTextControl();
     }
 
     @Override

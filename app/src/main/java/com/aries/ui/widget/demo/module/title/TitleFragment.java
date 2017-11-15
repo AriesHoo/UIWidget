@@ -56,9 +56,11 @@ public class TitleFragment extends Fragment {
                         getActivity().onBackPressed();
                     }
                 })
+                .setStatusBarLightMode(false)
                 .setCenterGravityLeft(true)
-                .setBackgroundResource(android.R.color.holo_purple);
-        titleBar.setStatusBarLightMode(false);
+                //软键盘弹起处理
+                .setBottomEditTextControl()
+                .setBgColor(getResources().getColor(android.R.color.holo_purple));
 
 //        //底部有输入框时使用--最后一个参数false
 //        titleBar.setImmersible(getActivity(), true, true, false);
@@ -70,8 +72,7 @@ public class TitleFragment extends Fragment {
 //        } else {
 //            mContentView.setBackgroundResource(android.R.color.holo_purple);
 //        }
-        //或者
-        titleBar.setBottomEditTextControl();
+
     }
 
     @Override

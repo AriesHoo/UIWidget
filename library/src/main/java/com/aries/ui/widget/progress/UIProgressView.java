@@ -90,6 +90,7 @@ public class UIProgressView extends Dialog {
         if (mStyle == STYLE_MATERIAL_DESIGN) {
             materialProgressBar = new MaterialProgressBar(mContext);
             materialProgressBar.setArcColor(loadingColor);
+            materialProgressBar.setRoundEnable(false);
             rootLayout.addView(materialProgressBar, 0, new ViewGroup.LayoutParams(dp2px(32), dp2px(32)));
         }
         setIndeterminateDrawable(mIndeterminateDrawable);
@@ -274,6 +275,6 @@ public class UIProgressView extends Dialog {
     }
 
     protected int dp2px(float dp) {
-        return MaterialProgressBar.dip2px(mContext, dp);
+        return MaterialProgressBar.dip2px(dp);
     }
 }

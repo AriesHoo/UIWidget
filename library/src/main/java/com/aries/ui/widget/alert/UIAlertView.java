@@ -26,11 +26,11 @@ import android.widget.TextView;
 
 import com.aries.ui.widget.R;
 
-
 /**
  * Created: AriesHoo on 2017-01-19 14:16
+ * E-Mail: AriesHoo@126.com
  * Function: 自定义AlertDialog 弹出提示框
- * Desc:
+ * Description:1、2017-11-15 10:08:42 AriesHoo 增加设置背景Drawable版本兼容
  */
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("InflateParams")
@@ -179,9 +179,12 @@ public class UIAlertView {
         return this;
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public UIAlertView setBackground(Drawable background) {
-        linearLayoutMain.setBackground(background);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            linearLayoutMain.setBackground(background);
+        } else {
+            linearLayoutMain.setBackgroundDrawable(background);
+        }
         return this;
     }
 
