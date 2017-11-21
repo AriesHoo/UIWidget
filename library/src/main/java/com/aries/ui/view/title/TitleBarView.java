@@ -29,6 +29,7 @@ import com.aries.ui.widget.R;
  * E-Mail: AriesHoo@126.com
  * Function:定制标题栏
  * Description:
+ * 1、2017-11-21 10:30:14 AriesHoo 修改onMeasure及onLayout回调控制宽度获取TitleBarView实际宽度(之前为屏幕宽度)
  */
 public class TitleBarView extends ViewGroup {
 
@@ -42,7 +43,7 @@ public class TitleBarView extends ViewGroup {
     private static final float DEFAULT_CENTER_GRAVITY_LEFT_PADDING = 24;//左右padding dp--ToolBar默认32dp
 
     private int mStatusBarHeight;//状态栏高度
-    private int mScreenWidth;//屏幕高度
+    private int mScreenWidth;//TitleBarView实际占用宽度
     private int systemUiVisibility;//Activity systemUiVisibility属性
 
     private Context mContext;
@@ -247,7 +248,7 @@ public class TitleBarView extends ViewGroup {
      * @param context
      */
     private void setViewAttributes(final Context context) {
-        mScreenWidth = getScreenWidth();
+        mScreenWidth = getMeasuredWidth();
         mStatusBarHeight = getStatusBarHeight();
         if (context instanceof Activity) {
             setImmersible((Activity) context, mImmersible);
@@ -402,7 +403,7 @@ public class TitleBarView extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         //实时获取避免因横竖屏切换造成测量错误
-        mScreenWidth = getScreenWidth();
+        mScreenWidth = getMeasuredWidth();
         mStatusBarHeight = getNeedStatusBarHeight();
         int left = mLeftLayout.getMeasuredWidth();
         int right = mRightLayout.getMeasuredWidth();
@@ -421,7 +422,7 @@ public class TitleBarView extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        mScreenWidth = getScreenWidth();
+        mScreenWidth = getMeasuredWidth();
         mStatusBarHeight = getNeedStatusBarHeight();
         measureChild(mLeftLayout, widthMeasureSpec, heightMeasureSpec);
         measureChild(mRightLayout, widthMeasureSpec, heightMeasureSpec);
@@ -1356,15 +1357,6 @@ public class TitleBarView extends ViewGroup {
             result = Resources.getSystem().getDimensionPixelSize(resourceId);
         }
         return result;
-    }
-
-    /**
-     * 获取屏幕宽度
-     *
-     * @return
-     */
-    public static int getScreenWidth() {
-        return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
     /**
