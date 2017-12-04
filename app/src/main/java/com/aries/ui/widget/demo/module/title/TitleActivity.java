@@ -259,7 +259,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
 
             }
         });
-        drawerRoot.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+        drawerRoot.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);

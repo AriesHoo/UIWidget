@@ -30,6 +30,7 @@ import com.aries.ui.widget.R;
  * Function:定制标题栏
  * Description:
  * 1、2017-11-21 10:30:14 AriesHoo 修改onMeasure及onLayout回调控制宽度获取TitleBarView实际宽度(之前为屏幕宽度)
+ * 2、2017-12-4 10:09:50 AriesHoo 修改onMeasure中重新测量中间Layout时机避免TitleBarView测量显示错误(目前在Fragment嵌套在FragmentLayout里会出现不显示Title BUG)
  */
 public class TitleBarView extends ViewGroup {
 
@@ -422,13 +423,16 @@ public class TitleBarView extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        mScreenWidth = getMeasuredWidth();
         mStatusBarHeight = getNeedStatusBarHeight();
         measureChild(mLeftLayout, widthMeasureSpec, heightMeasureSpec);
         measureChild(mRightLayout, widthMeasureSpec, heightMeasureSpec);
         measureChild(mCenterLayout, widthMeasureSpec, heightMeasureSpec);
         measureChild(mDividerView, widthMeasureSpec, heightMeasureSpec);
         measureChild(mStatusView, widthMeasureSpec, heightMeasureSpec);
+        //重新测量宽高--增加状态栏及下划线的高度
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec) + (isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2) + mDividerHeight);
+        mScreenWidth = getMeasuredWidth();
+
         int left = mLeftLayout.getMeasuredWidth();
         int right = mRightLayout.getMeasuredWidth();
         int center = mCenterLayout.getMeasuredWidth();
@@ -446,8 +450,6 @@ public class TitleBarView extends ViewGroup {
             }
             mCenterLayout.measure(MeasureSpec.makeMeasureSpec(center, MeasureSpec.EXACTLY), heightMeasureSpec);
         }
-        //重新测量宽高--增加状态栏及下划线的高度
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec) + (isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2) + mDividerHeight);
     }
 
     /**
@@ -1321,6 +1323,15 @@ public class TitleBarView extends ViewGroup {
             return onClickListener;
         }
 
+    }
+
+    /**
+     * 获取屏幕宽度
+     *
+     * @return
+     */
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
     /**

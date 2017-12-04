@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sv_slide"
     android:layout_width="240dp"
     android:layout_height="match_parent"
@@ -49,7 +50,12 @@
                 android:id="@+id/titleBarDrawer"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@android:color/transparent"/>
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                app:title_leftText="Left"
+                app:title_rightText="Right"
+                app:title_titleMainText="TitleMain"
+                app:title_titleSubText="TitleSub"/>
         </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
