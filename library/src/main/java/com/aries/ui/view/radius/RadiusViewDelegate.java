@@ -3,6 +3,7 @@ package com.aries.ui.view.radius;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -37,12 +38,14 @@ public class RadiusViewDelegate {
     private int backgroundEnabledColor;
     private int backgroundSelectedColor;
     private int backgroundCheckedColor;
-    private int radius;
-    private int topLeftRadius;
-    private int topRightRadius;
-    private int bottomLeftRadius;
-    private int bottomRightRadius;
+    private float radius;
+    private float topLeftRadius;
+    private float topRightRadius;
+    private float bottomLeftRadius;
+    private float bottomRightRadius;
     private int strokeWidth;
+    private float strokeDashWidth;
+    private float strokeDashGap;
     private int strokeColor;
     private int strokePressedColor;
     private int strokeEnabledColor;
@@ -59,6 +62,7 @@ public class RadiusViewDelegate {
     private boolean isRippleEnable;
     private boolean selected;
     private float[] radiusArr = new float[8];
+    private StateListDrawable mBg = new StateListDrawable();
 
     public RadiusViewDelegate(View view, Context context, AttributeSet attrs) {
         this.view = view;
@@ -77,8 +81,10 @@ public class RadiusViewDelegate {
         backgroundEnabledColor = ta.getColor(R.styleable.RadiusTextView_rv_backgroundEnabledColor, Integer.MAX_VALUE);
         backgroundSelectedColor = ta.getColor(R.styleable.RadiusTextView_rv_backgroundSelectedColor, Integer.MAX_VALUE);
         backgroundCheckedColor = ta.getColor(R.styleable.RadiusTextView_rv_backgroundCheckedColor, Integer.MAX_VALUE);
-        radius = ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_radius, 0);
+        radius = px2dp(ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_radius, 0));
         strokeWidth = ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_strokeWidth, 0);
+        strokeDashWidth = px2dp(ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_strokeDashWidth, 0));
+        strokeDashGap = px2dp(ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_strokeDashGap, 0));
         strokeColor = ta.getColor(R.styleable.RadiusTextView_rv_strokeColor, Color.GRAY);
         strokePressedColor = ta.getColor(R.styleable.RadiusTextView_rv_strokePressedColor, Integer.MAX_VALUE);
         strokeEnabledColor = ta.getColor(R.styleable.RadiusTextView_rv_strokeEnabledColor, Integer.MAX_VALUE);
@@ -91,10 +97,10 @@ public class RadiusViewDelegate {
         textCheckedColor = ta.getColor(R.styleable.RadiusTextView_rv_textCheckedColor, Integer.MAX_VALUE);
         isRadiusHalfHeight = ta.getBoolean(R.styleable.RadiusTextView_rv_radiusHalfHeightEnable, false);
         isWidthHeightEqual = ta.getBoolean(R.styleable.RadiusTextView_rv_widthHeightEqualEnable, false);
-        topLeftRadius = ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_topLeftRadius, 0);
-        topRightRadius = ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_topRightRadius, 0);
-        bottomLeftRadius = ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_bottomLeftRadius, 0);
-        bottomRightRadius = ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_bottomRightRadius, 0);
+        topLeftRadius = px2dp(ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_topLeftRadius, 0));
+        topRightRadius = px2dp(ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_topRightRadius, 0));
+        bottomLeftRadius = px2dp(ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_bottomLeftRadius, 0));
+        bottomRightRadius = px2dp(ta.getDimensionPixelSize(R.styleable.RadiusTextView_rv_bottomRightRadius, 0));
         rippleColor = ta.getColor(R.styleable.RadiusTextView_rv_rippleColor, mContext.getResources().getColor(R.color.colorRadiusDefaultRipple));
         isRippleEnable = ta.getBoolean(R.styleable.RadiusTextView_rv_rippleEnable, getDefaultRippleEnable());
         selected = ta.getBoolean(R.styleable.RadiusTextView_rv_selected, false);
@@ -172,7 +178,7 @@ public class RadiusViewDelegate {
      * @param radius
      * @return
      */
-    public RadiusViewDelegate setRadius(int radius) {
+    public RadiusViewDelegate setRadius(float radius) {
         this.radius = radius;
         return setBgSelector();
     }
@@ -185,6 +191,28 @@ public class RadiusViewDelegate {
      */
     public RadiusViewDelegate setStrokeWidth(int strokeWidth) {
         this.strokeWidth = strokeWidth;
+        return setBgSelector();
+    }
+
+    /**
+     * 设置虚线宽度
+     *
+     * @param strokeDashWidth
+     * @return
+     */
+    public RadiusViewDelegate setStrokeDashWidth(float strokeDashWidth) {
+        this.strokeDashWidth = strokeDashWidth;
+        return setBgSelector();
+    }
+
+    /**
+     * 设置虚线间隔
+     *
+     * @param strokeDashGap
+     * @return
+     */
+    public RadiusViewDelegate setStrokeDashGap(float strokeDashGap) {
+        this.strokeDashGap = strokeDashGap;
         return setBgSelector();
     }
 
@@ -326,7 +354,7 @@ public class RadiusViewDelegate {
      * @param topLeftRadius
      * @return
      */
-    public RadiusViewDelegate setTopLeftRadius(int topLeftRadius) {
+    public RadiusViewDelegate setTopLeftRadius(float topLeftRadius) {
         this.topLeftRadius = topLeftRadius;
         return setBgSelector();
     }
@@ -337,7 +365,7 @@ public class RadiusViewDelegate {
      * @param topRightRadius
      * @return
      */
-    public RadiusViewDelegate setTopRightRadius(int topRightRadius) {
+    public RadiusViewDelegate setTopRightRadius(float topRightRadius) {
         this.topRightRadius = topRightRadius;
         return setBgSelector();
     }
@@ -348,7 +376,7 @@ public class RadiusViewDelegate {
      * @param bottomLeftRadius
      * @return
      */
-    public RadiusViewDelegate setBottomLeftRadius(int bottomLeftRadius) {
+    public RadiusViewDelegate setBottomLeftRadius(float bottomLeftRadius) {
         this.bottomLeftRadius = bottomLeftRadius;
         return setBgSelector();
     }
@@ -359,13 +387,13 @@ public class RadiusViewDelegate {
      * @param bottomRightRadius
      * @return
      */
-    public RadiusViewDelegate setBottomRightRadius(int bottomRightRadius) {
+    public RadiusViewDelegate setBottomRightRadius(float bottomRightRadius) {
         this.bottomRightRadius = bottomRightRadius;
         return setBgSelector();
     }
 
     /**
-     * 设置水波纹颜色
+     * 设置水波纹颜色 5.0以上支持
      *
      * @param rippleColor
      * @return
@@ -386,7 +414,7 @@ public class RadiusViewDelegate {
         return setBgSelector();
     }
 
-    public int getRadius() {
+    public float getRadius() {
         return radius;
     }
 
@@ -406,7 +434,6 @@ public class RadiusViewDelegate {
      * @param strokeColor
      */
     private void setDrawable(GradientDrawable gd, int color, int strokeColor) {
-        gd.setColor(color);
         //任意值大于0执行
         if (topLeftRadius > 0 || topRightRadius > 0 || bottomRightRadius > 0 || bottomLeftRadius > 0) {
             radiusArr[0] = topLeftRadius;
@@ -421,7 +448,8 @@ public class RadiusViewDelegate {
         } else {
             gd.setCornerRadius(radius);
         }
-        gd.setStroke(strokeWidth, strokeColor);
+        gd.setStroke(strokeWidth, strokeColor, strokeDashWidth, strokeDashGap);
+        gd.setColor(color);
     }
 
 
@@ -437,8 +465,9 @@ public class RadiusViewDelegate {
                 || backgroundPressedColor != Integer.MAX_VALUE
                 || backgroundEnabledColor != Integer.MAX_VALUE
                 || backgroundSelectedColor != Integer.MAX_VALUE
-                || backgroundCheckedColor != Integer.MAX_VALUE;
-        StateListDrawable bg = new StateListDrawable();
+                || strokeWidth > 0 || radius > 0
+                || topLeftRadius > 0 || topLeftRadius > 0 || bottomLeftRadius > 0 || bottomRightRadius > 0;
+
         setDrawable(gdBackgroundChecked, backgroundCheckedColor, strokeCheckedColor);
         setDrawable(gdBackgroundSelected, backgroundPressedColor, strokeSelectedColor);
         setDrawable(gdBackground, backgroundColor == Integer.MAX_VALUE ? Color.TRANSPARENT : backgroundColor, strokeColor);
@@ -459,38 +488,38 @@ public class RadiusViewDelegate {
                     , null);
             view.setBackground(rippleDrawable);
         } else {
-            if (!isSetBg) {//避免默认background设置无效
+            if (!isSetBg) {
                 return this;
             }
             if (backgroundPressedColor != Integer.MAX_VALUE || strokePressedColor != Integer.MAX_VALUE) {
                 setDrawable(gdBackgroundPressed,
                         backgroundPressedColor == Integer.MAX_VALUE ? backgroundColor : backgroundPressedColor,
                         strokePressedColor == Integer.MAX_VALUE ? strokeColor : strokePressedColor);
-                bg.addState(new int[]{android.R.attr.state_pressed}, gdBackgroundPressed);
+                mBg.addState(new int[]{android.R.attr.state_pressed}, gdBackgroundPressed);
             }
             if (backgroundSelectedColor != Integer.MAX_VALUE || strokeSelectedColor != Integer.MAX_VALUE) {
                 setDrawable(gdBackgroundSelected,
                         backgroundSelectedColor == Integer.MAX_VALUE ? backgroundColor : backgroundSelectedColor,
                         strokeSelectedColor == Integer.MAX_VALUE ? strokeColor : strokeSelectedColor);
-                bg.addState(new int[]{android.R.attr.state_selected}, gdBackgroundSelected);
+                mBg.addState(new int[]{android.R.attr.state_selected}, gdBackgroundSelected);
             }
             if (backgroundCheckedColor != Integer.MAX_VALUE || strokeCheckedColor != Integer.MAX_VALUE) {
                 setDrawable(gdBackgroundChecked,
                         backgroundCheckedColor == Integer.MAX_VALUE ? backgroundColor : backgroundCheckedColor,
                         strokeCheckedColor == Integer.MAX_VALUE ? strokeColor : strokeCheckedColor);
-                bg.addState(new int[]{android.R.attr.state_checked}, gdBackgroundChecked);
+                mBg.addState(new int[]{android.R.attr.state_checked}, gdBackgroundChecked);
             }
             if (backgroundEnabledColor != Integer.MAX_VALUE || strokeEnabledColor != Integer.MAX_VALUE) {
                 setDrawable(gdBackgroundEnabled,
                         backgroundEnabledColor == Integer.MAX_VALUE ? backgroundColor : backgroundEnabledColor,
                         strokeEnabledColor == Integer.MAX_VALUE ? strokeColor : strokeEnabledColor);
-                bg.addState(new int[]{-android.R.attr.state_enabled}, gdBackgroundEnabled);
+                mBg.addState(new int[]{-android.R.attr.state_enabled}, gdBackgroundEnabled);
             }
-            bg.addState(new int[]{}, gdBackground);//默认状态--放置在最后否则其它状态不生效
+            mBg.addState(new int[]{}, gdBackground);//默认状态--放置在最后否则其它状态不生效
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {//16
-                view.setBackground(bg);
+                view.setBackground(mBg);
             } else {
-                view.setBackgroundDrawable(bg);
+                view.setBackgroundDrawable(mBg);
             }
         }
         return this;
@@ -554,5 +583,10 @@ public class RadiusViewDelegate {
                         normalColor
                 }
         );
+    }
+
+    private float px2dp(int pxValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
     }
 }

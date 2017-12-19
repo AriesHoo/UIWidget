@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
+import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -11,10 +13,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aries.ui.view.radius.RadiusEditText;
 import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.widget.alert.UIAlertView;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
+import com.aries.ui.widget.demo.util.SizeUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -124,13 +128,44 @@ public class AlertActivity extends BaseActivity {
         sBarNum.setProgress(1);
     }
 
-    @OnClick({R.id.rtv_showAlert})
+    @OnClick({R.id.rtv_showAlert, R.id.rtv_editAlert})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rtv_editAlert:
+
+                UIAlertView alertEdit = new UIAlertView(mContext);
+                final RadiusEditText editText = new RadiusEditText(AlertActivity.this);
+                editText.getDelegate()
+                        .setTextColor(Color.GRAY)
+                        .setRadius(6f)
+                        .setBackgroundColor(Color.WHITE)
+                        .setStrokeColor(Color.GRAY)
+                        .setStrokeWidth(SizeUtil.dp2px(0.5f));
+                editText.setMinHeight(SizeUtil.dp2px(40));
+                editText.setGravity(Gravity.CENTER_VERTICAL);
+                editText.setPadding(SizeUtil.dp2px(12), 0, SizeUtil.dp2px(12), 0);
+                editText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+                editText.setHint("请输入内容");
+                alertEdit.setTitle("Alert添加输入框示例")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String text = editText.getText().toString().trim();
+                                if (TextUtils.isEmpty(text)) {
+                                    return;
+                                }
+                                Toast.makeText(mContext, "你输入的是:" + text, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("取消", null)
+                        .setView(editText)
+                        .show();
+                editText.requestFocus();
+                break;
             case R.id.rtv_showAlert:
                 UIAlertView alert = new UIAlertView(mContext);
-                alert.setMessage("1、本次更新修复多个重大BUG\n2、新增用户反馈接口", Gravity.LEFT | Gravity.CENTER_VERTICAL);
-                alert.setMinHeight(200);
+                alert.setMessage("1、本次更新修复多个重大BUG\n2、新增用户反馈接口", Gravity.LEFT | Gravity.CENTER_VERTICAL)
+                        .setMinHeight(SizeUtil.dp2px(80));
                 if (isShowTitle) {
                     alert.setTitle("UIAlertView");
                 }
@@ -141,19 +176,19 @@ public class AlertActivity extends BaseActivity {
                     alert.setMessageTextColor(Color.RED);
                 }
                 if (!isDefaultButtonColor) {
-                    alert.setNegativeButtonTextColor(Color.RED);
-                    alert.setNeutralButtonTextColor(Color.BLUE);
-                    alert.setPositiveButtonTextColor(Color.BLACK);
+                    alert.setNegativeButtonTextColor(Color.RED)
+                            .setNeutralButtonTextColor(Color.BLUE)
+                            .setPositiveButtonTextColor(Color.BLACK);
                 }
                 if (num == 1) {
                     alert.setPositiveButton("确定", onAlertClick);
                 } else if (num == 2) {
-                    alert.setNegativeButton("否定", onAlertClick);
-                    alert.setPositiveButton("肯定", onAlertClick);
+                    alert.setNegativeButton("否定", onAlertClick)
+                            .setPositiveButton("肯定", onAlertClick);
                 } else {
-                    alert.setNegativeButton("否定", onAlertClick);
-                    alert.setPositiveButton("肯定", onAlertClick);
-                    alert.setNeutralButton("中性", onAlertClick);
+                    alert.setNegativeButton("否定", onAlertClick)
+                            .setPositiveButton("肯定", onAlertClick)
+                            .setNeutralButton("中性", onAlertClick);
                 }
                 if (!isBackDim) {
                     alert.setDimAmount(0f);

@@ -21,6 +21,7 @@
             android:orientation="vertical"
             android:padding="10dp">
 
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,6 +29,34 @@
                 android:text="说明:以下所有展示的TextView、EditText、CheckBox等常用控件效果均通过xml属性控制并未设置shape文件背景"
                 android:textColor="@color/colorTextBlack"
                 android:textSize="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_bg_radius"
+                android:gravity="center"
+                android:text="shape文件背景"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_javaBg"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="java代码设置背景"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="xml设置背景"
+                rv:rv_radius="4dp"
+                rv:rv_strokeColor="@android:color/holo_purple"
+                rv:rv_strokeDashGap="10dp"
+                rv:rv_strokeDashWidth="20dp"
+                rv:rv_strokeWidth="2dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,14 +109,13 @@
                 android:layout_height="45dp"
                 android:layout_marginBottom="10dp"
                 android:clickable="true"
-                android:elevation="40dp"
+                android:elevation="10dp"
                 android:gravity="center"
                 android:text="rippleColor"
                 android:textColor="@color/colorWhite"
                 rv:rv_backgroundColor="@android:color/holo_blue_light"
                 rv:rv_backgroundPressedColor="@android:color/holo_purple"
-                rv:rv_rippleColor="@android:color/holo_purple"
-                />
+                rv:rv_rippleColor="@android:color/holo_purple"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_radiusHalfHeight"
@@ -191,8 +219,10 @@
                     android:gravity="center"
                     android:padding="10dp"
                     android:text="topLeftRadius"
-                    android:textColor="#ffffff"
-                    rv:rv_backgroundColor="#DE88A5"
+                    android:textColor="@color/black"
+                    rv:rv_rippleEnable="true"
+                    rv:rv_strokeColor="@color/black"
+                    rv:rv_strokeWidth="2dp"
                     rv:rv_topLeftRadius="10dp"/>
 
                 <com.aries.ui.view.radius.RadiusTextView

@@ -1,6 +1,5 @@
 <resources>
     <dimen name="alert_max_width">340dp</dimen>
-    <dimen name="alert_max_width_">300dp</dimen>
     <dimen name="alert_min_width">260dp</dimen>
     <dimen name="alert_min_height">80dp</dimen>
     <dimen name="alert_radius">12dp</dimen>

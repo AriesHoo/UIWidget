@@ -38,7 +38,7 @@ allprojects {
 
 ```
 dependencies {
-     //compile 'com.github.AriesHoo:UIWidget:2.0.5'
+     //compile 'com.github.AriesHoo:UIWidget:2.0.8'
      compile 'com.github.AriesHoo:UIWidget:${LATEST_VERSION}'
 }
 ```

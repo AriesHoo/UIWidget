@@ -122,6 +122,13 @@
                 android:id="@+id/rtv_showAlert"
                 style="@style/RadiusStyleButton"
                 android:text="Show"/>
+
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_editAlert"
+                style="@style/RadiusStyleButton"
+                android:layout_marginTop="10dp"
+                android:text="ShowEditText"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

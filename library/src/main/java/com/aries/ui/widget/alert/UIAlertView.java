@@ -37,8 +37,8 @@ import com.aries.ui.widget.R;
 public class UIAlertView {
     private Context context;
     private AlertDialog dialog;
-    private TextView txt_title;
-    private TextView txt_msg;
+    private TextView mTvTitle;
+    private TextView mTvMsg;
     //addView 父容器
     private LinearLayout dialog_Group;
     private LinearLayout linearLayoutMain;
@@ -52,7 +52,6 @@ public class UIAlertView {
     private View mViewLineHorizontal;
     private boolean showTitle = false;
     private boolean showMsg = false;
-    private boolean showLayout = false;
     private boolean showPosBtn = false;
     private boolean showNegBtn = false;
     private boolean showNeuBtn = false;
@@ -74,12 +73,11 @@ public class UIAlertView {
         // 获取自定义Dialog布局中的控件
         imageViewDelete = (ImageView) view.findViewById(R.id.iv_deleteAlertView);
         imageViewDelete.setVisibility(View.GONE);
-        txt_title = (TextView) view.findViewById(R.id.tv_titleAlertView);
-        txt_title.setVisibility(View.GONE);
-        txt_msg = (TextView) view.findViewById(R.id.tv_msgAlertView);
-        txt_msg.setVisibility(View.GONE);
+        mTvTitle = (TextView) view.findViewById(R.id.tv_titleAlertView);
+        mTvTitle.setVisibility(View.GONE);
+        mTvMsg = (TextView) view.findViewById(R.id.tv_msgAlertView);
+        mTvMsg.setVisibility(View.GONE);
         dialog_Group = (LinearLayout) view.findViewById(R.id.lLayout_viewAlertView);
-        dialog_Group.setVisibility(View.GONE);
         btn_left = (TextView) view.findViewById(R.id.tv_leftAlertView);
         btn_left.setVisibility(View.GONE);
         btn_middle = (TextView) view.findViewById(R.id.tv_middleAlertView);
@@ -101,13 +99,6 @@ public class UIAlertView {
         window = dialog.getWindow();
         lp = window.getAttributes();
         window.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        dialog.setOnDismissListener(new OnDismissListener() {
-
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                dialog_Group.removeAllViews();
-            }
-        });
         dialog.dismiss();
     }
 
@@ -120,11 +111,11 @@ public class UIAlertView {
     }
 
     public TextView getTitleView() {
-        return txt_title;
+        return mTvTitle;
     }
 
     public TextView getMessageView() {
-        return txt_msg;
+        return mTvMsg;
     }
 
     public TextView getLeftButton() {
@@ -230,7 +221,7 @@ public class UIAlertView {
     public UIAlertView setTitle(CharSequence title) {
         if (!TextUtils.isEmpty(title)) {
             showTitle = true;
-            txt_title.setText(title);
+            mTvTitle.setText(title);
         }
         return this;
     }
@@ -240,7 +231,7 @@ public class UIAlertView {
     }
 
     public UIAlertView setTitleTextColor(int color) {
-        txt_title.setTextColor(color);
+        mTvTitle.setTextColor(color);
         return this;
     }
 
@@ -258,7 +249,7 @@ public class UIAlertView {
     }
 
     public UIAlertView setTitleTextColor(ColorStateList color) {
-        txt_title.setTextColor(color);
+        mTvTitle.setTextColor(color);
         return this;
     }
 
@@ -270,7 +261,7 @@ public class UIAlertView {
      * @return
      */
     public UIAlertView setTitleTextSize(int unit, float textSize) {
-        txt_title.setTextSize(unit, textSize);
+        mTvTitle.setTextSize(unit, textSize);
         return this;
     }
 
@@ -282,24 +273,23 @@ public class UIAlertView {
      */
     public UIAlertView setMessage(CharSequence msg) {
         showMsg = true;
-        txt_msg.setText(msg);
-        txt_msg.post(new Runnable() {
+        mTvMsg.setText(msg);
+        mTvMsg.post(new Runnable() {
 
             @Override
             public void run() {
-                if (txt_msg.getLineCount() > 4) {
-                    txt_msg.setMaxWidth((int) context.getResources()
+                if (mTvMsg.getLineCount() > 4) {
+                    mTvMsg.setMaxWidth((int) context.getResources()
                             .getDimension(R.dimen.alert_max_width));
-                }
-                {
-                    txt_msg.setMaxWidth((int) context.getResources()
-                            .getDimension(R.dimen.alert_max_width_));
+                } else {
+                    mTvMsg.setMaxWidth((int) context.getResources()
+                            .getDimension(R.dimen.alert_min_width));
                 }
             }
         });
         int padding = (int) context.getResources().getDimension(R.dimen.alert_dp_padding);
-        txt_msg.setPadding(padding, padding, padding, padding);
-        txt_msg.setGravity(gravity);
+        mTvMsg.setPadding(padding, padding, padding, padding);
+        mTvMsg.setGravity(gravity);
         return this;
     }
 
@@ -319,7 +309,7 @@ public class UIAlertView {
 
 
     public UIAlertView setMessageTextColor(int color) {
-        txt_msg.setTextColor(color);
+        mTvMsg.setTextColor(color);
         return this;
     }
 
@@ -337,7 +327,7 @@ public class UIAlertView {
     }
 
     public UIAlertView setMessageTextColor(ColorStateList color) {
-        txt_msg.setTextColor(color);
+        mTvMsg.setTextColor(color);
         return this;
     }
 
@@ -349,7 +339,7 @@ public class UIAlertView {
      * @return
      */
     public UIAlertView setMessageTextSize(int unit, float textSize) {
-        txt_msg.setTextSize(unit, textSize);
+        mTvMsg.setTextSize(unit, textSize);
         return this;
     }
 
@@ -360,7 +350,7 @@ public class UIAlertView {
      * @return
      */
     public UIAlertView setMessageMinHeight(final int minHeight) {
-        txt_msg.setMinimumHeight(minHeight);
+        mTvMsg.setMinimumHeight(minHeight);
         return this;
     }
 
@@ -402,13 +392,10 @@ public class UIAlertView {
      * @return
      */
     public UIAlertView setView(View view) {
-        showLayout = true;
-        if (view == null) {
-            showLayout = false;
-        } else {
+        if (view != null) {
             dialog_Group.addView(view,
-                    android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                    android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
         }
         return this;
     }
@@ -655,16 +642,12 @@ public class UIAlertView {
 
     private void setLayout() {
         if (showTitle) {
-            txt_title.setVisibility(View.VISIBLE);
+            mTvTitle.setVisibility(View.VISIBLE);
         }
-        linearLayoutGroup.setGravity(gravity);
-        txt_msg.setGravity(gravity);
+        mTvMsg.setGravity(gravity);
         linearLayoutGroup.setGravity(gravity);
         if (showMsg) {
-            txt_msg.setVisibility(View.VISIBLE);
-        }
-        if (showLayout) {
-            dialog_Group.setVisibility(View.VISIBLE);
+            mTvMsg.setVisibility(View.VISIBLE);
         }
         if (showPosBtn || showNegBtn || showNeuBtn) {//都没有
             mViewLineHorizontal.setVisibility(View.VISIBLE);

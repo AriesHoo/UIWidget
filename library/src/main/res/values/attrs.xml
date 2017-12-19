@@ -15,6 +15,10 @@
     <attr name="rv_radius" format="dimension"/>
     <!-- 圆角线框,单位dp-->
     <attr name="rv_strokeWidth" format="dimension"/>
+    <!-- 圆角线框虚线的宽度,单位dp-->
+    <attr name="rv_strokeDashWidth" format="dimension"/>
+    <!-- 圆角线框虚线的间隙,单位dp-->
+    <attr name="rv_strokeDashGap" format="dimension"/>
     <!-- 圆角边框颜色-->
     <attr name="rv_strokeColor" format="color"/>
     <!-- 圆角边框颜色Pressed -->
@@ -62,6 +66,8 @@
         <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
+        <attr name="rv_strokeDashWidth"/>
+        <attr name="rv_strokeDashGap"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
@@ -91,6 +97,8 @@
         <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
+        <attr name="rv_strokeDashWidth"/>
+        <attr name="rv_strokeDashGap"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
@@ -120,6 +128,8 @@
         <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
+        <attr name="rv_strokeDashWidth"/>
+        <attr name="rv_strokeDashGap"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
@@ -149,6 +159,8 @@
         <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
+        <attr name="rv_strokeDashWidth"/>
+        <attr name="rv_strokeDashGap"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
@@ -178,6 +190,8 @@
         <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
+        <attr name="rv_strokeDashWidth"/>
+        <attr name="rv_strokeDashGap"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
@@ -207,6 +221,8 @@
         <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
+        <attr name="rv_strokeDashWidth"/>
+        <attr name="rv_strokeDashGap"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
@@ -236,6 +252,8 @@
         <attr name="rv_backgroundCheckedColor"/>
         <attr name="rv_radius"/>
         <attr name="rv_strokeWidth"/>
+        <attr name="rv_strokeDashWidth"/>
+        <attr name="rv_strokeDashGap"/>
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeEnabledColor"/>
