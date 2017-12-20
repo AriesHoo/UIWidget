@@ -36,8 +36,9 @@
         <activity android:name=".module.title.TitleWithConstraint"/>
         <activity
             android:name=".WebViewActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:configChanges="locale|layoutDirection|mcc|mnc|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
