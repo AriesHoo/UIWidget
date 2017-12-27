@@ -3,6 +3,7 @@ package com.aries.ui.widget.demo.module.action;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
+import android.text.Html;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
@@ -12,6 +13,10 @@ import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.action.sheet.UIActionSheetView;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -154,10 +159,14 @@ public class ActionSheetActivity extends BaseActivity {
         }
     }
 
+    private String mFormatName = "<font color=\"#393939\">%1s</font><br/> <small><font color=\"#2494f2\">%2s</font></small>";
 
     private void showAction(int style) {
         UIActionSheetView action = new UIActionSheetView(mContext, style);
-        action.setItems(R.array.arrays_items_action, onActionSheetItemLister);
+        List<CharSequence> list = new ArrayList<>();
+        list.addAll(Arrays.asList(getResources().getStringArray(R.array.arrays_items_action)));
+        list.add(Html.fromHtml(String.format(mFormatName,"2444444","2222")));
+        action.setItems(list, onActionSheetItemLister);
         if (isShowTitle) {
             action.setTitle("Title");
         }

@@ -55,6 +55,10 @@ public class UIActionSheetView {
     public final static int STYLE_WEI_XIN = 2;
     private boolean canceledOnTouchOutside = true;
     private float mDefaultMarginTop = 120f;
+    private float mLineSpacingMultiplier = 1.0f;
+    private float mLineSpacingExtra = 0.0f;
+    private float mPaddingTop = 4f;
+    private float mPaddingLeft = 18f;
 
     public interface OnSheetItemListener {
         void onClick(int position);
@@ -86,8 +90,9 @@ public class UIActionSheetView {
         }
         tvTitle.setVisibility(View.INVISIBLE);
         setMarginTop(mDefaultMarginTop);
-        tvTitle.setPadding(dip2px(15), 0, dip2px(15), 0);
-        tvCancel.setPadding(dip2px(15), 0, dip2px(15), 0);
+        setLineSpacing(mLineSpacingExtra, mLineSpacingMultiplier);
+        tvTitle.setPadding(dip2px(mPaddingLeft), dip2px(mPaddingTop), dip2px(mPaddingLeft), dip2px(mPaddingTop));
+        tvCancel.setPadding(dip2px(mPaddingLeft), dip2px(mPaddingTop), dip2px(mPaddingLeft), dip2px(mPaddingTop));
         if (STYLE == STYLE_WEI_XIN) {
             setViewMargin(tvCancel, 0, 0, 0, 0);
             tvCancel.setGravity(Gravity.CENTER_VERTICAL);
@@ -96,8 +101,6 @@ public class UIActionSheetView {
             setCancelColorResource(R.color.colorActionSheetWeiXinText);
             tvTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             tvCancel.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
-            tvTitle.setPadding(dip2px(18), 0, dip2px(18), 0);
-            tvCancel.setPadding(dip2px(18), 0, dip2px(18), 0);
             itemHeight = 48;
             setViewMargin(tvTitle, 0, (int) (Resources.getSystem().getDisplayMetrics().heightPixels * 0.4), 0, 0);
         }
@@ -156,6 +159,20 @@ public class UIActionSheetView {
      */
     public UIActionSheetView setMarginTop(float dp) {
         setViewMargin(tvTitle, 0, dip2px(dp), 0, 0);
+        return this;
+    }
+
+
+    /**
+     * @param lineSpacingExtra
+     * @param lineSpacingMultiplier {@link TextView#setLineSpacing(float, float)}
+     * @return
+     */
+    public UIActionSheetView setLineSpacing(float lineSpacingExtra, float lineSpacingMultiplier) {
+        mLineSpacingExtra = lineSpacingExtra;
+        mLineSpacingMultiplier = lineSpacingMultiplier;
+        tvTitle.setLineSpacing(lineSpacingExtra, lineSpacingMultiplier);
+        tvCancel.setLineSpacing(lineSpacingExtra, lineSpacingMultiplier);
         return this;
     }
 
@@ -543,7 +560,7 @@ public class UIActionSheetView {
             textView.setText(sheetItem.name);
             textView.setTextSize(unitItems, textSizeItems);
             textView.setGravity(STYLE == STYLE_WEI_XIN ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
-            textView.setPadding(dip2px(18), 0, dip2px(18), 0);
+            textView.setPadding(dip2px(mPaddingLeft), dip2px(mPaddingTop), dip2px(mPaddingLeft), dip2px(mPaddingTop));
             vLineTitle.setVisibility(showTitle && STYLE == STYLE_NORMAL ? View.VISIBLE : View.GONE);
             // 背景图片
             if (STYLE == STYLE_IOS) {
@@ -578,11 +595,12 @@ public class UIActionSheetView {
             }
             // 字体颜色
             textView.setTextColor(sheetItem.color);
-            LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, getItemHeight());
+            LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             // 高度
             textView.setLayoutParams(params);
+            textView.setMinimumHeight(getItemHeight());
             tvTitle.setMinimumHeight(STYLE != STYLE_IOS ? getItemHeight() : dip2px(20));
-
+            textView.setLineSpacing(mLineSpacingExtra, mLineSpacingMultiplier);
             // 点击事件
             textView.setOnClickListener(new OnClickListener() {
                 @Override
