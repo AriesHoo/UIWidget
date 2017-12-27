@@ -27,7 +27,6 @@ import com.aries.ui.widget.R;
  */
 public class UIProgressView extends Dialog {
     private Context mContext;
-    private static UIProgressView dialog;
     private RadiusLinearLayout rootLayout;
     private ProgressBar progressBar;
     private MaterialProgressBar materialProgressBar;

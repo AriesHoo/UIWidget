@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">UIWidget</string>
-    <string name="format_pay_article_title">打赏金额&lt;font color="#e33956">¥%1$s&lt;/font></string>
     <string name="app_title_content">一个封装开发经常使用UI控件库</string>
     <string-array name="arrays_items_action">
         <item>item0</item>

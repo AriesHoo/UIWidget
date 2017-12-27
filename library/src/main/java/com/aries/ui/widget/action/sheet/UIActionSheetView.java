@@ -54,6 +54,7 @@ public class UIActionSheetView {
     public final static int STYLE_IOS = 1;
     public final static int STYLE_WEI_XIN = 2;
     private boolean canceledOnTouchOutside = true;
+    private float mDefaultMarginTop = 120f;
 
     public interface OnSheetItemListener {
         void onClick(int position);
@@ -83,8 +84,8 @@ public class UIActionSheetView {
         if (STYLE != STYLE_IOS) {
             setPadding(0, 0, 0, 0);
         }
-        tvTitle.setVisibility(STYLE == STYLE_NORMAL ? View.GONE : View.INVISIBLE);
-        setViewMargin(tvTitle, 0, dip2px(120), 0, 0);
+        tvTitle.setVisibility(View.INVISIBLE);
+        setMarginTop(mDefaultMarginTop);
         tvTitle.setPadding(dip2px(15), 0, dip2px(15), 0);
         tvCancel.setPadding(dip2px(15), 0, dip2px(15), 0);
         if (STYLE == STYLE_WEI_XIN) {
@@ -141,6 +142,21 @@ public class UIActionSheetView {
 
     public Dialog getDialog() {
         return dialog;
+    }
+
+    public View getRootView() {
+        return rootView;
+    }
+
+    /**
+     * 设置与顶部间隙避免item过多
+     *
+     * @param dp
+     * @return
+     */
+    public UIActionSheetView setMarginTop(float dp) {
+        setViewMargin(tvTitle, 0, dip2px(dp), 0, 0);
+        return this;
     }
 
     /**
@@ -491,18 +507,20 @@ public class UIActionSheetView {
     /**
      * 展示效果
      */
-    public void show() {
+    public UIActionSheetView show() {
         setSheetItems();
         if (!dialog.isShowing())
             dialog.show();
+        return this;
     }
 
     /**
      * 关闭dialog
      */
-    public void dismiss() {
+    public UIActionSheetView dismiss() {
         if (dialog.isShowing())
             dialog.dismiss();
+        return this;
     }
 
     /**
@@ -563,7 +581,7 @@ public class UIActionSheetView {
             LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, getItemHeight());
             // 高度
             textView.setLayoutParams(params);
-            tvTitle.setMinimumHeight(getItemHeight());
+            tvTitle.setMinimumHeight(STYLE != STYLE_IOS ? getItemHeight() : dip2px(20));
 
             // 点击事件
             textView.setOnClickListener(new OnClickListener() {
@@ -621,7 +639,7 @@ public class UIActionSheetView {
         return dip2px(itemHeight);
     }
 
-    private int dip2px(float dipValue) {
+    public int dip2px(float dipValue) {
         final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
     }

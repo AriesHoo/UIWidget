@@ -14,6 +14,7 @@
         android:background="@drawable/action_sheet_top_normal"
         android:gravity="center"
         android:minHeight="20dip"
+        android:padding="4dp"
         android:textColor="@color/colorActionSheetTitleText"
         android:textSize="14dp"
         android:visibility="invisible"/>
@@ -42,10 +43,9 @@
             android:id="@+id/lLayout_itemActionSheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:overScrollMode="never"/>
 
-        </LinearLayout>
     </ScrollView>
 
     <TextView
