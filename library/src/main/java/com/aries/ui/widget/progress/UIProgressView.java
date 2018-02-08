@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.aries.ui.view.radius.RadiusLinearLayout;
-import com.aries.ui.view.radius.RadiusViewDelegate;
+import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
 import com.aries.ui.widget.R;
 
 /**

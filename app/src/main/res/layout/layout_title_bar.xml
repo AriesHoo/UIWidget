@@ -5,13 +5,14 @@
     android:id="@+id/titleBar"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    app:title_statusBarLightMode="true"
     android:background="@color/colorTitle"
     app:title_actionTextColor="@color/colorTextBlack"
-    app:title_dividerColor="@color/colorLineGray"
-    app:title_leftTextColor="@color/colorTextBlack"
+    app:title_dividerBackground="@color/colorLineGray"
+    app:title_dividerHeight="@dimen/dp_line_size"
+    app:title_leftTextColor="@drawable/selector_text_color"
     app:title_leftTextDrawable="@drawable/ic_arrow_left"
     app:title_rightTextColor="@color/colorTextBlack"
+    app:title_statusBarLightMode="true"
     app:title_titleMainTextColor="@color/colorTextBlack"
     app:title_titleSubTextColor="@color/colorTextBlack"/>
 

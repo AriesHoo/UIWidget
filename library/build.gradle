@@ -41,3 +41,8 @@ android {
         archives javadocJar
     }
 }
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:'.concat(supportVersion)
+    provided 'com.android.support:design:'.concat(supportVersion)
+}

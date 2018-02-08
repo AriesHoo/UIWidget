@@ -6,6 +6,8 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
@@ -20,8 +22,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aries.ui.helper.navigation.KeyboardHelper;
+import com.aries.ui.helper.navigation.NavigationViewHelper;
+import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.KeyboardUtil;
 import com.aries.ui.util.StatusBarUtil;
+import com.aries.ui.view.title.util.ViewGroupUtils;
 import com.aries.ui.widget.R;
 
 /**
@@ -31,12 +37,15 @@ import com.aries.ui.widget.R;
  * Description:
  * 1、2017-11-21 10:30:14 AriesHoo 修改onMeasure及onLayout回调控制宽度获取TitleBarView实际宽度(之前为屏幕宽度)
  * 2、2017-12-4 10:09:50 AriesHoo 修改onMeasure中重新测量中间Layout时机避免TitleBarView测量显示错误(目前在Fragment嵌套在FragmentLayout里会出现不显示Title BUG)
+ * 3、2018-2-3 10:39:42 属性大改造-去掉之前设置背景色和背景资源id 属性统一用对应的background 属性控制
+ * 对应的java方法也会有相应的调整;TextColor修改成color|reference对应ColorStateList方便设置状态颜色
+ * 4、2018-2-7 10:27:28 将{@link TitleBarView#setBottomEditTextControl()}方法废弃
+ * 通过{@link NavigationViewHelper}或者{@link KeyboardHelper}类控制底部状态栏
  */
 public class TitleBarView extends ViewGroup {
 
     public static final int DEFAULT_STATUS_BAR_ALPHA = 102;//默认透明度--5.0以上优化半透明状态栏一致
     private static final int DEFAULT_TEXT_COLOR = Color.BLACK;//默认文本颜色
-    private static final int DEFAULT_TEXT_BG_COLOR = Color.TRANSPARENT;//默认子View背景色
     private static final float DEFAULT_MAIN_TEXT_SIZE = 18;//主标题size dp
     private static final float DEFAULT_TEXT_SIZE = 14;//文本默认size dp
     private static final float DEFAULT_SUB_TEXT_SIZE = 14;//副标题默认size dp
@@ -45,26 +54,29 @@ public class TitleBarView extends ViewGroup {
 
     private int mStatusBarHeight;//状态栏高度
     private int mScreenWidth;//TitleBarView实际占用宽度
-    private int systemUiVisibility;//Activity systemUiVisibility属性
 
     private Context mContext;
     /**
      * 自定义View
      */
-    private View mStatusView;//状态栏View-用于单独设置颜色
-    private LinearLayout mLeftLayout;//左边容器
-    private LinearLayout mCenterLayout;//中间容器
-    private LinearLayout mRightLayout;//右边容器
-    private TextView mLeftTv;//左边TextView
-    private TextView mTitleMain;//主标题
-    private TextView mTitleSub;//副标题
-    private TextView mRightTv;//右边TextView
-    private View mDividerView;//下方下划线
+    private View mVStatus;//状态栏View-用于单独设置颜色
+    private LinearLayout mLLayoutLeft;//左边容器
+    private LinearLayout mLLayoutCenter;//中间容器
+    private LinearLayout mLLayoutRight;//右边容器
+    private TextView mTvLeft;//左边TextView
+    private TextView mTvTitleMain;//主标题
+    private TextView mTvTitleSub;//副标题
+    private TextView mTvRight;//右边TextView
+    private View mVDivider;//下方下划线
 
     /**
      * 是否增加状态栏高度
      */
     private boolean mIsPlusStatusHeight = true;
+    /**
+     * 设置状态栏浅色或深色模式类型标记;>0则表示支持模式切换
+     */
+    private int mStatusBarModeType = StatusBarUtil.STATUS_BAR_TYPE_DEFAULT;
     /**
      * xml属性
      */
@@ -75,58 +87,49 @@ public class TitleBarView extends ViewGroup {
     private boolean mCenterGravityLeft = false;//中间部分是否左对齐--默认居中
     private int mCenterGravityLeftPadding;//中间部分左对齐是Layout左padding
     private boolean mStatusBarLightMode = false;//是否浅色状态栏(黑色文字及图标)
-    private int mStatusBarModeType = StatusBarUtil.STATUS_BAR_TYPE_DEFAULT;//设置状态栏浅色或深色模式类型标记;>0则表示支持模式切换
 
-    private int mStatusColor;
-    private int mStatusResource;
-    private int mDividerColor;
-    private int mDividerResource;
+    private Drawable mStatusBackground;
+    private Drawable mDividerBackground;
     private int mDividerHeight;
     private boolean mDividerVisible;
 
+    private CharSequence mLeftText;
     private int mLeftTextSize;
-    private int mLeftTextColor;
-    private int mLeftTextBackgroundColor;
-    private int mLeftDrawable;
+    private ColorStateList mLeftTextColor;
+    private Drawable mLeftTextBackground;
     private Drawable mLeftTextDrawable;
     private int mLeftTextDrawableWidth;
     private int mLeftTextDrawableHeight;
-    private int mLeftDrawablePadding;
-    private int mLeftTextBackgroundResource;
+    private int mLeftTextDrawablePadding;
 
+    private CharSequence mTitleMainText;
     private int mTitleMainTextSize;
-    private int mTitleMainTextColor;
-    private int mTitleMainTextBackgroundColor;
-    private int mTitleMainTextBackgroundResource;
+    private ColorStateList mTitleMainTextColor;
+    private Drawable mTitleMainTextBackground;
     private boolean mTitleMainTextFakeBold;
-    private boolean mTitleMainTextMarquee;//主标题是否跑马灯效果
+    private boolean mTitleMainTextMarquee;
 
+    private CharSequence mTitleSubText;
     private int mTitleSubTextSize;
-    private int mTitleSubTextColor;
-    private int mTitleSubTextBackgroundColor;
-    private int mTitleSubTextBackgroundResource;
+    private ColorStateList mTitleSubTextColor;
+    private Drawable mTitleSubTextBackground;
     private boolean mTitleSubTextFakeBold;
-    private boolean mTitleSubTextMarquee;//副标题是否跑马灯效果
+    private boolean mTitleSubTextMarquee;
 
+    private CharSequence mRightText;
     private int mRightTextSize;
-    private int mRightTextColor;
-    private int mRightTextBackgroundColor;
-    private int mRightDrawable;
+    private ColorStateList mRightTextColor;
+    private Drawable mRightTextBackground;
     private Drawable mRightTextDrawable;
     private int mRightTextDrawableWidth;
     private int mRightTextDrawableHeight;
-    private int mRightDrawablePadding;
-    private int mRightTextBackgroundResource;
+    private int mRightTextDrawablePadding;
+
 
     private int mActionTextSize;
-    private int mActionTextColor;
-    private int mActionTextBackgroundColor;
-    private int mActionTextBackgroundResource;
-
-    private CharSequence mTitleMainText;
-    private CharSequence mTitleSubText;
-    private CharSequence mLeftText;
-    private CharSequence mRightText;
+    private ColorStateList mActionTextColor;
+    private Drawable mActionTextBackground;
+    private Rect mTitleContainerRect;
 
     public TitleBarView(Context context) {
         this(context, null, 0);
@@ -154,53 +157,46 @@ public class TitleBarView extends ViewGroup {
         mCenterGravityLeftPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_centerGravityLeftPadding, dip2px(DEFAULT_CENTER_GRAVITY_LEFT_PADDING));
         mStatusBarLightMode = ta.getBoolean(R.styleable.TitleBarView_title_statusBarLightMode, false);
 
-        mStatusColor = ta.getColor(R.styleable.TitleBarView_title_statusColor, -1);
-        mStatusResource = ta.getResourceId(R.styleable.TitleBarView_title_statusResource, -1);
-        mDividerColor = ta.getColor(R.styleable.TitleBarView_title_dividerColor, Color.TRANSPARENT);
-        mDividerResource = ta.getResourceId(R.styleable.TitleBarView_title_dividerResource, -1);
+        mStatusBackground = ta.getDrawable(R.styleable.TitleBarView_title_statusBackground);
+        mDividerBackground = ta.getDrawable(R.styleable.TitleBarView_title_dividerBackground);
         mDividerHeight = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_dividerHeight, dip2px(0.5f));
         mDividerVisible = ta.getBoolean(R.styleable.TitleBarView_title_dividerVisible, true);
 
         mLeftText = ta.getString(R.styleable.TitleBarView_title_leftText);
         mLeftTextSize = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextSize, dip2px(DEFAULT_TEXT_SIZE));
-        mLeftTextColor = ta.getColor(R.styleable.TitleBarView_title_leftTextColor, DEFAULT_TEXT_COLOR);
-        mLeftTextBackgroundColor = ta.getColor(R.styleable.TitleBarView_title_leftTextBackgroundColor, DEFAULT_TEXT_BG_COLOR);
-        mLeftTextBackgroundResource = ta.getResourceId(R.styleable.TitleBarView_title_leftTextBackgroundResource, -1);
-        mLeftDrawable = ta.getResourceId(R.styleable.TitleBarView_title_leftTextDrawable, -1);
+        mLeftTextColor = ta.getColorStateList(R.styleable.TitleBarView_title_leftTextColor);
+        mLeftTextBackground = ta.getDrawable(R.styleable.TitleBarView_title_leftTextBackground);
+        mLeftTextDrawable = ta.getDrawable(R.styleable.TitleBarView_title_leftTextDrawable);
         mLeftTextDrawableWidth = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawableWidth, -1);
         mLeftTextDrawableHeight = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawableHeight, -1);
-        mLeftDrawablePadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawablePadding, dip2px(1));
+        mLeftTextDrawablePadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawablePadding, dip2px(1));
 
         mTitleMainText = ta.getString(R.styleable.TitleBarView_title_titleMainText);
         mTitleMainTextSize = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_titleMainTextSize, dip2px(DEFAULT_MAIN_TEXT_SIZE));
-        mTitleMainTextColor = ta.getColor(R.styleable.TitleBarView_title_titleMainTextColor, DEFAULT_TEXT_COLOR);
-        mTitleMainTextBackgroundColor = ta.getColor(R.styleable.TitleBarView_title_titleMainTextBackgroundColor, DEFAULT_TEXT_BG_COLOR);
-        mTitleMainTextBackgroundResource = ta.getResourceId(R.styleable.TitleBarView_title_titleMainTextBackgroundResource, -1);
+        mTitleMainTextColor = ta.getColorStateList(R.styleable.TitleBarView_title_titleMainTextColor);
+        mTitleMainTextBackground = ta.getDrawable(R.styleable.TitleBarView_title_titleMainTextBackground);
         mTitleMainTextFakeBold = ta.getBoolean(R.styleable.TitleBarView_title_titleMainTextFakeBold, false);
         mTitleMainTextMarquee = ta.getBoolean(R.styleable.TitleBarView_title_titleMainTextMarquee, false);
 
         mTitleSubText = ta.getString(R.styleable.TitleBarView_title_titleSubText);
         mTitleSubTextSize = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_titleSubTextSize, dip2px(DEFAULT_SUB_TEXT_SIZE));
-        mTitleSubTextColor = ta.getColor(R.styleable.TitleBarView_title_titleSubTextColor, DEFAULT_TEXT_COLOR);
-        mTitleSubTextBackgroundColor = ta.getColor(R.styleable.TitleBarView_title_titleSubTextBackgroundColor, DEFAULT_TEXT_BG_COLOR);
-        mTitleSubTextBackgroundResource = ta.getResourceId(R.styleable.TitleBarView_title_titleSubTextBackgroundResource, -1);
+        mTitleSubTextColor = ta.getColorStateList(R.styleable.TitleBarView_title_titleSubTextColor);
+        mTitleSubTextBackground = ta.getDrawable(R.styleable.TitleBarView_title_titleSubTextBackground);
         mTitleSubTextFakeBold = ta.getBoolean(R.styleable.TitleBarView_title_titleSubTextFakeBold, false);
         mTitleSubTextMarquee = ta.getBoolean(R.styleable.TitleBarView_title_titleSubTextMarquee, false);
 
         mRightText = ta.getString(R.styleable.TitleBarView_title_rightText);
         mRightTextSize = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextSize, dip2px(DEFAULT_TEXT_SIZE));
-        mRightTextColor = ta.getColor(R.styleable.TitleBarView_title_rightTextColor, DEFAULT_TEXT_COLOR);
-        mRightTextBackgroundResource = ta.getResourceId(R.styleable.TitleBarView_title_rightTextBackgroundResource, -1);
-        mRightTextBackgroundColor = ta.getColor(R.styleable.TitleBarView_title_rightTextBackgroundColor, DEFAULT_TEXT_BG_COLOR);
-        mRightDrawable = ta.getResourceId(R.styleable.TitleBarView_title_rightTextDrawable, -1);
+        mRightTextColor = ta.getColorStateList(R.styleable.TitleBarView_title_rightTextColor);
+        mRightTextBackground = ta.getDrawable(R.styleable.TitleBarView_title_rightTextBackground);
+        mRightTextDrawable = ta.getDrawable(R.styleable.TitleBarView_title_rightTextDrawable);
         mRightTextDrawableWidth = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextDrawableWidth, -1);
         mRightTextDrawableHeight = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextDrawableHeight, -1);
-        mRightDrawablePadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextDrawablePadding, dip2px(1));
+        mRightTextDrawablePadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextDrawablePadding, dip2px(1));
 
         mActionTextSize = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_actionTextSize, dip2px(DEFAULT_TEXT_SIZE));
-        mActionTextColor = ta.getColor(R.styleable.TitleBarView_title_actionTextColor, DEFAULT_TEXT_COLOR);
-        mActionTextBackgroundColor = ta.getColor(R.styleable.TitleBarView_title_actionTextBackgroundColor, DEFAULT_TEXT_BG_COLOR);
-        mActionTextBackgroundResource = ta.getResourceId(R.styleable.TitleBarView_title_actionTextBackgroundResource, -1);
+        mActionTextColor = ta.getColorStateList(R.styleable.TitleBarView_title_actionTextColor);
+        mActionTextBackground = ta.getDrawable(R.styleable.TitleBarView_title_actionTextBackground);
         ta.recycle();//回收
     }
 
@@ -213,34 +209,34 @@ public class TitleBarView extends ViewGroup {
         LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         LayoutParams dividerParams = new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, mDividerHeight);
 
-        mLeftLayout = new LinearLayout(context);
-        mCenterLayout = new LinearLayout(context);
-        mRightLayout = new LinearLayout(context);
-        mStatusView = new View(context);
-        mDividerView = new View(context);
+        mLLayoutLeft = new LinearLayout(context);
+        mLLayoutCenter = new LinearLayout(context);
+        mLLayoutRight = new LinearLayout(context);
+        mVStatus = new View(context);
+        mVDivider = new View(context);
 
-        mLeftLayout.setGravity(Gravity.CENTER_VERTICAL);
-        mCenterLayout.setOrientation(LinearLayout.VERTICAL);
-        mRightLayout.setGravity(Gravity.CENTER_VERTICAL);
+        mLLayoutLeft.setGravity(Gravity.CENTER_VERTICAL);
+        mLLayoutCenter.setOrientation(LinearLayout.VERTICAL);
+        mLLayoutRight.setGravity(Gravity.CENTER_VERTICAL);
 
-        mLeftTv = new TextView(context);
-        mLeftTv.setGravity(Gravity.CENTER);
-        mLeftTv.setLines(1);
+        mTvLeft = new TextView(context);
+        mTvLeft.setGravity(Gravity.CENTER);
+        mTvLeft.setLines(1);
 
-        mTitleMain = new TextView(context);
-        mTitleSub = new TextView(context);
+        mTvTitleMain = new TextView(context);
+        mTvTitleSub = new TextView(context);
 
-        mRightTv = new TextView(context);
-        mRightTv.setGravity(Gravity.CENTER);
-        mRightTv.setLines(1);
+        mTvRight = new TextView(context);
+        mTvRight.setGravity(Gravity.CENTER);
+        mTvRight.setLines(1);
 
-        mLeftLayout.addView(mLeftTv, params);
-        mRightLayout.addView(mRightTv, params);
-        addView(mLeftLayout, params);//添加左边容器
-        addView(mCenterLayout, params);//添加中间容器
-        addView(mRightLayout, params);//添加右边容器
-        addView(mDividerView, dividerParams);//添加下划线View
-        addView(mStatusView);//添加状态栏View
+        mLLayoutLeft.addView(mTvLeft, params);
+        mLLayoutRight.addView(mTvRight, params);
+        addView(mLLayoutLeft, params);//添加左边容器
+        addView(mLLayoutCenter, params);//添加中间容器
+        addView(mLLayoutRight, params);//添加右边容器
+        addView(mVDivider, dividerParams);//添加下划线View
+        addView(mVStatus);//添加状态栏View
     }
 
     /**
@@ -261,42 +257,57 @@ public class TitleBarView extends ViewGroup {
         setActionPadding(mActionPadding);
         setCenterLayoutPadding(mCenterLayoutPadding);
         setCenterGravityLeft(mCenterGravityLeft);
-        setStatusColor(mStatusColor);
-        setStatusResource(mStatusResource);
-        setDividerColor(mDividerColor);
-        setDividerResource(mDividerResource);
+        setStatusBackground(mStatusBackground);
+        setDividerBackground(mDividerBackground);
         setDividerHeight(mDividerHeight);
         setDividerVisible(mDividerVisible);
+
         setLeftText(mLeftText);
         setLeftTextSize(TypedValue.COMPLEX_UNIT_PX, mLeftTextSize);
         setLeftTextColor(mLeftTextColor);
-        setLeftTextBackgroundColor(mLeftTextBackgroundColor);
-        setLeftTextBackgroundResource(mLeftTextBackgroundResource);
-        setLeftTextDrawable(mLeftDrawable);
+        setLeftTextBackground(mLeftTextBackground);
+        setLeftTextDrawable(mLeftTextDrawable);
         setLeftTextDrawableWidth(mLeftTextDrawableWidth);
         setLeftTextDrawableHeight(mLeftTextDrawableHeight);
+        setLeftTextDrawablePadding(mLeftTextDrawablePadding);
+
         setTitleMainText(mTitleMainText);
         setTitleMainTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleMainTextSize);
         setTitleMainTextColor(mTitleMainTextColor);
-        setTitleMainTextBackgroundColor(mTitleMainTextBackgroundColor);
-        setTitleMainTextBackgroundResource(mTitleMainTextBackgroundResource);
+        setTitleMainTextBackground(mTitleMainTextBackground);
         setTitleMainTextFakeBold(mTitleMainTextFakeBold);
         setTitleMainTextMarquee(mTitleMainTextMarquee);
+
         setTitleSubText(mTitleSubText);
         setTitleSubTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleSubTextSize);
         setTitleSubTextColor(mTitleSubTextColor);
-        setTitleSubTextBackgroundColor(mTitleSubTextBackgroundColor);
-        setTitleSubTextBackgroundResource(mTitleSubTextBackgroundResource);
+        setTitleSubTextBackground(mTitleSubTextBackground);
         setTitleSubTextFakeBold(mTitleSubTextFakeBold);
         setTitleSubTextMarquee(mTitleSubTextMarquee);
+
         setRightText(mRightText);
         setRightTextSize(TypedValue.COMPLEX_UNIT_PX, mRightTextSize);
         setRightTextColor(mRightTextColor);
-        setRightTextBackgroundColor(mRightTextBackgroundColor);
-        setRightTextBackgroundResource(mRightTextBackgroundResource);
-        setRightTextDrawable(mRightDrawable);
+        setRightTextBackground(mRightTextBackground);
+        setRightTextDrawable(mRightTextDrawable);
         setRightTextDrawableWidth(mRightTextDrawableWidth);
         setRightTextDrawableHeight(mRightTextDrawableHeight);
+        setRightTextDrawablePadding(mRightTextDrawablePadding);
+    }
+
+
+    public Rect getTitleContainerRect() {
+        if (mTitleContainerRect == null) {
+            mTitleContainerRect = new Rect();
+        }
+        if (mLLayoutCenter == null) {
+            mTitleContainerRect.set(0, 0, 0, 0);
+        } else {
+            ViewGroupUtils.getDescendantRect(this, mLLayoutCenter, mTitleContainerRect);
+        }
+        mTitleContainerRect.set(mTitleContainerRect.left + mLLayoutCenter.getPaddingLeft(),
+                mTitleContainerRect.top, mTitleContainerRect.right, mTitleContainerRect.bottom);
+        return mTitleContainerRect;
     }
 
     /**
@@ -307,13 +318,13 @@ public class TitleBarView extends ViewGroup {
      */
     public LinearLayout getLinearLayout(int gravity) {
         if (gravity == Gravity.LEFT || gravity == Gravity.START) {
-            return mLeftLayout;
+            return mLLayoutLeft;
         } else if (gravity == Gravity.CENTER) {
-            return mCenterLayout;
+            return mLLayoutCenter;
         } else if (gravity == Gravity.END || gravity == Gravity.RIGHT) {
-            return mRightLayout;
+            return mLLayoutRight;
         }
-        return mCenterLayout;
+        return mLLayoutCenter;
     }
 
     /**
@@ -324,15 +335,15 @@ public class TitleBarView extends ViewGroup {
      */
     public TextView getTextView(int gravity) {
         if (gravity == Gravity.LEFT || gravity == Gravity.START) {
-            return mLeftTv;
+            return mTvLeft;
         } else if (gravity == (Gravity.CENTER | Gravity.TOP)) {
-            return mTitleMain;
+            return mTvTitleMain;
         } else if (gravity == (Gravity.CENTER | Gravity.BOTTOM)) {
-            return mTitleSub;
+            return mTvTitleSub;
         } else if (gravity == Gravity.END || gravity == Gravity.RIGHT) {
-            return mRightTv;
+            return mTvRight;
         }
-        return mTitleMain;
+        return mTvTitleMain;
     }
 
     /**
@@ -343,11 +354,11 @@ public class TitleBarView extends ViewGroup {
      */
     public View getView(int gravity) {
         if (gravity == Gravity.TOP) {
-            return mStatusView;
+            return mVStatus;
         } else if (gravity == Gravity.BOTTOM) {
-            return mDividerView;
+            return mVDivider;
         }
-        return mStatusView;
+        return mVStatus;
     }
 
     /**
@@ -371,8 +382,8 @@ public class TitleBarView extends ViewGroup {
      * 设置沉浸式状态栏，4.4以上系统支持
      *
      * @param activity
-     * @param immersible
-     * @param isTransStatusBar 是否透明状态栏
+     * @param immersible       是否沉浸
+     * @param isTransStatusBar 是否透明状态栏 --xml未设置statusBackground 属性才会执行
      * @param isPlusStatusBar  是否增加状态栏高度--用于控制底部有输入框 (设置false/xml背景色必须保持和状态栏一致)
      */
     public TitleBarView setImmersible(Activity activity, boolean immersible, boolean isTransStatusBar, boolean isPlusStatusBar) {
@@ -385,19 +396,20 @@ public class TitleBarView extends ViewGroup {
         //透明状态栏
         Window window = activity.getWindow();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mStatusView.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, mStatusBarHeight));
+            mVStatus.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, mStatusBarHeight));
             // 透明状态栏
-            window.addFlags(
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                systemUiVisibility = window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-                window.getDecorView().setSystemUiVisibility(systemUiVisibility);
+                window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(Color.TRANSPARENT);
             }
         }
-        setStatusAlpha(immersible ? isTransStatusBar ? 0 : 102 : 255);
+        if (mStatusBackground == null) {
+            setStatusAlpha(immersible ? isTransStatusBar ? 0 : 102 : 255);
+        }
         return this;
     }
 
@@ -406,36 +418,36 @@ public class TitleBarView extends ViewGroup {
         //实时获取避免因横竖屏切换造成测量错误
         mScreenWidth = getMeasuredWidth();
         mStatusBarHeight = getNeedStatusBarHeight();
-        int left = mLeftLayout.getMeasuredWidth();
-        int right = mRightLayout.getMeasuredWidth();
-        int center = mCenterLayout.getMeasuredWidth();
-        mLeftLayout.layout(0, isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2, left, mLeftLayout.getMeasuredHeight() + mStatusBarHeight);
-        mRightLayout.layout(mScreenWidth - right, isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2, mScreenWidth, mRightLayout.getMeasuredHeight() + mStatusBarHeight);
+        int left = mLLayoutLeft.getMeasuredWidth();
+        int right = mLLayoutRight.getMeasuredWidth();
+        int center = mLLayoutCenter.getMeasuredWidth();
+        mLLayoutLeft.layout(0, isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2, left, mLLayoutLeft.getMeasuredHeight() + mStatusBarHeight);
+        mLLayoutRight.layout(mScreenWidth - right, isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2, mScreenWidth, mLLayoutRight.getMeasuredHeight() + mStatusBarHeight);
         boolean isMuchScreen = left + right + center >= mScreenWidth;
         if (left > right) {
-            mCenterLayout.layout(left, mStatusBarHeight, isMuchScreen ? mScreenWidth - right : mScreenWidth - left, getMeasuredHeight() - mDividerHeight);
+            mLLayoutCenter.layout(left, mStatusBarHeight, isMuchScreen ? mScreenWidth - right : mScreenWidth - left, getMeasuredHeight() - mDividerHeight);
         } else {
-            mCenterLayout.layout(isMuchScreen ? left : right, mStatusBarHeight, mScreenWidth - right, getMeasuredHeight() - mDividerHeight);
+            mLLayoutCenter.layout(isMuchScreen ? left : right, mStatusBarHeight, mScreenWidth - right, getMeasuredHeight() - mDividerHeight);
         }
-        mDividerView.layout(0, getMeasuredHeight() - mDividerView.getMeasuredHeight(), getMeasuredWidth(), getMeasuredHeight());
-        mStatusView.layout(0, 0, getMeasuredWidth(), mStatusBarHeight);
+        mVDivider.layout(0, getMeasuredHeight() - mVDivider.getMeasuredHeight(), getMeasuredWidth(), getMeasuredHeight());
+        mVStatus.layout(0, 0, getMeasuredWidth(), mStatusBarHeight);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mStatusBarHeight = getNeedStatusBarHeight();
-        measureChild(mLeftLayout, widthMeasureSpec, heightMeasureSpec);
-        measureChild(mRightLayout, widthMeasureSpec, heightMeasureSpec);
-        measureChild(mCenterLayout, widthMeasureSpec, heightMeasureSpec);
-        measureChild(mDividerView, widthMeasureSpec, heightMeasureSpec);
-        measureChild(mStatusView, widthMeasureSpec, heightMeasureSpec);
+        measureChild(mLLayoutLeft, widthMeasureSpec, heightMeasureSpec);
+        measureChild(mLLayoutRight, widthMeasureSpec, heightMeasureSpec);
+        measureChild(mLLayoutCenter, widthMeasureSpec, heightMeasureSpec);
+        measureChild(mVDivider, widthMeasureSpec, heightMeasureSpec);
+        measureChild(mVStatus, widthMeasureSpec, heightMeasureSpec);
         //重新测量宽高--增加状态栏及下划线的高度
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec) + (isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2) + mDividerHeight);
         mScreenWidth = getMeasuredWidth();
 
-        int left = mLeftLayout.getMeasuredWidth();
-        int right = mRightLayout.getMeasuredWidth();
-        int center = mCenterLayout.getMeasuredWidth();
+        int left = mLLayoutLeft.getMeasuredWidth();
+        int right = mLLayoutRight.getMeasuredWidth();
+        int center = mLLayoutCenter.getMeasuredWidth();
         //判断左、中、右实际占用宽度是否等于或者超过屏幕宽度
         boolean isMuchScreen = left + right + center >= mScreenWidth;
         if (!mCenterGravityLeft) {//不设置中间布局左对齐才进行中间布局重新测量
@@ -448,7 +460,7 @@ public class TitleBarView extends ViewGroup {
                     center = mScreenWidth - 2 * right;
                 }
             }
-            mCenterLayout.measure(MeasureSpec.makeMeasureSpec(center, MeasureSpec.EXACTLY), heightMeasureSpec);
+            mLLayoutCenter.measure(MeasureSpec.makeMeasureSpec(center, MeasureSpec.EXACTLY), heightMeasureSpec);
         }
     }
 
@@ -487,22 +499,22 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView setOutPadding(int paddingValue) {
         mOutPadding = paddingValue;
-        mLeftLayout.setPadding(mOutPadding, 0, 0, 0);
-        mRightLayout.setPadding(0, 0, mOutPadding, 0);
+        mLLayoutLeft.setPadding(mOutPadding, 0, 0, 0);
+        mLLayoutRight.setPadding(0, 0, mOutPadding, 0);
         return this;
     }
 
     public TitleBarView setCenterLayoutPadding(int centerLayoutPadding) {
         this.mCenterLayoutPadding = centerLayoutPadding;
-        mCenterLayout.setPadding(mCenterLayoutPadding, mCenterLayout.getTop(), mCenterLayoutPadding, mCenterLayout.getPaddingBottom());
+        mLLayoutCenter.setPadding(mCenterLayoutPadding, mLLayoutCenter.getTop(), mCenterLayoutPadding, mLLayoutCenter.getPaddingBottom());
         return this;
     }
 
     public TitleBarView setCenterGravityLeft(boolean enable) {
         this.mCenterGravityLeft = enable;
-        mTitleMain.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
-        mCenterLayout.setGravity(mCenterGravityLeft ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
-        mTitleSub.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
+        mTvTitleMain.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
+        mLLayoutCenter.setGravity(mCenterGravityLeft ? Gravity.LEFT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
+        mTvTitleSub.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
         return setCenterGravityLeftPadding(mCenterGravityLeftPadding);
     }
 
@@ -515,7 +527,7 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setCenterGravityLeftPadding(int padding) {
         if (mCenterGravityLeft) {
             mCenterGravityLeftPadding = padding;
-            mCenterLayout.setPadding(mCenterGravityLeftPadding, mCenterLayout.getTop(), mCenterLayout.getPaddingRight(), mCenterLayout.getPaddingBottom());
+            mLLayoutCenter.setPadding(mCenterGravityLeftPadding, mLLayoutCenter.getTop(), mLLayoutCenter.getPaddingRight(), mLLayoutCenter.getPaddingBottom());
         } else {
             return setCenterLayoutPadding(mCenterLayoutPadding);
         }
@@ -569,66 +581,94 @@ public class TitleBarView extends ViewGroup {
     }
 
     /**
-     * 设置状态栏颜色
+     * 设置状态栏背景
      *
-     * @param color
+     * @param drawable
+     * @return
      */
-    public TitleBarView setStatusColor(int color) {
-        try {
-            mStatusColor = color;
-            mStatusView.setBackgroundColor(color);
-        } catch (Exception e) {
-
+    public TitleBarView setStatusBackground(Drawable drawable) {
+        mStatusBackground = drawable;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mVStatus.setBackground(drawable);
+        } else {
+            mVStatus.setBackgroundDrawable(drawable);
         }
         return this;
     }
 
     /**
-     * 透明度 0-255
+     * 设置状态栏颜色
      *
-     * @param statusBarAlpha
+     * @param color
      */
-    public TitleBarView setStatusAlpha(int statusBarAlpha) {
-        if (statusBarAlpha < 0) {
-            statusBarAlpha = 0;
-        } else if (statusBarAlpha > 255) {
-            statusBarAlpha = 255;
-        }
-        return setStatusColor(Color.argb(statusBarAlpha, 0, 0, 0));
+    public TitleBarView setStatusBackgroundColor(int color) {
+        return setStatusBackground(new ColorDrawable(color));
     }
 
-    public TitleBarView setStatusResource(int resource) {
+    /**
+     * 设置透明度
+     *
+     * @param alpha
+     * @return
+     */
+    public TitleBarView setStatusAlpha(int alpha) {
+        if (alpha < 0) {
+            alpha = 0;
+        } else if (alpha > 255) {
+            alpha = 255;
+        }
+        return setStatusBackgroundColor(Color.argb(alpha, 0, 0, 0));
+    }
+
+    public TitleBarView setStatusBackgroundResource(int resource) {
+        Drawable drawable = null;
         try {
-            mStatusResource = resource;
-            mStatusView.setBackgroundResource(resource);
+            drawable = getResources().getDrawable(resource);
         } catch (Exception e) {
 
         }
+        return setStatusBackground(drawable);
+    }
+
+    /**
+     * 设置下划线背景
+     *
+     * @param drawable
+     * @return
+     */
+    public TitleBarView setDividerBackground(Drawable drawable) {
+        mDividerBackground = drawable;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mVDivider.setBackground(drawable);
+        } else {
+            mVDivider.setBackgroundDrawable(drawable);
+        }
         return this;
     }
 
-    public TitleBarView setDividerColor(int color) {
-        mDividerColor = color;
-        mDividerView.setBackgroundColor(color);
-        return this;
+    public TitleBarView setDividerBackgroundColor(int color) {
+        return setDividerBackground(new ColorDrawable(color));
     }
 
-    public TitleBarView setDividerResource(int resource) {
-        mDividerResource = resource;
-        if (mDividerResource != -1)
-            mDividerView.setBackgroundResource(resource);
-        return this;
+    public TitleBarView setDividerBackgroundResource(int resource) {
+        Drawable drawable = null;
+        try {
+            drawable = getResources().getDrawable(resource);
+        } catch (Exception e) {
+
+        }
+        return setDividerBackground(drawable);
     }
 
     public TitleBarView setDividerHeight(int dividerHeight) {
         mDividerHeight = dividerHeight;
-        mDividerView.getLayoutParams().height = dividerHeight;
+        mVDivider.getLayoutParams().height = dividerHeight;
         return this;
     }
 
     public TitleBarView setDividerVisible(boolean visible) {
         mDividerVisible = visible;
-        mDividerView.setVisibility(visible ? VISIBLE : GONE);
+        mVDivider.setVisibility(visible ? VISIBLE : GONE);
         return this;
     }
 
@@ -646,9 +686,17 @@ public class TitleBarView extends ViewGroup {
                 .setActionTextColor(color);
     }
 
+    public TitleBarView setTextColor(ColorStateList colors) {
+        return setLeftTextColor(colors)
+                .setTitleMainTextColor(colors)
+                .setTitleSubTextColor(colors)
+                .setRightTextColor(colors)
+                .setActionTextColor(colors);
+    }
+
     public TitleBarView setLeftText(CharSequence title) {
         mLeftText = title;
-        mLeftTv.setText(title);
+        mTvLeft.setText(title);
         return this;
     }
 
@@ -664,7 +712,7 @@ public class TitleBarView extends ViewGroup {
      * @return
      */
     public TitleBarView setLeftTextSize(int unit, float size) {
-        mLeftTv.setTextSize(unit, size);
+        mTvLeft.setTextSize(unit, size);
         return this;
     }
 
@@ -673,40 +721,50 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setLeftTextColor(int color) {
-        mLeftTv.setTextColor(color);
+        mTvLeft.setTextColor(color);
         return this;
     }
 
     /**
      * 设置文字状态颜色-如按下颜色变化
      *
-     * @param color
+     * @param colors
      * @return
      */
-    public TitleBarView setLeftTextColor(ColorStateList color) {
-        try {
-            mLeftTv.setTextColor(color);
-        } catch (Exception e) {
+    public TitleBarView setLeftTextColor(ColorStateList colors) {
+        if (colors != null) {
+            mTvLeft.setTextColor(colors);
+        } else {
+            setLeftTextColor(DEFAULT_TEXT_COLOR);
+        }
+        return this;
+    }
+
+    public TitleBarView setLeftTextBackground(Drawable drawable) {
+        mLeftTextBackground = drawable;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mTvLeft.setBackground(drawable);
+        } else {
+            mTvLeft.setBackgroundDrawable(drawable);
         }
         return this;
     }
 
     public TitleBarView setLeftTextBackgroundColor(int color) {
-        mLeftTv.setBackgroundColor(color);
-        return this;
+        return setLeftTextBackground(new ColorDrawable(color));
     }
 
     /**
      * @param resId
      */
     public TitleBarView setLeftTextBackgroundResource(int resId) {
+        Drawable drawable = null;
         try {
-            mLeftTextBackgroundResource = resId;
-            mLeftTv.setBackgroundResource(mLeftTextBackgroundResource);
+            drawable = getResources().getDrawable(resId);
         } catch (Exception e) {
 
         }
-        return this;
+        return setLeftTextBackground(drawable);
     }
 
     /**
@@ -716,21 +774,13 @@ public class TitleBarView extends ViewGroup {
      * @return
      */
     public TitleBarView setLeftTextDrawable(Drawable drawable) {
-        try {
-            if (drawable != null) {
-                drawable.setBounds(0, 0,
-                        mLeftTextDrawableWidth != -1 ? mLeftTextDrawableWidth : drawable.getIntrinsicWidth(),
-                        mLeftTextDrawableHeight != -1 ? mLeftTextDrawableHeight : drawable.getIntrinsicHeight());
-            }
-        } catch (Exception e) {
-        }
         mLeftTextDrawable = drawable;
-        mLeftTv.setCompoundDrawables(mLeftTextDrawable, null, null, null);
+        DrawableUtil.setDrawableWidthHeight(mLeftTextDrawable, mLeftTextDrawableWidth, mLeftTextDrawableHeight);
+        mTvLeft.setCompoundDrawables(mLeftTextDrawable, null, null, null);
         return this;
     }
 
     public TitleBarView setLeftTextDrawable(int id) {
-        mLeftDrawable = id;
         Drawable drawable = null;
         try {
             drawable = mContext.getResources().getDrawable(id);
@@ -751,23 +801,23 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setLeftTextDrawablePadding(int drawablePadding) {
-        this.mLeftDrawablePadding = drawablePadding;
-        mLeftTv.setCompoundDrawablePadding(mLeftDrawablePadding);
+        this.mLeftTextDrawablePadding = drawablePadding;
+        mTvLeft.setCompoundDrawablePadding(mLeftTextDrawablePadding);
         return this;
     }
 
     public TitleBarView setLeftTextPadding(int left, int top, int right, int bottom) {
-        mLeftTv.setPadding(left, top, right, bottom);
+        mTvLeft.setPadding(left, top, right, bottom);
         return this;
     }
 
     public TitleBarView setOnLeftTextClickListener(OnClickListener l) {
-        mLeftTv.setOnClickListener(l);
+        mTvLeft.setOnClickListener(l);
         return this;
     }
 
     public TitleBarView setLeftVisible(boolean visible) {
-        mLeftTv.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mTvLeft.setVisibility(visible ? View.VISIBLE : View.GONE);
         return this;
     }
 
@@ -776,15 +826,24 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setTitleMainText(CharSequence charSequence) {
-        mTitleMain.setText(charSequence);
-        if (!TextUtils.isEmpty(charSequence) && !hasChildView(mCenterLayout, mTitleMain)) {//非空且还未添加主标题
-            mCenterLayout.addView(mTitleMain, 0);
+        mTvTitleMain.setText(charSequence);
+        if (!TextUtils.isEmpty(charSequence)
+                && !hasChildView(mLLayoutCenter, mTvTitleMain)
+                && (getParent() != null && getParent().getClass() != CollapsingTitleBarLayout.class)) {//非空且还未添加主标题
+            mLLayoutCenter.addView(mTvTitleMain, 0);
         }
         return this;
     }
 
+    /**
+     * {@link TextView#setTextSize(int, float)}
+     *
+     * @param unit
+     * @param titleMainTextSpValue
+     * @return
+     */
     public TitleBarView setTitleMainTextSize(int unit, float titleMainTextSpValue) {
-        mTitleMain.setTextSize(unit, titleMainTextSpValue);
+        mTvTitleMain.setTextSize(unit, titleMainTextSpValue);
         return this;
     }
 
@@ -799,28 +858,41 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setTitleMainTextColor(int color) {
-        mTitleMain.setTextColor(color);
+        mTvTitleMain.setTextColor(color);
+        return this;
+    }
+
+    public TitleBarView setTitleMainTextColor(ColorStateList colors) {
+        if (colors != null) {
+            mTvTitleMain.setTextColor(colors);
+        } else {
+            setTitleMainTextColor(DEFAULT_TEXT_COLOR);
+        }
+        return this;
+    }
+
+    public TitleBarView setTitleMainTextBackground(Drawable drawable) {
+        mTitleMainTextBackground = drawable;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mTvTitleMain.setBackground(mTitleMainTextBackground);
+        } else {
+            mTvTitleMain.setBackgroundDrawable(mTitleMainTextBackground);
+        }
         return this;
     }
 
     public TitleBarView setTitleMainTextBackgroundColor(int color) {
-        try {
-            mTitleMainTextBackgroundColor = color;
-            mTitleMain.setBackgroundColor(color);
-        } catch (Exception e) {
-
-        }
-        return this;
+        return setTitleMainTextBackground(new ColorDrawable(color));
     }
 
     public TitleBarView setTitleMainTextBackgroundResource(int resId) {
+        Drawable drawable = null;
         try {
-            mTitleMainTextBackgroundResource = resId;
-            mTitleMain.setBackgroundResource(resId);
+            drawable = getResources().getDrawable(resId);
         } catch (Exception e) {
 
         }
-        return this;
+        return setTitleMainTextBackground(drawable);
     }
 
     /**
@@ -830,7 +902,7 @@ public class TitleBarView extends ViewGroup {
      */
     public TitleBarView setTitleMainTextFakeBold(boolean isFakeBold) {
         this.mTitleMainTextFakeBold = isFakeBold;
-        mTitleMain.getPaint().setFakeBoldText(mTitleMainTextFakeBold);
+        mTvTitleMain.getPaint().setFakeBoldText(mTitleMainTextFakeBold);
         return this;
     }
 
@@ -838,49 +910,49 @@ public class TitleBarView extends ViewGroup {
         this.mTitleMainTextMarquee = enable;
         if (enable) {
             setTitleSubTextMarquee(false);
-            mTitleMain.setSingleLine();
-            mTitleMain.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            mTitleMain.setFocusable(true);
-            mTitleMain.setFocusableInTouchMode(true);
-            mTitleMain.requestFocus();
-            mTitleMain.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            mTvTitleMain.setSingleLine();
+            mTvTitleMain.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            mTvTitleMain.setFocusable(true);
+            mTvTitleMain.setFocusableInTouchMode(true);
+            mTvTitleMain.requestFocus();
+            mTvTitleMain.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus && mTitleMainTextMarquee) {
-                        mTitleMain.requestFocus();
+                        mTvTitleMain.requestFocus();
                     }
                 }
             });
             //开启硬件加速
-            mTitleMain.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            mTvTitleMain.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         } else {
-            mTitleMain.setMaxLines(1);
-            mTitleMain.setEllipsize(TextUtils.TruncateAt.END);
-            mTitleMain.setOnFocusChangeListener(null);
+            mTvTitleMain.setMaxLines(1);
+            mTvTitleMain.setEllipsize(TextUtils.TruncateAt.END);
+            mTvTitleMain.setOnFocusChangeListener(null);
             //关闭硬件加速
-            mTitleMain.setLayerType(View.LAYER_TYPE_NONE, null);
+            mTvTitleMain.setLayerType(View.LAYER_TYPE_NONE, null);
         }
         return this;
     }
 
     public TitleBarView setTitleMainTextPadding(int left, int top, int right, int bottom) {
-        mTitleMain.setPadding(left, top, right, bottom);
+        mTvTitleMain.setPadding(left, top, right, bottom);
         return this;
     }
 
     public TitleBarView setTitleSubText(CharSequence charSequence) {
         if (charSequence == null || charSequence.toString().isEmpty()) {
-            mTitleSub.setVisibility(GONE);
+            mTvTitleSub.setVisibility(GONE);
         } else {
-            mTitleSub.setVisibility(VISIBLE);
+            mTvTitleSub.setVisibility(VISIBLE);
         }
-        mTitleSub.setText(charSequence);
-        if (!TextUtils.isEmpty(charSequence) && !hasChildView(mCenterLayout, mTitleSub)) {//非空且还未添加副标题
-            if (hasChildView(mCenterLayout, mTitleMain)) {
-                mTitleMain.setSingleLine();
-                mTitleSub.setSingleLine();
+        mTvTitleSub.setText(charSequence);
+        if (!TextUtils.isEmpty(charSequence) && !hasChildView(mLLayoutCenter, mTvTitleSub)) {//非空且还未添加副标题
+            if (hasChildView(mLLayoutCenter, mTvTitleMain)) {
+                mTvTitleMain.setSingleLine();
+                mTvTitleSub.setSingleLine();
             }
-            mCenterLayout.addView(mTitleSub);
+            mLLayoutCenter.addView(mTvTitleSub);
         }
         return this;
     }
@@ -897,7 +969,7 @@ public class TitleBarView extends ViewGroup {
      * @return
      */
     public TitleBarView setTitleSubTextSize(int unit, float value) {
-        mTitleSub.setTextSize(unit, value);
+        mTvTitleSub.setTextSize(unit, value);
         return this;
     }
 
@@ -906,28 +978,41 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setTitleSubTextColor(int color) {
-        mTitleSub.setTextColor(color);
+        mTvTitleSub.setTextColor(color);
+        return this;
+    }
+
+    public TitleBarView setTitleSubTextColor(ColorStateList colors) {
+        if (colors != null) {
+            mTvTitleSub.setTextColor(colors);
+        } else {
+            setTitleSubTextColor(DEFAULT_TEXT_COLOR);
+        }
+        return this;
+    }
+
+    public TitleBarView setTitleSubTextBackground(Drawable drawable) {
+        mTitleSubTextBackground = drawable;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mTvTitleSub.setBackground(drawable);
+        } else {
+            mTvTitleSub.setBackgroundDrawable(drawable);
+        }
         return this;
     }
 
     public TitleBarView setTitleSubTextBackgroundColor(int color) {
-        try {
-            mTitleSubTextBackgroundColor = color;
-            mTitleSub.setBackgroundColor(color);
-        } catch (Exception e) {
-
-        }
-        return this;
+        return setTitleSubTextBackground(new ColorDrawable(color));
     }
 
     public TitleBarView setTitleSubTextBackgroundResource(int resId) {
+        Drawable drawable = null;
         try {
-            mTitleSubTextBackgroundResource = resId;
-            mTitleSub.setBackgroundResource(resId);
+            drawable = getResources().getDrawable(resId);
         } catch (Exception e) {
 
         }
-        return this;
+        return setTitleSubTextBackground(drawable);
     }
 
     /**
@@ -937,7 +1022,7 @@ public class TitleBarView extends ViewGroup {
      */
     public TitleBarView setTitleSubTextFakeBold(boolean isFakeBold) {
         this.mTitleSubTextFakeBold = isFakeBold;
-        mTitleSub.getPaint().setFakeBoldText(mTitleSubTextFakeBold);
+        mTvTitleSub.getPaint().setFakeBoldText(mTitleSubTextFakeBold);
         return this;
     }
 
@@ -950,38 +1035,38 @@ public class TitleBarView extends ViewGroup {
         this.mTitleSubTextMarquee = enable;
         if (enable) {
             setTitleMainTextMarquee(false);
-            mTitleSub.setSingleLine();
-            mTitleSub.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-            mTitleSub.setFocusable(true);
-            mTitleSub.setFocusableInTouchMode(true);
-            mTitleSub.requestFocus();
-            mTitleSub.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            mTvTitleSub.setSingleLine();
+            mTvTitleSub.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+            mTvTitleSub.setFocusable(true);
+            mTvTitleSub.setFocusableInTouchMode(true);
+            mTvTitleSub.requestFocus();
+            mTvTitleSub.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if (!hasFocus && mTitleSubTextMarquee) {
-                        mTitleMain.requestFocus();
+                        mTvTitleMain.requestFocus();
                     }
                 }
             });
             //开启硬件加速
-            mTitleSub.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            mTvTitleSub.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         } else {
-            mTitleSub.setMaxLines(1);
-            mTitleSub.setEllipsize(TextUtils.TruncateAt.END);
-            mTitleSub.setOnFocusChangeListener(null);
+            mTvTitleSub.setMaxLines(1);
+            mTvTitleSub.setEllipsize(TextUtils.TruncateAt.END);
+            mTvTitleSub.setOnFocusChangeListener(null);
             //关闭硬件加速
-            mTitleSub.setLayerType(View.LAYER_TYPE_NONE, null);
+            mTvTitleSub.setLayerType(View.LAYER_TYPE_NONE, null);
         }
         return this;
     }
 
     public TitleBarView setOnCenterClickListener(OnClickListener l) {
-        mCenterLayout.setOnClickListener(l);
+        mLLayoutCenter.setOnClickListener(l);
         return this;
     }
 
     public TitleBarView setRightText(CharSequence title) {
-        mRightTv.setText(title);
+        mTvRight.setText(title);
         return this;
     }
 
@@ -997,7 +1082,7 @@ public class TitleBarView extends ViewGroup {
      * @return
      */
     public TitleBarView setRightTextSize(int unit, float size) {
-        mRightTv.setTextSize(unit, size);
+        mTvRight.setTextSize(unit, size);
         return this;
     }
 
@@ -1006,36 +1091,41 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setRightTextColor(int color) {
-        mRightTv.setTextColor(color);
+        mTvRight.setTextColor(color);
         return this;
     }
 
-    public TitleBarView setRightTextColor(ColorStateList color) {
-        try {
-            mRightTv.setTextColor(color);
-        } catch (Exception e) {
+    public TitleBarView setRightTextColor(ColorStateList colors) {
+        if (colors != null) {
+            mTvRight.setTextColor(colors);
+        } else {
+            setRightTextColor(DEFAULT_TEXT_COLOR);
+        }
+        return this;
+    }
+
+    public TitleBarView setRightTextBackground(Drawable drawable) {
+        mRightTextBackground = drawable;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mTvRight.setBackground(drawable);
+        } else {
+            mTvRight.setBackgroundDrawable(drawable);
         }
         return this;
     }
 
     public TitleBarView setRightTextBackgroundColor(int color) {
-        try {
-            mRightTextBackgroundColor = color;
-            mRightTv.setBackgroundColor(color);
-        } catch (Exception e) {
-
-        }
-        return this;
+        return setRightTextBackground(new ColorDrawable(color));
     }
 
-    public TitleBarView setRightTextBackgroundResource(int id) {
+    public TitleBarView setRightTextBackgroundResource(int resId) {
+        Drawable drawable = null;
         try {
-            mRightTextBackgroundResource = id;
-            mRightTv.setBackgroundResource(id);
+            drawable = getResources().getDrawable(resId);
         } catch (Exception e) {
 
         }
-        return this;
+        return setRightTextBackground(drawable);
     }
 
     /**
@@ -1044,21 +1134,13 @@ public class TitleBarView extends ViewGroup {
      * @param drawable 资源
      */
     public TitleBarView setRightTextDrawable(Drawable drawable) {
-        try {
-            if (drawable != null) {
-                drawable.setBounds(0, 0,
-                        mRightTextDrawableWidth != -1 ? mRightTextDrawableWidth : drawable.getIntrinsicWidth(),
-                        mRightTextDrawableHeight != -1 ? mRightTextDrawableHeight : drawable.getIntrinsicHeight());
-            }
-        } catch (Exception e) {
-        }
         mRightTextDrawable = drawable;
-        mRightTv.setCompoundDrawables(null, null, mRightTextDrawable, null);
+        DrawableUtil.setDrawableWidthHeight(mRightTextDrawable, mRightTextDrawableWidth, mRightTextDrawableHeight);
+        mTvRight.setCompoundDrawables(null, null, mRightTextDrawable, null);
         return this;
     }
 
     public TitleBarView setRightTextDrawable(int id) {
-        mRightDrawable = id;
         Drawable drawable = null;
         try {
             drawable = mContext.getResources().getDrawable(id);
@@ -1069,8 +1151,8 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setRightTextDrawablePadding(int drawablePadding) {
-        this.mRightDrawablePadding = drawablePadding;
-        mRightTv.setCompoundDrawablePadding(mRightDrawablePadding);
+        this.mRightTextDrawablePadding = drawablePadding;
+        mTvRight.setCompoundDrawablePadding(mRightTextDrawablePadding);
         return this;
     }
 
@@ -1085,17 +1167,17 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setRightTextPadding(int left, int top, int right, int bottom) {
-        mRightTv.setPadding(left, top, right, bottom);
+        mTvRight.setPadding(left, top, right, bottom);
         return this;
     }
 
     public TitleBarView setOnRightTextClickListener(OnClickListener l) {
-        mRightTv.setOnClickListener(l);
+        mTvRight.setOnClickListener(l);
         return this;
     }
 
     public TitleBarView setRightVisible(boolean visible) {
-        mRightTv.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mTvRight.setVisibility(visible ? View.VISIBLE : View.GONE);
         return this;
     }
 
@@ -1105,28 +1187,44 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setActionTextColor(int mActionTextColor) {
+        this.mActionTextColor = ColorStateList.valueOf(mActionTextColor);
+        return this;
+    }
+
+    public TitleBarView setActionTextColor(ColorStateList mActionTextColor) {
         this.mActionTextColor = mActionTextColor;
         return this;
     }
 
-    public TitleBarView setActionTextBackgroundColor(int mActionTextBackgroundColor) {
-        this.mActionTextBackgroundColor = mActionTextBackgroundColor;
+    public TitleBarView setActionTextBackground(Drawable drawable) {
+        this.mActionTextBackground = drawable;
         return this;
     }
 
-    public TitleBarView setActionTextBackgroundResource(int mActionTextBackgroundResource) {
-        this.mActionTextBackgroundResource = mActionTextBackgroundResource;
-        return this;
+    public TitleBarView setActionTextBackgroundColor(int color) {
+        return setActionTextBackground(new ColorDrawable(color));
+    }
+
+    public TitleBarView setActionTextBackgroundResource(int resId) {
+        Drawable drawable = null;
+        try {
+            drawable = getResources().getDrawable(resId);
+        } catch (Exception e) {
+
+        }
+        return setActionTextBackground(drawable);
     }
 
     /**
      * 设置底部有输入框控制方案--IM常见
      */
+    @Deprecated
     public TitleBarView setBottomEditTextControl(Activity mActivity) {
         KeyboardUtil.with(mActivity).setEnable();
         return this;
     }
 
+    @Deprecated
     public TitleBarView setBottomEditTextControl() {
         if (mContext instanceof Activity) {
             setBottomEditTextControl((Activity) mContext);
@@ -1136,7 +1234,7 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView addLeftAction(Action action, int position) {
         View view = inflateAction(action);
-        mLeftLayout.addView(view, position);
+        mLLayoutLeft.addView(view, position);
         return this;
     }
 
@@ -1149,7 +1247,7 @@ public class TitleBarView extends ViewGroup {
      */
     public TitleBarView addCenterAction(Action action, int position) {
         View view = inflateAction(action);
-        mCenterLayout.addView(view, position);
+        mLLayoutCenter.addView(view, position);
         return this;
     }
 
@@ -1168,7 +1266,7 @@ public class TitleBarView extends ViewGroup {
      */
     public TitleBarView addRightAction(Action action, int position) {
         View view = inflateAction(action);
-        mRightLayout.addView(view, position);
+        mLLayoutRight.addView(view, position);
         return this;
     }
 
@@ -1194,10 +1292,15 @@ public class TitleBarView extends ViewGroup {
             text.setGravity(Gravity.CENTER);
             text.setText((String) obj);
             text.setTextSize(TypedValue.COMPLEX_UNIT_PX, mActionTextSize);
-            text.setTextColor(mActionTextColor);
-            text.setBackgroundColor(mActionTextBackgroundColor);
-            if (mActionTextBackgroundResource != -1) {
-                text.setBackgroundResource(mActionTextBackgroundResource);
+            if (mActionTextColor != null) {
+                text.setTextColor(mActionTextColor);
+            } else {
+                text.setTextColor(DEFAULT_TEXT_COLOR);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                text.setBackground(mActionTextBackground);
+            } else {
+                text.setBackgroundDrawable(mActionTextBackground);
             }
             view = text;
         } else if (obj instanceof Drawable) {

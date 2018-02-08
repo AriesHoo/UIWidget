@@ -6,9 +6,11 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.aries.ui.helper.navigation.NavigationViewHelper;
+import com.aries.ui.util.RomUtil;
 import com.aries.ui.view.title.TitleBarView;
+import com.aries.ui.widget.demo.BuildConfig;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.util.AppUtil;
 
@@ -31,6 +33,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected boolean isWhite = true;
     protected View mContentView;
     protected String TAG = getClass().getSimpleName();
+    protected NavigationViewHelper mNavigationViewHelper;
+
+    protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
+    }
+
 
     protected abstract void setTitleBar();
 
@@ -55,7 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG,"onCreate");
+        Log.d(TAG, "onCreate");
         this.mContext = this;
         this.beforeSetView();
         mContentView = View.inflate(mContext, getLayout(), null);
@@ -64,6 +71,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         mUnBinder = ButterKnife.bind(this);
         initTitle();
         this.beforeInitView();
+        mNavigationViewHelper = NavigationViewHelper.with(this)
+                .setLogEnable(BuildConfig.DEBUG)
+                .setControlEnable(true)
+                .setTransEnable(RomUtil.isEMUI())
+                .setPlusNavigationViewEnable(RomUtil.isEMUI())
+                .setBottomView(mContentView);
+        beforeControlNavigation(mNavigationViewHelper);
+        mNavigationViewHelper.init();
         this.initView(savedInstanceState);
     }
 
@@ -101,10 +116,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void startActivity(Class<? extends Activity> activity) {
         startActivity(activity, null);
-    }
-
-    public View getRootView() {
-        return ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
     }
 
     @Override

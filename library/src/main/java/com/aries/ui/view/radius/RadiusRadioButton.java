@@ -4,13 +4,17 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RadioButton;
 
+import com.aries.ui.view.radius.delegate.RadiusCompoundButtonDelegate;
+
 /**
  * Created: AriesHoo on 2017-02-13 16:10
- * Function:用于需要圆角矩形框背景的RadioButton的情况,减少直接使用RadioButton时引入的shape资源文件
- * Desc:
+ * E-Mail: AriesHoo@126.com
+ * Function: 用于需要圆角矩形框背景的RadioButton的情况,减少直接使用RadioButton时引入的shape资源文件
+ * Description:
+ * 1、2018-2-5 14:27:16 初始化CompoundButton的 RadiusCompoundButtonDelegate
  */
 public class RadiusRadioButton extends RadioButton {
-    private RadiusViewDelegate delegate;
+    private RadiusCompoundButtonDelegate delegate;
 
     public RadiusRadioButton(Context context) {
         this(context, null);
@@ -18,7 +22,7 @@ public class RadiusRadioButton extends RadioButton {
 
     public RadiusRadioButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-        delegate = new RadiusViewDelegate(this, context, attrs);
+        delegate = new RadiusCompoundButtonDelegate(this, context, attrs);
     }
 
 
@@ -27,7 +31,7 @@ public class RadiusRadioButton extends RadioButton {
      *
      * @return
      */
-    public RadiusViewDelegate getDelegate() {
+    public RadiusCompoundButtonDelegate getDelegate() {
         return delegate;
     }
 
@@ -46,11 +50,11 @@ public class RadiusRadioButton extends RadioButton {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (delegate != null && delegate.getRadiusHalfHeightEnable()) {
-            delegate.setRadius(getHeight() / 2);
-        } else {
-            if (delegate != null)
-                delegate.setBgSelector();
+        if (delegate != null) {
+            if (delegate.getRadiusHalfHeightEnable()) {
+                delegate.setRadius(getHeight() / 2);
+            }
+            delegate.init();
         }
     }
 
@@ -58,20 +62,20 @@ public class RadiusRadioButton extends RadioButton {
     public void setSelected(boolean selected) {
         super.setSelected(selected);
         if (delegate != null)
-            delegate.setBgSelector();
-    }
-
-    @Override
-    public void setChecked(boolean checked) {
-        super.setChecked(checked);
-        if (delegate != null)
-            delegate.setBgSelector();
+            delegate.setSelected(selected);
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         if (delegate != null)
-            delegate.setBgSelector();
+            delegate.init();
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        super.setChecked(checked);
+        if (delegate != null)
+            delegate.init();
     }
 }

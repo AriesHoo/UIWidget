@@ -6,4 +6,8 @@
     <dimen name="dp_drawer_header">110dp</dimen>
     <dimen name="dp_text_size_main">14dp</dimen>
     <dimen name="dp_title_bar_height">48dp</dimen>
+    <dimen name="dp_dash_gap">5dp</dimen>
+    <dimen name="dp_dash_width">10dp</dimen>
+    <dimen name="dp_radius">2dp</dimen>
+    <dimen name="dp_stroke_width">2dp</dimen>
 </resources>

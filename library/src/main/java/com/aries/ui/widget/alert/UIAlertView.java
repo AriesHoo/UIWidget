@@ -1,7 +1,6 @@
 package com.aries.ui.widget.alert;
 
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -32,8 +31,6 @@ import com.aries.ui.widget.R;
  * Function: 自定义AlertDialog 弹出提示框
  * Description:1、2017-11-15 10:08:42 AriesHoo 增加设置背景Drawable版本兼容
  */
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("InflateParams")
 public class UIAlertView {
     private Context context;
     private AlertDialog dialog;

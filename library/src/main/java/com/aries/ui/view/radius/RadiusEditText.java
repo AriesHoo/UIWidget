@@ -4,13 +4,17 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
+import com.aries.ui.view.radius.delegate.RadiusTextViewDelegate;
+
 /**
  * Created: AriesHoo on 2017-02-13 16:10
- * Function:用于需要圆角矩形框背景的EditText的情况,减少直接使用EditText时引入的shape资源文件
- * Desc:
+ * E-Mail: AriesHoo@126.com
+ * Function: 用于需要圆角矩形框背景的EditText的情况,减少直接使用EditText时引入的shape资源文件
+ * Description:
+ * 1、2018-2-5 14:27:16 初始化TextView的 RadiusTextViewDelegate
  */
 public class RadiusEditText extends EditText {
-    private RadiusViewDelegate delegate;
+    private RadiusTextViewDelegate delegate;
 
     public RadiusEditText(Context context) {
         this(context, null);
@@ -22,7 +26,7 @@ public class RadiusEditText extends EditText {
 
     public RadiusEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        delegate = new RadiusViewDelegate(this, context, attrs);
+        delegate = new RadiusTextViewDelegate(this, context, attrs);
         setFocusableInTouchMode(true);
     }
 
@@ -31,13 +35,13 @@ public class RadiusEditText extends EditText {
      *
      * @return
      */
-    public RadiusViewDelegate getDelegate() {
+    public RadiusTextViewDelegate getDelegate() {
         return delegate;
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (delegate.getWidthHeightEqualEnable() && getWidth() > 0 && getHeight() > 0) {
+        if (delegate != null && delegate.getWidthHeightEqualEnable() && getWidth() > 0 && getHeight() > 0) {
             int max = Math.max(getWidth(), getHeight());
             int measureSpec = MeasureSpec.makeMeasureSpec(max, MeasureSpec.EXACTLY);
             super.onMeasure(measureSpec, measureSpec);
@@ -50,12 +54,11 @@ public class RadiusEditText extends EditText {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (delegate.getRadiusHalfHeightEnable()) {
-            if (delegate != null)
+        if (delegate != null) {
+            if (delegate.getRadiusHalfHeightEnable()) {
                 delegate.setRadius(getHeight() / 2);
-        } else {
-            if (delegate != null)
-                delegate.setBgSelector();
+            }
+            delegate.init();
         }
     }
 
@@ -63,13 +66,13 @@ public class RadiusEditText extends EditText {
     public void setSelected(boolean selected) {
         super.setSelected(selected);
         if (delegate != null)
-            delegate.setBgSelector();
+            delegate.setSelected(selected);
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         if (delegate != null)
-            delegate.setBgSelector();
+            delegate.init();
     }
 }

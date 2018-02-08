@@ -52,7 +52,6 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> {
 
     @Override
     protected void initView(Bundle bundle) {
-        super.initView(bundle);
         List<WidgetEntity> list = new ArrayList<>();
         list.add(new WidgetEntity("UIAlertView", "一款仿iOS Alert效果控件:属性命名及调用方式同Android原生AlertDialog,增加样式背景自定义。", AlertActivity.class));
         list.add(new WidgetEntity("UIActionSheetView", "一款仿iOS 底部弹框控件:扩展了设置不同条目文本颜色及直角属性模式 。", ActionSheetActivity.class));

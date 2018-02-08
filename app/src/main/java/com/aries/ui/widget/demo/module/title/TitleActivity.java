@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.RomUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.title.TitleBarView;
@@ -62,6 +63,14 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     private BaseQuickAdapter mAdapter;
     protected View vHeader;
     private int mAlpha = 102;
+
+    @Override
+    protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
+        super.beforeControlNavigation(navigationHelper);
+        navigationHelper.setBottomView(mRecyclerView)
+                .setTransEnable(false)
+                .setPlusNavigationViewEnable(false);
+    }
 
     @Override
     protected boolean setLoadMore() {
@@ -116,11 +125,9 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
 
     @Override
     protected void initView(Bundle bundle) {
-        super.initView(bundle);
-
 //        drawerRoot.setScrimColor(0x00ffffff);//背景高亮
 //        drawerRoot.setDrawerElevation(40);//海拔高度
-        mContentView.setBackgroundDrawable(null);
+//        mContentView.setBackgroundDrawable(null);
         GlideManager.loadCircleImg("https://avatars3.githubusercontent.com/u/19605922?v=4&s=460", ivHead);
         titleBarDrawer.setImmersible(mContext, isImmersible, isLight);
         vHeader = View.inflate(mContext, R.layout.layout_title_header, null);
@@ -149,6 +156,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
         List<TitleEntity> list = new ArrayList<>();
         list.add(new TitleEntity("TitleBarView与底部EditText结合", "点击查看示例", TitleEditActivity.class));
         list.add(new TitleEntity("TitleBarView结合ConstraintLayout", "点击查看示例", TitleWithConstraint.class));
+        list.add(new TitleEntity("TitleBarView结合CollapsingTitleBarLayout", "点击查看示例", TitleWithCollapsingLayoutActivity.class));
         list.add(new TitleEntity("白色主题", "点击切换白色主题", android.R.color.white));
         list.add(new TitleEntity("红色主题", "点击切换红色主题", android.R.color.holo_red_light));
         list.add(new TitleEntity("橙色主题", "点击切换橙色主题", android.R.color.holo_orange_light));

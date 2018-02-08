@@ -26,11 +26,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="说明:以下所有展示的TextView、EditText、CheckBox等常用控件效果均通过xml属性控制并未设置shape文件背景"
+                android:text="说明:以下所有展示的RadiusTextView、RadiusEditText、RadiusCheckBox等常用控件效果均通过xml属性控制并未设置shape文件背景"
                 android:textColor="@color/colorTextBlack"
                 android:textSize="16dp"/>
 
             <TextView
+                android:id="@+id/tv_shapeRadius"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/shape_bg_radius"
@@ -52,10 +53,10 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:text="xml设置背景"
-                rv:rv_radius="4dp"
+                rv:rv_radius="@dimen/dp_radius"
                 rv:rv_strokeColor="@android:color/holo_purple"
-                rv:rv_strokeDashGap="10dp"
-                rv:rv_strokeDashWidth="20dp"
+                rv:rv_strokeDashGap="@dimen/dp_dash_gap"
+                rv:rv_strokeDashWidth="@dimen/dp_dash_width"
                 rv:rv_strokeWidth="2dp"/>
 
             <LinearLayout
@@ -80,7 +81,7 @@
                     rv:rv_strokeColor="#383838"
                     rv:rv_strokeWidth="1dp"
                     rv:rv_textColor="@android:color/white"
-                    rv:rv_textEnabledColor="@android:color/holo_blue_bright"
+                    rv:rv_textDisabledColor="@android:color/holo_blue_bright"
                     rv:rv_textPressedColor="#ffffff"/>
 
                 <com.aries.ui.view.radius.RadiusTextView
@@ -95,12 +96,12 @@
                     android:padding="10dp"
                     android:text="disabled"
                     rv:rv_backgroundColor="@android:color/holo_blue_bright"
-                    rv:rv_backgroundEnabledColor="@android:color/black"
+                    rv:rv_backgroundDisabledColor="@android:color/black"
                     rv:rv_backgroundPressedColor="#383838"
                     rv:rv_strokeColor="#383838"
                     rv:rv_strokeWidth="1dp"
                     rv:rv_textColor="@android:color/white"
-                    rv:rv_textEnabledColor="@android:color/holo_blue_bright"
+                    rv:rv_textDisabledColor="@android:color/holo_blue_bright"
                     rv:rv_textPressedColor="#ffffff"/>
             </LinearLayout>
 
@@ -176,23 +177,68 @@
                 rv:rv_strokeColor="#03A9F4"
                 rv:rv_strokeWidth="1dp"/>
 
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_drawableRadius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="12dp"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="RadiusTextView with Drawable"
+                rv:rv_bottomDrawable="#b986f7"
+                rv:rv_bottomDrawableColorRadius="7.5dp"
+                rv:rv_bottomDrawableHeight="20dp"
+                rv:rv_bottomDrawableWidth="20dp"
+                rv:rv_bottomSelectedDrawable="#a100ff"
+                rv:rv_leftDrawable="#fc4b51"
+                rv:rv_leftDrawableColorRadius="2.5dp"
+                rv:rv_leftDrawableHeight="20dp"
+                rv:rv_leftDrawableWidth="20dp"
+                rv:rv_leftSelectedDrawable="#ff0900"
+                rv:rv_rightDrawable="@drawable/ic_cb_normal"
+                rv:rv_rightDrawableColorCircleEnable="true"
+                rv:rv_rightDrawableHeight="40dp"
+                rv:rv_rightDrawableWidth="40dp"
+                rv:rv_rightSelectedDrawable="#00ff08"
+                rv:rv_textColor="#1a20d8"
+                rv:rv_textSelectedColor="#5526a6"
+                rv:rv_topDrawable="#e2f56b"
+                rv:rv_topDrawableColorRadius="5dp"
+                rv:rv_topDrawableHeight="60dp"
+                rv:rv_topDrawableWidth="60dp"
+                rv:rv_topSelectedDrawable="#ddff00"/>
+
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <com.aries.ui.view.radius.RadiusRadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="RadiusRadioButton"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:paddingLeft="6dp"
+                    android:text="RadiusRadioButton with Drawable"
+                    rv:rv_buttonCheckedDrawable="@drawable/ic_cb_selected"
+                    rv:rv_buttonDrawable="@drawable/ic_cb_normal"
+                    rv:rv_buttonDrawableColorCircleEnable="true"
+                    rv:rv_buttonDrawableHeight="60dp"
+                    rv:rv_buttonDrawableWidth="60dp"
                     rv:rv_textCheckedColor="@android:color/holo_blue_dark"/>
 
                 <com.aries.ui.view.radius.RadiusRadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="RadiusRadioButton"
+                    android:text="RadiusRadioButton System"
                     rv:rv_textCheckedColor="@android:color/holo_blue_dark"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RadioButton System"/>
             </RadioGroup>
 
             <com.aries.ui.view.radius.RadiusCheckBox

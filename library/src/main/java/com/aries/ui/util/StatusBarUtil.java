@@ -9,11 +9,11 @@ import android.view.WindowManager;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-
 /**
  * Created: AriesHoo on 2017/7/17 9:52
+ * E-Mail: AriesHoo@126.com
  * Function: 状态栏工具类(状态栏文字颜色)
- * Desc:
+ * Description:
  */
 public class StatusBarUtil {
 

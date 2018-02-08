@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="fake_navigation_layout" type="id"/>
+    <item name="fake_navigation_view" type="id"/>
+    <item name="view_offset_helper" type="id"/>
+</resources>

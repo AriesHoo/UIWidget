@@ -58,8 +58,8 @@ public class TitleFragment extends Fragment {
                 })
                 .setStatusBarLightMode(false)
                 .setCenterGravityLeft(true)
-                //软键盘弹起处理
-                .setBottomEditTextControl()
+                //软键盘弹起处理--参考
+//                .setBottomEditTextControl()
                 .setBgColor(getResources().getColor(android.R.color.holo_purple));
 
 //        //底部有输入框时使用--最后一个参数false

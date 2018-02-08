@@ -1,4 +1,4 @@
-package com.aries.ui.util;
+package com.aries.ui.helper.navigation;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -10,49 +10,46 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.aries.ui.helper.navigation.KeyboardHelper;
-
 /**
- * Created: AriesHoo on AriesHoo on 2017/8/17 11:51
+ * Created: AriesHoo on 2018/1/29/029 16:12
  * E-Mail: AriesHoo@126.com
- * Function: 解决底部输入框和软键盘的问题
+ * Function: 软键盘和虚拟导航栏统一设置
  * Description:
- * 1、2018-2-7 10:24:38将该方法标记为废弃请使用{@link KeyboardHelper}解决
+ * 1、2018-2-7 12:27:36 修改是否控制NavigationBar参数及对应java方法
  */
-@Deprecated
-public class KeyboardUtil {
-
+public class KeyboardHelper {
     private Window mWindow;
     private View mDecorView;
     private View mContentView;
+    private boolean mControlNavigationBarEnable;
     private int mKeyMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED;
 
-    public static KeyboardUtil with(Activity activity) {
+    public static KeyboardHelper with(Activity activity) {
         if (activity == null)
             throw new IllegalArgumentException("Activity不能为null");
-        return new KeyboardUtil(activity);
+        return new KeyboardHelper(activity);
     }
 
-    private KeyboardUtil(Activity activity) {
+    private KeyboardHelper(Activity activity) {
         this(activity, ((ViewGroup) activity.getWindow().getDecorView().findViewById(android.R.id.content)).getChildAt(0));
     }
 
-    private KeyboardUtil(Activity activity, View contentView) {
+    private KeyboardHelper(Activity activity, View contentView) {
         this(activity, null, contentView);
     }
 
-    private KeyboardUtil(Activity activity, Dialog dialog) {
+    private KeyboardHelper(Activity activity, Dialog dialog) {
         this(activity, dialog, dialog.getWindow().findViewById(android.R.id.content));
     }
 
-    private KeyboardUtil(Activity activity, Dialog dialog, View contentView) {
+    private KeyboardHelper(Activity activity, Dialog dialog, View contentView) {
         this.mWindow = dialog != null ? dialog.getWindow() : activity.getWindow();
         this.mDecorView = activity.getWindow().getDecorView();
         this.mContentView = contentView != null ? contentView
                 : mWindow.getDecorView().findViewById(android.R.id.content);
     }
 
-    private KeyboardUtil(Activity activity, Window window) {
+    private KeyboardHelper(Activity activity, Window window) {
         this.mWindow = window;
         this.mDecorView = activity.getWindow().getDecorView();
         ViewGroup frameLayout = (ViewGroup) mWindow.getDecorView().findViewById(android.R.id.content);
@@ -60,11 +57,23 @@ public class KeyboardUtil {
     }
 
     /**
+     * 设置是否控制虚拟导航栏
+     *
+     * @param enable
+     * @return
+     */
+    public KeyboardHelper setControlNavigationBarEnable(boolean enable) {
+        mControlNavigationBarEnable = enable;
+        return this;
+    }
+
+    /**
      * 监听layout变化
      */
-    public KeyboardUtil setEnable() {
-        return setEnable(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
+    public KeyboardHelper setEnable() {
+        setEnable(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
                 | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        return this;
     }
 
     /**
@@ -72,7 +81,7 @@ public class KeyboardUtil {
      *
      * @param mode
      */
-    public KeyboardUtil setEnable(int mode) {
+    public KeyboardHelper setEnable(int mode) {
         mWindow.setSoftInputMode(mode);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 当在一个视图树中全局布局发生改变或者视图树中的某个视图的可视状态发生改变时,所要调用的回调函数的接口类
@@ -84,8 +93,9 @@ public class KeyboardUtil {
     /**
      * 取消监听
      */
-    public KeyboardUtil setDisable() {
-        return setDisable(mKeyMode);
+    public KeyboardHelper setDisable() {
+        setDisable(mKeyMode);
+        return this;
     }
 
     /**
@@ -93,7 +103,7 @@ public class KeyboardUtil {
      *
      * @param mode
      */
-    public KeyboardUtil setDisable(int mode) {
+    public KeyboardHelper setDisable(int mode) {
         mWindow.setSoftInputMode(mode);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mDecorView.getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
@@ -110,7 +120,8 @@ public class KeyboardUtil {
             Rect r = new Rect();
             mDecorView.getWindowVisibleDisplayFrame(r); //获取当前窗口可视区域大小的
             int height = mDecorView.getContext().getResources().getDisplayMetrics().heightPixels; //获取屏幕密度，不包含导航栏
-            int diff = height - r.bottom;
+            int diff = height - r.bottom +
+                    (mControlNavigationBarEnable ? NavigationBarUtil.getNavigationBarHeight(mWindow.getWindowManager()) : 0);
             if (diff >= 0) {
                 mContentView.setPadding(0, mContentView.getPaddingTop(), 0, diff);
             }

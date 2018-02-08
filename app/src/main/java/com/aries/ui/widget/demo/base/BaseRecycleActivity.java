@@ -1,6 +1,5 @@
 package com.aries.ui.widget.demo.base;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,12 +36,13 @@ public abstract class BaseRecycleActivity<T> extends BaseActivity
 
     protected abstract BaseQuickAdapter<T, BaseViewHolder> getAdapter();
 
-    protected void initView(Bundle bundle) {
+    @Override
+    protected void beforeInitView() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_content);
-        if (mRecyclerView == null) {
-            return;
+        if (mRecyclerView != null) {
+            initRecyclerView();
         }
-        initRecyclerView();
+        super.beforeInitView();
     }
 
     protected void initRecyclerView() {

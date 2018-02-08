@@ -1,6 +1,5 @@
 package com.aries.ui.widget.action.sheet;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,11 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created: AriesHoo on 2017-01-20 10:35
- * Function:UIActionSheet效果
- * Desc:
+ * Created: AriesHoo on 2018/2/7/007 12:35
+ * E-Mail: AriesHoo@126.com
+ * Function: UIActionSheet效果
+ * Description:
  */
-@SuppressLint({"InflateParams", "RtlHardcoded"})
 public class UIActionSheetView {
     private Context context;
     private Dialog dialog;
@@ -600,6 +599,11 @@ public class UIActionSheetView {
             textView.setLayoutParams(params);
             textView.setMinimumHeight(getItemHeight());
             tvTitle.setMinimumHeight(STYLE != STYLE_IOS ? getItemHeight() : dip2px(20));
+
+            tvTitle.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            if (tvTitle.getVisibility() != View.VISIBLE) {
+                tvTitle.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+            }
             textView.setLineSpacing(mLineSpacingExtra, mLineSpacingMultiplier);
             // 点击事件
             textView.setOnClickListener(new OnClickListener() {
