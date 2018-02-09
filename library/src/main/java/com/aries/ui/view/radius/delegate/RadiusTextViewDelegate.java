@@ -9,7 +9,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -491,8 +490,6 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
             Drawable[] drawables = mTextView.getCompoundDrawables();
             drawables[index] = stateDrawable;
             mTextView.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
-            Log.i("setButtonDrawable","normal:"+normal.getBounds()+";height:"+normal.getIntrinsicHeight()+";stateDrawable:"+stateDrawable.getBounds()+";height:"+stateDrawable.getIntrinsicHeight());
-
         }
     }
 

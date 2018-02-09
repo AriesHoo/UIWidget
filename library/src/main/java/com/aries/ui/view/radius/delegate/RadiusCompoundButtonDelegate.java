@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
@@ -168,7 +167,6 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
             stateDrawable.addState(new int[]{}, getStateDrawable(mButtonDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
             DrawableUtil.setDrawableWidthHeight(stateDrawable, mButtonDrawableWidth, mButtonDrawableHeight);
             mButton.setButtonDrawable(stateDrawable);
-            Log.i("setButtonDrawable","mButtonDrawable:"+mButtonDrawable.getBounds()+";height:"+mButtonDrawable.getIntrinsicHeight()+";stateDrawable:"+stateDrawable.getBounds()+";height:"+stateDrawable.getIntrinsicHeight());
         }
     }
 }

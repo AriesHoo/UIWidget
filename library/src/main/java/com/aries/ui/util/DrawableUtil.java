@@ -1,7 +1,6 @@
 package com.aries.ui.util;
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 /**
  * Created: AriesHoo on 2018/2/5/005 12:02
@@ -25,7 +24,6 @@ public class DrawableUtil {
                         width >= 0 ? width : drawable.getIntrinsicWidth(),
                         height >= 0 ? height : drawable.getIntrinsicHeight());
             }
-            Log.i("setDrawableWidthHeight",drawable+"");
         } catch (Exception e) {
         }
     }
