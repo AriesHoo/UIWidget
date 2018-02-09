@@ -1,6 +1,7 @@
 package com.aries.ui.util;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
@@ -160,5 +161,18 @@ public class StatusBarUtil {
             return true;
         } else
             return false;
+    }
+
+    /**
+     * 获取状态栏高度
+     * @return
+     */
+    public static int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = Resources.getSystem().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }

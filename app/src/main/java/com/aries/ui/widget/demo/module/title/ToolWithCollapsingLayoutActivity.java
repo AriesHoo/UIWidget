@@ -1,8 +1,13 @@
 package com.aries.ui.widget.demo.module.title;
 
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
-import com.aries.ui.view.title.CollapsingTitleBarLayout;
+import com.aries.ui.helper.navigation.NavigationViewHelper;
+import com.aries.ui.helper.status.StatusViewHelper;
+import com.aries.ui.widget.demo.BuildConfig;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.adapter.TitleAdapter;
 import com.aries.ui.widget.demo.base.BaseRecycleActivity;
@@ -22,10 +27,11 @@ import butterknife.BindView;
  * Function:  TitleBarView+CollapsingTitleBarLayout 类Toolbar+CollapsingToolbarLayout
  * Description:
  */
-public class TitleWithCollapsingLayoutActivity extends BaseRecycleActivity<WidgetEntity> {
+public class ToolWithCollapsingLayoutActivity extends BaseRecycleActivity<WidgetEntity> {
     private BaseQuickAdapter mAdapter;
 
-    @BindView(R.id.lLayout_titleBar) CollapsingTitleBarLayout mCollapsingTitleBarLayout;
+    @BindView(R.id.lLayout_toolBar) CollapsingToolbarLayout mCollapsingToolbarLayout;
+    @BindView(R.id.toolBar) Toolbar mToolbar;
 
     @Override
     protected boolean setLoadMore() {
@@ -39,26 +45,41 @@ public class TitleWithCollapsingLayoutActivity extends BaseRecycleActivity<Widge
     }
 
     @Override
-    protected void beforeInitView() {
-        super.beforeInitView();
+    protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
+        StatusViewHelper.with(this)
+                .setControlEnable(true)
+                .setLogEnable(BuildConfig.DEBUG)
+                .setTransEnable(true)
+                .setPlusStatusViewEnable(false)
+                .setTopView(mToolbar)
+                .init();
+        super.beforeControlNavigation(navigationHelper);
     }
 
     @Override
     protected void setTitleBar() {
+
     }
 
     @Override
     protected int getLayout() {
-        return R.layout.activity_title_with_collapsing_layout;
+        return R.layout.activity_tool_with_collapsing_layout;
     }
 
     @Override
     protected void initView(Bundle var1) {
         List<TitleEntity> list = new ArrayList<>();
         mAdapter.setNewData(list);
-        mCollapsingTitleBarLayout
-                .setTitle("CollapsingTitleBarLayout")
-                .setTitleEnabled(true);
+
+        mCollapsingToolbarLayout
+                .setTitle("CollapsingToolbarLayout");
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

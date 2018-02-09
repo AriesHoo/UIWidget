@@ -1465,12 +1465,7 @@ public class TitleBarView extends ViewGroup {
      * @return
      */
     public static int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = Resources.getSystem().getDimensionPixelSize(resourceId);
-        }
-        return result;
+        return StatusBarUtil.getStatusBarHeight();
     }
 
     /**

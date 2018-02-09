@@ -155,8 +155,9 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     private void initData() {
         List<TitleEntity> list = new ArrayList<>();
         list.add(new TitleEntity("TitleBarView与底部EditText结合", "点击查看示例", TitleEditActivity.class));
-        list.add(new TitleEntity("TitleBarView结合ConstraintLayout", "点击查看示例", TitleWithConstraint.class));
+        list.add(new TitleEntity("TitleBarView结合ConstraintLayout", "点击查看示例", TitleWithConstraintActivity.class));
         list.add(new TitleEntity("TitleBarView结合CollapsingTitleBarLayout", "点击查看示例", TitleWithCollapsingLayoutActivity.class));
+        list.add(new TitleEntity("Toolbar结合CollapsingToolbarLayout", "点击查看示例", ToolWithCollapsingLayoutActivity.class));
         list.add(new TitleEntity("白色主题", "点击切换白色主题", android.R.color.white));
         list.add(new TitleEntity("红色主题", "点击切换红色主题", android.R.color.holo_red_light));
         list.add(new TitleEntity("橙色主题", "点击切换橙色主题", android.R.color.holo_orange_light));

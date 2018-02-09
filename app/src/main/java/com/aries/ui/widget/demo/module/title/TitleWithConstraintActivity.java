@@ -17,7 +17,7 @@ import butterknife.BindView;
  * Function: TitleBarView结合ConstraintLayout
  * Description:
  */
-public class TitleWithConstraint extends BaseActivity {
+public class TitleWithConstraintActivity extends BaseActivity {
 
 
     String text = "不清楚为什么TitleBarView的父容器为ConstraintLayout(约束布局)时,根据测量状态栏高度来重新绘制TitleBarView高度的时候整个TitleBarView高度会是增加两个StatusBarView(状态栏)的高度,现在处理方法为:<font color=\"#C00000\">在TitleBarView的onMeasure回调中将动态增加StatusBarView高度的1/2(其它为1倍),onLayout的回调中重新摆放各子View位置时top设置为StatusBarView的1/2(其它为1倍),具体查看源码.有更好的解决方案或者有清楚原理的万望指点迷津</font>";

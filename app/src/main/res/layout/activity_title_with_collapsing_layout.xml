@@ -14,12 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:collapsing_collapsedTitleGravity="center"
-            app:collapsing_contentScrim="@android:color/white"
+            app:collapsing_contentScrim="@android:color/holo_blue_light"
             app:collapsing_expandedTitleGravity="left|bottom"
             app:collapsing_expandedTitleMarginBottom="10dp"
             app:collapsing_expandedTitleMarginEnd="10dp"
             app:collapsing_expandedTitleMarginStart="10dp"
-            app:collapsing_statusBarScrim="@android:color/white"
+            app:collapsing_statusBarScrim="@android:color/holo_blue_light"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -31,12 +31,11 @@
                 app:collapsing_layout_collapseParallaxMultiplier="0.1"/>
 
             <com.aries.ui.view.title.TitleBarView
-                android:id="@+id/titleBar"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 app:collapsing_layout_collapseMode="pin"
-                app:title_leftTextDrawable="@drawable/ic_arrow_left"
-                app:title_statusBarLightMode="true"/>
+                app:title_leftTextDrawable="@drawable/ic_arrow_back_white"
+                app:title_statusBarLightMode="false"/>
         </com.aries.ui.view.title.CollapsingTitleBarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -46,4 +45,5 @@
         android:layout_height="match_parent"
         android:scrollbars="none"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
 </android.support.design.widget.CoordinatorLayout>

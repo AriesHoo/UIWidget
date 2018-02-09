@@ -33,8 +33,9 @@
         <activity android:name=".module.radius.RadiusActivity"/>
         <activity android:name=".module.title.TitleActivity"/>
         <activity android:name=".module.title.TitleEditActivity"/>
-        <activity android:name=".module.title.TitleWithConstraint"/>
+        <activity android:name=".module.title.TitleWithConstraintActivity"/>
         <activity android:name=".module.title.TitleWithCollapsingLayoutActivity"/>
+        <activity android:name=".module.title.ToolWithCollapsingLayoutActivity"/>
         <activity
             android:name=".WebViewActivity"
             android:configChanges="locale|layoutDirection|mcc|mnc|orientation|screenSize"

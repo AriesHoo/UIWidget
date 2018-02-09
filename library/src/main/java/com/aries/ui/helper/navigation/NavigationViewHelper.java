@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.widget.R;
 
 import java.lang.ref.SoftReference;
@@ -184,8 +185,8 @@ public class NavigationViewHelper {
         if (activity == null || activity.isFinishing()) {
             throw new NullPointerException("not exist");
         }
-        setControlEnable(mControlEnable)
-                .setTransEnable(mTransEnable);
+        setTransEnable(mTransEnable)
+                .setControlEnable(mControlEnable);
         final Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
@@ -246,13 +247,23 @@ public class NavigationViewHelper {
             return;
         }
         if (mLinearLayout == null) {
-            getLinearLayout(window.getDecorView());
+            mLinearLayout = FindViewUtil.getTargetView(window.getDecorView(), LinearLayout.class);
         }
         if (mLinearLayout != null && mPlusNavigationViewEnable) {
             final LinearLayout linearLayout = mLinearLayout;
             Context mContext = window.getContext();
-            if (linearLayout.getChildCount() >= 2) {//其实也只有2个子View
-                View viewChild = linearLayout.getChildAt(1);
+            int count = linearLayout.getChildCount();
+            if (count >= 2) {//其实也只有2个子View
+                View viewChild = null;
+                if (count == 2) {
+                    viewChild = linearLayout.getChildAt(1);
+                } else if (count >= 3) {
+                    viewChild = linearLayout.getChildAt(count - 1);
+                }
+                if (viewChild == null) {
+                    return;
+                }
+                Log.i(TAG, "viewChild:" + viewChild.getId());
                 //设置LinearLayout第二个View占用屏幕高度权重为1
                 // 预留假的NavigationView位置并保证Navigation始终在最底部--被虚拟导航栏遮住
                 viewChild.setLayoutParams(new LinearLayout.LayoutParams(
@@ -295,30 +306,4 @@ public class NavigationViewHelper {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT &&
                 NavigationBarUtil.hasSoftKeys(window.getWindowManager());
     }
-
-    /**
-     * 获取window的DecorView的第一个LinearLayout用于设置假的NavigationView
-     *
-     * @param rootView
-     */
-    private void getLinearLayout(View rootView) {
-        if (rootView instanceof LinearLayout && mLinearLayout == null) {
-            mLinearLayout = (LinearLayout) rootView;
-            if (mLogEnable)
-                Log.i(TAG, "ViewGroupName:" + rootView.getClass().getSimpleName() + ";children:" + mLinearLayout.getChildCount());
-        } else if (rootView instanceof ViewGroup) {
-            ViewGroup contentView = (ViewGroup) rootView;
-            if (mLogEnable)
-                Log.i(TAG, "ViewGroupName:" + rootView.getClass().getSimpleName() + ";children:" + contentView.getChildCount());
-            int childCount = contentView.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View childView = contentView.getChildAt(i);
-                getLinearLayout(childView);
-            }
-        } else {
-            if (mLogEnable)
-                Log.i(TAG, "ViewName:" + rootView.getClass().getSimpleName());
-        }
-    }
-
 }

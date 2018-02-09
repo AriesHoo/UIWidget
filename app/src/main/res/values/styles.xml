@@ -45,7 +45,19 @@
 
     <!--折叠状态TextView样式-->
     <style name="CollapsingTitleBarLayoutCollapsed">
-        <item name="android:textColor">@color/colorTextBlack</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
+    <!--展开状态样式-->
+    <style name="CollapsingToolbarLayoutExpanded">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">24dp</item>
+    </style>
+
+    <!--折叠状态TextView样式-->
+    <style name="CollapsingToolbarLayoutCollapsed">
+        <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textSize">18dp</item>
     </style>
 </resources>
