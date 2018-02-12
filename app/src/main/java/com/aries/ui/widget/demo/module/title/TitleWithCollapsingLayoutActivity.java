@@ -1,6 +1,7 @@
 package com.aries.ui.widget.demo.module.title;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.aries.ui.view.title.CollapsingTitleBarLayout;
 import com.aries.ui.widget.demo.R;
@@ -45,6 +46,12 @@ public class TitleWithCollapsingLayoutActivity extends BaseRecycleActivity<Widge
 
     @Override
     protected void setTitleBar() {
+        titleBar.setOnLeftTextClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.aries.ui.widget.R;
  * Description:
  * 1、2018-2-4 17:42:18 增加 CompoundButton 类(CheckBox和RadioButton)增加ButtonDrawable属性
  * 2、2018-2-5 11:02:51 增加TextView类设置drawable属性
+ * 3、提前增加文本颜色值默认检查
  */
 public class RadiusTextViewDelegate extends RadiusViewDelegate {
 
@@ -80,57 +81,58 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
 
     @Override
     protected void initAttributes(Context context, AttributeSet attrs) {
-        mTextColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_textColor, Integer.MAX_VALUE);
-        mTextPressedColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_textPressedColor, mTextColor);
-        mTextDisabledColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_textDisabledColor, mTextColor);
-        mTextSelectedColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_textSelectedColor, mTextColor);
-        mTextCheckedColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_textCheckedColor, mTextColor);
+        mTextView = (TextView) mView;
+        mTextColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textColor, Integer.MAX_VALUE);
+        mTextColor = (mTextColor == Integer.MAX_VALUE ? mTextView.getTextColors().getDefaultColor() : mTextColor);
+        mTextPressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textPressedColor, mTextColor);
+        mTextDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textDisabledColor, mTextColor);
+        mTextSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textSelectedColor, mTextColor);
+        mTextCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textCheckedColor, mTextColor);
 
-        mLeftDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_leftDrawableColorRadius, 0);
-        mLeftDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusCheckBox_rv_leftDrawableColorCircleEnable, false);
-        mLeftDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_leftDrawableWidth, -1);
-        mLeftDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_leftDrawableHeight, -1);
-        mLeftDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_leftDrawable);
-        mLeftPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_leftPressedDrawable);
-        mLeftDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_leftDisabledDrawable);
-        mLeftSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_leftSelectedDrawable);
-        mLeftCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_leftCheckedDrawable);
+        mLeftDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_leftDrawableColorRadius, 0);
+        mLeftDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_leftDrawableColorCircleEnable, false);
+        mLeftDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_leftDrawableWidth, -1);
+        mLeftDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_leftDrawableHeight, -1);
+        mLeftDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_leftDrawable);
+        mLeftPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_leftPressedDrawable);
+        mLeftDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_leftDisabledDrawable);
+        mLeftSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_leftSelectedDrawable);
+        mLeftCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_leftCheckedDrawable);
 
-        mTopDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_topDrawableColorRadius, 0);
-        mTopDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusCheckBox_rv_topDrawableColorCircleEnable, false);
-        mTopDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_topDrawableWidth, -1);
-        mTopDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_topDrawableHeight, -1);
-        mTopDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_topDrawable);
-        mTopPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_topPressedDrawable);
-        mTopDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_topDisabledDrawable);
-        mTopSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_topSelectedDrawable);
-        mTopCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_topCheckedDrawable);
+        mTopDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_topDrawableColorRadius, 0);
+        mTopDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_topDrawableColorCircleEnable, false);
+        mTopDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_topDrawableWidth, -1);
+        mTopDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_topDrawableHeight, -1);
+        mTopDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_topDrawable);
+        mTopPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_topPressedDrawable);
+        mTopDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_topDisabledDrawable);
+        mTopSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_topSelectedDrawable);
+        mTopCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_topCheckedDrawable);
 
-        mRightDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_rightDrawableColorRadius, 0);
-        mRightDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusCheckBox_rv_rightDrawableColorCircleEnable, false);
-        mRightDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_rightDrawableWidth, -1);
-        mRightDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_rightDrawableHeight, -1);
-        mRightDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_rightDrawable);
-        mRightPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_rightPressedDrawable);
-        mRightDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_rightDisabledDrawable);
-        mRightSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_rightSelectedDrawable);
-        mRightCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_rightCheckedDrawable);
+        mRightDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_rightDrawableColorRadius, 0);
+        mRightDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_rightDrawableColorCircleEnable, false);
+        mRightDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_rightDrawableWidth, -1);
+        mRightDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_rightDrawableHeight, -1);
+        mRightDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_rightDrawable);
+        mRightPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_rightPressedDrawable);
+        mRightDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_rightDisabledDrawable);
+        mRightSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_rightSelectedDrawable);
+        mRightCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_rightCheckedDrawable);
 
-        mBottomDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_bottomDrawableColorRadius, 0);
-        mBottomDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusCheckBox_rv_bottomDrawableColorCircleEnable, false);
-        mBottomDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_bottomDrawableWidth, -1);
-        mBottomDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_bottomDrawableHeight, -1);
-        mBottomDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_bottomDrawable);
-        mBottomPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_bottomPressedDrawable);
-        mBottomDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_bottomDisabledDrawable);
-        mBottomSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_bottomSelectedDrawable);
-        mBottomCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_bottomCheckedDrawable);
+        mBottomDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_bottomDrawableColorRadius, 0);
+        mBottomDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_bottomDrawableColorCircleEnable, false);
+        mBottomDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_bottomDrawableWidth, -1);
+        mBottomDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_bottomDrawableHeight, -1);
+        mBottomDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_bottomDrawable);
+        mBottomPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_bottomPressedDrawable);
+        mBottomDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_bottomDisabledDrawable);
+        mBottomSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_bottomSelectedDrawable);
+        mBottomCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_bottomCheckedDrawable);
         super.initAttributes(context, attrs);
     }
 
     @Override
     public void init() {
-        mTextView = (TextView) mView;
         setTextSelector();
         setTextDrawable(mLeftDrawable, mLeftCheckedDrawable,
                 mLeftSelectedDrawable, mLeftPressedDrawable, mLeftDisabledDrawable, Gravity.LEFT);

@@ -105,6 +105,34 @@
                     rv:rv_textPressedColor="#ffffff"/>
             </LinearLayout>
 
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:thumb="@drawable/selector_thumb"
+                android:track="@drawable/selector_track"/>
+
+            <com.aries.ui.view.radius.RadiusSwitch
+                android:id="@+id/radiusSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:checked="true"
+                android:text="@string/app_name"
+                rv:rv_thumbDrawable="@color/white"
+                rv:rv_thumbDrawableHeight="40dp"
+                rv:rv_thumbDrawableWidth="40dp"
+                rv:rv_thumbRadius="40dp"
+                rv:rv_thumbStrokeCheckedColor="#33da33"
+                rv:rv_thumbStrokeColor="#666666"
+                rv:rv_thumbStrokeWidth="1dp"
+                rv:rv_trackCheckedDrawable="#33da33"
+                rv:rv_trackDrawableHeight="30dp"
+                rv:rv_trackDrawableWidth="64dp"
+                rv:rv_trackRadius="30dp"
+                rv:rv_trackStrokeCheckedColor="#33da33"
+                rv:rv_trackStrokeColor="#BEBEBE"
+                rv:rv_trackStrokeWidth="2dp"/>
+
             <com.aries.ui.view.radius.RadiusTextView
                 android:layout_width="100dp"
                 android:layout_height="45dp"

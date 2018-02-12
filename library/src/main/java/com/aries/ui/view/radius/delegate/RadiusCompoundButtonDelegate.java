@@ -19,6 +19,7 @@ import com.aries.ui.widget.R;
 public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
 
     private CompoundButton mButton;
+    private StateListDrawable mStateButtonDrawable;
 
     private float mButtonDrawableColorRadius;
     private boolean mButtonDrawableColorCircleEnable;
@@ -30,6 +31,7 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
     private Drawable mButtonSelectedDrawable;
     private Drawable mButtonCheckedDrawable;
 
+
     public RadiusCompoundButtonDelegate(TextView view, Context context, AttributeSet attrs) {
         super(view, context, attrs);
     }
@@ -37,15 +39,20 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
 
     @Override
     protected void initAttributes(Context context, AttributeSet attrs) {
-        mButtonDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_buttonDrawableColorRadius, 0);
-        mButtonDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusCheckBox_rv_buttonDrawableColorCircleEnable, false);
-        mButtonDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_buttonDrawableWidth, -1);
-        mButtonDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_buttonDrawableHeight, -1);
-        mButtonDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_buttonDrawable);
-        mButtonPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_buttonPressedDrawable);
-        mButtonDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_buttonDisabledDrawable);
-        mButtonSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_buttonSelectedDrawable);
-        mButtonCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusCheckBox_rv_buttonCheckedDrawable);
+        mButtonDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_buttonDrawableColorRadius, 0);
+        mButtonDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_buttonDrawableColorCircleEnable, false);
+        mButtonDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_buttonDrawableWidth, -1);
+        mButtonDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_buttonDrawableHeight, -1);
+        mButtonDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_buttonDrawable);
+        mButtonPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_buttonPressedDrawable);
+        mButtonDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_buttonDisabledDrawable);
+        mButtonSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_buttonSelectedDrawable);
+        mButtonCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_buttonCheckedDrawable);
+
+        mButtonPressedDrawable = mButtonPressedDrawable == null ? mButtonDrawable : mButtonPressedDrawable;
+        mButtonDisabledDrawable = mButtonDisabledDrawable == null ? mButtonDrawable : mButtonDisabledDrawable;
+        mButtonSelectedDrawable = mButtonSelectedDrawable == null ? mButtonDrawable : mButtonSelectedDrawable;
+        mButtonCheckedDrawable = mButtonCheckedDrawable == null ? mButtonDrawable : mButtonCheckedDrawable;
         super.initAttributes(context, attrs);
     }
 
@@ -159,14 +166,16 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
                 || mButtonCheckedDrawable != null) {
             float radius = mButtonDrawableColorCircleEnable ?
                     mButtonDrawableWidth + mButtonDrawableHeight / 2 : mButtonDrawableColorRadius;
-            StateListDrawable stateDrawable = new StateListDrawable();
-            stateDrawable.addState(new int[]{mStateChecked}, getStateDrawable(mButtonCheckedDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
-            stateDrawable.addState(new int[]{mStateSelected}, getStateDrawable(mButtonSelectedDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
-            stateDrawable.addState(new int[]{mStatePressed}, getStateDrawable(mButtonPressedDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
-            stateDrawable.addState(new int[]{mStateDisabled}, getStateDrawable(mButtonDisabledDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
-            stateDrawable.addState(new int[]{}, getStateDrawable(mButtonDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
-            DrawableUtil.setDrawableWidthHeight(stateDrawable, mButtonDrawableWidth, mButtonDrawableHeight);
-            mButton.setButtonDrawable(stateDrawable);
+            if (mStateButtonDrawable == null) {
+                mStateButtonDrawable = new StateListDrawable();
+            }
+            mStateButtonDrawable.addState(new int[]{mStateChecked}, getStateDrawable(mButtonCheckedDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
+            mStateButtonDrawable.addState(new int[]{mStateSelected}, getStateDrawable(mButtonSelectedDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
+            mStateButtonDrawable.addState(new int[]{mStatePressed}, getStateDrawable(mButtonPressedDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
+            mStateButtonDrawable.addState(new int[]{mStateDisabled}, getStateDrawable(mButtonDisabledDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
+            mStateButtonDrawable.addState(new int[]{}, getStateDrawable(mButtonDrawable, radius, mButtonDrawableWidth, mButtonDrawableHeight));
+            DrawableUtil.setDrawableWidthHeight(mStateButtonDrawable, mButtonDrawableWidth, mButtonDrawableHeight);
+            mButton.setButtonDrawable(mStateButtonDrawable);
         }
     }
 }

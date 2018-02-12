@@ -7,8 +7,9 @@ import java.lang.reflect.Method;
 
 /**
  * Created: AriesHoo on 2017/8/17 13:45
- * Function: 手机ROM工具类
- * Desc:
+ * E-Mail: AriesHoo@126.com
+ * Function:手机ROM工具类
+ * Description:
  */
 public class RomUtil {
 

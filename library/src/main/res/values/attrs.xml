@@ -132,6 +132,123 @@
     <attr name="rv_buttonSelectedDrawable" format="reference|color"/>
     <attr name="rv_buttonCheckedDrawable" format="reference|color"/>
 
+    <!--以下为Switch ThumbDrawable和TrackDrawable宽高及不同状态属性-->
+
+
+    <declare-styleable name="RadiusSwitch">
+        <attr name="rv_backgroundColor"/>
+        <attr name="rv_backgroundPressedColor"/>
+        <attr name="rv_backgroundDisabledColor"/>
+        <attr name="rv_backgroundSelectedColor"/>
+        <attr name="rv_backgroundCheckedColor"/>
+
+        <attr name="rv_strokeColor"/>
+        <attr name="rv_strokePressedColor"/>
+        <attr name="rv_strokeDisabledColor"/>
+        <attr name="rv_strokeSelectedColor"/>
+        <attr name="rv_strokeCheckedColor"/>
+
+        <attr name="rv_strokeWidth"/>
+        <attr name="rv_strokeDashWidth"/>
+        <attr name="rv_strokeDashGap"/>
+        <attr name="rv_radiusHalfHeightEnable"/>
+        <attr name="rv_widthHeightEqualEnable"/>
+        <attr name="rv_radius"/>
+        <attr name="rv_topLeftRadius"/>
+        <attr name="rv_topRightRadius"/>
+        <attr name="rv_bottomLeftRadius"/>
+        <attr name="rv_bottomRightRadius"/>
+        <attr name="rv_rippleColor"/>
+        <attr name="rv_rippleEnable"/>
+        <attr name="rv_selected"/>
+
+        <attr name="rv_textColor"/>
+        <attr name="rv_textPressedColor"/>
+        <attr name="rv_textDisabledColor"/>
+        <attr name="rv_textSelectedColor"/>
+        <attr name="rv_textCheckedColor"/>
+
+        <attr name="rv_leftDrawableColorRadius"/>
+        <attr name="rv_leftDrawableColorCircleEnable"/>
+        <attr name="rv_leftDrawableWidth"/>
+        <attr name="rv_leftDrawableHeight"/>
+        <attr name="rv_leftDrawable"/>
+        <attr name="rv_leftPressedDrawable"/>
+        <attr name="rv_leftDisabledDrawable"/>
+        <attr name="rv_leftSelectedDrawable"/>
+        <attr name="rv_leftCheckedDrawable"/>
+
+        <attr name="rv_topDrawableColorRadius"/>
+        <attr name="rv_topDrawableColorCircleEnable"/>
+        <attr name="rv_topDrawableWidth"/>
+        <attr name="rv_topDrawableHeight"/>
+        <attr name="rv_topDrawable"/>
+        <attr name="rv_topPressedDrawable"/>
+        <attr name="rv_topDisabledDrawable"/>
+        <attr name="rv_topSelectedDrawable"/>
+        <attr name="rv_topCheckedDrawable"/>
+
+        <attr name="rv_rightDrawableColorRadius"/>
+        <attr name="rv_rightDrawableColorCircleEnable"/>
+        <attr name="rv_rightDrawableWidth"/>
+        <attr name="rv_rightDrawableHeight"/>
+        <attr name="rv_rightDrawable"/>
+        <attr name="rv_rightPressedDrawable"/>
+        <attr name="rv_rightDisabledDrawable"/>
+        <attr name="rv_rightSelectedDrawable"/>
+        <attr name="rv_rightCheckedDrawable"/>
+
+        <attr name="rv_bottomDrawableColorRadius"/>
+        <attr name="rv_bottomDrawableColorCircleEnable"/>
+        <attr name="rv_bottomDrawableWidth"/>
+        <attr name="rv_bottomDrawableHeight"/>
+        <attr name="rv_bottomDrawable"/>
+        <attr name="rv_bottomPressedDrawable"/>
+        <attr name="rv_bottomDisabledDrawable"/>
+        <attr name="rv_bottomSelectedDrawable"/>
+        <attr name="rv_bottomCheckedDrawable"/>
+
+        <attr name="rv_buttonDrawableColorRadius"/>
+        <attr name="rv_buttonDrawableColorCircleEnable"/>
+        <attr name="rv_buttonDrawableWidth"/>
+        <attr name="rv_buttonDrawableHeight"/>
+        <attr name="rv_buttonDrawable"/>
+        <attr name="rv_buttonPressedDrawable"/>
+        <attr name="rv_buttonDisabledDrawable"/>
+        <attr name="rv_buttonSelectedDrawable"/>
+        <attr name="rv_buttonCheckedDrawable"/>
+
+        <attr name="rv_thumbDrawableWidth" format="dimension"/>
+        <attr name="rv_thumbDrawableHeight" format="dimension"/>
+        <attr name="rv_thumbDrawable" format="reference|color"/>
+        <attr name="rv_thumbPressedDrawable" format="reference|color"/>
+        <attr name="rv_thumbDisabledDrawable" format="reference|color"/>
+        <attr name="rv_thumbSelectedDrawable" format="reference|color"/>
+        <attr name="rv_thumbCheckedDrawable" format="reference|color"/>
+        <attr name="rv_thumbStrokeColor" format="color"/>
+        <attr name="rv_thumbStrokePressedColor" format="color"/>
+        <attr name="rv_thumbStrokeDisabledColor" format="color"/>
+        <attr name="rv_thumbStrokeSelectedColor" format="color"/>
+        <attr name="rv_thumbStrokeCheckedColor" format="color"/>
+        <attr name="rv_thumbStrokeWidth" format="dimension"/>
+        <attr name="rv_thumbRadius" format="dimension"/>
+
+        <attr name="rv_trackDrawableWidth" format="dimension"/>
+        <attr name="rv_trackDrawableHeight" format="dimension"/>
+        <attr name="rv_trackDrawable" format="reference|color"/>
+        <attr name="rv_trackPressedDrawable" format="reference|color"/>
+        <attr name="rv_trackDisabledDrawable" format="reference|color"/>
+        <attr name="rv_trackSelectedDrawable" format="reference|color"/>
+        <attr name="rv_trackCheckedDrawable" format="reference|color"/>
+        <attr name="rv_trackStrokeColor" format="color"/>
+        <attr name="rv_trackStrokePressedColor" format="color"/>
+        <attr name="rv_trackStrokeDisabledColor" format="color"/>
+        <attr name="rv_trackStrokeSelectedColor" format="color"/>
+        <attr name="rv_trackStrokeCheckedColor" format="color"/>
+        <attr name="rv_trackStrokeWidth" format="dimension"/>
+        <attr name="rv_trackRadius" format="dimension"/>
+    </declare-styleable>
+
     <declare-styleable name="RadiusCheckBox">
         <attr name="rv_backgroundColor"/>
         <attr name="rv_backgroundPressedColor"/>

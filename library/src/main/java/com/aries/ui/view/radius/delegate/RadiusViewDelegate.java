@@ -91,7 +91,7 @@ public class RadiusViewDelegate {
     public RadiusViewDelegate(View view, Context context, AttributeSet attrs) {
         this.mView = view;
         this.mContext = context;
-        this.mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.RadiusCheckBox);
+        this.mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.RadiusSwitch);
         initAttributes(context, attrs);
         if (!(view instanceof CompoundButton) && !view.isClickable()) {
             view.setClickable(mRippleEnable);
@@ -101,34 +101,34 @@ public class RadiusViewDelegate {
     }
 
     protected void initAttributes(Context context, AttributeSet attrs) {
-        mBackgroundColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_backgroundColor, Integer.MAX_VALUE);
-        mBackgroundPressedColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_backgroundPressedColor, mBackgroundColor);
-        mBackgroundDisabledColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_backgroundDisabledColor, mBackgroundColor);
-        mBackgroundSelectedColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_backgroundSelectedColor, mBackgroundColor);
-        mBackgroundCheckedColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_backgroundCheckedColor, mBackgroundColor);
+        mBackgroundColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundColor, Integer.MAX_VALUE);
+        mBackgroundPressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundPressedColor, mBackgroundColor);
+        mBackgroundDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundDisabledColor, mBackgroundColor);
+        mBackgroundSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundSelectedColor, mBackgroundColor);
+        mBackgroundCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundCheckedColor, mBackgroundColor);
 
-        mStrokeColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_strokeColor, Color.GRAY);
-        mStrokePressedColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_strokePressedColor, mStrokeColor);
-        mStrokeDisabledColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_strokeDisabledColor, mStrokeColor);
-        mStrokeSelectedColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_strokeSelectedColor, mStrokeColor);
-        mStrokeCheckedColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_strokeCheckedColor, mStrokeColor);
+        mStrokeColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeColor, Color.GRAY);
+        mStrokePressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokePressedColor, mStrokeColor);
+        mStrokeDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeDisabledColor, mStrokeColor);
+        mStrokeSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeSelectedColor, mStrokeColor);
+        mStrokeCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeCheckedColor, mStrokeColor);
 
-        mStrokeWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusCheckBox_rv_strokeWidth, 0);
-        mStrokeDashWidth = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_strokeDashWidth, 0);
-        mStrokeDashGap = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_strokeDashGap, 0);
+        mStrokeWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_strokeWidth, 0);
+        mStrokeDashWidth = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_strokeDashWidth, 0);
+        mStrokeDashGap = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_strokeDashGap, 0);
 
-        mRadiusHalfHeightEnable = mTypedArray.getBoolean(R.styleable.RadiusCheckBox_rv_radiusHalfHeightEnable, false);
-        mWidthHeightEqualEnable = mTypedArray.getBoolean(R.styleable.RadiusCheckBox_rv_widthHeightEqualEnable, false);
+        mRadiusHalfHeightEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_radiusHalfHeightEnable, false);
+        mWidthHeightEqualEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_widthHeightEqualEnable, false);
 
-        mRadius = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_radius, 0);
-        mTopLeftRadius = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_topLeftRadius, 0);
-        mTopRightRadius = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_topRightRadius, 0);
-        mBottomLeftRadius = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_bottomLeftRadius, 0);
-        mBottomRightRadius = mTypedArray.getDimension(R.styleable.RadiusCheckBox_rv_bottomRightRadius, 0);
+        mRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_radius, 0);
+        mTopLeftRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_topLeftRadius, 0);
+        mTopRightRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_topRightRadius, 0);
+        mBottomLeftRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_bottomLeftRadius, 0);
+        mBottomRightRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_bottomRightRadius, 0);
 
-        mRippleColor = mTypedArray.getColor(R.styleable.RadiusCheckBox_rv_rippleColor, mContext.getResources().getColor(R.color.colorRadiusDefaultRipple));
-        mRippleEnable = mTypedArray.getBoolean(R.styleable.RadiusCheckBox_rv_rippleEnable, getDefaultRippleEnable());
-        mSelected = mTypedArray.getBoolean(R.styleable.RadiusCheckBox_rv_selected, false);
+        mRippleColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_rippleColor, mContext.getResources().getColor(R.color.colorRadiusDefaultRipple));
+        mRippleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_rippleEnable, getDefaultRippleEnable());
+        mSelected = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_selected, false);
         mTypedArray.recycle();
     }
 
