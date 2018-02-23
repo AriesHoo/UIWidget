@@ -9,8 +9,8 @@ android {
         applicationId "com.aries.ui.widget.demo"
         minSdkVersion ext.minSdkVersion
         targetSdkVersion ext.targetSdkVersion
-        versionCode 23
-        versionName "2.0.9"
+        versionCode ext.versionCode
+        versionName ext.versionName
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -28,7 +28,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:'.concat(supportVersion)
     compile'com.android.support:design:'.concat(supportVersion)
     compile 'com.android.support:recyclerview-v7:'.concat(supportVersion)
-    compile project(':library')
+//    compile project(':Core')
+    compile project(':CollapsingTitleBarLayout')
 //    compile 'com.github.AriesHoo:UIWidget:2.0.9'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
     compile 'com.jakewharton:butterknife:8.8.1'

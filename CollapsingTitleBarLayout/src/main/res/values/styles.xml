@@ -1,0 +1,13 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--展开状态样式-->
+    <style name="CollapsingTitleBarLayoutExpanded">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <!--折叠状态TextView样式-->
+    <style name="CollapsingTitleBarLayoutCollapsed">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>

@@ -7,6 +7,9 @@
     android:minHeight="80dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
+    rv:rv_enterFadeDuration="500"
+    rv:rv_exitFadeDuration="500"
+    rv:rv_rippleEnable="false"
     rv:rv_backgroundColor="@color/colorWhite"
     rv:rv_backgroundPressedColor="@color/colorWhitePressed">
 

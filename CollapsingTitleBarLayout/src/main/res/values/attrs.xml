@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CollapsingTitleBarLayout start -->
+    <declare-styleable name="CollapsingTitleBarLayout">
+        <attr name="collapsing_expandedTitleMargin" format="dimension"/>
+        <attr name="collapsing_expandedTitleMarginStart" format="dimension"/>
+        <attr name="collapsing_expandedTitleMarginTop" format="dimension"/>
+        <attr name="collapsing_expandedTitleMarginEnd" format="dimension"/>
+        <attr name="collapsing_expandedTitleMarginBottom" format="dimension"/>
+        <attr name="collapsing_expandedTitleTextAppearance" format="reference"/>
+        <attr name="collapsing_collapsedTitleTextAppearance" format="reference"/>
+        <attr name="collapsing_contentScrim" format="color"/>
+        <attr name="collapsing_statusBarScrim" format="color"/>
+        <attr name="collapsing_titleBarId" format="reference"/>
+        <attr name="collapsing_scrimVisibleHeightTrigger" format="dimension"/>
+        <attr name="collapsing_scrimAnimationDuration" format="integer"/>
+        <attr name="collapsing_collapsedTitleGravity">
+            <flag name="top" value="0x30"/>
+            <flag name="bottom" value="0x50"/>
+            <flag name="left" value="0x03"/>
+            <flag name="right" value="0x05"/>
+            <flag name="center_vertical" value="0x10"/>
+            <flag name="fill_vertical" value="0x70"/>
+            <flag name="center_horizontal" value="0x01"/>
+            <flag name="center" value="0x11"/>
+            <flag name="start" value="0x00800003"/>
+            <flag name="end" value="0x00800005"/>
+        </attr>
+        <attr name="collapsing_expandedTitleGravity">
+            <flag name="top" value="0x30"/>
+            <flag name="bottom" value="0x50"/>
+            <flag name="left" value="0x03"/>
+            <flag name="right" value="0x05"/>
+            <flag name="center_vertical" value="0x10"/>
+            <flag name="fill_vertical" value="0x70"/>
+            <flag name="center_horizontal" value="0x01"/>
+            <flag name="center" value="0x11"/>
+            <flag name="start" value="0x00800003"/>
+            <flag name="end" value="0x00800005"/>
+        </attr>
+        <attr name="collapsing_titleEnabled" format="boolean"/>
+        <attr name="title"/>
+    </declare-styleable>
+
+    <declare-styleable name="CollapsingTitleBarLayout_Layout">
+        <attr name="collapsing_layout_collapseMode">
+            <enum name="none" value="0"/>
+            <enum name="pin" value="1"/>
+            <enum name="parallax" value="2"/>
+        </attr>
+        <attr name="collapsing_layout_collapseParallaxMultiplier" format="float"/>
+    </declare-styleable>
+
+    <!-- CollapsingTitleBarLayout end -->
+    <declare-styleable name="CollapsingTextAppearance">
+        <attr name="android:textSize"/>
+        <attr name="android:textColor"/>
+        <attr name="android:textColorHint"/>
+        <attr name="android:textStyle"/>
+        <attr name="android:typeface"/>
+        <attr name="android:textAllCaps"/>
+        <attr name="android:shadowColor"/>
+        <attr name="android:shadowDy"/>
+        <attr name="android:shadowDx"/>
+        <attr name="android:shadowRadius"/>
+    </declare-styleable>
+</resources>
