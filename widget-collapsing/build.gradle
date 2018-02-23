@@ -46,5 +46,5 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:'.concat(supportVersion)
     provided 'com.android.support:design:'.concat(supportVersion)
-    compile project(':Core')
+    compile project(':widget-core')
 }

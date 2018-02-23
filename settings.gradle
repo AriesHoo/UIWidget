@@ -1,1 +1,1 @@
-include ':app', ':Core', ':CollapsingTitleBarLayout'
+include ':app', ':widget-core', ':widget-collapsing'
