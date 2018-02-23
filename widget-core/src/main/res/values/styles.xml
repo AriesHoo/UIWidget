@@ -71,16 +71,4 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="AlertViewButtonStyle">
-        <item name="android:clickable">true</item>
-        <item name="android:layout_width">0dip</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:minHeight">45dp</item>
-        <item name="android:padding">10dp</item>
-        <item name="android:textColor">@color/colorAlertButton</item>
-        <item name="android:textSize">@dimen/sp_alert_message_size</item>
-    </style>
 </resources>

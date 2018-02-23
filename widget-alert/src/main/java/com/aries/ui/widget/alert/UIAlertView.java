@@ -23,8 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aries.ui.widget.R;
-
 /**
  * Created: AriesHoo on 2017-01-19 14:16
  * E-Mail: AriesHoo@126.com
