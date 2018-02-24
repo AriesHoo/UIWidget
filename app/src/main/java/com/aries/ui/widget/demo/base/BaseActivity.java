@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 
 import com.aries.ui.helper.navigation.NavigationViewHelper;
-import com.aries.ui.util.RomUtil;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.demo.BuildConfig;
 import com.aries.ui.widget.demo.R;
@@ -74,8 +73,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         mNavigationViewHelper = NavigationViewHelper.with(this)
                 .setLogEnable(BuildConfig.DEBUG)
                 .setControlEnable(true)
-                .setTransEnable(RomUtil.isEMUI())
-                .setPlusNavigationViewEnable(RomUtil.isEMUI())
+                .setTransEnable(false)
+                .setPlusNavigationViewEnable(false)
+                .setControlBottomEditTextEnable(true)
                 .setBottomView(mContentView);
         beforeControlNavigation(mNavigationViewHelper);
         mNavigationViewHelper.init();

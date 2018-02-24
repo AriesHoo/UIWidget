@@ -189,8 +189,7 @@ public class NavigationViewHelper {
                 .setControlEnable(mControlEnable);
         final Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && (mPlusNavigationViewEnable || (!mPlusNavigationViewEnable && mTransEnable))) {//5.0默认半透明
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0默认半透明
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             window.getDecorView().setSystemUiVisibility(
                     window.getDecorView().getSystemUiVisibility()
