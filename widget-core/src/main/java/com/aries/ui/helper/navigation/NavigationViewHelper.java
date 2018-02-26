@@ -25,6 +25,7 @@ import java.lang.ref.SoftReference;
  * Function: 虚拟导航栏控制帮助类
  * Description:
  * 1、修改NavigationLayoutDrawable默认保持与activity的根布局背景一致
+ * 2、2018-2-26 15:56:47 新增setBottomView(View bottomView, boolean enable)用于控制底部View设置padding/margin
  */
 public class NavigationViewHelper {
 
@@ -39,11 +40,13 @@ public class NavigationViewHelper {
     private int mNavigationViewColor;
     private Drawable mNavigationViewDrawable;
     private Drawable mNavigationLayoutDrawable;
-    private View mBottomView;//设置activity最底部View用于增加导航栏的padding
+    private View mBottomView;//设置activity最底部View用于增加导航栏的padding/margin
+    private boolean mBottomViewMarginEnable;//设置activity最底部View用于是否增加导航栏margin
 
     private View mContentView;//activity xml设置根布局
     private LinearLayout mLinearLayout;
     private LinearLayout mLayoutNavigation;
+    private boolean mInited = false;
 
     private NavigationViewHelper(Activity activity) {
         mActivity = new SoftReference<>(activity);
@@ -170,11 +173,17 @@ public class NavigationViewHelper {
      * 设置最底部--虚拟状态栏上边的View
      *
      * @param bottomView
+     * @param enable     是否设置Margin
      * @return
      */
-    public NavigationViewHelper setBottomView(View bottomView) {
+    public NavigationViewHelper setBottomView(View bottomView, boolean enable) {
         mBottomView = bottomView;
+        mBottomViewMarginEnable = enable;
         return this;
+    }
+
+    public NavigationViewHelper setBottomView(View bottomView) {
+        return setBottomView(bottomView, false);
     }
 
     /**
@@ -185,8 +194,10 @@ public class NavigationViewHelper {
         if (activity == null || activity.isFinishing()) {
             throw new NullPointerException("not exist");
         }
-        setTransEnable(mTransEnable)
-                .setControlEnable(mControlEnable);
+        setControlEnable(mControlEnable);
+        if (mTransEnable) {
+            setTransEnable(mTransEnable);
+        }
         final Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0默认半透明
@@ -221,12 +232,20 @@ public class NavigationViewHelper {
                         }
                         Object isSet = mBottomView.getTag(TAG_SET_NAVIGATION_CONTROL);
                         if (isSet == null) {
-                            mBottomView.setPadding(
-                                    mBottomView.getPaddingLeft(),
-                                    mBottomView.getPaddingTop(),
-                                    mBottomView.getPaddingRight(),
-                                    mBottomView.getPaddingBottom() +
-                                            NavigationBarUtil.getNavigationBarHeight(window.getWindowManager()));
+                            if (mBottomViewMarginEnable) {
+                                ViewGroup.MarginLayoutParams marginLayoutParams =
+                                        (ViewGroup.MarginLayoutParams) mBottomView.getLayoutParams();
+                                if (marginLayoutParams != null) {
+                                    marginLayoutParams.bottomMargin += NavigationBarUtil.getNavigationBarHeight(window.getWindowManager());
+                                }
+                            } else {
+                                mBottomView.setPadding(
+                                        mBottomView.getPaddingLeft(),
+                                        mBottomView.getPaddingTop(),
+                                        mBottomView.getPaddingRight(),
+                                        mBottomView.getPaddingBottom() +
+                                                NavigationBarUtil.getNavigationBarHeight(window.getWindowManager()));
+                            }
                             if (mLogEnable)
                                 Log.i(TAG, "mBottomView:" + mBottomView + "设置成功");
                         }

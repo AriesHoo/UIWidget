@@ -1,5 +1,6 @@
 package com.aries.ui.util;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Build;
@@ -15,6 +16,7 @@ import java.lang.reflect.Method;
  * E-Mail: AriesHoo@126.com
  * Function: 状态栏工具类(状态栏文字颜色)
  * Description:
+ * 1、修改状态栏黑白字 功能逻辑--参考 https://github.com/QMUI/QMUI_Android  QMUIStatusBarHelper类
  */
 public class StatusBarUtil {
 
@@ -143,7 +145,10 @@ public class StatusBarUtil {
     private static boolean setStatusBarModeForAndroidM(Window window, boolean darkText) {
         boolean result = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.getDecorView().setSystemUiVisibility(darkText ? View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | 0x00002000 : View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_VISIBLE);
+            int systemUi = darkText ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR|View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN :
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            systemUi = changeStatusBarModeRetainFlag(window, systemUi);
+            window.getDecorView().setSystemUiVisibility(systemUi);
             result = true;
         }
         return result;
@@ -165,6 +170,7 @@ public class StatusBarUtil {
 
     /**
      * 获取状态栏高度
+     *
      * @return
      */
     public static int getStatusBarHeight() {
@@ -174,5 +180,24 @@ public class StatusBarUtil {
             result = Resources.getSystem().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    @TargetApi(23)
+    private static int changeStatusBarModeRetainFlag(Window window, int out) {
+        out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_FULLSCREEN);
+        out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        return out;
+    }
+
+    public static int retainSystemUiFlag(Window window, int out, int type) {
+        int now = window.getDecorView().getSystemUiVisibility();
+        if ((now & type) == type) {
+            out |= type;
+        }
+        return out;
     }
 }

@@ -15,7 +15,6 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.RomUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.title.TitleBarView;
@@ -63,14 +62,6 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     private BaseQuickAdapter mAdapter;
     protected View vHeader;
     private int mAlpha = 102;
-
-    @Override
-    protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
-        super.beforeControlNavigation(navigationHelper);
-        navigationHelper.setBottomView(mRecyclerView)
-                .setTransEnable(false)
-                .setPlusNavigationViewEnable(false);
-    }
 
     @Override
     protected boolean setLoadMore() {
@@ -190,7 +181,8 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isImmersible = isChecked;
-                titleBar.setImmersible(mContext, isImmersible, isLight);//一般情况下使用
+                titleBar.setStatusAlpha(isImmersible ? 0 : 255);
+                titleBarDrawer.setStatusAlpha(isImmersible ? 0 : 255);
                 titleBarDrawer.setImmersible(mContext, isImmersible, isLight);
                 sBtnImmersible.setText(isChecked ? "沉浸" : "不沉浸");
                 if (!isImmersible) {
@@ -210,14 +202,11 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isLight = isChecked;
-                if (isLight) {
-                    sBtnImmersible.setChecked(true);
-                    sBarAlpha.setProgress(0);
-                } else {
-                    sBarAlpha.setProgress(102);
-                }
-                titleBar.setImmersible(mContext, isImmersible, isLight);//一般情况下使用
-                titleBarDrawer.setImmersible(mContext, isImmersible, isLight);
+                int alpha = isLight ? 0 : 102;
+                sBtnImmersible.setChecked(isLight);
+                sBarAlpha.setProgress(alpha);
+                titleBar.setStatusAlpha(alpha);
+                titleBarDrawer.setStatusAlpha(alpha);
                 if (!isImmersible) {
                     StatusBarUtil.setStatusBarDarkMode(mContext);
                 } else {

@@ -31,6 +31,7 @@
                 app:collapsing_layout_collapseParallaxMultiplier="0.1"/>
 
             <com.aries.ui.view.title.TitleBarView
+                android:id="@+id/titleBar_collapsing"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 app:collapsing_layout_collapseMode="pin"

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.aries.ui.view.title.CollapsingTitleBarLayout;
+import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.adapter.TitleAdapter;
 import com.aries.ui.widget.demo.base.BaseRecycleActivity;
@@ -26,6 +27,8 @@ import butterknife.BindView;
 public class TitleWithCollapsingLayoutActivity extends BaseRecycleActivity<WidgetEntity> {
     private BaseQuickAdapter mAdapter;
 
+
+    @BindView(R.id.titleBar_collapsing) TitleBarView mTitleBarView;
     @BindView(R.id.lLayout_titleBar) CollapsingTitleBarLayout mCollapsingTitleBarLayout;
 
     @Override
@@ -66,6 +69,12 @@ public class TitleWithCollapsingLayoutActivity extends BaseRecycleActivity<Widge
         mCollapsingTitleBarLayout
                 .setTitle("CollapsingTitleBarLayout")
                 .setTitleEnabled(true);
+        mTitleBarView.setOnLeftTextClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

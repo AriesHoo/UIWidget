@@ -407,9 +407,9 @@ public class TitleBarView extends ViewGroup {
                 window.setStatusBarColor(Color.TRANSPARENT);
             }
         }
-        if (mStatusBackground == null) {
+//        if (mStatusBackground == null) {
             setStatusAlpha(immersible ? isTransStatusBar ? 0 : 102 : 255);
-        }
+//        }
         return this;
     }
 
