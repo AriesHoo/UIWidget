@@ -22,36 +22,6 @@
 
 
             <android.support.v7.widget.SwitchCompat
-                android:id="@+id/sBtn_styleActionSheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="圆角模式"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"
-                android:visibility="gone"/>
-
-            <View
-                style="@style/LineGray.Horizontal"
-                android:minHeight="20dp"
-                android:visibility="gone"/>
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/sBtn_marginActionSheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="cancel按钮与item之间有间隙"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"
-                android:visibility="gone"/>
-
-
-            <android.support.v7.widget.SwitchCompat
                 android:id="@+id/sBtn_titleActionSheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,6 +74,19 @@
             <View style="@style/LineGray.Horizontal"/>
 
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sBtn_marginActionSheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:checked="false"
+                android:padding="12dp"
+                android:text="cancel按钮与item之间有间隙"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="@dimen/dp_text_size_main"/>
+
+            <View style="@style/LineGray.Horizontal"/>
+
+            <android.support.v7.widget.SwitchCompat
                 android:id="@+id/sBtn_backActionSheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -128,6 +111,11 @@
                 android:id="@+id/rtv_showWeiXinActionSheet"
                 style="@style/RadiusStyleButton"
                 android:text="微信风格(类BottomSheet)"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_showGridActionSheet"
+                style="@style/RadiusStyleButton"
+                android:text="Grid风格"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -9,7 +9,7 @@
     app:title_actionTextColor="@color/colorTextBlack"
     app:title_dividerBackground="@color/colorLineGray"
     app:title_dividerHeight="@dimen/dp_line_size"
-    app:title_leftTextColor="@drawable/selector_text_color"
+    app:title_leftTextColor="@color/colorTextBlack"
     app:title_leftTextDrawable="@drawable/ic_arrow_left"
     app:title_rightTextColor="@color/colorTextBlack"
     app:title_statusBarLightMode="true"

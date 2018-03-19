@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.aries.ui.util.FindViewUtil;
+import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.R;
 
@@ -38,7 +39,8 @@ public class StatusViewHelper {
     private int mStatusViewColor;
     private Drawable mStatusViewDrawable;
     private Drawable mStatusLayoutDrawable;
-    private View mTopView;//设置activity最底部View用于增加导航栏的padding
+    private View mTopView;//设置activity最底部View用于增加状态栏的padding
+    private boolean mTopViewMarginEnable;//设置activity最顶部View用于是否增加导航栏margin
 
     private View mContentView;//activity xml设置根布局
     private LinearLayout mLinearLayout;
@@ -155,14 +157,20 @@ public class StatusViewHelper {
     }
 
     /**
-     * 设置最底部--虚拟状态栏上边的View
+     * 设置最顶部--虚拟状态栏上边的View
      *
      * @param view
+     * @param enable 是否设置Margin
      * @return
      */
-    public StatusViewHelper setTopView(View view) {
+    public StatusViewHelper setTopView(View view, boolean enable) {
         mTopView = view;
+        mTopViewMarginEnable = enable;
         return this;
+    }
+
+    public StatusViewHelper setTopView(View view) {
+        return setTopView(view, false);
     }
 
     /**
@@ -173,20 +181,18 @@ public class StatusViewHelper {
         if (activity == null || activity.isFinishing()) {
             throw new NullPointerException("not exist");
         }
-        setTransEnable(mTransEnable)
-                .setControlEnable(mControlEnable);
+        setControlEnable(mControlEnable);
         final Window window = activity.getWindow();
         //透明状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 透明状态栏
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                    && (mPlusStatusViewEnable || (!mPlusStatusViewEnable && mTransEnable))) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(!mPlusStatusViewEnable ? mStatusViewColor : Color.TRANSPARENT);
+                window.setStatusBarColor(mStatusViewColor);
             }
         }
         addStatusBar(window);
@@ -205,11 +211,19 @@ public class StatusViewHelper {
                         }
                         Object isSet = mTopView.getTag(TAG_SET_STATUS_CONTROL);
                         if (isSet == null) {
-                            mTopView.setPadding(
-                                    mTopView.getPaddingLeft(),
-                                    mTopView.getPaddingTop() + TitleBarView.getStatusBarHeight(),
-                                    mTopView.getPaddingRight(),
-                                    mTopView.getPaddingBottom());
+                            if (mTopViewMarginEnable) {
+                                ViewGroup.MarginLayoutParams marginLayoutParams =
+                                        (ViewGroup.MarginLayoutParams) mTopView.getLayoutParams();
+                                if (marginLayoutParams != null) {
+                                    marginLayoutParams.topMargin += StatusBarUtil.getStatusBarHeight();
+                                }
+                            } else {
+                                mTopView.setPadding(
+                                        mTopView.getPaddingLeft(),
+                                        mTopView.getPaddingTop() + StatusBarUtil.getStatusBarHeight(),
+                                        mTopView.getPaddingRight(),
+                                        mTopView.getPaddingBottom());
+                            }
                             if (mLogEnable)
                                 Log.i(TAG, "mTopView:" + mTopView + "设置成功");
                         }
@@ -269,30 +283,4 @@ public class StatusViewHelper {
     protected boolean isSupportStatusBarControl() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
-
-    /**
-     * 获取window的DecorView的第一个LinearLayout用于设置假的StatusView
-     *
-     * @param rootView
-     */
-    private void getLinearLayout(View rootView) {
-        if (rootView instanceof LinearLayout && mLinearLayout == null) {
-            mLinearLayout = (LinearLayout) rootView;
-            if (mLogEnable)
-                Log.i(TAG, "ViewGroupName:" + rootView.getClass().getSimpleName() + ";children:" + mLinearLayout.getChildCount());
-        } else if (rootView instanceof ViewGroup) {
-            ViewGroup contentView = (ViewGroup) rootView;
-            if (mLogEnable)
-                Log.i(TAG, "ViewGroupName:" + rootView.getClass().getSimpleName() + ";children:" + contentView.getChildCount());
-            int childCount = contentView.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View childView = contentView.getChildAt(i);
-                getLinearLayout(childView);
-            }
-        } else {
-            if (mLogEnable)
-                Log.i(TAG, "ViewName:" + rootView.getClass().getSimpleName());
-        }
-    }
-
 }

@@ -66,7 +66,8 @@ public class RadiusFrameLayout extends FrameLayout {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        if (delegate != null)
+        if (delegate != null){
             delegate.init();
+        }
     }
 }

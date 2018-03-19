@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.RomUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.title.TitleBarView;
@@ -69,6 +70,12 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     }
 
     @Override
+    protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
+        super.beforeControlNavigation(navigationHelper);
+        navigationHelper.setBottomView(mRecyclerView);
+    }
+
+    @Override
     protected void setTitleBar() {
         titleBar.setTitleMainText("主标题")
                 .setTitleSubText(getSubText())
@@ -116,8 +123,8 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
 
     @Override
     protected void initView(Bundle bundle) {
-//        drawerRoot.setScrimColor(0x00ffffff);//背景高亮
-//        drawerRoot.setDrawerElevation(40);//海拔高度
+        drawerRoot.setScrimColor(Color.argb(30,0,0,0));//背景高亮
+        drawerRoot.setDrawerElevation(40);//海拔高度
 //        mContentView.setBackgroundDrawable(null);
         GlideManager.loadCircleImg("https://avatars3.githubusercontent.com/u/19605922?v=4&s=460", ivHead);
         titleBarDrawer.setImmersible(mContext, isImmersible, isLight);
@@ -258,25 +265,25 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
             }
         });
         drawerRoot.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                if (type > 0) {
-                    StatusBarUtil.setStatusBarDarkMode(mContext);
-                }
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                if (type > 0) {
-                    if (isWhite && isImmersible) {
-                        StatusBarUtil.setStatusBarLightMode(mContext);
-                    } else {
-                        StatusBarUtil.setStatusBarDarkMode(mContext);
-                    }
-                }
-            }
+//            @Override
+//            public void onDrawerOpened(View drawerView) {
+//                super.onDrawerOpened(drawerView);
+//                if (type > 0) {
+//                    StatusBarUtil.setStatusBarDarkMode(mContext);
+//                }
+//            }
+//
+//            @Override
+//            public void onDrawerClosed(View drawerView) {
+//                super.onDrawerClosed(drawerView);
+//                if (type > 0) {
+//                    if (isWhite && isImmersible) {
+//                        StatusBarUtil.setStatusBarLightMode(mContext);
+//                    } else {
+//                        StatusBarUtil.setStatusBarDarkMode(mContext);
+//                    }
+//                }
+//            }
         });
         if (canLight && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             sBtnLight.setChecked(false);

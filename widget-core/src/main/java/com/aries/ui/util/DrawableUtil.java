@@ -27,4 +27,17 @@ public class DrawableUtil {
         } catch (Exception e) {
         }
     }
+
+    /**
+     * 复制当前drawable
+     *
+     * @param drawable
+     * @return
+     */
+    public static Drawable getNewDrawable(Drawable drawable) {
+        if (drawable == null) {
+            return drawable;
+        }
+        return drawable.getConstantState().newDrawable();
+    }
 }

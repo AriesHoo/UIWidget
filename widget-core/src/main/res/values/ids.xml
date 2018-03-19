@@ -4,4 +4,11 @@
     <item name="fake_navigation_view" type="id"/>
     <item name="fake_status_layout" type="id"/>
     <item name="fake_status_view" type="id"/>
+
+
+    <item name="lLayout_rootActionSheet" type="id"/>
+    <item name="lv_containerActionSheet" type="id"/>
+    <item name="gv_containerActionSheet" type="id"/>
+    <item name="tv_titleActionSheet" type="id"/>
+    <item name="tv_cancelActionSheet" type="id"/>
 </resources>

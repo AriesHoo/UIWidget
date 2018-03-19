@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              tools:background="#d3d2d2"
+              tools:minHeight="45dp"
+              tools:padding="12dp">
+
+    <ImageView
+        android:id="@+id/iv_iconActionSheetList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="12dp"
+        android:contentDescription="Item icon"
+        android:scaleType="centerInside"
+        tools:src="@drawable/dialog_loading_wei_bo"/>
+
+    <TextView
+        android:id="@+id/tv_msgActionSheetList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="middle"
+        tools:text="@string/ensure"/>
+</LinearLayout>

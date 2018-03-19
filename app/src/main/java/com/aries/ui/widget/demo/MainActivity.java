@@ -1,6 +1,7 @@
 package com.aries.ui.widget.demo;
 
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.aries.ui.widget.demo.adapter.WidgetAdapter;
@@ -48,6 +49,8 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> {
                 .setTitleSubText(R.string.app_title_content)
                 .setLeftTextDrawable(0)
                 .setTitleSubTextMarquee(true);
+        new AlertDialog.Builder(this)
+                .create();
     }
 
     @Override

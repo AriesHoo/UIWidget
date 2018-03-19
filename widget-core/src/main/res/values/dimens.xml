@@ -1,8 +1,6 @@
 <resources>
     <dimen name="dp_line_size">0.5dp</dimen>
     <dimen name="dp_line_break">8dp</dimen>
-    <dimen name="sp_alert_message_size">16sp</dimen>
-    <dimen name="sp_alert_title_size">16sp</dimen>
-    <dimen name="alert_dp_padding">12dp</dimen>
     <dimen name="dp_radius_loading">4dp</dimen>
+    <dimen name="dp_action_sheet_list_line_height">@dimen/dp_line_size</dimen>
 </resources>

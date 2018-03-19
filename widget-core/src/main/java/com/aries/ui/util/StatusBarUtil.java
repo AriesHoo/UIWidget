@@ -145,8 +145,7 @@ public class StatusBarUtil {
     private static boolean setStatusBarModeForAndroidM(Window window, boolean darkText) {
         boolean result = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int systemUi = darkText ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR|View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN :
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            int systemUi = darkText ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             systemUi = changeStatusBarModeRetainFlag(window, systemUi);
             window.getDecorView().setSystemUiVisibility(systemUi);
             result = true;

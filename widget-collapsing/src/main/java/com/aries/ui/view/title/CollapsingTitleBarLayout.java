@@ -46,11 +46,6 @@ import java.lang.annotation.RetentionPolicy;
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
- * @author cginechen
- * @date 2017-09-02
- */
-
-/**
  * Created: AriesHoo on 2018/2/7/007 15:53
  * E-Mail: AriesHoo@126.com
  * Function: 参考 {@link android.support.design.widget.CollapsingToolbarLayout},

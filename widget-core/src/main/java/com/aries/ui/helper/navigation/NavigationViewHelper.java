@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.widget.R;
 
@@ -29,7 +30,7 @@ import java.lang.ref.SoftReference;
  */
 public class NavigationViewHelper {
 
-    public final static int TAG_SET_NAVIGATION_CONTROL = 0x10000011;
+    public final static int TAG_NAVIGATION_BAR_HEIGHT = 0x10000012;
     private String TAG = getClass().getSimpleName();
     private SoftReference<Activity> mActivity;
     private boolean mLogEnable;
@@ -46,7 +47,7 @@ public class NavigationViewHelper {
     private View mContentView;//activity xml设置根布局
     private LinearLayout mLinearLayout;
     private LinearLayout mLayoutNavigation;
-    private boolean mInited = false;
+    private int mNavigationHeight;
 
     private NavigationViewHelper(Activity activity) {
         mActivity = new SoftReference<>(activity);
@@ -89,17 +90,16 @@ public class NavigationViewHelper {
     }
 
     /**
-     * 设置是否全透明
+     * 设置是否全透明--通过设置NavigationView 背景色来控制注意调用顺序
      *
      * @param transEnable
      * @return
      */
     public NavigationViewHelper setTransEnable(boolean transEnable) {
         this.mTransEnable = transEnable;
+        setNavigationLayoutColor(Color.WHITE);
         if (mContentView != null && mContentView.getBackground() != null) {
-            setNavigationLayoutDrawable(mContentView.getBackground());
-        } else {
-            setNavigationLayoutColor(Color.WHITE);
+            setNavigationLayoutDrawable(DrawableUtil.getNewDrawable(mContentView.getBackground()));
         }
         return setNavigationViewColor(transEnable ? Color.TRANSPARENT : Color.argb(102, 0, 0, 0));
     }
@@ -172,18 +172,18 @@ public class NavigationViewHelper {
     /**
      * 设置最底部--虚拟状态栏上边的View
      *
-     * @param bottomView
-     * @param enable     是否设置Margin
+     * @param view
+     * @param enable 是否设置Margin
      * @return
      */
-    public NavigationViewHelper setBottomView(View bottomView, boolean enable) {
-        mBottomView = bottomView;
+    public NavigationViewHelper setBottomView(View view, boolean enable) {
+        mBottomView = view;
         mBottomViewMarginEnable = enable;
         return this;
     }
 
-    public NavigationViewHelper setBottomView(View bottomView) {
-        return setBottomView(bottomView, false);
+    public NavigationViewHelper setBottomView(View view) {
+        return setBottomView(view, false);
     }
 
     /**
@@ -192,13 +192,12 @@ public class NavigationViewHelper {
     public void init() {
         Activity activity = mActivity.get();
         if (activity == null || activity.isFinishing()) {
-            throw new NullPointerException("not exist");
+            return;
         }
         setControlEnable(mControlEnable);
-        if (mTransEnable) {
-            setTransEnable(mTransEnable);
-        }
         final Window window = activity.getWindow();
+        mNavigationHeight = NavigationBarUtil.getNavigationBarHeight(window.getWindowManager());
+        addOnGlobalLayoutListener();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0默认半透明
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -206,7 +205,7 @@ public class NavigationViewHelper {
                     window.getDecorView().getSystemUiVisibility()
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setNavigationBarColor(!mPlusNavigationViewEnable ? mNavigationViewColor : Color.TRANSPARENT);
+            window.setNavigationBarColor(mNavigationViewColor);
         }
         //控制底部输入框
         if (mControlBottomEditTextEnable) {
@@ -218,56 +217,93 @@ public class NavigationViewHelper {
         }
         addNavigationBar(window);
         if (mLayoutNavigation != null) {
+            ViewGroup.LayoutParams params = mLayoutNavigation.getLayoutParams();
+            params.height = mNavigationHeight;
+            mLayoutNavigation.setLayoutParams(params);
             mLayoutNavigation.setVisibility(mPlusNavigationViewEnable ? View.VISIBLE : View.GONE);
         }
-        Log.i(TAG, "mBottomView:" + mBottomView);
-        if (mBottomView != null) {
-            if (!mPlusNavigationViewEnable)
-                mBottomView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        ViewGroup.LayoutParams params = mBottomView.getLayoutParams();
-                        if (params != null && params.height >= 0) {//默认
-                            params.height = params.height + NavigationBarUtil.getNavigationBarHeight(window.getWindowManager());
-                        }
-                        Object isSet = mBottomView.getTag(TAG_SET_NAVIGATION_CONTROL);
-                        if (isSet == null) {
-                            if (mBottomViewMarginEnable) {
-                                ViewGroup.MarginLayoutParams marginLayoutParams =
-                                        (ViewGroup.MarginLayoutParams) mBottomView.getLayoutParams();
-                                if (marginLayoutParams != null) {
-                                    marginLayoutParams.bottomMargin += NavigationBarUtil.getNavigationBarHeight(window.getWindowManager());
-                                }
-                            } else {
-                                mBottomView.setPadding(
-                                        mBottomView.getPaddingLeft(),
-                                        mBottomView.getPaddingTop(),
-                                        mBottomView.getPaddingRight(),
-                                        mBottomView.getPaddingBottom() +
-                                                NavigationBarUtil.getNavigationBarHeight(window.getWindowManager()));
-                            }
-                            if (mLogEnable)
-                                Log.i(TAG, "mBottomView:" + mBottomView + "设置成功");
-                        }
-                        mBottomView.setTag(TAG_SET_NAVIGATION_CONTROL, true);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                            mBottomView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        } else {
-                            mBottomView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        }
+        if (mBottomView != null && !mPlusNavigationViewEnable) {
+            mBottomView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    Object heightKeep = mBottomView.getTag(TAG_NAVIGATION_BAR_HEIGHT);
+                    int height = heightKeep instanceof Integer ? (int) heightKeep : 0;
+                    int heightReal = mNavigationHeight > height ? mNavigationHeight : 0 - height;
+                    ViewGroup.LayoutParams params = mBottomView.getLayoutParams();
+                    if (params != null && params.height >= 0) {//默认
+                        params.height += mNavigationHeight;
                     }
-                });
+                    if (mBottomViewMarginEnable) {
+                        ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) params;
+                        if (marginLayoutParams != null) {
+                            marginLayoutParams.bottomMargin += heightReal;
+                        }
+                    } else {
+                        mBottomView.setPadding(
+                                mBottomView.getPaddingLeft(),
+                                mBottomView.getPaddingTop(),
+                                mBottomView.getPaddingRight(),
+                                mBottomView.getPaddingBottom() + heightReal);
+                    }
+                    Log.i(TAG, "heightReal:" + heightReal);
+                    //将当前导航栏高度保存
+                    mBottomView.setTag(TAG_NAVIGATION_BAR_HEIGHT, heightReal);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        mBottomView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    } else {
+                        mBottomView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    }
+                    if (mLogEnable)
+                        Log.i(TAG, "mBottomView:" + mBottomView + "设置成功");
+                }
+            });
         }
     }
 
+    /**
+     * Activity ContentView监听用于控制华为导航栏可隐藏问题
+     */
+    private void addOnGlobalLayoutListener() {
+        //控制华为
+        if (mContentView != null) {
+            mContentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    Activity activity = mActivity.get();
+                    if (activity == null) {
+                        return;
+                    }
+                    Window window = activity.getWindow();
+                    //导航栏高度变化
+                    if (NavigationBarUtil.getNavigationBarHeight(window.getWindowManager()) != mNavigationHeight) {
+                        if (mLogEnable) {
+                            Log.i(TAG, "导航栏变化前高度:" + mNavigationHeight + ";变化后高度:" +
+                                    NavigationBarUtil.getNavigationBarHeight(window.getWindowManager()));
+                        }
+                        //导航栏可关闭的不建议使用加NavigationView模式
+                        init();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 添加假导航栏
+     *
+     * @param window
+     */
     private void addNavigationBar(Window window) {
-        if (!isSupportNavigationBarControl(window)) {
+        if (!isSupportNavigationBarControl()) {
             return;
         }
         if (mLinearLayout == null) {
             mLinearLayout = FindViewUtil.getTargetView(window.getDecorView(), LinearLayout.class);
         }
-        if (mLinearLayout != null && mPlusNavigationViewEnable) {
+        //避免重复添加
+        if (mLinearLayout != null
+                && mPlusNavigationViewEnable
+                && mLayoutNavigation == null) {
             final LinearLayout linearLayout = mLinearLayout;
             Context mContext = window.getContext();
             int count = linearLayout.getChildCount();
@@ -281,7 +317,6 @@ public class NavigationViewHelper {
                 if (viewChild == null) {
                     return;
                 }
-                Log.i(TAG, "viewChild:" + viewChild.getId());
                 //设置LinearLayout第二个View占用屏幕高度权重为1
                 // 预留假的NavigationView位置并保证Navigation始终在最底部--被虚拟导航栏遮住
                 viewChild.setLayoutParams(new LinearLayout.LayoutParams(
@@ -296,14 +331,13 @@ public class NavigationViewHelper {
                     //创建假的NavigationView
                     viewNavigation = new View(mContext);
                     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            NavigationBarUtil.getNavigationBarHeight(window.getWindowManager()));
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     viewNavigation.setId(R.id.fake_navigation_view);
                     mLayoutNavigation.addView(viewNavigation, params);
                     linearLayout.addView(mLayoutNavigation,
                             new ViewGroup.LayoutParams(
                                     ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.WRAP_CONTENT));
+                                    mNavigationHeight));
                 } else {
                     viewNavigation = mLayoutNavigation.findViewById(R.id.fake_navigation_view);
                 }
@@ -320,8 +354,7 @@ public class NavigationViewHelper {
         }
     }
 
-    protected boolean isSupportNavigationBarControl(Window window) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT &&
-                NavigationBarUtil.hasSoftKeys(window.getWindowManager());
+    protected boolean isSupportNavigationBarControl() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 }

@@ -1,22 +1,19 @@
 package com.aries.ui.widget.demo.module.action;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
-import android.text.Html;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.view.title.TitleBarView;
+import com.aries.ui.widget.action.sheet.UIActionSheetDialog;
 import com.aries.ui.widget.action.sheet.UIActionSheetView;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.aries.ui.widget.demo.util.SizeUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,7 +26,6 @@ import butterknife.OnClick;
 public class ActionSheetActivity extends BaseActivity {
 
     @BindView(R.id.titleBar) TitleBarView titleBar;
-    @BindView(R.id.sBtn_styleActionSheet) SwitchCompat sBtnStyle;
     @BindView(R.id.sBtn_marginActionSheet) SwitchCompat sBtnMargin;
     @BindView(R.id.sBtn_titleActionSheet) SwitchCompat sBtnTitle;
     @BindView(R.id.sBtn_titleColorActionSheet) SwitchCompat sBtnTitleColor;
@@ -38,7 +34,6 @@ public class ActionSheetActivity extends BaseActivity {
     @BindView(R.id.sBtn_backActionSheet) SwitchCompat sBtnBack;
     @BindView(R.id.rtv_showActionSheet) RadiusTextView rtvShow;
 
-    private boolean isRoundStyle = true;
     private boolean isShowMargin = true;
     private boolean isShowTitle = true;
 
@@ -60,15 +55,6 @@ public class ActionSheetActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle bundle) {
-        sBtnStyle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isRoundStyle = isChecked;
-                sBtnStyle.setText(isRoundStyle ? "圆角模式" : "直角模式");
-                sBtnMargin.setVisibility(isRoundStyle ? View.GONE : View.VISIBLE);
-            }
-        });
-
         sBtnMargin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -81,7 +67,6 @@ public class ActionSheetActivity extends BaseActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isShowTitle = isChecked;
                 sBtnTitle.setText(isShowTitle ? "显示Title" : "隐藏Title");
-                sBtnTitleColor.setVisibility(isShowTitle ? View.VISIBLE : View.GONE);
             }
         });
 
@@ -122,7 +107,6 @@ public class ActionSheetActivity extends BaseActivity {
             }
         });
         sBtnTitle.setChecked(true);
-        sBtnStyle.setChecked(true);
         sBtnMargin.setChecked(true);
         sBtnTitleColor.setChecked(true);
         sBtnItemColor.setChecked(true);
@@ -138,54 +122,76 @@ public class ActionSheetActivity extends BaseActivity {
         }
     };
 
+    private UIActionSheetDialog.OnItemClickListener mOnItemClickListener = new UIActionSheetDialog.OnItemClickListener() {
+        @Override
+        public void onClick(UIActionSheetDialog dialog, View itemView, int position) {
+            Toast.makeText(ActionSheetActivity.this, "item position:" + position, Toast.LENGTH_SHORT).show();
+        }
+    };
 
-    @OnClick({R.id.sBtn_styleActionSheet, R.id.sBtn_titleActionSheet, R.id.rtv_showActionSheet
-            , R.id.rtv_showIOSActionSheet, R.id.rtv_showWeiXinActionSheet})
+    @OnClick({R.id.sBtn_titleActionSheet, R.id.rtv_showActionSheet
+            , R.id.rtv_showIOSActionSheet, R.id.rtv_showWeiXinActionSheet, R.id.rtv_showGridActionSheet})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.sBtn_styleActionSheet:
-                break;
             case R.id.sBtn_titleActionSheet:
                 break;
             case R.id.rtv_showActionSheet:
-                showAction(UIActionSheetView.STYLE_NORMAL);
+                new UIActionSheetDialog.ListSheetBuilder(this)
+                        .addItems(R.array.arrays_items_action)
+                        .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetNormalItemText : android.R.color.holo_purple)
+                        .setTitle(isShowTitle ? "标题" : null)
+                        .setCancel(R.string.cancel)
+                        .setCancelMarginTop(SizeUtil.dp2px(isShowMargin ? 8 : 0))
+                        .setCancelTextColorResource(isDefaultCancelColor ? R.color.colorActionSheetNormalItemText : android.R.color.darker_gray)
+                        .setOnItemClickListener(mOnItemClickListener)
+                        .create().setDimAmount(isBackDim ? 0.6f : 0f).show();
                 break;
             case R.id.rtv_showIOSActionSheet:
-                showAction(UIActionSheetView.STYLE_IOS);
+                new UIActionSheetDialog.ListIOSBuilder(this)
+                        .addItems(R.array.arrays_items_action)
+                        .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetItemText : android.R.color.holo_purple)
+                        .setTitle(isShowTitle ? "标题" : null)
+                        .setCancel(R.string.cancel)
+                        .setCancelTextColorResource(isDefaultCancelColor ? R.color.colorActionSheetItemText : android.R.color.darker_gray)
+                        .setOnItemClickListener(mOnItemClickListener)
+                        .create().setDimAmount(isBackDim ? 0.6f : 0f).show();
                 break;
             case R.id.rtv_showWeiXinActionSheet:
-                showAction(UIActionSheetView.STYLE_WEI_XIN);
+                new UIActionSheetDialog.ListWeChatBuilder(this)
+                        .addItems(R.array.arrays_items_action)
+                        .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetWeiXinText : android.R.color.holo_purple)
+                        .setTitle(isShowTitle ? "标题" : null)
+                        .setCancelTextColorResource(isDefaultCancelColor ? R.color.colorActionSheetWeiXinText : android.R.color.darker_gray)
+                        .setOnItemClickListener(mOnItemClickListener)
+                        .create().setDimAmount(isBackDim ? 0.6f : 0f).show();
+                break;
+            case R.id.rtv_showGridActionSheet:
+                UIActionSheetDialog dialog = new UIActionSheetDialog.GridBuilder(this)
+                        .addItem("分享微信", R.drawable.ic_more_operation_share_friend)
+                        .addItem("分享朋友圈", R.drawable.ic_more_operation_share_moment)
+                        .addItem("分享微博", R.drawable.ic_more_operation_share_weibo)
+                        .addItem("分享短信", R.drawable.ic_more_operation_share_chat)
+                        .addItem("保存本地", R.drawable.ic_more_operation_save)
+                        .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetNormalItemText : android.R.color.holo_green_dark)
+                        .setTitle(isShowTitle ? "请选择分享平台" : "")
+                        .setCancel(R.string.cancel)
+                        .setCancelMarginTop(SizeUtil.dp2px(isShowMargin ? 8 : 0))
+                        .setNumColumns(3)
+                        .setItemsTextSize(12)
+                        .setItemsImageWidth(SizeUtil.dp2px(60))
+                        .setItemsImageHeight(SizeUtil.dp2px(60))
+                        .setItemsClickBackgroundEnable(false)
+                        .setOnItemClickListener(new UIActionSheetDialog.OnItemClickListener() {
+                            @Override
+                            public void onClick(UIActionSheetDialog dialog, View itemView, int position) {
+                                if (itemView instanceof TextView) {
+                                    Toast.makeText(ActionSheetActivity.this, ((TextView) itemView).getText(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .create().setDimAmount(isBackDim ? 0.6f : 0f);
+                dialog.show();
                 break;
         }
-    }
-
-    private String mFormatName = "<font color=\"#393939\">%1s</font><br/> <small><font color=\"#2494f2\">%2s</font></small>";
-
-    private void showAction(int style) {
-        UIActionSheetView action = new UIActionSheetView(mContext, style);
-        List<CharSequence> list = new ArrayList<>();
-        list.addAll(Arrays.asList(getResources().getStringArray(R.array.arrays_items_action)));
-        list.add(Html.fromHtml(String.format(mFormatName,"2444444","2222")));
-        action.setItems(list, onActionSheetItemLister);
-        if (isShowTitle) {
-            action.setTitle("Title");
-        }
-        if (!isDefaultTitleColor) {
-            action.setTitleColor(Color.BLACK);
-        }
-        if (!isDefaultItemColor) {
-            action.setItemsTextColor(Color.BLACK);
-            action.setItemTextColor(0, Color.BLUE);
-            action.setItemTextColor(2, Color.GREEN);
-            action.setItemTextColor(4, Color.RED);
-            action.setItemTextColor(6, Color.YELLOW);
-        }
-        if (!isDefaultCancelColor) {
-            action.setCancelColor(Color.BLACK);
-        }
-        if (!isBackDim) {
-            action.setDimAmount(0f);
-        }
-        action.show();
     }
 }

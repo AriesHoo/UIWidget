@@ -218,6 +218,7 @@
                 android:drawablePadding="12dp"
                 android:gravity="center"
                 android:padding="12dp"
+                rv:rv_backgroundColor="@color/colorWhite"
                 android:text="RadiusTextView with Drawable"
                 rv:rv_bottomDrawable="#b986f7"
                 rv:rv_bottomDrawableColorRadius="7.5dp"

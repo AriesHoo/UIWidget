@@ -10,5 +10,5 @@
     <color name="colorTextBlack">#333333</color>
     <color name="colorTextBlackLight">#636363</color>
     <color name="colorWhite">#ffffff</color>
-    <color name="colorWhitePressed">#dcdcdc</color>
+    <color name="colorWhitePressed">#d31111</color>
 </resources>

@@ -62,6 +62,13 @@ public class RadiusActivity extends BaseActivity {
                 .setStrokeDashWidth(getResources().getDimension(R.dimen.dp_dash_width))
                 .setStrokeDashGap(getResources().getDimension(R.dimen.dp_dash_gap))
                 .init();
+        rtvDrawable.getDelegate()
+                .setOnSelectedChangeListener(new RadiusViewDelegate.OnSelectedChangeListener() {
+                    @Override
+                    public void onSelectedChanged(View view, boolean isSelected) {
+                        Toast.makeText(mContext, "isSelected:" + isSelected, Toast.LENGTH_SHORT).show();
+                    }
+                }).init();
     }
 
 
@@ -73,13 +80,6 @@ public class RadiusActivity extends BaseActivity {
                 rtvDisable.setEnabled(!enable);
                 break;
             case R.id.rtv_drawableRadius:
-                rtvDrawable.getDelegate()
-                        .setOnSelectedChangeListener(new RadiusViewDelegate.OnSelectedChangeListener() {
-                            @Override
-                            public void onSelectedChanged(View view, boolean isSelected) {
-                                Toast.makeText(mContext, "isSelected:" + isSelected, Toast.LENGTH_SHORT).show();
-                            }
-                        });
                 rtvDrawable.setSelected(!rtvDrawable.isSelected());
                 break;
         }

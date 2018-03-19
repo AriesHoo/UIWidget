@@ -16,7 +16,7 @@ import com.aries.ui.widget.R;
  * Function: 设置CompoundButton ButtonDrawable相关代理
  * Description:
  */
-public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
+public class RadiusCompoundButtonDelegate<T extends RadiusCompoundButtonDelegate> extends RadiusTextViewDelegate<T> {
 
     private CompoundButton mButton;
     private StateListDrawable mStateButtonDrawable;
@@ -68,9 +68,9 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
      * @param drawableWidth
      * @return
      */
-    public RadiusCompoundButtonDelegate setButtonDrawableWidth(int drawableWidth) {
+    public T setButtonDrawableWidth(int drawableWidth) {
         mButtonDrawableWidth = drawableWidth;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -79,9 +79,9 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
      * @param drawableHeight
      * @return
      */
-    public RadiusCompoundButtonDelegate setButtonDrawableHeight(int drawableHeight) {
+    public T setButtonDrawableHeight(int drawableHeight) {
         mButtonDrawableHeight = drawableHeight;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -89,12 +89,12 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
      *
      * @param drawable
      */
-    public RadiusCompoundButtonDelegate setButtonDrawable(Drawable drawable) {
+    public T setButtonDrawable(Drawable drawable) {
         mButtonDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusCompoundButtonDelegate setButtonDrawable(int resId) {
+    public T setButtonDrawable(int resId) {
         return setButtonDrawable(getDrawable(resId));
     }
 
@@ -103,12 +103,12 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
      *
      * @param drawable
      */
-    public RadiusCompoundButtonDelegate setButtonPressedDrawable(Drawable drawable) {
+    public T setButtonPressedDrawable(Drawable drawable) {
         mButtonPressedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusCompoundButtonDelegate setButtonPressedDrawable(int resId) {
+    public T setButtonPressedDrawable(int resId) {
         return setButtonPressedDrawable(getDrawable(resId));
     }
 
@@ -117,12 +117,12 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
      *
      * @param drawable
      */
-    public RadiusCompoundButtonDelegate setButtonDisabledDrawable(Drawable drawable) {
+    public T setButtonDisabledDrawable(Drawable drawable) {
         mButtonDisabledDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusCompoundButtonDelegate setButtonDisabledDrawable(int resId) {
+    public T setButtonDisabledDrawable(int resId) {
         return setButtonDisabledDrawable(getDrawable(resId));
     }
 
@@ -132,12 +132,12 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
      * @param drawable
      * @return
      */
-    public RadiusCompoundButtonDelegate setButtonSelectedDrawable(Drawable drawable) {
+    public T setButtonSelectedDrawable(Drawable drawable) {
         mButtonSelectedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusCompoundButtonDelegate setButtonSelectedDrawable(int resId) {
+    public T setButtonSelectedDrawable(int resId) {
         return setButtonSelectedDrawable(getDrawable(resId));
     }
 
@@ -147,12 +147,12 @@ public class RadiusCompoundButtonDelegate extends RadiusTextViewDelegate {
      * @param drawable
      * @return
      */
-    public RadiusCompoundButtonDelegate setButtonCheckedDrawable(Drawable drawable) {
+    public T setButtonCheckedDrawable(Drawable drawable) {
         mButtonCheckedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusCompoundButtonDelegate setButtonCheckedDrawable(int resId) {
+    public T setButtonCheckedDrawable(int resId) {
         return setButtonCheckedDrawable(getDrawable(resId));
     }
 

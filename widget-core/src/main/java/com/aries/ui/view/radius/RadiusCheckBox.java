@@ -30,7 +30,7 @@ public class RadiusCheckBox extends CheckBox {
      *
      * @return
      */
-    public RadiusCompoundButtonDelegate getDelegate() {
+    public RadiusCompoundButtonDelegate<RadiusCompoundButtonDelegate> getDelegate() {
         return delegate;
     }
 
@@ -67,8 +67,9 @@ public class RadiusCheckBox extends CheckBox {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        if (delegate != null)
+        if (delegate != null) {
             delegate.init();
+        }
     }
 
     @Override

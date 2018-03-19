@@ -9,7 +9,7 @@
     android:paddingRight="10dp"
     rv:rv_enterFadeDuration="500"
     rv:rv_exitFadeDuration="500"
-    rv:rv_rippleEnable="false"
+    android:clickable="true"
     rv:rv_backgroundColor="@color/colorWhite"
     rv:rv_backgroundPressedColor="@color/colorWhitePressed">
 

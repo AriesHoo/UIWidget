@@ -22,14 +22,16 @@ import com.aries.ui.widget.R;
  * E-Mail: AriesHoo@126.com
  * Function:  公共属性解析代理类
  * Description:
- * 1、2017-11-15 09:36:14添加Java属性设置链式调用支持
+ * 1、2017-11-15 09:36:14 添加Java属性设置链式调用支持
  * 2、2018-2-4 10:13:17 修改设置背景时机需调用init方法以设置避免未设置完所有属性不停调用设置背景
  * 3、2018-2-4 17:10:15 增加setSelected方法及对应的监听setOnSelectedChangeListener
  * 4、2018-2-5 13:36:02 修改不可点击属性Enabled对应修改为Disabled xml及java方法同步修改
  * 5、2018-2-6 12:04:02 校正float类型参数xml属性解析方法
  * 6、2018-2-23 10:30:53 新增View在非波纹背景下各个状态切换时延属性
+ * 7、2018-3-18 11:17:29 新增泛型返回方便子类继承的链式调用
  */
-public class RadiusViewDelegate {
+public class RadiusViewDelegate<T extends RadiusViewDelegate> {
+
     protected TypedArray mTypedArray;
     protected View mView;
     private Context mContext;
@@ -78,7 +80,6 @@ public class RadiusViewDelegate {
     protected int mStateDisabled = -android.R.attr.state_enabled;
     private float[] mRadiusArr = new float[8];
 
-    private StateListDrawable mStateDrawable = new StateListDrawable();
     private OnSelectedChangeListener mOnSelectedChangeListener;
 
     public interface OnSelectedChangeListener {
@@ -153,9 +154,9 @@ public class RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusViewDelegate setBackgroundColor(int color) {
+    public T setBackgroundColor(int color) {
         this.mBackgroundColor = color;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -164,9 +165,9 @@ public class RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusViewDelegate setBackgroundPressedColor(int color) {
+    public T setBackgroundPressedColor(int color) {
         this.mBackgroundPressedColor = color;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -175,9 +176,9 @@ public class RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusViewDelegate setBackgroundDisabledColor(int color) {
+    public T setBackgroundDisabledColor(int color) {
         this.mBackgroundDisabledColor = color;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -186,9 +187,9 @@ public class RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusViewDelegate setBackgroundSelectedColor(int color) {
+    public T setBackgroundSelectedColor(int color) {
         this.mBackgroundSelectedColor = color;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -197,9 +198,9 @@ public class RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusViewDelegate setBackgroundCheckedColor(int color) {
+    public T setBackgroundCheckedColor(int color) {
         this.mBackgroundCheckedColor = color;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -208,9 +209,9 @@ public class RadiusViewDelegate {
      * @param strokeColor
      * @return
      */
-    public RadiusViewDelegate setStrokeColor(int strokeColor) {
+    public T setStrokeColor(int strokeColor) {
         this.mStrokeColor = strokeColor;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -219,9 +220,9 @@ public class RadiusViewDelegate {
      * @param strokePressedColor
      * @return
      */
-    public RadiusViewDelegate setStrokePressedColor(int strokePressedColor) {
+    public T setStrokePressedColor(int strokePressedColor) {
         this.mStrokePressedColor = strokePressedColor;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -230,9 +231,9 @@ public class RadiusViewDelegate {
      * @param strokeDisabledColor
      * @return
      */
-    public RadiusViewDelegate setStrokeDisabledColor(int strokeDisabledColor) {
+    public T setStrokeDisabledColor(int strokeDisabledColor) {
         this.mStrokeDisabledColor = strokeDisabledColor;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -241,9 +242,9 @@ public class RadiusViewDelegate {
      * @param strokeSelectedColor
      * @return
      */
-    public RadiusViewDelegate setStrokeSelectedColor(int strokeSelectedColor) {
+    public T setStrokeSelectedColor(int strokeSelectedColor) {
         this.mStrokeSelectedColor = strokeSelectedColor;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -252,9 +253,9 @@ public class RadiusViewDelegate {
      * @param strokeCheckedColor
      * @return
      */
-    public RadiusViewDelegate setStrokeCheckedColor(int strokeCheckedColor) {
+    public T setStrokeCheckedColor(int strokeCheckedColor) {
         this.mStrokeCheckedColor = strokeCheckedColor;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -263,9 +264,9 @@ public class RadiusViewDelegate {
      * @param strokeWidth
      * @return
      */
-    public RadiusViewDelegate setStrokeWidth(int strokeWidth) {
+    public T setStrokeWidth(int strokeWidth) {
         this.mStrokeWidth = strokeWidth;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -274,9 +275,9 @@ public class RadiusViewDelegate {
      * @param strokeDashWidth
      * @return
      */
-    public RadiusViewDelegate setStrokeDashWidth(float strokeDashWidth) {
+    public T setStrokeDashWidth(float strokeDashWidth) {
         this.mStrokeDashWidth = strokeDashWidth;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -285,9 +286,9 @@ public class RadiusViewDelegate {
      * @param strokeDashGap
      * @return
      */
-    public RadiusViewDelegate setStrokeDashGap(float strokeDashGap) {
+    public T setStrokeDashGap(float strokeDashGap) {
         this.mStrokeDashGap = strokeDashGap;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -296,9 +297,9 @@ public class RadiusViewDelegate {
      * @param enable
      * @return
      */
-    public RadiusViewDelegate setRadiusHalfHeightEnable(boolean enable) {
+    public T setRadiusHalfHeightEnable(boolean enable) {
         this.mRadiusHalfHeightEnable = enable;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -307,9 +308,9 @@ public class RadiusViewDelegate {
      * @param enable
      * @return
      */
-    public RadiusViewDelegate setWidthHeightEqualEnable(boolean enable) {
+    public T setWidthHeightEqualEnable(boolean enable) {
         this.mWidthHeightEqualEnable = enable;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -318,9 +319,9 @@ public class RadiusViewDelegate {
      * @param radius
      * @return
      */
-    public RadiusViewDelegate setRadius(float radius) {
+    public T setRadius(float radius) {
         this.mRadius = radius;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -329,9 +330,9 @@ public class RadiusViewDelegate {
      * @param radius
      * @return
      */
-    public RadiusViewDelegate setTopLeftRadius(float radius) {
+    public T setTopLeftRadius(float radius) {
         this.mTopLeftRadius = radius;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -340,9 +341,9 @@ public class RadiusViewDelegate {
      * @param radius
      * @return
      */
-    public RadiusViewDelegate setTopRightRadius(float radius) {
+    public T setTopRightRadius(float radius) {
         this.mTopRightRadius = radius;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -351,9 +352,9 @@ public class RadiusViewDelegate {
      * @param radius
      * @return
      */
-    public RadiusViewDelegate setBottomLeftRadius(float radius) {
+    public T setBottomLeftRadius(float radius) {
         this.mBottomLeftRadius = radius;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -362,9 +363,9 @@ public class RadiusViewDelegate {
      * @param radius
      * @return
      */
-    public RadiusViewDelegate setBottomRightRadius(float radius) {
+    public T setBottomRightRadius(float radius) {
         this.mBottomRightRadius = radius;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -373,9 +374,9 @@ public class RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusViewDelegate setRippleColor(int color) {
+    public T setRippleColor(int color) {
         this.mRippleColor = color;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -384,9 +385,9 @@ public class RadiusViewDelegate {
      * @param enable
      * @return
      */
-    public RadiusViewDelegate setRippleEnable(boolean enable) {
+    public T setRippleEnable(boolean enable) {
         this.mRippleEnable = enable;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -395,9 +396,9 @@ public class RadiusViewDelegate {
      * @param listener
      * @return
      */
-    public RadiusViewDelegate setOnSelectedChangeListener(OnSelectedChangeListener listener) {
+    public T setOnSelectedChangeListener(OnSelectedChangeListener listener) {
         this.mOnSelectedChangeListener = listener;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -421,11 +422,11 @@ public class RadiusViewDelegate {
      * @param duration
      * @return
      */
-    public RadiusViewDelegate setEnterFadeDuration(int duration) {
+    public T setEnterFadeDuration(int duration) {
         if (duration >= 0) {
             mEnterFadeDuration = duration;
         }
-        return this;
+        return (T) this;
     }
 
     /**
@@ -434,11 +435,11 @@ public class RadiusViewDelegate {
      * @param duration
      * @return
      */
-    public RadiusViewDelegate setExitFadeDuration(int duration) {
+    public T setExitFadeDuration(int duration) {
         if (duration > 0) {
             mExitFadeDuration = duration;
         }
-        return this;
+        return (T) this;
     }
 
     public float getRadius() {
@@ -517,6 +518,7 @@ public class RadiusViewDelegate {
             if (!isSetBg) {
                 return;
             }
+            StateListDrawable mStateDrawable = new StateListDrawable();
             mStateDrawable.setEnterFadeDuration(mEnterFadeDuration);
             mStateDrawable.setExitFadeDuration(mExitFadeDuration);
             if (mBackgroundPressedColor != Integer.MAX_VALUE || mStrokePressedColor != Integer.MAX_VALUE) {

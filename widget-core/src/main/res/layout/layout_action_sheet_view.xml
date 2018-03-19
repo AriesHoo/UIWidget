@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@android:color/transparent"
               android:orientation="vertical"
-              android:padding="8dip">
+              tools:padding="8dip">
 
     <TextView
         android:id="@+id/tv_titleActionSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/action_sheet_top_normal"
+        android:clickable="false"
+        android:enabled="false"
+        android:focusableInTouchMode="false"
         android:gravity="center"
         android:minHeight="20dip"
         android:padding="4dp"
@@ -22,7 +25,8 @@
     <View
         android:id="@+id/v_lineTitleActionSheet"
         style="@style/LineGray.Horizontal"
-        android:background="@color/colorActionSheetEdgeLineGray"/>
+        android:background="@color/colorActionSheetEdgeLineGray"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/lLayout_viewActionSheet"
@@ -37,7 +41,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:overScrollMode="never"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/lLayout_itemActionSheet"
@@ -48,15 +53,35 @@
 
     </ScrollView>
 
+    <ListView
+        android:id="@+id/lv_containerActionSheet"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+
+    <GridView
+        android:id="@+id/gv_containerActionSheet"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:background="@android:color/white"
+        android:numColumns="auto_fit"
+        android:layout_height="0dp"/>
+
     <TextView
         android:id="@+id/tv_cancelActionSheet"
         android:layout_width="match_parent"
         android:layout_height="45dip"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/action_sheet_single"
         android:gravity="center"
         android:text="@string/cancel"
         android:textColor="@color/colorActionSheetCancelText"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        tools:background="@drawable/action_sheet_single"
+        tools:layout_marginTop="8dp"/>
 
 </LinearLayout>

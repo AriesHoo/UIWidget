@@ -14,7 +14,7 @@
     <color name="colorActionSheetItemText">#1382FF</color>
     <color name="colorActionSheetEdgePressed">#F0F0F0</color>
     <color name="colorActionSheetEdge">#FFFFFF</color>
-    <color name="colorActionSheetEdgeLineGray">#DCDCDC</color>
+    <color name="colorActionSheetEdgeLineGray">@color/colorLineGray</color>
 
     <color name="colorRadiusDefaultRipple">#c8cccccc</color>
 </resources>

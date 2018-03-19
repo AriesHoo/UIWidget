@@ -16,8 +16,6 @@ import com.aries.ui.view.radius.delegate.RadiusSwitchDelegate;
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class RadiusSwitch extends Switch {
-
-
     private RadiusSwitchDelegate delegate;
 
     public RadiusSwitch(Context context) {
@@ -28,7 +26,14 @@ public class RadiusSwitch extends Switch {
         super(context, attrs);
         delegate = new RadiusSwitchDelegate(this, context, attrs);
     }
-
+    /**
+     * 获取代理类用于Java代码控制shape属性
+     *
+     * @return
+     */
+    public RadiusSwitchDelegate getDelegate() {
+        return delegate;
+    }
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -63,7 +68,8 @@ public class RadiusSwitch extends Switch {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        if (delegate != null)
+        if (delegate != null) {
             delegate.init();
+        }
     }
 }

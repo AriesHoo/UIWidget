@@ -25,7 +25,7 @@ import com.aries.ui.widget.R;
  * 2、2018-2-5 11:02:51 增加TextView类设置drawable属性
  * 3、提前增加文本颜色值默认检查
  */
-public class RadiusTextViewDelegate extends RadiusViewDelegate {
+public class RadiusTextViewDelegate<T extends RadiusTextViewDelegate> extends RadiusViewDelegate<T> {
 
     private TextView mTextView;
     private int mTextColor;
@@ -151,9 +151,9 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusTextViewDelegate setTextColor(int color) {
+    public T setTextColor(int color) {
         this.mTextColor = color;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -162,9 +162,9 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusTextViewDelegate setTextPressedColor(int color) {
+    public T setTextPressedColor(int color) {
         this.mTextPressedColor = color;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -173,9 +173,9 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusTextViewDelegate setTextDisabledColor(int color) {
+    public T setTextDisabledColor(int color) {
         this.mTextDisabledColor = color;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -184,9 +184,9 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusTextViewDelegate setTextSelectedColor(int color) {
+    public T setTextSelectedColor(int color) {
         this.mTextSelectedColor = color;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -195,19 +195,19 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
      * @param color
      * @return
      */
-    public RadiusTextViewDelegate setTextCheckedColor(int color) {
+    public T setTextCheckedColor(int color) {
         this.mTextCheckedColor = color;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setLeftDrawableWidth(int leftDrawableWidth) {
+    public T setLeftDrawableWidth(int leftDrawableWidth) {
         mLeftDrawableWidth = leftDrawableWidth;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setLeftDrawableHeight(int leftDrawableHeight) {
+    public T setLeftDrawableHeight(int leftDrawableHeight) {
         mLeftDrawableHeight = leftDrawableHeight;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -216,59 +216,59 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
      * @param drawable
      * @return
      */
-    public RadiusTextViewDelegate setLeftDrawable(Drawable drawable) {
+    public T setLeftDrawable(Drawable drawable) {
         mLeftDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setLeftDrawable(int resId) {
+    public T setLeftDrawable(int resId) {
         return setLeftDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setLeftPressedDrawable(Drawable drawable) {
+    public T setLeftPressedDrawable(Drawable drawable) {
         mLeftPressedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setLeftPressedDrawable(int resId) {
+    public T setLeftPressedDrawable(int resId) {
         return setLeftPressedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setLeftDisabledDrawable(Drawable drawable) {
+    public T setLeftDisabledDrawable(Drawable drawable) {
         mLeftDisabledDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setLeftDisabledDrawable(int resId) {
+    public T setLeftDisabledDrawable(int resId) {
         return setLeftDisabledDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setLeftSelectedDrawable(Drawable drawable) {
+    public T setLeftSelectedDrawable(Drawable drawable) {
         mLeftSelectedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setLeftSelectedDrawable(int resId) {
+    public T setLeftSelectedDrawable(int resId) {
         return setLeftSelectedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setLeftCheckedDrawable(Drawable drawable) {
+    public T setLeftCheckedDrawable(Drawable drawable) {
         mLeftCheckedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setLeftCheckedDrawable(int resId) {
+    public T setLeftCheckedDrawable(int resId) {
         return setLeftCheckedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setTopDrawableWidth(int topDrawableWidth) {
+    public T setTopDrawableWidth(int topDrawableWidth) {
         mTopDrawableWidth = topDrawableWidth;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setTopDrawableHeight(int topDrawableHeight) {
+    public T setTopDrawableHeight(int topDrawableHeight) {
         mTopDrawableHeight = topDrawableHeight;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -277,59 +277,59 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
      * @param drawable
      * @return
      */
-    public RadiusTextViewDelegate setTopDrawable(Drawable drawable) {
+    public T setTopDrawable(Drawable drawable) {
         mTopDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setTopDrawable(int resId) {
+    public T setTopDrawable(int resId) {
         return setTopDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setTopPressedDrawable(Drawable drawable) {
+    public T setTopPressedDrawable(Drawable drawable) {
         mTopPressedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setTopPressedDrawable(int resId) {
+    public T setTopPressedDrawable(int resId) {
         return setTopPressedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setTopDisabledDrawable(Drawable drawable) {
+    public T setTopDisabledDrawable(Drawable drawable) {
         mTopDisabledDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setTopDisabledDrawable(int resId) {
+    public T setTopDisabledDrawable(int resId) {
         return setTopDisabledDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setTopSelectedDrawable(Drawable drawable) {
+    public T setTopSelectedDrawable(Drawable drawable) {
         mTopSelectedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setTopSelectedDrawable(int resId) {
+    public T setTopSelectedDrawable(int resId) {
         return setTopSelectedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setTopCheckedDrawable(Drawable drawable) {
+    public T setTopCheckedDrawable(Drawable drawable) {
         mTopCheckedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setTopCheckedDrawable(int resId) {
+    public T setTopCheckedDrawable(int resId) {
         return setTopCheckedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setRightDrawableWidth(int rightDrawableWidth) {
+    public T setRightDrawableWidth(int rightDrawableWidth) {
         mRightDrawableWidth = rightDrawableWidth;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setRightDrawableHeight(int rightDrawableHeight) {
+    public T setRightDrawableHeight(int rightDrawableHeight) {
         mRightDrawableHeight = rightDrawableHeight;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -338,59 +338,59 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
      * @param drawable
      * @return
      */
-    public RadiusTextViewDelegate setRightDrawable(Drawable drawable) {
+    public T setRightDrawable(Drawable drawable) {
         mRightDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setRightDrawable(int resId) {
+    public T setRightDrawable(int resId) {
         return setRightDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setRightPressedDrawable(Drawable drawable) {
+    public T setRightPressedDrawable(Drawable drawable) {
         mRightPressedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setRightPressedDrawable(int resId) {
+    public T setRightPressedDrawable(int resId) {
         return setRightPressedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setRightDisabledDrawable(Drawable drawable) {
+    public T setRightDisabledDrawable(Drawable drawable) {
         mRightDisabledDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setRightDisabledDrawable(int resId) {
+    public T setRightDisabledDrawable(int resId) {
         return setRightDisabledDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setRightSelectedDrawable(Drawable drawable) {
+    public T setRightSelectedDrawable(Drawable drawable) {
         mRightSelectedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setRightSelectedDrawable(int resId) {
+    public T setRightSelectedDrawable(int resId) {
         return setRightSelectedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setRightCheckedDrawable(Drawable drawable) {
+    public T setRightCheckedDrawable(Drawable drawable) {
         mRightCheckedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setRightCheckedDrawable(int resId) {
+    public T setRightCheckedDrawable(int resId) {
         return setRightCheckedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setBottomDrawableWidth(int bottomDrawableWidth) {
+    public T setBottomDrawableWidth(int bottomDrawableWidth) {
         mBottomDrawableWidth = bottomDrawableWidth;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setBottomDrawableHeight(int bottomDrawableHeight) {
+    public T setBottomDrawableHeight(int bottomDrawableHeight) {
         mBottomDrawableHeight = bottomDrawableHeight;
-        return this;
+        return (T) this;
     }
 
     /**
@@ -399,48 +399,48 @@ public class RadiusTextViewDelegate extends RadiusViewDelegate {
      * @param drawable
      * @return
      */
-    public RadiusTextViewDelegate setBottomDrawable(Drawable drawable) {
+    public T setBottomDrawable(Drawable drawable) {
         mBottomDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setBottomDrawable(int resId) {
+    public T setBottomDrawable(int resId) {
         return setBottomDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setBottomPressedDrawable(Drawable drawable) {
+    public T setBottomPressedDrawable(Drawable drawable) {
         mBottomPressedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setBottomPressedDrawable(int resId) {
+    public T setBottomPressedDrawable(int resId) {
         return setBottomPressedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setBottomDisabledDrawable(Drawable drawable) {
+    public T setBottomDisabledDrawable(Drawable drawable) {
         mBottomDisabledDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setBottomDisabledDrawable(int resId) {
+    public T setBottomDisabledDrawable(int resId) {
         return setBottomDisabledDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setBottomSelectedDrawable(Drawable drawable) {
+    public T setBottomSelectedDrawable(Drawable drawable) {
         mBottomSelectedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setBottomSelectedDrawable(int resId) {
+    public T setBottomSelectedDrawable(int resId) {
         return setBottomSelectedDrawable(getDrawable(resId));
     }
 
-    public RadiusTextViewDelegate setBottomCheckedDrawable(Drawable drawable) {
+    public T setBottomCheckedDrawable(Drawable drawable) {
         mBottomCheckedDrawable = drawable;
-        return this;
+        return (T) this;
     }
 
-    public RadiusTextViewDelegate setBottomCheckedDrawable(int resId) {
+    public T setBottomCheckedDrawable(int resId) {
         return setBottomCheckedDrawable(getDrawable(resId));
     }
 

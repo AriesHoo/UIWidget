@@ -19,7 +19,7 @@ import com.aries.ui.widget.R;
  * Function: 设置Switch thumb及track相关代理
  * Description:
  */
-public class RadiusSwitchDelegate extends RadiusCompoundButtonDelegate {
+public class RadiusSwitchDelegate extends RadiusCompoundButtonDelegate<RadiusSwitchDelegate> {
 
     private Switch mSwitch;
     private StateListDrawable mStateThumbDrawable;

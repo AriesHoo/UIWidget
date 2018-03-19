@@ -25,12 +25,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+
 /**
  * Created: AriesHoo on 2018/2/7/007 12:35
  * E-Mail: AriesHoo@126.com
  * Function: UIActionSheet效果
  * Description:
+ * 1、2018-3-13 12:03:00 标记为过时类未来某天将全部移除
+ * @deprecated use {@link UIActionSheetDialog} instead
  */
+@Deprecated
 public class UIActionSheetView {
     private Context context;
     private Dialog dialog;

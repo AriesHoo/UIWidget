@@ -1,6 +1,7 @@
 package com.aries.ui.widget.demo.base;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
@@ -74,8 +75,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setLogEnable(BuildConfig.DEBUG)
                 .setControlEnable(true)
                 .setTransEnable(false)
+                //导航栏可关闭/开启的不建议设置该属性为true
                 .setPlusNavigationViewEnable(false)
                 .setControlBottomEditTextEnable(true)
+                .setNavigationViewColor(Color.argb(102, 0, 0, 0))
+                .setNavigationLayoutColor(getResources().getColor(R.color.colorBackground))
                 .setBottomView(mContentView);
         beforeControlNavigation(mNavigationViewHelper);
         mNavigationViewHelper.init();

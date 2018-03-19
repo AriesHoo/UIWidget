@@ -27,6 +27,8 @@ import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.KeyboardUtil;
 import com.aries.ui.util.StatusBarUtil;
+import com.aries.ui.view.alpha.AlphaLinearLayout;
+import com.aries.ui.view.alpha.AlphaTextView;
 import com.aries.ui.view.title.util.ViewGroupUtils;
 import com.aries.ui.widget.R;
 
@@ -210,7 +212,7 @@ public class TitleBarView extends ViewGroup {
         LayoutParams dividerParams = new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, mDividerHeight);
 
         mLLayoutLeft = new LinearLayout(context);
-        mLLayoutCenter = new LinearLayout(context);
+        mLLayoutCenter = new AlphaLinearLayout(context);
         mLLayoutRight = new LinearLayout(context);
         mVStatus = new View(context);
         mVDivider = new View(context);
@@ -219,14 +221,14 @@ public class TitleBarView extends ViewGroup {
         mLLayoutCenter.setOrientation(LinearLayout.VERTICAL);
         mLLayoutRight.setGravity(Gravity.CENTER_VERTICAL);
 
-        mTvLeft = new TextView(context);
+        mTvLeft = new AlphaTextView(context);
         mTvLeft.setGravity(Gravity.CENTER);
         mTvLeft.setLines(1);
 
         mTvTitleMain = new TextView(context);
         mTvTitleSub = new TextView(context);
 
-        mTvRight = new TextView(context);
+        mTvRight = new AlphaTextView(context);
         mTvRight.setGravity(Gravity.CENTER);
         mTvRight.setLines(1);
 
@@ -237,6 +239,8 @@ public class TitleBarView extends ViewGroup {
         addView(mLLayoutRight, params);//添加右边容器
         addView(mVDivider, dividerParams);//添加下划线View
         addView(mVStatus);//添加状态栏View
+        mLLayoutLeft.setClickable(false);
+
     }
 
     /**
@@ -408,7 +412,7 @@ public class TitleBarView extends ViewGroup {
             }
         }
 //        if (mStatusBackground == null) {
-            setStatusAlpha(immersible ? isTransStatusBar ? 0 : 102 : 255);
+        setStatusAlpha(immersible ? isTransStatusBar ? 0 : 102 : 255);
 //        }
         return this;
     }

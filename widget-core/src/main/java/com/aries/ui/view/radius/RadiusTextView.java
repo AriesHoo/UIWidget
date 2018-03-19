@@ -34,7 +34,7 @@ public class RadiusTextView extends TextView {
      *
      * @return
      */
-    public RadiusTextViewDelegate getDelegate() {
+    public RadiusTextViewDelegate<RadiusTextViewDelegate> getDelegate() {
         return delegate;
     }
 
@@ -71,7 +71,8 @@ public class RadiusTextView extends TextView {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        if (delegate != null)
+        if (delegate != null) {
             delegate.init();
+        }
     }
 }
