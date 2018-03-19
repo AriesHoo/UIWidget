@@ -14,9 +14,7 @@
 一个集成[UIAlertView](https://github.com/AriesHoo/UIAlertView)、[UIActionSheetView](https://github.com/AriesHoo/UIActionSheetView)、[UIProgressView](https://github.com/AriesHoo/UIProgressView)、[RadiusView](https://github.com/AriesHoo/RadiusView)、[TitleBarView](https://github.com/AriesHoo/TitleBarView)
 等项目常用UI库
 
-[[Sample PC Download]](https://github.com/AriesHoo/UIWidget/blob/master/apk/sample.apk)
-
-[[Sample Mobile Download]](http://fir.im/r84v)
+[[Download]](https://raw.githubusercontent.com/AriesHoo/UIWidget/master/apk/sample.apk)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/apk/qr.png)
 
