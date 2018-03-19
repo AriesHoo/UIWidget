@@ -230,6 +230,9 @@ public class UIActionSheetDialog extends Dialog {
         private List<View> mListFooterViews;
         private ListView mLvContainer;
 
+        private Drawable mItemsDivider;
+        private int mItemsDividerHeight;
+
         public ListBuilder(Context context) {
             super(context);
             setItemDrawableResource(R.color.colorActionSheetEdge)
@@ -809,19 +812,16 @@ public class UIActionSheetDialog extends Dialog {
         protected Map<Integer, ColorStateList> mMapItemColor;
         protected ListAdapter mAdapter;
 
-
         protected OnItemClickListener mOnItemClickListener;
         protected OnTextViewLineListener mOnTextViewLineListener;
 
         protected float mItemsTextSize = 16;
         protected int mItemsMinHeight = 45;
-        protected static ColorStateList mItemsTextColor;
+        protected ColorStateList mItemsTextColor;
         protected int mItemsGravity = Gravity.CENTER;
         protected int mItemsTextGravity = Gravity.CENTER;
         protected int mItemsImageWidth = -1;
         protected int mItemsImageHeight = -1;
-        protected Drawable mItemsDivider;
-        protected int mItemsDividerHeight;
         protected int mItemsTextPaddingLeft;
         protected int mItemsTextPaddingTop;
         protected int mItemsTextPaddingRight;
