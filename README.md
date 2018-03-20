@@ -42,7 +42,7 @@ dependencies {
 ```
 ## 录屏预览
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/widget.gif)
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/widget.png)
 
 [UIAlertView](https://github.com/AriesHoo/UIAlertView)
 
