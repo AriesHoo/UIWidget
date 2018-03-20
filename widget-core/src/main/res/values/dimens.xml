@@ -2,5 +2,8 @@
     <dimen name="dp_line_size">0.5dp</dimen>
     <dimen name="dp_line_break">8dp</dimen>
     <dimen name="dp_radius_loading">4dp</dimen>
+    <dimen name="dp_size_loading">36dp</dimen>
+    <dimen name="dp_min_width_loading">65dp</dimen>
+    <dimen name="dp_min_height_loading">65dp</dimen>
     <dimen name="dp_action_sheet_list_line_height">@dimen/dp_line_size</dimen>
 </resources>

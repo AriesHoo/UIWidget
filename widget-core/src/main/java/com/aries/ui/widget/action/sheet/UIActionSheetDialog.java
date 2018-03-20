@@ -9,14 +9,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -28,8 +25,10 @@ import android.widget.TextView;
 
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.FindViewUtil;
+import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.view.alpha.AlphaTextView;
 import com.aries.ui.widget.R;
+import com.aries.ui.widget.UIBasisDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,17 +42,9 @@ import java.util.Map;
  * Function: UIActionSheet效果Dialog
  * Description:
  * 1、继承自Dialog 并封装不同Builder模式
+ * 2、修改Dialog继承关系并修改默认ListSheetBuilder模式属性设置
  */
-public class UIActionSheetDialog extends Dialog {
-    private Window mWindow;
-    private View mContentView;
-    private WindowManager.LayoutParams mLayoutParams;
-    private float mAlpha = 1.0f;
-    private float mDimAmount = 0.6f;
-
-    public interface OnTextViewLineListener {
-        void onTextViewLineListener(TextView textView, int lineCount);
-    }
+public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
 
     public interface OnItemClickListener {
         void onClick(UIActionSheetDialog dialog, View itemView, int position);
@@ -61,26 +52,6 @@ public class UIActionSheetDialog extends Dialog {
 
     public UIActionSheetDialog(Context context) {
         super(context, R.style.ActionSheetViewDialogStyle);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mWindow = getWindow();
-        mWindow.setGravity(Gravity.BOTTOM);
-        mLayoutParams = mWindow.getAttributes();
-        mLayoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        mLayoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-        mLayoutParams.alpha = mAlpha;// 透明度
-        mLayoutParams.dimAmount = mDimAmount;// 黑暗度
-        mWindow.setAttributes(mLayoutParams);
-    }
-
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-        this.mContentView = view;
     }
 
     /**
@@ -112,16 +83,6 @@ public class UIActionSheetDialog extends Dialog {
 
     public TextView getGridView() {
         return FindViewUtil.getTargetView(mContentView, R.id.gv_containerActionSheet);
-    }
-
-    public UIActionSheetDialog setAlpha(float alpha) {
-        mAlpha = alpha;
-        return this;
-    }
-
-    public UIActionSheetDialog setDimAmount(float dimAmount) {
-        mDimAmount = dimAmount;
-        return this;
     }
 
     public interface ICreateContentView {
@@ -188,7 +149,8 @@ public class UIActionSheetDialog extends Dialog {
                     .setTitleGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL)
                     .setCancelGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL)
                     .setItemsTextGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL)
-                    .setItemsGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+                    .setItemsGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL)
+                    .setCancelMarginTop(0);
         }
     }
 
@@ -199,7 +161,8 @@ public class UIActionSheetDialog extends Dialog {
 
         public ListIOSBuilder(Context context) {
             super(context);
-            setItemsTopPressedDrawableResource(R.drawable.action_sheet_top_pressed)
+            setBackground(null)
+                    .setItemsTopPressedDrawableResource(R.drawable.action_sheet_top_pressed)
                     .setItemsTopDrawableResource(R.drawable.action_sheet_top_normal)
                     .setItemsCenterPressedDrawableResource(R.drawable.action_sheet_middle_pressed)
                     .setItemsCenterDrawableResource(R.drawable.action_sheet_middle_normal)
@@ -210,7 +173,6 @@ public class UIActionSheetDialog extends Dialog {
                     .setCancelTextColorResource(R.color.colorActionSheetItemText)
                     .setItemsTextColorResource(R.color.colorActionSheetItemText)
                     .setItemsDividerHeight(0)
-                    .setCancelMarginTop(dp2px(8))
                     .setPadding(dp2px(8));
         }
     }
@@ -221,6 +183,9 @@ public class UIActionSheetDialog extends Dialog {
     public static class ListSheetBuilder extends ListBuilder<ListSheetBuilder> {
         public ListSheetBuilder(Context context) {
             super(context);
+
+            setCancelTextColorResource(R.color.colorActionSheetNormalItemText)
+                    .setItemsTextColorResource(R.color.colorActionSheetNormalItemText);
         }
     }
 
@@ -238,7 +203,8 @@ public class UIActionSheetDialog extends Dialog {
             setItemDrawableResource(R.color.colorActionSheetEdge)
                     .setItemPressedDrawableResource(R.color.colorActionSheetEdgePressed)
                     .setItemsDividerResource(R.color.colorActionSheetEdgeLineGray)
-                    .setItemsDividerHeight(context.getResources().getDimensionPixelSize(R.dimen.dp_action_sheet_list_line_height));
+                    .setItemsDividerHeight(mResourceUtil.getDimensionPixelSize(R.dimen.dp_action_sheet_list_line_height))
+                    .setCancelMarginTop(dp2px(8));
         }
 
         /**
@@ -282,7 +248,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemDrawableResource(int res) {
-            return setItemDrawable(getDrawable(res));
+            return setItemDrawable(mResourceUtil.getDrawable(res));
         }
 
         public T setItemDrawableColor(int color) {
@@ -298,7 +264,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemPressedDrawableResource(int res) {
-            return setItemPressedDrawable(getDrawable(res));
+            return setItemPressedDrawable(mResourceUtil.getDrawable(res));
         }
 
         public T setItemPressedDrawableColor(int color) {
@@ -311,7 +277,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemsTopDrawableResource(int res) {
-            return setItemsTopDrawable(getDrawable(res));
+            return setItemsTopDrawable(mResourceUtil.getDrawable(res));
         }
 
         public T setItemsTopDrawableColor(int color) {
@@ -324,7 +290,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemsTopPressedDrawableResource(int res) {
-            return setItemsTopPressedDrawable(getDrawable(res));
+            return setItemsTopPressedDrawable(mResourceUtil.getDrawable(res));
         }
 
         public T setItemsTopPressedDrawableColor(int color) {
@@ -337,7 +303,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemsCenterDrawableResource(int res) {
-            return setItemsCenterDrawable(getDrawable(res));
+            return setItemsCenterDrawable(mResourceUtil.getDrawable(res));
         }
 
         public T setItemsCenterDrawableColor(int color) {
@@ -350,7 +316,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemsCenterPressedDrawableResource(int res) {
-            return setItemsCenterPressedDrawable(getDrawable(res));
+            return setItemsCenterPressedDrawable(mResourceUtil.getDrawable(res));
         }
 
         public T setItemsCenterPressedDrawableColor(int color) {
@@ -363,7 +329,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemsBottomDrawableResource(int res) {
-            return setItemsBottomDrawable(getDrawable(res));
+            return setItemsBottomDrawable(mResourceUtil.getDrawable(res));
         }
 
         public T setItemsBottomDrawableColor(int color) {
@@ -376,7 +342,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemsBottomPressedDrawableResource(int res) {
-            return setItemsBottomPressedDrawable(getDrawable(res));
+            return setItemsBottomPressedDrawable(mResourceUtil.getDrawable(res));
         }
 
         public T setItemsBottomPressedDrawableColor(int color) {
@@ -393,7 +359,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemsDividerResource(int res) {
-            return setItemsDivider(getDrawable(res));
+            return setItemsDivider(mResourceUtil.getDrawable(res));
         }
 
         public T setItemsDividerHeight(int height) {
@@ -547,10 +513,10 @@ public class UIActionSheetDialog extends Dialog {
                     @Override
                     public void onClick(View view) {
                         if (mItemsClickDismissEnable) {
-                            mSheetDialog.dismiss();
+                            mDialog.dismiss();
                         }
                         if (mOnItemClickListener != null) {
-                            mOnItemClickListener.onClick(mSheetDialog, view, i);
+                            mOnItemClickListener.onClick(mDialog, view, i);
                         }
                     }
                 });
@@ -611,7 +577,7 @@ public class UIActionSheetDialog extends Dialog {
          * @return
          */
         public GridBuilder setGridBackgroundResource(int res) {
-            return setGridBackground(getDrawable(res));
+            return setGridBackground(mResourceUtil.getDrawable(res));
         }
 
         /**
@@ -713,10 +679,10 @@ public class UIActionSheetDialog extends Dialog {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         if (mItemsClickDismissEnable) {
-                            mSheetDialog.dismiss();
+                            mDialog.dismiss();
                         }
                         if (mOnItemClickListener != null) {
-                            mOnItemClickListener.onClick(mSheetDialog, view, position);
+                            mOnItemClickListener.onClick(mDialog, view, position);
                         }
                     }
                 });
@@ -753,10 +719,10 @@ public class UIActionSheetDialog extends Dialog {
                         @Override
                         public void onClick(View view) {
                             if (mItemsClickDismissEnable) {
-                                mSheetDialog.dismiss();
+                                mDialog.dismiss();
                             }
                             if (mOnItemClickListener != null) {
-                                mOnItemClickListener.onClick(mSheetDialog, view, i);
+                                mOnItemClickListener.onClick(mDialog, view, i);
                             }
                         }
                     });
@@ -769,7 +735,8 @@ public class UIActionSheetDialog extends Dialog {
     private static abstract class Builder<T extends Builder> implements ICreateContentView {
 
         protected Context mContext;
-        protected UIActionSheetDialog mSheetDialog;
+        protected UIActionSheetDialog mDialog;
+        protected ResourceUtil mResourceUtil;
         protected int mStatePressed = android.R.attr.state_pressed;
 
         protected LinearLayout mLLayoutRoot;
@@ -837,14 +804,16 @@ public class UIActionSheetDialog extends Dialog {
 
         public Builder(Context context) {
             this.mContext = context;
-            setItemsSingleDrawableResource(R.color.colorActionSheetEdge)
+            this.mResourceUtil = new ResourceUtil(mContext);
+            setBackgroundResource(R.color.colorActionSheetNormalBackground)
+                    .setItemsSingleDrawableResource(R.color.colorActionSheetEdge)
                     .setItemsSinglePressedDrawableResource(R.color.colorActionSheetEdge)
                     .setMarginTop((int) (getScreenHeight() * 0.2))
                     .setTextPadding(dp2px(16), dp2px(10), dp2px(16), dp2px(10))
                     .setPadding(0)
                     .setTitleTextColorResource(R.color.colorActionSheetTitleText)
-                    .setCancelTextColorResource(R.color.colorActionSheetNormalItemText)
-                    .setItemsTextColorResource(R.color.colorActionSheetNormalItemText)
+                    .setCancelTextColorResource(R.color.colorActionSheetWeiXinText)
+                    .setItemsTextColorResource(R.color.colorActionSheetWeiXinText)
                     .setItemsMinHeight(dp2px(45));
         }
 
@@ -876,7 +845,7 @@ public class UIActionSheetDialog extends Dialog {
          * @return
          */
         public T setBackgroundResource(int resId) {
-            return setBackground(getDrawable(resId));
+            return setBackground(mResourceUtil.getDrawable(resId));
         }
 
         /**
@@ -967,7 +936,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setTitle(int resId) {
-            return setTitle(mContext.getText(resId));
+            return setTitle(mResourceUtil.getText(resId));
         }
 
         /**
@@ -987,7 +956,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setTitleTextColorResource(int resId) {
-            return setTitleTextColor(getColor(resId));
+            return setTitleTextColor(mResourceUtil.getColorStateList(resId));
         }
 
         /**
@@ -1027,7 +996,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setCancel(int resId) {
-            return setCancel(mContext.getText(resId));
+            return setCancel(mResourceUtil.getText(resId));
         }
 
         /**
@@ -1046,7 +1015,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setCancelTextColorResource(int resId) {
-            return setCancelTextColor(getColor(resId));
+            return setCancelTextColor(mResourceUtil.getColorStateList(resId));
         }
 
         /**
@@ -1106,7 +1075,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemsSingleDrawableResource(int res) {
-            return setItemsSingleDrawable(getDrawable(res));
+            return setItemsSingleDrawable(mResourceUtil.getDrawable(res));
         }
 
         public T setItemsSingleDrawableColor(int color) {
@@ -1125,7 +1094,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemsSinglePressedDrawableResource(int res) {
-            return setItemsSinglePressedDrawable(getDrawable(res));
+            return setItemsSinglePressedDrawable(mResourceUtil.getDrawable(res));
         }
 
         public T setItemsSinglePressedDrawableColor(int color) {
@@ -1163,7 +1132,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemsTextColorResource(int resId) {
-            return setItemsTextColor(getColor(resId));
+            return setItemsTextColor(mResourceUtil.getColorStateList(resId));
         }
 
         /**
@@ -1186,7 +1155,7 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T setItemTextColorResource(int position, int resId) {
-            return setItemTextColor(position, getColor(resId));
+            return setItemTextColor(position, mResourceUtil.getColorStateList(resId));
         }
 
         /**
@@ -1284,15 +1253,16 @@ public class UIActionSheetDialog extends Dialog {
         }
 
         public T addItem(int txt) {
-            return addItem(new SheetItem(getText(txt)));
+            return addItem(new SheetItem(mResourceUtil.getText(txt)));
         }
 
         public T addItem(int txt, int resDrawable) {
-            return addItem(new SheetItem(getText(txt)).setImageDrawable(getDrawable(resDrawable)));
+            return addItem(new SheetItem(mResourceUtil.getText(txt))
+                    .setImageDrawable(mResourceUtil.getDrawable(resDrawable)));
         }
 
         public T addItem(CharSequence txt, int resDrawable) {
-            return addItem(new SheetItem(txt).setImageDrawable(getDrawable(resDrawable)));
+            return addItem(new SheetItem(txt).setImageDrawable(mResourceUtil.getDrawable(resDrawable)));
         }
 
         /**
@@ -1346,7 +1316,7 @@ public class UIActionSheetDialog extends Dialog {
          * @return
          */
         public T addItems(int itemsRes) {
-            return addItems(mContext.getResources().getStringArray(itemsRes));
+            return addItems(mResourceUtil.getTextArray(itemsRes));
         }
 
         /**
@@ -1449,21 +1419,21 @@ public class UIActionSheetDialog extends Dialog {
          */
         public UIActionSheetDialog create() {
             View contentView = createContentView();
-            mSheetDialog = new UIActionSheetDialog(mContext);
-            mSheetDialog.setContentView(contentView);
-            mSheetDialog.setCancelable(mCancelable);
-            mSheetDialog.setCanceledOnTouchOutside(mCanceledOnTouchOutside);
+            mDialog = new UIActionSheetDialog(mContext);
+            mDialog.setContentView(contentView);
+            mDialog.setCancelable(mCancelable);
+            mDialog.setCanceledOnTouchOutside(mCanceledOnTouchOutside);
             if (mOnDismissListener != null) {
-                mSheetDialog.setOnDismissListener(mOnDismissListener);
+                mDialog.setOnDismissListener(mOnDismissListener);
             }
             if (mOnKeyListener != null) {
-                mSheetDialog.setOnKeyListener(mOnKeyListener);
+                mDialog.setOnKeyListener(mOnKeyListener);
             }
             if (mOnCancelListener != null) {
-                mSheetDialog.setOnCancelListener(mOnCancelListener);
+                mDialog.setOnCancelListener(mOnCancelListener);
             }
             if (mOnShowListener != null) {
-                mSheetDialog.setOnShowListener(mOnShowListener);
+                mDialog.setOnShowListener(mOnShowListener);
             }
             //对顶部进行处理
             if (mMarginTop > 0) {
@@ -1482,12 +1452,13 @@ public class UIActionSheetDialog extends Dialog {
                     ((ViewGroup) contentView.getParent()).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mSheetDialog.dismiss();
+                            mDialog.dismiss();
                         }
                     });
                 }
             }
-            return mSheetDialog;
+            mDialog.setGravity(Gravity.BOTTOM);
+            return mDialog;
         }
 
         /**
@@ -1500,7 +1471,7 @@ public class UIActionSheetDialog extends Dialog {
             mLLayoutRoot = new LinearLayout(mContext);
             mLLayoutRoot.setId(R.id.lLayout_rootActionSheet);
             mLLayoutRoot.setOrientation(LinearLayout.VERTICAL);
-            mLLayoutRoot.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            mLLayoutRoot.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mLLayoutRoot.removeAllViews();
             mLLayoutRoot.setPadding(mPadding, mPadding, mPadding, mPadding);
             if (mBackground != null) {
@@ -1591,7 +1562,7 @@ public class UIActionSheetDialog extends Dialog {
             mTvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mSheetDialog.dismiss();
+                    mDialog.dismiss();
                 }
             });
 
@@ -1634,40 +1605,6 @@ public class UIActionSheetDialog extends Dialog {
 
         protected int getScreenHeight() {
             return Resources.getSystem().getDisplayMetrics().heightPixels;
-        }
-
-        protected CharSequence getText(int res) {
-            CharSequence txt = null;
-            try {
-                txt = mContext.getText(res);
-            } catch (Exception e) {
-
-            }
-            return txt;
-        }
-
-        protected Drawable getDrawable(int res) {
-            Drawable drawable = null;
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    drawable = mContext.getDrawable(res);
-                } else {
-                    drawable = mContext.getResources().getDrawable(res);
-                }
-            } catch (Exception e) {
-
-            }
-            return drawable;
-        }
-
-        protected ColorStateList getColor(int res) {
-            ColorStateList color = null;
-            try {
-                color = mContext.getResources().getColorStateList(res);
-            } catch (Exception e) {
-
-            }
-            return color;
         }
 
         protected abstract class SheetAdapter extends BaseAdapter {

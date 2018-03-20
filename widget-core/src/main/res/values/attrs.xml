@@ -135,10 +135,7 @@
     <attr name="rv_buttonDisabledDrawable" format="reference|color"/>
     <attr name="rv_buttonSelectedDrawable" format="reference|color"/>
     <attr name="rv_buttonCheckedDrawable" format="reference|color"/>
-
     <!--以下为Switch ThumbDrawable和TrackDrawable宽高及不同状态属性-->
-
-
     <declare-styleable name="RadiusSwitch">
         <attr name="rv_backgroundColor"/>
         <attr name="rv_backgroundPressedColor"/>

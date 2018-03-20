@@ -22,9 +22,14 @@ import com.aries.ui.widget.R;
 
 /**
  * Created: AriesHoo on 2017-01-18 13:16
- * Function: Loading加载工具
- * Desc:
+ * E-Mail: AriesHoo@126.com
+ * Function:Loading加载工具
+ * Description:
+ * 1、2018-3-20 08:45:16 标记为废弃，未来某个版本将移除
+ *
+ * @deprecated use {@link UIProgressDialog} instead
  */
+@Deprecated
 public class UIProgressView extends Dialog {
     private Context mContext;
     private RadiusLinearLayout rootLayout;

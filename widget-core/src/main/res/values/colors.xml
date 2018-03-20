@@ -15,6 +15,7 @@
     <color name="colorActionSheetEdgePressed">#F0F0F0</color>
     <color name="colorActionSheetEdge">#FFFFFF</color>
     <color name="colorActionSheetEdgeLineGray">@color/colorLineGray</color>
+    <color name="colorActionSheetNormalBackground">#e5e3e4</color>
 
     <color name="colorRadiusDefaultRipple">#c8cccccc</color>
 </resources>

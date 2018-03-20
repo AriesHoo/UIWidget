@@ -11,4 +11,8 @@
     <item name="gv_containerActionSheet" type="id"/>
     <item name="tv_titleActionSheet" type="id"/>
     <item name="tv_cancelActionSheet" type="id"/>
+
+
+    <item name="lLayout_rootProgressView" type="id"/>
+    <item name="tv_textProgressView" type="id"/>
 </resources>

@@ -10,6 +10,7 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="15dp"
+    tools:background="#000000"
     app:rv_radius="@dimen/dp_radius_loading"
     app:rv_rippleEnable="false">
 

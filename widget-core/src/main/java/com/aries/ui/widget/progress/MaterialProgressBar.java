@@ -39,7 +39,7 @@ public class MaterialProgressBar extends View {
     private int size;
 
     private int arcColor = Color.BLUE;
-    private float borderWidth = 3;
+    private float borderWidth = 6;
     private int duration = 600;//最小300(600与5.0以上接近),最大建议不超过1000
     private boolean mRoundEnable = true;
 

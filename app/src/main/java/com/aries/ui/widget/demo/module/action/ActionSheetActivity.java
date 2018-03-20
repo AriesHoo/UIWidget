@@ -45,7 +45,9 @@ public class ActionSheetActivity extends BaseActivity {
 
     @Override
     protected void setTitleBar() {
-        titleBar.setTitleMainText("UIActionSheetView");
+        titleBar.setTitleMainText(UIActionSheetDialog.class.getSimpleName())
+                .setTitleSubTextMarquee(true)
+                .setTitleSubText("UIActionSheetView已标记废弃请使用UIActionSheetDialog替换,正式版本将完整移除");
     }
 
     @Override
@@ -154,7 +156,10 @@ public class ActionSheetActivity extends BaseActivity {
                         .setCancel(R.string.cancel)
                         .setCancelTextColorResource(isDefaultCancelColor ? R.color.colorActionSheetItemText : android.R.color.darker_gray)
                         .setOnItemClickListener(mOnItemClickListener)
-                        .create().setDimAmount(isBackDim ? 0.6f : 0f).show();
+                        .create()
+                        .setDimAmount(isBackDim ? 0.6f : 0f)
+                        .setAlpha(1f)
+                        .show();
                 break;
             case R.id.rtv_showWeiXinActionSheet:
                 new UIActionSheetDialog.ListWeChatBuilder(this)

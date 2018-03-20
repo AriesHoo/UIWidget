@@ -1,6 +1,5 @@
 package com.aries.ui.widget.demo.module.loading;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
@@ -8,7 +7,7 @@ import android.widget.CompoundButton;
 
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
-import com.aries.ui.widget.progress.UIProgressView;
+import com.aries.ui.widget.progress.UIProgressDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,11 +30,12 @@ public class LoadingActivity extends BaseActivity {
     private boolean isDefaultViewBack = true;
     private boolean isDefaultProgress = true;
     private boolean isBackDim = true;
-    private int style = UIProgressView.STYLE_NORMAL;
 
     @Override
     protected void setTitleBar() {
-        titleBar.setTitleMainText("UIProgressView");
+        titleBar.setTitleMainText(UIProgressDialog.class.getSimpleName())
+                .setTitleSubTextMarquee(true)
+                .setTitleSubText("UIProgressView已标记废弃请使用UIProgressDialog替换,正式版本将完整移除");
     }
 
     @Override
@@ -93,38 +93,40 @@ public class LoadingActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rtv_showLoading:
-                style = UIProgressView.STYLE_NORMAL;
+                new UIProgressDialog.NormalBuilder(this)
+                        .setText(isShowMsg ? R.string.loading : 0)
+                        .setIndeterminateDrawable(isDefaultProgress ? 0 : R.drawable.progress_loading)
+                        .setBackgroundRadius(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
+                        .create()
+                        .setDimAmount(isBackDim ? 0.6f : 0f)
+                        .show();
                 break;
             case R.id.rtv_showWeiBoLoading:
-                style = UIProgressView.STYLE_WEI_BO;
+                new UIProgressDialog.WeBoBuilder(this)
+                        .setText(isShowMsg ? R.string.loading : 0)
+                        .setIndeterminateDrawable(isDefaultProgress ? R.drawable.dialog_loading_wei_bo : R.drawable.progress_loading)
+                        .setBackgroundRadius(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
+                        .create()
+                        .setDimAmount(isBackDim ? 0.6f : 0f)
+                        .show();
                 break;
             case R.id.rtv_showWeiXinLoading:
-                style = UIProgressView.STYLE_WEI_XIN;
+                new UIProgressDialog.WeChatBuilder(this)
+                        .setText(isShowMsg ? R.string.loading : 0)
+                        .setIndeterminateDrawable(isDefaultProgress ? R.drawable.dialog_loading_wei_xin : R.drawable.progress_loading)
+                        .setBackgroundRadius(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
+                        .create()
+                        .setDimAmount(isBackDim ? 0.6f : 0f)
+                        .show();
                 break;
             case R.id.rtv_showMaterialLoading:
-                style = UIProgressView.STYLE_MATERIAL_DESIGN;
+                new UIProgressDialog.MaterialBuilder(this)
+                        .setText(isShowMsg ? R.string.loading : 0)
+                        .setBackgroundRadius(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
+                        .create()
+                        .setDimAmount(isBackDim ? 0.6f : 0f)
+                        .show();
                 break;
         }
-        UIProgressView loading = new UIProgressView(mContext, style);
-        if (isShowMsg) {
-            loading.setMessage(R.string.loading);
-        }
-        if (!isDefaultViewBack) {
-            if (isDefaultRadiusBack) {
-                loading.setBgColor(Color.MAGENTA);
-            } else
-                loading.setBackgroundColor(Color.MAGENTA);
-        }
-        if (!isDefaultRadiusBack) {
-            loading.setBgRadius(0);
-        }
-        if (!isDefaultProgress) {
-            loading.setIndeterminateDrawable(R.drawable.progress_loading);
-        }
-        if (!isBackDim) {
-            loading.setDimAmount(0f);
-        }
-        loading.setLoadingColor(getResources().getColor(R.color.colorAccent));
-        loading.show();
     }
 }

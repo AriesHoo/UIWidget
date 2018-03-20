@@ -30,6 +30,6 @@ ext {
     minSdkVersion = 15
     targetSdkVersion = 25
     supportVersion = "25.3.1"
-    versionCode = 24
-    versionName = "2.1.0-beta5"
+    versionCode = 25
+    versionName = "2.1.0-beta6"
 }
