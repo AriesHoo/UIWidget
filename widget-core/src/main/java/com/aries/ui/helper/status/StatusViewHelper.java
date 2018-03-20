@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.title.TitleBarView;
@@ -95,7 +96,7 @@ public class StatusViewHelper {
     public StatusViewHelper setTransEnable(boolean transEnable) {
         this.mTransEnable = transEnable;
         if (mContentView != null && mContentView.getBackground() != null) {
-            setStatusLayoutDrawable(mContentView.getBackground());
+            setStatusLayoutDrawable(DrawableUtil.getNewDrawable(mContentView.getBackground()));
         } else {
             setStatusLayoutColor(Color.WHITE);
         }
