@@ -28,7 +28,7 @@
 
     <style name="ProgressViewDialogStyle" parent="BaseDialogStyle">
         <!-- 对话框动画 -->
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowAnimationStyle">@style/PopWindowAnimStyle</item>
     </style>
 
     <style name="ActionSheetAnimation" parent="@android:style/Animation.Dialog">

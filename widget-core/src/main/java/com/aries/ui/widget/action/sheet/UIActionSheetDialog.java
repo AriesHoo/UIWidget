@@ -1,19 +1,16 @@
 package com.aries.ui.widget.action.sheet;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -25,10 +22,9 @@ import android.widget.TextView;
 
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.FindViewUtil;
-import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.view.alpha.AlphaTextView;
+import com.aries.ui.widget.BasisDialog;
 import com.aries.ui.widget.R;
-import com.aries.ui.widget.UIBasisDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,10 +40,10 @@ import java.util.Map;
  * 1、继承自Dialog 并封装不同Builder模式
  * 2、修改Dialog继承关系并修改默认ListSheetBuilder模式属性设置
  */
-public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
+public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
     public interface OnItemClickListener {
-        void onClick(UIActionSheetDialog dialog, View itemView, int position);
+        void onClick(BasisDialog dialog, View itemView, int position);
     }
 
     public UIActionSheetDialog(Context context) {
@@ -203,7 +199,7 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
             setItemDrawableResource(R.color.colorActionSheetEdge)
                     .setItemPressedDrawableResource(R.color.colorActionSheetEdgePressed)
                     .setItemsDividerResource(R.color.colorActionSheetEdgeLineGray)
-                    .setItemsDividerHeight(mResourceUtil.getDimensionPixelSize(R.dimen.dp_action_sheet_list_line_height))
+                    .setItemsDividerHeightResource(R.dimen.dp_action_sheet_list_line_height)
                     .setCancelMarginTop(dp2px(8));
         }
 
@@ -367,12 +363,20 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
             return (T) this;
         }
 
+        public T setItemsDividerHeightResource(int res) {
+            return setItemsDividerHeight(mResourceUtil.getDimensionPixelSize(res));
+        }
+
         /**
          * 创建标题线框
          */
-        private void createTitleLine() {
-            if (TextUtils.isEmpty(mTitleStr) || mItemsDividerHeight <= 0 || mItemsDivider == null ||
-                    ((mListItem == null || mListItem.size() == 0) && (mListHeaderViews == null))) {
+        private void createLine(boolean isTitle) {
+            if (isTitle && (TextUtils.isEmpty(mTitleStr) || mItemsDividerHeight <= 0 || mItemsDivider == null ||
+                    ((mListItem == null || mListItem.size() == 0) && (mListHeaderViews == null)))) {
+                return;
+            }
+            if (!isTitle && (TextUtils.isEmpty(mCancelStr) || mItemsDividerHeight <= 0 || mItemsDivider == null
+                    || mCancelMarginTop > 0)) {
                 return;
             }
             Drawable back = DrawableUtil.getNewDrawable(mItemsDivider);
@@ -381,11 +385,7 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
                     ViewGroup.LayoutParams.MATCH_PARENT, mItemsDividerHeight));
 
             mLLayoutRoot.addView(viewLine);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                viewLine.setBackground(back);
-            } else {
-                viewLine.setBackgroundDrawable(back);
-            }
+            setViewBackground(viewLine, back);
         }
 
         private void createList() {
@@ -398,7 +398,7 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
             mLLayoutRoot.addView(mLvContainer);
 
             //设置ListView相关
-            mLvContainer.setId(R.id.lv_containerActionSheet);
+            mLvContainer.setId(R.id.lv_containerActionSheetDialog);
             mLvContainer.setVerticalScrollBarEnabled(false);
             mLvContainer.setOverScrollMode(View.OVER_SCROLL_NEVER);
             if (mListHeaderViews != null) {
@@ -416,29 +416,11 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
             mLvContainer.setAdapter(mAdapter);
         }
 
-        private void createCancelLine() {
-            if (TextUtils.isEmpty(mCancelStr) || mItemsDividerHeight <= 0 || mItemsDivider == null
-                    || mCancelMarginTop > 0) {
-                return;
-            }
-            Drawable back = DrawableUtil.getNewDrawable(mItemsDivider);
-            View viewLine = new View(mContext);
-            viewLine.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, mItemsDividerHeight));
-
-            mLLayoutRoot.addView(viewLine);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                viewLine.setBackground(back);
-            } else {
-                viewLine.setBackgroundDrawable(back);
-            }
-        }
-
         @Override
         public void createItemView() {
-            createTitleLine();
+            createLine(true);
             createList();
-            createCancelLine();
+            createLine(false);
         }
 
         @Override
@@ -471,7 +453,7 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
                 } else {
                     holder.imageView.setVisibility(View.GONE);
                 }
-                setTextView(holder, data, i, convertView);
+                setTextView(holder, data, i);
 
                 ((LinearLayout) convertView).setGravity(mItemsGravity);
                 convertView.setMinimumHeight(mItemsMinHeight);
@@ -504,11 +486,7 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
                     }
                 }
                 background = DrawableUtil.getNewDrawable(background);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    convertView.setBackground(background);
-                } else {
-                    convertView.setBackgroundDrawable(background);
-                }
+                setViewBackground(convertView, background);
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -654,7 +632,7 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
             mLLayoutRoot.addView(mGvContainer);
 
             //设置GridView相关属性
-            mGvContainer.setId(R.id.gv_containerActionSheet);
+            mGvContainer.setId(R.id.gv_containerActionSheetDialog);
             mGvContainer.setVerticalScrollBarEnabled(false);
             mGvContainer.setOverScrollMode(View.OVER_SCROLL_NEVER);
             mGvContainer.setNumColumns(mNumColumns);
@@ -663,17 +641,8 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
             mGvContainer.setVerticalSpacing(mVerticalSpacing);
             mGvContainer.setAdapter(mAdapter);
             mGvContainer.setPadding(mGridPadding, mGridPadding, mGridPadding, mGridPadding);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mGvContainer.setBackground(mGridBackground);
-                if (mTvTitle != null) {
-                    mTvTitle.setBackground(mGridBackground);
-                }
-            } else {
-                mGvContainer.setBackgroundDrawable(mGridBackground);
-                if (mTvTitle != null) {
-                    mTvTitle.setBackgroundDrawable(mGridBackground);
-                }
-            }
+            setViewBackground(mGvContainer, mGridBackground);
+            setViewBackground(mTvTitle, mGridBackground);
             if (mItemsClickBackgroundEnable) {
                 mGvContainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -709,7 +678,7 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
                 } else {
                     holder = (ViewHolder) convertView.getTag();
                 }
-                setTextView(holder, data, i, convertView);
+                setTextView(holder, data, i);
                 DrawableUtil.setDrawableWidthHeight(data.drawable, mItemsImageWidth, mItemsImageHeight);
                 holder.textView.setCompoundDrawablePadding(dp2px(10));
                 holder.textView.setCompoundDrawables(null, data.drawable, null, null);
@@ -732,14 +701,8 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
         }
     }
 
-    private static abstract class Builder<T extends Builder> implements ICreateContentView {
+    private static abstract class Builder<T extends Builder> extends BasisBuilder<T> implements ICreateContentView {
 
-        protected Context mContext;
-        protected UIActionSheetDialog mDialog;
-        protected ResourceUtil mResourceUtil;
-        protected int mStatePressed = android.R.attr.state_pressed;
-
-        protected LinearLayout mLLayoutRoot;
         protected StateListDrawable mStateDrawableTop;
         protected StateListDrawable mStateDrawableCenter;
         protected StateListDrawable mStateDrawableBottom;
@@ -754,9 +717,7 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
         protected Drawable mSingleDrawable;
         protected Drawable mSinglePressedDrawable;
 
-        protected Drawable mBackground;
         protected int mMarginTop;
-        protected int mPadding;
         protected List<SheetItem> mListItem;
 
         protected TextView mTvTitle;
@@ -772,15 +733,10 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
         protected float mCancelTextSize = 16;
         protected int mCancelMarginTop;
 
-        protected int mTextSizeUnit = TypedValue.COMPLEX_UNIT_DIP;
-        protected float mLineSpacingMultiplier = 1.0f;
-        protected float mLineSpacingExtra = 0.0f;
-
         protected Map<Integer, ColorStateList> mMapItemColor;
         protected ListAdapter mAdapter;
 
         protected OnItemClickListener mOnItemClickListener;
-        protected OnTextViewLineListener mOnTextViewLineListener;
 
         protected float mItemsTextSize = 16;
         protected int mItemsMinHeight = 45;
@@ -795,68 +751,18 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
         protected int mItemsTextPaddingBottom;
         protected boolean mItemsClickDismissEnable = true;
 
-        protected boolean mCancelable;
-        protected boolean mCanceledOnTouchOutside = true;
-        protected OnDismissListener mOnDismissListener;
-        protected OnKeyListener mOnKeyListener;
-        protected OnCancelListener mOnCancelListener;
-        protected OnShowListener mOnShowListener;
-
         public Builder(Context context) {
-            this.mContext = context;
-            this.mResourceUtil = new ResourceUtil(mContext);
+            super(context);
             setBackgroundResource(R.color.colorActionSheetNormalBackground)
+
                     .setItemsSingleDrawableResource(R.color.colorActionSheetEdge)
                     .setItemsSinglePressedDrawableResource(R.color.colorActionSheetEdge)
                     .setMarginTop((int) (getScreenHeight() * 0.2))
                     .setTextPadding(dp2px(16), dp2px(10), dp2px(16), dp2px(10))
-                    .setPadding(0)
                     .setTitleTextColorResource(R.color.colorActionSheetTitleText)
                     .setCancelTextColorResource(R.color.colorActionSheetWeiXinText)
                     .setItemsTextColorResource(R.color.colorActionSheetWeiXinText)
-                    .setItemsMinHeight(dp2px(45));
-        }
-
-        /**
-         * 设置根布局背景Drawable
-         *
-         * @param drawable
-         * @return
-         */
-        public T setBackground(Drawable drawable) {
-            this.mBackground = drawable;
-            return (T) this;
-        }
-
-        /**
-         * 设置根布局背景颜色值
-         *
-         * @param color
-         * @return
-         */
-        public T setBackgroundColor(int color) {
-            return setBackground(new ColorDrawable(color));
-        }
-
-        /**
-         * 设置根布局背景资源
-         *
-         * @param resId
-         * @return
-         */
-        public T setBackgroundResource(int resId) {
-            return setBackground(mResourceUtil.getDrawable(resId));
-        }
-
-        /**
-         * 设置根布局padding值
-         *
-         * @param padding
-         * @return
-         */
-        public T setPadding(int padding) {
-            this.mPadding = padding;
-            return (T) this;
+                    .setItemsMinHeight(dp2px(45)).setPadding(0);
         }
 
         /**
@@ -867,42 +773,6 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
          */
         public T setMarginTop(int top) {
             mMarginTop = top;
-            return (T) this;
-        }
-
-        /**
-         * 设置所有文本行间距属性
-         * {@link TextView#setLineSpacing(float, float)}
-         *
-         * @param lineSpacingMultiplier
-         * @return
-         */
-        public T setLineSpacingMultiplier(float lineSpacingMultiplier) {
-            mLineSpacingMultiplier = lineSpacingMultiplier;
-            return (T) this;
-        }
-
-        /**
-         * {@link TextView#setLineSpacing(float, float)}
-         *
-         * @param lineSpacingExtra
-         * @return
-         */
-        public T setLineSpacingExtra(float lineSpacingExtra) {
-            mLineSpacingExtra = lineSpacingExtra;
-            return (T) this;
-        }
-
-
-        /**
-         * 设置TextView的尺寸单位
-         * {@link TextView#setTextSize(int, float)}
-         *
-         * @param unit
-         * @return
-         */
-        public T setTextSizeUnit(int unit) {
-            this.mTextSizeUnit = unit;
             return (T) this;
         }
 
@@ -1320,29 +1190,6 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
         }
 
         /**
-         * 设置dialog 是否可点击返回键关闭
-         * {@link Dialog#setCancelable(boolean)}
-         *
-         * @param enable
-         * @return
-         */
-        public T setCancelable(boolean enable) {
-            this.mCancelable = enable;
-            return (T) this;
-        }
-
-        /**
-         * 点击非contentView 是否关闭dialog
-         *
-         * @param enable
-         * @return
-         */
-        public T setCanceledOnTouchOutside(boolean enable) {
-            this.mCanceledOnTouchOutside = enable;
-            return (T) this;
-        }
-
-        /**
          * 设置item点击事件监听
          *
          * @param listener
@@ -1354,110 +1201,24 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
         }
 
         /**
-         * 设置TextView 文本行数监听
-         * {@link TextView#post(Runnable)}
-         *
-         * @param listener
-         * @return
-         */
-        public T setOnTextViewLineListener(OnTextViewLineListener listener) {
-            this.mOnTextViewLineListener = listener;
-            return (T) this;
-        }
-
-        /**
-         * 设置dialog消失监听
-         *
-         * @param listener
-         * @return
-         */
-        public T setOnDismissListener(OnDismissListener listener) {
-            this.mOnDismissListener = listener;
-            return (T) this;
-        }
-
-        /**
-         * 设置dialog 键盘事件监听
-         * {@link Dialog#setOnKeyListener(OnKeyListener)}
-         *
-         * @param listener
-         * @return
-         */
-        public T setOnKeyListener(OnKeyListener listener) {
-            this.mOnKeyListener = listener;
-            return (T) this;
-        }
-
-        /**
-         * 设置dialog显示事件监听
-         * {@link Dialog#setOnShowListener(OnShowListener)}
-         *
-         * @param listener
-         * @return
-         */
-        public T setOnShowListenerer(OnShowListener listener) {
-            this.mOnShowListener = listener;
-            return (T) this;
-        }
-
-        /**
-         * 设置Dialog Cancel监听
-         * {@link Dialog#setOnCancelListener(OnCancelListener)}
-         *
-         * @param listener
-         * @return
-         */
-        public T setOnCancelListener(OnCancelListener listener) {
-            this.mOnCancelListener = listener;
-            return (T) this;
-        }
-
-        /**
          * 创建dialog
          *
          * @return
          */
-        public UIActionSheetDialog create() {
+        public BasisDialog<UIActionSheetDialog> create() {
             View contentView = createContentView();
             mDialog = new UIActionSheetDialog(mContext);
             mDialog.setContentView(contentView);
-            mDialog.setCancelable(mCancelable);
-            mDialog.setCanceledOnTouchOutside(mCanceledOnTouchOutside);
-            if (mOnDismissListener != null) {
-                mDialog.setOnDismissListener(mOnDismissListener);
-            }
-            if (mOnKeyListener != null) {
-                mDialog.setOnKeyListener(mOnKeyListener);
-            }
-            if (mOnCancelListener != null) {
-                mDialog.setOnCancelListener(mOnCancelListener);
-            }
-            if (mOnShowListener != null) {
-                mDialog.setOnShowListener(mOnShowListener);
-            }
+            setDialog();
             //对顶部进行处理
             if (mMarginTop > 0) {
                 ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
                 marginLayoutParams.topMargin = mMarginTop;
                 contentView.setLayoutParams(marginLayoutParams);
-                //当设置点击其它地方dialog可消失需对root的父容器处理
-                if (mCanceledOnTouchOutside) {
-                    //设置点击事件防止事件透传至父容器
-                    contentView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    });
-                    ((ViewGroup) contentView.getParent()).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            mDialog.dismiss();
-                        }
-                    });
-                }
             }
             mDialog.setGravity(Gravity.BOTTOM);
+            mDialog.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+            afterSetContentView();
             return mDialog;
         }
 
@@ -1469,19 +1230,11 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
         private View createContentView() {
             createDrawable();
             mLLayoutRoot = new LinearLayout(mContext);
-            mLLayoutRoot.setId(R.id.lLayout_rootActionSheet);
+            mLLayoutRoot.setId(R.id.lLayout_rootActionSheetDialog);
             mLLayoutRoot.setOrientation(LinearLayout.VERTICAL);
             mLLayoutRoot.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            mLLayoutRoot.removeAllViews();
-            mLLayoutRoot.setPadding(mPadding, mPadding, mPadding, mPadding);
-            if (mBackground != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mLLayoutRoot.setBackground(mBackground);
-                } else {
-                    mLLayoutRoot.setBackgroundDrawable(mBackground);
-                }
-            }
             mAdapter = mAdapter == null ? getDefaultAdapter() : mAdapter;
+            setRootView();
             createTitle();
             createItemView();
             createCancel();
@@ -1498,7 +1251,7 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
             mTvTitle = new TextView(mContext);
             mTvTitle.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mTvTitle.setMinimumHeight(dp2px(20));
-            mTvTitle.setId(R.id.tv_titleActionSheet);
+            mTvTitle.setId(R.id.tv_titleActionSheetDialog);
             mLLayoutRoot.addView(mTvTitle);
 
             Drawable background = mStateDrawableSingle.getCurrent();
@@ -1513,19 +1266,8 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
             if (mListItem != null && mListItem.size() > 0) {
                 background = mStateDrawableTop.getCurrent();
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mTvTitle.setBackground(background);
-            } else {
-                mTvTitle.setBackgroundDrawable(background);
-            }
-            mTvTitle.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (mOnTextViewLineListener != null) {
-                        mOnTextViewLineListener.onTextViewLineListener(mTvTitle, mTvTitle.getLineCount());
-                    }
-                }
-            });
+            setViewBackground(mTvTitle, background);
+            setTextViewLine(mTvTitle);
         }
 
         /**
@@ -1538,7 +1280,7 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
             mTvCancel = new TextView(mContext);
             mTvCancel.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mTvCancel.setMinimumHeight(mItemsMinHeight);
-            mTvCancel.setId(R.id.tv_cancelActionSheet);
+            mTvCancel.setId(R.id.tv_cancelActionSheetDialog);
             mLLayoutRoot.addView(mTvCancel);
 
             mTvCancel.setLineSpacing(mLineSpacingExtra, mLineSpacingMultiplier);
@@ -1554,26 +1296,15 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
                     mTvCancel.setLayoutParams(lp);
                 }
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mTvCancel.setBackground(mStateDrawableSingle);
-            } else {
-                mTvCancel.setBackgroundDrawable(mStateDrawableSingle);
-            }
+            setViewBackground(mTvCancel, mStateDrawableSingle);
+
             mTvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mDialog.dismiss();
                 }
             });
-
-            mTvCancel.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (mOnTextViewLineListener != null) {
-                        mOnTextViewLineListener.onTextViewLineListener(mTvCancel, mTvCancel.getLineCount());
-                    }
-                }
-            });
+            setTextViewLine(mTvCancel);
         }
 
         /**
@@ -1598,15 +1329,6 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
 
         }
 
-        protected int dp2px(float dipValue) {
-            final float scale = Resources.getSystem().getDisplayMetrics().density;
-            return (int) (dipValue * scale + 0.5f);
-        }
-
-        protected int getScreenHeight() {
-            return Resources.getSystem().getDisplayMetrics().heightPixels;
-        }
-
         protected abstract class SheetAdapter extends BaseAdapter {
             @Override
             public int getCount() {
@@ -1623,24 +1345,13 @@ public class UIActionSheetDialog extends UIBasisDialog<UIActionSheetDialog> {
                 return position;
             }
 
-            protected void setTextView(final ViewHolder holder, SheetItem data, final int position, View convertView) {
+            protected void setTextView(final ViewHolder holder, SheetItem data, final int position) {
                 if (holder == null || holder.textView == null) {
                     return;
                 }
-                holder.textView.setGravity(mItemsTextGravity);
-                holder.textView.setLineSpacing(mLineSpacingExtra, mLineSpacingMultiplier);
-                holder.textView.setText(data.text);
-                holder.textView.setTextColor(getTextColor(position, data.textColor));
-                holder.textView.setTextSize(mTextSizeUnit, mItemsTextSize);
-                if (mOnTextViewLineListener != null) {
-                    holder.textView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mOnTextViewLineListener.onTextViewLineListener
-                                    (holder.textView, holder.textView.getLineCount());
-                        }
-                    });
-                }
+                setTextAttribute(holder.textView, data.text,
+                        getTextColor(position, data.textColor), mItemsTextSize, mItemsGravity, false);
+                setTextViewLine(holder.textView);
             }
         }
 

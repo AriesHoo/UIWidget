@@ -21,14 +21,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
  * Created: AriesHoo on 2017-01-19 14:16
  * E-Mail: AriesHoo@126.com
  * Function: 自定义AlertDialog 弹出提示框
- * Description:1、2017-11-15 10:08:42 AriesHoo 增加设置背景Drawable版本兼容
+ * Description:
+ * 1、2017-11-15 10:08:42 AriesHoo 增加设置背景Drawable版本兼容
+ *
+ * @deprecated use {@link UIAlertDialog} instead
  */
+@Deprecated
 public class UIAlertView {
     private Context context;
     private AlertDialog dialog;
@@ -267,6 +272,7 @@ public class UIAlertView {
      * @return
      */
     public UIAlertView setMessage(CharSequence msg) {
+        ListView listView = new ListView(context);
         showMsg = true;
         mTvMsg.setText(msg);
         mTvMsg.post(new Runnable() {
@@ -282,7 +288,7 @@ public class UIAlertView {
                 }
             }
         });
-        int padding = (int) context.getResources().getDimension(R.dimen.alert_dp_padding);
+        int padding = (int) context.getResources().getDimension(R.dimen.alert_padding);
         mTvMsg.setPadding(padding, padding, padding, padding);
         mTvMsg.setGravity(gravity);
         return this;

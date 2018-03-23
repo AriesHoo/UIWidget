@@ -40,6 +40,179 @@ dependencies {
      compile 'com.github.AriesHoo:UIWidget:${LATEST_VERSION}'
 }
 ```
+
+**UIAlertDialog属性控制**
+
+```
+UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
+                        //设置背景--包括根布局及Button
+                        .setBackgroundColor(Color.WHITE)
+//                        .setBackground(drawable)
+//                        .setBackgroundResource(resId)
+                        //设置按下背景--Button
+                        .setBackgroundPressedColor(Color.argb(255, 240, 240, 240))
+//                        .setBackgroundPressed(drawable)
+//                        .setBackgroundPressedResource(resId)
+                        //背景圆角(当背景及按下背景为ColorDrawable有效)-根布局及Button
+                        .setBackgroundRadius(6f)
+//                        .setBackgroundRadiusResource(resId)
+                        //设置统一padding
+                        .setPadding(SizeUtil.dp2px(20))
+                        //设置根布局最小高度
+                        .setMinHeight(SizeUtil.dp2px(160))
+                        .setElevation(12f)
+
+                        //设置Title上边分割线颜色--推荐
+                        .setTitleDividerColor(Color.RED)
+//                        .setTitleDividerResource(resId)
+//                        .setTitleDivider(drawable)
+                        //设置Title分割线高度
+                        .setTitleDividerHeight(SizeUtil.dp2px(4))
+//                        .setTitleDividerHeightResource(resId)
+                        //设置TextView对应的尺寸单位
+                        .setTextSizeUnit(TypedValue.COMPLEX_UNIT_DIP)
+                        .setLineSpacingExtra(0f)
+                        .setLineSpacingMultiplier(1.0f)
+                        //设置Title文本
+                        .setTitle("UIAlertDialog示例头部")
+//                        .setTitle(resId)
+                        //设置Title文本颜色
+                        .setTitleTextColor(Color.BLACK)
+//                        .setTitleTextColor(ColorStateList)
+//                        .setTitleTextColorResource(resId)
+                        //设置Title文本尺寸
+                        .setTitleTextSize(20f)
+                        //设置Title文本对齐方式
+                        .setTitleTextGravity(Gravity.CENTER)
+                        //设置Title文本是否加粗
+                        .setTitleTextFakeBoldEnable(false)
+
+                        //设置Message文本
+                        .setMessage(Html.fromHtml(String.format(mFormatName, "你将退出 ", "四川移动爱分享抢流量(XXXXXXXX)", "退群通知仅群管理员可见。")))
+//                        .setMessage(resId)
+                        //设置Message文本颜色
+                        .setMessageTextColor(Color.BLACK)
+//                        .setMessageTextColor(ColorStateList)
+//                        .setMessageTextColorResource(resId)
+                        //设置Message文本尺寸
+                        .setMessageTextSize(16f)
+                        //设置Message文本对齐方式
+                        .setMessageTextGravity(Gravity.CENTER)
+                        //设置Title文本是否加粗
+                        .setMessageTextFakeBoldEnable(false)
+
+                        //设置View --始终在Message下边
+//                        .setView(View)
+//                        .setView(layoutId)
+
+                        //设置是否去掉Button按下阴影-5.0以后的新特性
+                        .setBorderLessButtonEnable(true)
+                        //文本及点击事件
+                        .setNegativeButton("取消", onAlertClick)
+//                        .setNegativeButton(resId,click)
+                        //文本颜色
+                        .setNegativeButtonTextColor(Color.BLACK)
+//                        .setNegativeButtonTextColor(ColorStateList)
+//                        .setNegativeButtonTextColorResource(resId)
+                        //文本尺寸
+                        .setNegativeButtonTextSize(18f)
+                        //是否粗体
+                        .setNegativeButtonFakeBoldEnable(false)
+
+                        //文本及点击事件
+                        .setNeutralButton("考虑", onAlertClick)
+//                        .setNeutralButton(resId,click)
+                        //文本颜色
+                        .setNeutralButtonTextColor(Color.BLACK)
+//                        .setNeutralButtonTextColor(ColorStateList)
+//                        .setNeutralButtonTextColorResource(resId)
+                        //文本尺寸
+                        .setNeutralButtonTextSize(18f)
+                        //是否粗体
+                        .setNeutralButtonFakeBoldEnable(false)
+
+                        //文本及点击事件
+                        .setPositiveButton("退出", onAlertClick)
+//                        .setPositiveButton(resId,click)
+                        //文本颜色
+                        .setPositiveButtonTextColor(Color.BLACK)
+//                        .setPositiveButtonTextColor(ColorStateList)
+//                        .setPositiveButtonTextColorResource(resId)
+                        //文本尺寸
+                        .setPositiveButtonTextSize(18f)
+                        //是否粗体
+                        .setPositiveButtonFakeBoldEnable(false)
+
+                        //设置点击返回键是否可关闭Window
+                        .setCancelable(true)
+                        //设置点击非布局是否关闭Window
+                        .setCanceledOnTouchOutside(true)
+                        //设置Window dismiss()监听
+                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+
+                            }
+                        })
+                        //设置Window cancel()监听
+                        .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                            @Override
+                            public void onCancel(DialogInterface dialog) {
+
+                            }
+                        })
+                        //设置 window show()监听
+                        .setOnShowListenerer(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface dialog) {
+
+                            }
+                        })
+                        //设置Window 键盘事件监听
+                        .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                            @Override
+                            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                                return false;
+                            }
+                        })
+                        .setOnTextViewLineListener(new BasisDialog.OnTextViewLineListener() {
+                            @Override
+                            public void onTextViewLineListener(TextView textView, int lineCount) {
+                                switch (textView.getId()) {
+                                    case R.id.tv_titleAlertDialog:
+                                        break;
+                                    case R.id.tv_messageAlertDialog:
+                                        break;
+                                    case R.id.btn_negativeAlertDialog:
+                                        break;
+                                    case R.id.btn_neutralAlertDialog:
+                                        break;
+                                    case R.id.btn_positiveAlertDialog:
+                                        break;
+                                }
+                            }
+                        })
+
+                        //创建Dialog
+                        .create()
+                        //设置Window宽度
+                        .setWidth(WindowManager.LayoutParams.WRAP_CONTENT)
+                        //设置Window高度
+                        .setHeight(WindowManager.LayoutParams.WRAP_CONTENT)
+                        //设置Window 阴影程度
+                        .setDimAmount(0.6f)
+                        //设置window其它属性
+//                        .setAttributes(WindowManager.LayoutParams)
+                        //设置window动画
+//                        .setWindowAnimations(resId)
+                        //设置Window 位置
+                        .setGravity(Gravity.CENTER);
+                alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                alertDialog.getButton(DialogInterface.BUTTON_NEUTRAL);
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                alertDialog.show();
+```
+
 ## 录屏预览
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/widget.png)

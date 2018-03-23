@@ -34,6 +34,6 @@
         <item name="android:minHeight">45dp</item>
         <item name="android:padding">10dp</item>
         <item name="android:textColor">@color/colorAlertButton</item>
-        <item name="android:textSize">@dimen/sp_alert_message_size</item>
+        <item name="android:textSize">@dimen/alert_message_size</item>
     </style>
 </resources>

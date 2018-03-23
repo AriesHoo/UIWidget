@@ -94,35 +94,35 @@ public class LoadingActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.rtv_showLoading:
                 new UIProgressDialog.NormalBuilder(this)
-                        .setText(isShowMsg ? R.string.loading : 0)
+                        .setMessage(isShowMsg ? R.string.loading : 0)
                         .setIndeterminateDrawable(isDefaultProgress ? 0 : R.drawable.progress_loading)
-                        .setBackgroundRadius(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
+                        .setBackgroundRadiusResource(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
                         .create()
                         .setDimAmount(isBackDim ? 0.6f : 0f)
                         .show();
                 break;
             case R.id.rtv_showWeiBoLoading:
                 new UIProgressDialog.WeBoBuilder(this)
-                        .setText(isShowMsg ? R.string.loading : 0)
+                        .setMessage(isShowMsg ? R.string.loading : 0)
                         .setIndeterminateDrawable(isDefaultProgress ? R.drawable.dialog_loading_wei_bo : R.drawable.progress_loading)
-                        .setBackgroundRadius(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
+                        .setBackgroundRadiusResource(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
                         .create()
                         .setDimAmount(isBackDim ? 0.6f : 0f)
                         .show();
                 break;
             case R.id.rtv_showWeiXinLoading:
                 new UIProgressDialog.WeChatBuilder(this)
-                        .setText(isShowMsg ? R.string.loading : 0)
+                        .setMessage(isShowMsg ? R.string.loading : 0)
                         .setIndeterminateDrawable(isDefaultProgress ? R.drawable.dialog_loading_wei_xin : R.drawable.progress_loading)
-                        .setBackgroundRadius(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
+                        .setBackgroundRadiusResource(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
                         .create()
                         .setDimAmount(isBackDim ? 0.6f : 0f)
                         .show();
                 break;
             case R.id.rtv_showMaterialLoading:
                 new UIProgressDialog.MaterialBuilder(this)
-                        .setText(isShowMsg ? R.string.loading : 0)
-                        .setBackgroundRadius(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
+                        .setMessage(isShowMsg ? R.string.loading : 0)
+                        .setBackgroundRadiusResource(isDefaultRadiusBack ? R.dimen.dp_radius_loading : 0)
                         .create()
                         .setDimAmount(isBackDim ? 0.6f : 0f)
                         .show();

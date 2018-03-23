@@ -121,8 +121,17 @@
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showAlert"
                 style="@style/RadiusStyleButton"
-                android:text="Show"/>
+                android:text="Show(iOS样式)"/>
 
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_showQqAlert"
+                style="@style/RadiusStyleButton"
+                android:text="Show(QQ样式)"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_showAllAlert"
+                style="@style/RadiusStyleButton"
+                android:text="Show(所有属性展示)"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_editAlert"

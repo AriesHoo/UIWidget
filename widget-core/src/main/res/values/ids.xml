@@ -6,13 +6,13 @@
     <item name="fake_status_view" type="id"/>
 
 
-    <item name="lLayout_rootActionSheet" type="id"/>
-    <item name="lv_containerActionSheet" type="id"/>
-    <item name="gv_containerActionSheet" type="id"/>
-    <item name="tv_titleActionSheet" type="id"/>
-    <item name="tv_cancelActionSheet" type="id"/>
+    <item name="lLayout_rootActionSheetDialog" type="id"/>
+    <item name="lv_containerActionSheetDialog" type="id"/>
+    <item name="gv_containerActionSheetDialog" type="id"/>
+    <item name="tv_titleActionSheetDialog" type="id"/>
+    <item name="tv_cancelActionSheetDialog" type="id"/>
 
 
-    <item name="lLayout_rootProgressView" type="id"/>
-    <item name="tv_textProgressView" type="id"/>
+    <item name="lLayout_rootProgressDialog" type="id"/>
+    <item name="tv_messageProgressDialog" type="id"/>
 </resources>

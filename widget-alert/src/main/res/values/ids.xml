@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="lLayout_rootAlertDialog" type="id"/>
+    <item name="lLayout_ViewAlertDialog" type="id"/>
+    <item name="lLayout_containerAlertDialog" type="id"/>
+    <item name="tv_titleAlertDialog" type="id"/>
+    <item name="tv_messageAlertDialog" type="id"/>
+
+    <item name="btn_negativeAlertDialog" type="id"/>
+    <item name="btn_neutralAlertDialog" type="id"/>
+    <item name="btn_positiveAlertDialog" type="id"/>
+</resources>

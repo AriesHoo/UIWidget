@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.view.title.TitleBarView;
+import com.aries.ui.widget.BasisDialog;
 import com.aries.ui.widget.action.sheet.UIActionSheetDialog;
 import com.aries.ui.widget.action.sheet.UIActionSheetView;
 import com.aries.ui.widget.demo.R;
@@ -126,7 +127,7 @@ public class ActionSheetActivity extends BaseActivity {
 
     private UIActionSheetDialog.OnItemClickListener mOnItemClickListener = new UIActionSheetDialog.OnItemClickListener() {
         @Override
-        public void onClick(UIActionSheetDialog dialog, View itemView, int position) {
+        public void onClick(BasisDialog dialog, View itemView, int position) {
             Toast.makeText(ActionSheetActivity.this, "item position:" + position, Toast.LENGTH_SHORT).show();
         }
     };
@@ -162,13 +163,16 @@ public class ActionSheetActivity extends BaseActivity {
                         .show();
                 break;
             case R.id.rtv_showWeiXinActionSheet:
+                TextView textView = new TextView(this);
+                textView.setText("kkkkkk");
                 new UIActionSheetDialog.ListWeChatBuilder(this)
+                        .addHeaderView(textView)
                         .addItems(R.array.arrays_items_action)
                         .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetWeiXinText : android.R.color.holo_purple)
                         .setTitle(isShowTitle ? "标题" : null)
                         .setCancelTextColorResource(isDefaultCancelColor ? R.color.colorActionSheetWeiXinText : android.R.color.darker_gray)
                         .setOnItemClickListener(mOnItemClickListener)
-                        .create().setDimAmount(isBackDim ? 0.6f : 0f).show();
+                        .create().setDimAmount(isBackDim ? 0.6f : 0f);
                 break;
             case R.id.rtv_showGridActionSheet:
                 UIActionSheetDialog dialog = new UIActionSheetDialog.GridBuilder(this)
@@ -188,7 +192,7 @@ public class ActionSheetActivity extends BaseActivity {
                         .setItemsClickBackgroundEnable(false)
                         .setOnItemClickListener(new UIActionSheetDialog.OnItemClickListener() {
                             @Override
-                            public void onClick(UIActionSheetDialog dialog, View itemView, int position) {
+                            public void onClick(BasisDialog dialog, View itemView, int position) {
                                 if (itemView instanceof TextView) {
                                     Toast.makeText(ActionSheetActivity.this, ((TextView) itemView).getText(), Toast.LENGTH_SHORT).show();
                                 }

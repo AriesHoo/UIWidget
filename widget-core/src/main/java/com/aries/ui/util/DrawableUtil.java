@@ -40,4 +40,5 @@ public class DrawableUtil {
         }
         return drawable.getConstantState().newDrawable();
     }
+
 }
