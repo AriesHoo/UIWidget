@@ -29,6 +29,21 @@ allprojects {
 }
 ```
 
+##### 3.0.0及以后版本-core为核心库、aler及collapsing默认compile了core库
+
+```
+dependencies {
+     //compile 'com.github.AriesHoo.UIWidget:widget-core:3.0.0-alpha1'
+     //compile 'com.github.AriesHoo.UIWidget:widget-alert:3.0.0-alpha1'
+     //compile 'com.github.AriesHoo.UIWidget:widget-collapsing:3.0.0-alpha1'
+     compile 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
+     compile 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
+     compile 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
+}
+```
+
+##### 3.0.0以前版本
+
 ```
 dependencies {
      //compile 'com.github.AriesHoo:UIWidget:2.0.9'
