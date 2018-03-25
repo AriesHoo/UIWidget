@@ -172,7 +172,8 @@ public class ActionSheetActivity extends BaseActivity {
                         .setTitle(isShowTitle ? "标题" : null)
                         .setCancelTextColorResource(isDefaultCancelColor ? R.color.colorActionSheetWeiXinText : android.R.color.darker_gray)
                         .setOnItemClickListener(mOnItemClickListener)
-                        .create().setDimAmount(isBackDim ? 0.6f : 0f);
+                        .create().setDimAmount(isBackDim ? 0.6f : 0f)
+                        .show();
                 break;
             case R.id.rtv_showGridActionSheet:
                 UIActionSheetDialog dialog = new UIActionSheetDialog.GridBuilder(this)

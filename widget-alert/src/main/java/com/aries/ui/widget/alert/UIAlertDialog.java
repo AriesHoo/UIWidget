@@ -825,24 +825,26 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
         }
 
         public BasisDialog<UIAlertDialog> create() {
+            int margin = dp2px(16);
             View contentView = createContentView();
             mDialog = new UIAlertDialog(mContext);
-            mDialog.setContentView(contentView, contentView.getLayoutParams());
+            mDialog.setContentView(contentView);
             setDialog();
             mDialog.setGravity(Gravity.CENTER);
+            mDialog.setMargin(margin,margin,margin,margin);
             afterSetContentView();
             return mDialog;
         }
 
         private View createContentView() {
-            int margin = dp2px(16);
-            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(margin, margin, margin, margin);
+//            int margin = dp2px(16);
+//            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(
+//                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            params.setMargins(margin, margin, margin, margin);
             mLLayoutRoot = new LinearLayout(mContext);
             mLLayoutRoot.setId(R.id.lLayout_rootAlertDialog);
             mLLayoutRoot.setOrientation(LinearLayout.VERTICAL);
-            mLLayoutRoot.setLayoutParams(params);
+//            mLLayoutRoot.setLayoutParams(params);
             mLLayoutRoot.setMinimumWidth(mMinWidth);
             mLLayoutRoot.setMinimumHeight(mMinHeight);
             setRootView();

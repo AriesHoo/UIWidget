@@ -17,11 +17,6 @@
 [[Download]](https://raw.githubusercontent.com/AriesHoo/UIWidget/master/apk/sample.apk)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/apk/qr.png)
-
-**特别说明:1、RadiusView设置海拔(elevation)在7.1以下版本需在xml属性设置rv_strokeColor方可有效--据悉因为设置海拔必须是和设置背景同步的**
-
-**特别更新说明:
-  2.0.5:TitlteBarView父容器为ConstraintLayout高度测量不准BUG**
   
 **Gradle集成**
 
@@ -212,6 +207,22 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
                 alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
                 alertDialog.show();
 ```
+
+## 重大更新日志
+
+* 3.0.0-alpha 更新
+	* 完整重构整个UI库-拆分库为widget-core(TitleBarView、RadiusView、AlphaView、Helper、UIActionSheetDialog、UIProgressDialog)、widget-alert、widget-collapsing
+	* widget-core新增状态栏控制帮助类StatusViewHelper及虚拟导航栏控制帮助类NavigationViewHelper
+	* widget-core新增控制View按下透明度变化帮助类AlphaViewHelper 并增加对应常用View控件AlphaTextView、AlphaCheckBox、AlphaRadioButton、AlphaRelativeLayout等基础控件
+	* TitleBarView属性规范并删除部分冗余属性;增加与widget-collapsing库中CollapsingTitleBarLayout配合达到CollapsingToolbarLayout+Toolbar效果参考[TitleWithCollapsingLayoutActivity]{https://github.com/AriesHoo/UIWidget/blob/master/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleWithCollapsingLayoutActivity.java}
+	* RadiusView 增加RadiusSwitch并将属性规范并拆分不同的delegate代理类管理
+	* 新增UIActionSheetDialog 添加不同Builder用于替换原有UIActionSheetView控件UIActionSheetView标记为废弃正式版本移除
+	* 新增UIProgressDialog 添加不同Builder用于替换原有UIProgressView控件UIProgressView标记为废弃正式版本移除
+	* 新增UIAlertDialog 添加不同Builder用于替换原有UIAlertView控件UIAlertView标记为废弃正式版本移除
+
+
+* 2.0.5 更新
+    * TitlteBarView父容器为ConstraintLayout高度测量不准BUG
 
 ## 录屏预览
 

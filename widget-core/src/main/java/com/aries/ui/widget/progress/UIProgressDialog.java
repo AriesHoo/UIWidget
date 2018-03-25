@@ -298,11 +298,13 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
         }
 
         public BasisDialog<UIProgressDialog> create() {
+            int margin = dp2px(12);
             View contentView = createContentView();
             mDialog = new UIProgressDialog(mContext);
-            mDialog.setContentView(contentView, contentView.getLayoutParams());
+            mDialog.setContentView(contentView);
             setDialog();
             mDialog.setGravity(Gravity.CENTER);
+            mDialog.setMargin(margin, margin, margin, margin);
             afterSetContentView();
             return mDialog;
         }
@@ -311,7 +313,6 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
             mLLayoutRoot = new LinearLayout(mContext);
             mLLayoutRoot.setId(R.id.lLayout_rootProgressDialog);
             mLLayoutRoot.setOrientation(getOrientation());
-            mLLayoutRoot.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mLLayoutRoot.setGravity(getGravity());
 
             setRootView();

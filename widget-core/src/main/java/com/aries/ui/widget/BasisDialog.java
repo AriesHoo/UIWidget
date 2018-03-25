@@ -27,6 +27,7 @@ import com.aries.ui.util.ResourceUtil;
  * Function: Widget Dialog模式基类
  * Description:
  * 1、新增基础Builder包装通用属性
+ * 2、新增ContentView margin属性
  */
 public class BasisDialog<T extends BasisDialog> extends Dialog {
 
@@ -75,6 +76,12 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     }
 
     @Override
+    public void setContentView(int layoutResID) {
+        mContentView = View.inflate(getContext(), layoutResID, null);
+        super.setContentView(mContentView);
+    }
+
+    @Override
     public void setContentView(View view) {
         super.setContentView(view);
         this.mContentView = view;
@@ -90,6 +97,15 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     public void dismiss() {
         closeKeyboard();
         super.dismiss();
+    }
+
+    /**
+     * 获取根布局
+     *
+     * @return
+     */
+    public View getContentView() {
+        return mContentView;
     }
 
     public T setAttributes(WindowManager.LayoutParams params) {
@@ -130,6 +146,20 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
      */
     public T setWindowAnimations(int res) {
         this.mWindowAnimations = res;
+        return (T) this;
+    }
+
+    /**
+     * 设置ContentView margin属性
+     *
+     * @return
+     */
+    public T setMargin(int left, int top, int right, int bottom) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mContentView.getLayoutParams();
+        if (params != null) {
+            params.setMargins(left, top, right, bottom);
+            mContentView.setLayoutParams(params);
+        }
         return (T) this;
     }
 

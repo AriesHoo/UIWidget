@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.aries.ui.view.radius.RadiusEditText;
 import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.widget.BasisDialog;
-import com.aries.ui.widget.action.sheet.UIActionSheetDialog;
 import com.aries.ui.widget.alert.UIAlertDialog;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
@@ -57,11 +56,11 @@ public class AlertActivity extends BaseActivity {
 
     private int num = 2;
 
-    private String mFormatName = "%1s<font color=\"#2494f2\">%2s</font>%3s";
+    private String mFormatName = "%1s<font color=\"red\">%2s</font>%3s";
 
     @Override
     protected void setTitleBar() {
-        titleBar.setTitleMainText(UIActionSheetDialog.class.getSimpleName())
+        titleBar.setTitleMainText(UIAlertDialog.class.getSimpleName())
                 .setTitleSubTextMarquee(true)
                 .setTitleSubText("UIAlertView已标记废弃请使用UIAlertDialog替换,正式版本将完整移除");
     }
@@ -162,7 +161,7 @@ public class AlertActivity extends BaseActivity {
                 UIAlertDialog dialog = new UIAlertDialog.DividerQQBuilder(this)
                         .setTitle(isShowTitle ? "退出群聊" : "")
                         .setTitleTextColor(isDefaultTitleColor ? Color.BLACK : Color.BLUE)
-                        .setMessage(Html.fromHtml(String.format(mFormatName, "你将退出 ", "四川移动爱分享抢流量(XXXXXXXX)", "退群通知仅群管理员可见。")))
+                        .setMessage("你将退出  四川移动爱分享抢流量(XXXXXXXX) 退群通知仅群管理员可见。")
                         .setMessageTextColor(isDefaultMsgColor ? Color.BLACK : Color.GREEN)
                         .setNegativeButton(num > 1 ? "取消" : "", onAlertClick)
                         .setNegativeButtonTextColor(isDefaultButtonColor ? Color.BLACK : Color.RED)

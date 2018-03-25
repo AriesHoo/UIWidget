@@ -56,7 +56,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
      * @return 未设置Title文本则返回空
      */
     public TextView getTitle() {
-        return FindViewUtil.getTargetView(mContentView, R.id.tv_titleActionSheet);
+        return FindViewUtil.getTargetView(mContentView, R.id.tv_titleActionSheetDialog);
     }
 
     /**
@@ -65,7 +65,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
      * @return 未设置Cancel文本则返回空
      */
     public TextView getCancel() {
-        return FindViewUtil.getTargetView(mContentView, R.id.tv_cancelActionSheet);
+        return FindViewUtil.getTargetView(mContentView, R.id.tv_cancelActionSheetDialog);
     }
 
     /**
@@ -74,11 +74,11 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
      * @return 未设置Item或无
      */
     public TextView getListView() {
-        return FindViewUtil.getTargetView(mContentView, R.id.lv_containerActionSheet);
+        return FindViewUtil.getTargetView(mContentView, R.id.lv_containerActionSheetDialog);
     }
 
     public TextView getGridView() {
-        return FindViewUtil.getTargetView(mContentView, R.id.gv_containerActionSheet);
+        return FindViewUtil.getTargetView(mContentView, R.id.gv_containerActionSheetDialog);
     }
 
     public interface ICreateContentView {
@@ -754,7 +754,6 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
         public Builder(Context context) {
             super(context);
             setBackgroundResource(R.color.colorActionSheetNormalBackground)
-
                     .setItemsSingleDrawableResource(R.color.colorActionSheetEdge)
                     .setItemsSinglePressedDrawableResource(R.color.colorActionSheetEdge)
                     .setMarginTop((int) (getScreenHeight() * 0.2))
@@ -1210,14 +1209,9 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             mDialog = new UIActionSheetDialog(mContext);
             mDialog.setContentView(contentView);
             setDialog();
-            //对顶部进行处理
-            if (mMarginTop > 0) {
-                ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) contentView.getLayoutParams();
-                marginLayoutParams.topMargin = mMarginTop;
-                contentView.setLayoutParams(marginLayoutParams);
-            }
             mDialog.setGravity(Gravity.BOTTOM);
             mDialog.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+            mDialog.setMargin(0, mMarginTop, 0, 0);
             afterSetContentView();
             return mDialog;
         }
