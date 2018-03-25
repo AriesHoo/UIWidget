@@ -227,8 +227,8 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 * 3.0.0-alpha 更新
 	* 完整重构整个UI库-拆分库为widget-core(TitleBarView、RadiusView、AlphaView、Helper、UIActionSheetDialog、UIProgressDialog)、widget-alert、widget-collapsing
-	* widget-core新增状态栏控制帮助类StatusViewHelper及虚拟导航栏控制帮助类NavigationViewHelper
-	* widget-core新增控制View按下透明度变化帮助类AlphaViewHelper 并增加对应常用View控件AlphaTextView、AlphaCheckBox、AlphaRadioButton、AlphaRelativeLayout等基础控件
+	* widget-core新增状态栏控制帮助类[StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)及虚拟导航栏控制帮助类[NavigationViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/NavigationViewHelper.java)
+	* widget-core新增控制View按下透明度变化帮助类[AlphaViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/alpha/AlphaViewHelper.java) 并增加对应常用View控件AlphaTextView、AlphaCheckBox、AlphaRadioButton、AlphaRelativeLayout等基础控件
 	* TitleBarView属性规范并删除部分冗余属性;增加与widget-collapsing库中CollapsingTitleBarLayout配合达到CollapsingToolbarLayout+Toolbar效果参考[TitleWithCollapsingLayoutActivity](https://github.com/AriesHoo/UIWidget/blob/master/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleWithCollapsingLayoutActivity.java)
 	* RadiusView 增加RadiusSwitch并将属性规范并拆分不同的delegate代理类管理
 	* 新增UIActionSheetDialog 添加不同Builder用于替换原有UIActionSheetView控件UIActionSheetView标记为废弃正式版本移除
