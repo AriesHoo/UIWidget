@@ -188,12 +188,14 @@ public class StatusViewHelper {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 透明状态栏
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                    && (mPlusStatusViewEnable || (!mPlusStatusViewEnable && mTransEnable))) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(mStatusViewColor);
+                if (mTransEnable || mPlusStatusViewEnable)
+                    window.setStatusBarColor(Color.TRANSPARENT);
             }
         }
         addStatusBar(window);

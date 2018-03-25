@@ -199,13 +199,15 @@ public class NavigationViewHelper {
         mNavigationHeight = NavigationBarUtil.getNavigationBarHeight(window.getWindowManager());
         addOnGlobalLayoutListener();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//5.0默认半透明
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                && (mPlusNavigationViewEnable || (!mPlusNavigationViewEnable && mTransEnable))) {//5.0默认半透明
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             window.getDecorView().setSystemUiVisibility(
                     window.getDecorView().getSystemUiVisibility()
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setNavigationBarColor(mNavigationViewColor);
+            if (mTransEnable || mPlusNavigationViewEnable)
+                window.setNavigationBarColor(Color.TRANSPARENT);
         }
         //控制底部输入框
         if (mControlBottomEditTextEnable) {
