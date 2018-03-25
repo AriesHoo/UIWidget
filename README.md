@@ -243,15 +243,15 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/widget.png)
 
-[UIAlertView](https://github.com/AriesHoo/UIAlertView)
+[UIAlertDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/alert.gif)
 
-[UIActionSheetView](https://github.com/AriesHoo/UIActionSheetView)
+[UIActionSheetDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/action.gif)
 
-[UIProgressView](https://github.com/AriesHoo/UIProgressView)
+[UIProgressDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/loading.gif)
 
