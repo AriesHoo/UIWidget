@@ -222,7 +222,7 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 
 * 2.0.5 更新
-    * TitlteBarView父容器为ConstraintLayout高度测量不准BUG
+    * TitlteBarView父容器为ConstraintLayout高度测量不准BUG-参考[TitleWithConstraintActivity](https://github.com/AriesHoo/UIWidget/blob/master/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleWithConstraintActivity.java)
 
 ## 录屏预览
 
