@@ -18,6 +18,7 @@ import com.aries.ui.widget.R;
  * E-Mail: AriesHoo@126.com
  * Function: 设置Switch thumb及track相关代理
  * Description:
+ * 1、增加默认属性值
  */
 public class RadiusSwitchDelegate extends RadiusCompoundButtonDelegate<RadiusSwitchDelegate> {
 
@@ -57,6 +58,8 @@ public class RadiusSwitchDelegate extends RadiusCompoundButtonDelegate<RadiusSwi
     private int mTrackStrokeCheckedColor;
     private int mTrackStrokeWidth;
     private float mTrackRadius;
+    private int mColorAccent;
+    private int mColorDefault;
     //以上为xml对应属性解析
 
     public RadiusSwitchDelegate(TextView view, Context context, AttributeSet attrs) {
@@ -66,47 +69,52 @@ public class RadiusSwitchDelegate extends RadiusCompoundButtonDelegate<RadiusSwi
 
     @Override
     protected void initAttributes(Context context, AttributeSet attrs) {
-        mThumbDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_thumbDrawableWidth, -1);
-        mThumbDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_thumbDrawableHeight, -1);
+        mColorAccent = mResourceUtil.getAttrColor(android.R.attr.colorAccent);
+        mColorDefault = Color.GRAY;
+        mThumbDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_thumbDrawableWidth, dp2px(24));
+        mThumbDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_thumbDrawableHeight, dp2px(24));
         mThumbDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_thumbDrawable);
         mThumbPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_thumbPressedDrawable);
         mThumbDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_thumbDisabledDrawable);
         mThumbSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_thumbSelectedDrawable);
         mThumbCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_thumbCheckedDrawable);
-        mThumbStrokeColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_thumbStrokeColor, -1);
+        mThumbStrokeColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_thumbStrokeColor, mColorDefault);
         mThumbStrokePressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_thumbStrokePressedColor, mThumbStrokeColor);
         mThumbStrokeDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_thumbStrokeDisabledColor, mThumbStrokeColor);
         mThumbStrokeSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_thumbStrokeSelectedColor, mThumbStrokeColor);
-        mThumbStrokeCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_thumbStrokeCheckedColor, mThumbStrokeColor);
-        mThumbStrokeWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_thumbStrokeWidth, 0);
-        mThumbRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_thumbRadius, 0);
+        mThumbStrokeCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_thumbStrokeCheckedColor, mColorAccent);
+        mThumbStrokeWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_thumbStrokeWidth, dp2px(2));
+        mThumbRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_thumbRadius, 100f);
 
-        mTrackDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_trackDrawableWidth, -1);
-        mTrackDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_trackDrawableHeight, -1);
+        //轨道属性
+        mTrackDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_trackDrawableWidth, dp2px(48));
+        mTrackDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_trackDrawableHeight, dp2px(24));
         mTrackDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_trackDrawable);
         mTrackPressedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_trackPressedDrawable);
         mTrackDisabledDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_trackDisabledDrawable);
         mTrackSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_trackSelectedDrawable);
         mTrackCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_trackCheckedDrawable);
-        mTrackStrokeColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_trackStrokeColor, -1);
+        mTrackStrokeColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_trackStrokeColor, mColorDefault);
         mTrackStrokePressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_trackStrokePressedColor, mTrackStrokeColor);
         mTrackStrokeDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_trackStrokeDisabledColor, mTrackStrokeColor);
-        mTrackStrokeSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_trackStrokeSelectedColor, mTrackStrokeColor);
-        mTrackStrokeCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_trackStrokeCheckedColor, mTrackStrokeColor);
-        mTrackStrokeWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_trackStrokeWidth, 0);
-        mTrackRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_trackRadius, 0);
+        mTrackStrokeSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_trackStrokeSelectedColor, mThumbStrokeColor);
+        mTrackStrokeCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_trackStrokeCheckedColor, mColorAccent);
+        mTrackStrokeWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_trackStrokeWidth, dp2px(2));
+        mTrackRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_trackRadius, 100f);
 
-        mThumbDrawable = mThumbDrawable == null ? new ColorDrawable(Color.TRANSPARENT) : mThumbDrawable;
+        mThumbDrawable = mThumbDrawable == null ? new ColorDrawable(Color.WHITE) : mThumbDrawable;
         mThumbPressedDrawable = mTrackPressedDrawable == null ? mThumbDrawable : mThumbPressedDrawable;
         mThumbDisabledDrawable = mThumbDisabledDrawable == null ? mThumbDrawable : mThumbDisabledDrawable;
         mThumbSelectedDrawable = mThumbSelectedDrawable == null ? mThumbDrawable : mThumbSelectedDrawable;
         mThumbCheckedDrawable = mThumbCheckedDrawable == null ? mThumbDrawable : mThumbCheckedDrawable;
 
-        mTrackDrawable = mTrackDrawable == null ? new ColorDrawable(Color.TRANSPARENT) : mTrackDrawable;
+        mTrackDrawable = mTrackDrawable == null ? new ColorDrawable(mColorDefault) : mTrackDrawable;
         mTrackPressedDrawable = mTrackPressedDrawable == null ? mTrackDrawable : mTrackPressedDrawable;
         mTrackDisabledDrawable = mTrackDisabledDrawable == null ? mTrackDrawable : mTrackDisabledDrawable;
         mTrackSelectedDrawable = mTrackSelectedDrawable == null ? mTrackDrawable : mTrackSelectedDrawable;
-        mTrackCheckedDrawable = mTrackCheckedDrawable == null ? mTrackDrawable : mTrackCheckedDrawable;
+        mTrackCheckedDrawable = mTrackCheckedDrawable == null ? new ColorDrawable(mColorAccent) : mTrackCheckedDrawable;
+
+
         super.initAttributes(context, attrs);
     }
 
@@ -415,7 +423,7 @@ public class RadiusSwitchDelegate extends RadiusCompoundButtonDelegate<RadiusSwi
         mStateThumbDrawable.addState(new int[]{mStateDisabled}, getStateDrawable(mThumbDisabledDrawable, mThumbRadius, mThumbDrawableWidth, mThumbDrawableHeight, mThumbStrokeWidth, mThumbStrokeDisabledColor));
         mStateThumbDrawable.addState(new int[]{}, getStateDrawable(mThumbDrawable, mThumbRadius, mThumbDrawableWidth, mThumbDrawableHeight, mThumbStrokeWidth, mThumbStrokeColor));
 
-        mTrackDrawableHeight =0;
+        mTrackDrawableHeight = 0;
         mStateTrackDrawable.addState(new int[]{mStateChecked}, getStateDrawable(mTrackCheckedDrawable, mTrackRadius, mTrackDrawableWidth, mTrackDrawableHeight, mTrackStrokeWidth, mTrackStrokeCheckedColor));
         mStateTrackDrawable.addState(new int[]{mStateSelected}, getStateDrawable(mTrackSelectedDrawable, mTrackRadius, mTrackDrawableWidth, mTrackDrawableHeight, mTrackStrokeWidth, mTrackStrokeSelectedColor));
         mStateTrackDrawable.addState(new int[]{mStatePressed}, getStateDrawable(mTrackPressedDrawable, mTrackRadius, mTrackDrawableWidth, mTrackDrawableHeight, mTrackStrokeWidth, mTrackStrokePressedColor));

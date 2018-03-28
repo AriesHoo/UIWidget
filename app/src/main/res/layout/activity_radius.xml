@@ -139,6 +139,59 @@
                 rv:rv_trackStrokeColor="#BEBEBE"
                 rv:rv_trackStrokeWidth="2dp"/>
 
+            <com.aries.ui.view.radius.RadiusSwitch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="默认属性颜色值来自colorAccent--微信样式"/>
+
+
+            <com.aries.ui.view.radius.RadiusSwitch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="支付宝样式"
+                rv:rv_thumbDrawable="@color/colorWhite"
+                rv:rv_thumbDrawableHeight="20dp"
+                rv:rv_thumbDrawableWidth="32dp"
+                rv:rv_thumbRadius="4dp"
+                rv:rv_thumbStrokeCheckedColor="#075fb7"
+                rv:rv_thumbStrokeColor="@android:color/darker_gray"
+                rv:rv_thumbStrokeWidth="2dp"
+
+                rv:rv_trackCheckedDrawable="#075fb7"
+                rv:rv_trackDrawable="@android:color/darker_gray"
+                rv:rv_trackDrawableHeight="20dp"
+                rv:rv_trackDrawableWidth="64dp"
+                rv:rv_trackRadius="2dp"
+                rv:rv_trackStrokeCheckedColor="#075fb7"
+                rv:rv_trackStrokeColor="@android:color/darker_gray"
+                rv:rv_trackStrokeWidth="2dp"/>
+
+
+            <com.aries.ui.view.radius.RadiusSwitch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:text="MIUI样式"
+                rv:rv_thumbCheckedDrawable="#075fb7"
+                rv:rv_thumbDrawable="#cacaca"
+                rv:rv_thumbDrawableHeight="19dp"
+                rv:rv_thumbDrawableWidth="20dp"
+                rv:rv_thumbRadius="20dp"
+                rv:rv_thumbStrokeCheckedColor="#ffffff"
+                rv:rv_thumbStrokeColor="#ffffff"
+                rv:rv_thumbStrokeWidth="3dp"
+
+                rv:rv_trackCheckedDrawable="@color/colorWhite"
+                rv:rv_trackDrawable="@color/colorWhite"
+                rv:rv_trackDrawableHeight="20dp"
+                rv:rv_trackDrawableWidth="40dp"
+                rv:rv_trackRadius="20dp"
+                rv:rv_trackStrokeCheckedColor="@android:color/darker_gray"
+                rv:rv_trackStrokeColor="@android:color/darker_gray"
+                rv:rv_trackStrokeWidth="0.5dp"/>
+
             <com.aries.ui.view.radius.RadiusTextView
                 android:layout_width="100dp"
                 android:layout_height="45dp"
@@ -218,8 +271,8 @@
                 android:drawablePadding="12dp"
                 android:gravity="center"
                 android:padding="12dp"
-                rv:rv_backgroundColor="@color/colorWhite"
                 android:text="RadiusTextView with Drawable"
+                rv:rv_backgroundColor="@color/colorWhite"
                 rv:rv_bottomDrawable="#b986f7"
                 rv:rv_bottomDrawableColorRadius="7.5dp"
                 rv:rv_bottomDrawableHeight="20dp"

@@ -49,7 +49,8 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
         public MaterialBuilder(Context context) {
             super(context);
             mLoadingColor = mResourceUtil.getAttrColor(android.R.attr.colorAccent);
-            setTextColor(mLoadingColor);
+            setTextColor(mLoadingColor)
+                    .setBorderWidth(dp2px(3));
         }
 
         /**
@@ -213,7 +214,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
         public Builder(Context context) {
             super(context);
             setBackgroundResource(R.color.colorLoadingBg)
-                    .setLoadingSize(mResourceUtil.getDimensionPixelSize(R.dimen.dp_size_loading))
+                    .setLoadingSize(dp2px(30))
                     .setTextColorResource(R.color.colorLoadingText)
                     .setMinWidth(dp2px(200))
                     .setMinHeight(dp2px(65))
@@ -334,7 +335,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
             mLLayoutRoot.addView(mTvMessage);
 
             setTextViewLine(mTvMessage);
-            setTextAttribute(mTvMessage,mMessageStr,mTextColor,mTextSize,Gravity.LEFT,false);
+            setTextAttribute(mTvMessage, mMessageStr, mTextColor, mTextSize, Gravity.LEFT, false);
             mTvMessage.setPadding(mTextPadding, mTextPadding, mTextPadding, mTextPadding);
 
         }

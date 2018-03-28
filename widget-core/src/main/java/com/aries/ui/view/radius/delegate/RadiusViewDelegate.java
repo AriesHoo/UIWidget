@@ -2,6 +2,7 @@ package com.aries.ui.view.radius.delegate;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.widget.R;
 
 
@@ -32,6 +34,7 @@ import com.aries.ui.widget.R;
  */
 public class RadiusViewDelegate<T extends RadiusViewDelegate> {
 
+    protected ResourceUtil mResourceUtil;
     protected TypedArray mTypedArray;
     protected View mView;
     private Context mContext;
@@ -96,6 +99,7 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         this.mView = view;
         this.mContext = context;
         this.mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.RadiusSwitch);
+        this.mResourceUtil = new ResourceUtil(context);
         initAttributes(context, attrs);
         if (!(view instanceof CompoundButton) && !view.isClickable()) {
             view.setClickable(mRippleEnable);
@@ -562,5 +566,10 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
                                     mBackground;
         }
         return !isSetBg ? mDrawable : mView.isSelected() ? mBackgroundSelected : mBackground;
+    }
+
+    protected int dp2px(float dipValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
     }
 }
