@@ -227,8 +227,8 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 ## 重大更新日志
 
 * 3.0.0-alpha3 更新
-
-        * 新增UIActionSheetDialog 设置文本与图片间隔
+        
+	* 新增UIActionSheetDialog 设置文本与图片间隔
 	* 删除UIAlertView、UIActionSheetView、UIProgressView及相应的资源文件
 	
 * 3.0.0-alpha 更新
