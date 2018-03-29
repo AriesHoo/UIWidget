@@ -226,6 +226,9 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 ## 重大更新日志
 
+* 3.0.0-alpha3 更新
+        * 新增UIActionSheetDialog 设置文本与图片间隔
+	* 删除UIAlertView、UIActionSheetView、UIProgressView及相应的资源文件
 * 3.0.0-alpha 更新
 	* 完整重构整个UI库-拆分库为widget-core(TitleBarView、RadiusView、AlphaView、Helper、UIActionSheetDialog、UIProgressDialog)、widget-alert、widget-collapsing
 	* widget-core新增状态栏控制帮助类[StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)及虚拟导航栏控制帮助类[NavigationViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/NavigationViewHelper.java)
