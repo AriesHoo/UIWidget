@@ -229,6 +229,7 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 * 3.0.0-alpha3 更新
         * 新增UIActionSheetDialog 设置文本与图片间隔
 	* 删除UIAlertView、UIActionSheetView、UIProgressView及相应的资源文件
+	
 * 3.0.0-alpha 更新
 	* 完整重构整个UI库-拆分库为widget-core(TitleBarView、RadiusView、AlphaView、Helper、UIActionSheetDialog、UIProgressDialog)、widget-alert、widget-collapsing
 	* widget-core新增状态栏控制帮助类[StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)及虚拟导航栏控制帮助类[NavigationViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/NavigationViewHelper.java)
@@ -238,8 +239,7 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 	* 新增UIActionSheetDialog 添加不同Builder用于替换原有UIActionSheetView控件UIActionSheetView标记为废弃正式版本移除
 	* 新增UIProgressDialog 添加不同Builder用于替换原有UIProgressView控件UIProgressView标记为废弃正式版本移除
 	* 新增UIAlertDialog 添加不同Builder用于替换原有UIAlertView控件UIAlertView标记为废弃正式版本移除
-
-
+	
 * 2.0.5 更新
     * TitlteBarView父容器为ConstraintLayout高度测量不准BUG-参考[TitleWithConstraintActivity](https://github.com/AriesHoo/UIWidget/blob/master/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleWithConstraintActivity.java)
 
