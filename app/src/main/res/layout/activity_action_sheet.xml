@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="12dp">
 
 
             <android.support.v7.widget.SwitchCompat
@@ -111,6 +112,11 @@
                 android:id="@+id/rtv_showWeiXinActionSheet"
                 style="@style/RadiusStyleButton"
                 android:text="微信风格(类BottomSheet)"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_showIconActionSheet"
+                style="@style/RadiusStyleButton"
+                android:text="微信风格+icon(类ofo分享行程)"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showGridActionSheet"

@@ -96,13 +96,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             titleBar.setStatusAlpha(102);//5.0 半透明模式alpha-102
         }
         titleBar.setTitleMainText(mContext.getClass().getSimpleName());
-        setTitleBar();
         titleBar.setOnLeftTextClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+        setTitleBar();
         setTitleLine(isShowLine());
     }
 

@@ -561,12 +561,6 @@ public class RadiusTextViewDelegate<T extends RadiusTextViewDelegate> extends Ra
      * @return
      */
     protected Drawable getDrawable(int resId) {
-        Drawable drawable = null;
-        try {
-            mView.getResources().getDrawable(resId);
-        } catch (Exception e) {
-
-        }
-        return drawable;
+        return mResourceUtil.getDrawable(resId);
     }
 }

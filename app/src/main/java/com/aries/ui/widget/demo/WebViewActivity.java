@@ -39,20 +39,20 @@ public class WebViewActivity extends BaseActivity {
 
     @Override
     protected void setTitleBar() {
-        titleBar.addLeftAction(titleBar.new ImageAction(R.drawable.ic_close, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        }));
-        titleBar.setRightTextDrawable(R.drawable.ic_share);
-        titleBar.setOnRightTextClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtil.shareShareText(mContext, url);
-            }
-        });
-        titleBar.setTitleMainTextMarquee(true);
+        titleBar.setRightTextDrawable(R.drawable.ic_share)
+                .setOnRightTextClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AppUtil.shareShareText(mContext, url);
+                    }
+                })
+                .setTitleMainTextMarquee(true)
+                .addLeftAction(titleBar.new ImageAction(R.drawable.ic_close, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDialog();
+                    }
+                }));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class WebViewActivity extends BaseActivity {
         mAgentWeb = AgentWeb.with(this)//
                 .setAgentWebParent(lLayoutContainer, new LinearLayout.LayoutParams(-1, -1))//
                 .useDefaultIndicator()//
-                .defaultProgressBarColor()
+                .setIndicatorColor(getResources().getColor(R.color.colorTextBlack))
                 .setReceivedTitleCallback(mCallback)
                 .setWebChromeClient(mWebChromeClient)
                 .setWebViewClient(mWebViewClient)

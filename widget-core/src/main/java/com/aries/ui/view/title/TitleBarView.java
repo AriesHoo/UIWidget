@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
-import com.aries.ui.util.KeyboardUtil;
+import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.alpha.AlphaLinearLayout;
 import com.aries.ui.view.alpha.AlphaTextView;
@@ -41,8 +41,10 @@ import com.aries.ui.widget.R;
  * 2、2017-12-4 10:09:50 AriesHoo 修改onMeasure中重新测量中间Layout时机避免TitleBarView测量显示错误(目前在Fragment嵌套在FragmentLayout里会出现不显示Title BUG)
  * 3、2018-2-3 10:39:42 属性大改造-去掉之前设置背景色和背景资源id 属性统一用对应的background 属性控制
  * 对应的java方法也会有相应的调整;TextColor修改成color|reference对应ColorStateList方便设置状态颜色
- * 4、2018-2-7 10:27:28 将{@link TitleBarView#setBottomEditTextControl()}方法废弃
+ * 4、2018-2-7 10:27:28 将 setBottomEditTextControl方法废弃
  * 通过{@link NavigationViewHelper}或者{@link KeyboardHelper}类控制底部状态栏
+ * 5、2018-3-29 09:21:17 通过ResourceUtil获取资源
+ * 6、2018-3-29 12:02:53 删除废弃方法 setBottomEditTextControl
  */
 public class TitleBarView extends ViewGroup {
 
@@ -132,6 +134,7 @@ public class TitleBarView extends ViewGroup {
     private ColorStateList mActionTextColor;
     private Drawable mActionTextBackground;
     private Rect mTitleContainerRect;
+    private ResourceUtil mResourceUtil;
 
     public TitleBarView(Context context) {
         this(context, null, 0);
@@ -144,6 +147,7 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
+        this.mResourceUtil = new ResourceUtil(mContext);
         initAttributes(context, attrs);
         initView(context);
         setViewAttributes(context);
@@ -483,12 +487,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setBgDrawable(Drawable background) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            setBackground(background);
-        } else {
-            setBackgroundDrawable(background);
-        }
-        return this;
+        return setViewBackground(this, background);
     }
 
     public TitleBarView setBgColor(int color) {
@@ -592,12 +591,7 @@ public class TitleBarView extends ViewGroup {
      */
     public TitleBarView setStatusBackground(Drawable drawable) {
         mStatusBackground = drawable;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mVStatus.setBackground(drawable);
-        } else {
-            mVStatus.setBackgroundDrawable(drawable);
-        }
-        return this;
+        return setViewBackground(mVStatus, mStatusBackground);
     }
 
     /**
@@ -624,14 +618,8 @@ public class TitleBarView extends ViewGroup {
         return setStatusBackgroundColor(Color.argb(alpha, 0, 0, 0));
     }
 
-    public TitleBarView setStatusBackgroundResource(int resource) {
-        Drawable drawable = null;
-        try {
-            drawable = getResources().getDrawable(resource);
-        } catch (Exception e) {
-
-        }
-        return setStatusBackground(drawable);
+    public TitleBarView setStatusBackgroundResource(int resId) {
+        return setStatusBackground(mResourceUtil.getDrawable(resId));
     }
 
     /**
@@ -642,26 +630,15 @@ public class TitleBarView extends ViewGroup {
      */
     public TitleBarView setDividerBackground(Drawable drawable) {
         mDividerBackground = drawable;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mVDivider.setBackground(drawable);
-        } else {
-            mVDivider.setBackgroundDrawable(drawable);
-        }
-        return this;
+        return setViewBackground(mVDivider, mDividerBackground);
     }
 
     public TitleBarView setDividerBackgroundColor(int color) {
         return setDividerBackground(new ColorDrawable(color));
     }
 
-    public TitleBarView setDividerBackgroundResource(int resource) {
-        Drawable drawable = null;
-        try {
-            drawable = getResources().getDrawable(resource);
-        } catch (Exception e) {
-
-        }
-        return setDividerBackground(drawable);
+    public TitleBarView setDividerBackgroundResource(int resId) {
+        return setDividerBackground(mResourceUtil.getDrawable(resId));
     }
 
     public TitleBarView setDividerHeight(int dividerHeight) {
@@ -705,7 +682,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setLeftText(int id) {
-        return setLeftText(getResources().getText(id));
+        return setLeftText(mResourceUtil.getText(id));
     }
 
     /**
@@ -746,12 +723,7 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView setLeftTextBackground(Drawable drawable) {
         mLeftTextBackground = drawable;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mTvLeft.setBackground(drawable);
-        } else {
-            mTvLeft.setBackgroundDrawable(drawable);
-        }
-        return this;
+        return setViewBackground(mTvLeft, mLeftTextBackground);
     }
 
     public TitleBarView setLeftTextBackgroundColor(int color) {
@@ -762,13 +734,7 @@ public class TitleBarView extends ViewGroup {
      * @param resId
      */
     public TitleBarView setLeftTextBackgroundResource(int resId) {
-        Drawable drawable = null;
-        try {
-            drawable = getResources().getDrawable(resId);
-        } catch (Exception e) {
-
-        }
-        return setLeftTextBackground(drawable);
+        return setLeftTextBackground(mResourceUtil.getDrawable(resId));
     }
 
     /**
@@ -784,14 +750,8 @@ public class TitleBarView extends ViewGroup {
         return this;
     }
 
-    public TitleBarView setLeftTextDrawable(int id) {
-        Drawable drawable = null;
-        try {
-            drawable = mContext.getResources().getDrawable(id);
-        } catch (Exception e) {
-
-        }
-        return setLeftTextDrawable(drawable);
+    public TitleBarView setLeftTextDrawable(int resId) {
+        return setLeftTextDrawable(mResourceUtil.getDrawable(resId));
     }
 
     public TitleBarView setLeftTextDrawableWidth(int width) {
@@ -826,7 +786,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setTitleMainText(int id) {
-        return setTitleMainText(getResources().getText(id));
+        return setTitleMainText(mResourceUtil.getText(id));
     }
 
     public TitleBarView setTitleMainText(CharSequence charSequence) {
@@ -877,12 +837,7 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView setTitleMainTextBackground(Drawable drawable) {
         mTitleMainTextBackground = drawable;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mTvTitleMain.setBackground(mTitleMainTextBackground);
-        } else {
-            mTvTitleMain.setBackgroundDrawable(mTitleMainTextBackground);
-        }
-        return this;
+        return setViewBackground(mTvTitleMain, mTitleMainTextBackground);
     }
 
     public TitleBarView setTitleMainTextBackgroundColor(int color) {
@@ -890,13 +845,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setTitleMainTextBackgroundResource(int resId) {
-        Drawable drawable = null;
-        try {
-            drawable = getResources().getDrawable(resId);
-        } catch (Exception e) {
-
-        }
-        return setTitleMainTextBackground(drawable);
+        return setTitleMainTextBackground(mResourceUtil.getDrawable(resId));
     }
 
     /**
@@ -962,7 +911,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setTitleSubText(int id) {
-        return setTitleSubText(getResources().getText(id));
+        return setTitleSubText(mResourceUtil.getText(id));
     }
 
     /**
@@ -997,12 +946,7 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView setTitleSubTextBackground(Drawable drawable) {
         mTitleSubTextBackground = drawable;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mTvTitleSub.setBackground(drawable);
-        } else {
-            mTvTitleSub.setBackgroundDrawable(drawable);
-        }
-        return this;
+        return setViewBackground(mTvTitleSub, mTitleSubTextBackground);
     }
 
     public TitleBarView setTitleSubTextBackgroundColor(int color) {
@@ -1010,13 +954,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setTitleSubTextBackgroundResource(int resId) {
-        Drawable drawable = null;
-        try {
-            drawable = getResources().getDrawable(resId);
-        } catch (Exception e) {
-
-        }
-        return setTitleSubTextBackground(drawable);
+        return setTitleSubTextBackground(mResourceUtil.getDrawable(resId));
     }
 
     /**
@@ -1075,7 +1013,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setRightText(int id) {
-        return setRightText(getResources().getText(id));
+        return setRightText(mResourceUtil.getText(id));
     }
 
     /**
@@ -1110,12 +1048,7 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView setRightTextBackground(Drawable drawable) {
         mRightTextBackground = drawable;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mTvRight.setBackground(drawable);
-        } else {
-            mTvRight.setBackgroundDrawable(drawable);
-        }
-        return this;
+        return setViewBackground(mTvRight, mRightTextBackground);
     }
 
     public TitleBarView setRightTextBackgroundColor(int color) {
@@ -1123,13 +1056,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setRightTextBackgroundResource(int resId) {
-        Drawable drawable = null;
-        try {
-            drawable = getResources().getDrawable(resId);
-        } catch (Exception e) {
-
-        }
-        return setRightTextBackground(drawable);
+        return setRightTextBackground(mResourceUtil.getDrawable(resId));
     }
 
     /**
@@ -1144,14 +1071,8 @@ public class TitleBarView extends ViewGroup {
         return this;
     }
 
-    public TitleBarView setRightTextDrawable(int id) {
-        Drawable drawable = null;
-        try {
-            drawable = mContext.getResources().getDrawable(id);
-        } catch (Exception e) {
-
-        }
-        return setRightTextDrawable(drawable);
+    public TitleBarView setRightTextDrawable(int resId) {
+        return setRightTextDrawable(mResourceUtil.getDrawable(resId));
     }
 
     public TitleBarView setRightTextDrawablePadding(int drawablePadding) {
@@ -1210,30 +1131,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setActionTextBackgroundResource(int resId) {
-        Drawable drawable = null;
-        try {
-            drawable = getResources().getDrawable(resId);
-        } catch (Exception e) {
-
-        }
-        return setActionTextBackground(drawable);
-    }
-
-    /**
-     * 设置底部有输入框控制方案--IM常见
-     */
-    @Deprecated
-    public TitleBarView setBottomEditTextControl(Activity mActivity) {
-        KeyboardUtil.with(mActivity).setEnable();
-        return this;
-    }
-
-    @Deprecated
-    public TitleBarView setBottomEditTextControl() {
-        if (mContext instanceof Activity) {
-            setBottomEditTextControl((Activity) mContext);
-        }
-        return this;
+        return setActionTextBackground(mResourceUtil.getDrawable(resId));
     }
 
     public TitleBarView addLeftAction(Action action, int position) {
@@ -1301,11 +1199,7 @@ public class TitleBarView extends ViewGroup {
             } else {
                 text.setTextColor(DEFAULT_TEXT_COLOR);
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                text.setBackground(mActionTextBackground);
-            } else {
-                text.setBackgroundDrawable(mActionTextBackground);
-            }
+            setViewBackground(text, mActionTextBackground);
             view = text;
         } else if (obj instanceof Drawable) {
             ImageView img = new ImageView(getContext());
@@ -1339,20 +1233,13 @@ public class TitleBarView extends ViewGroup {
             this.onClickListener = onClickListener;
         }
 
-        public ImageAction(int drawable, OnClickListener onClickListener) {
-            try {
-                this.mDrawable = getResources().getDrawable(drawable);
-            } catch (Exception e) {
-            }
+        public ImageAction(int drawableId, OnClickListener onClickListener) {
+            this.mDrawable = mResourceUtil.getDrawable(drawableId);
             this.onClickListener = onClickListener;
         }
 
-        public ImageAction(int drawable) {
-            try {
-                this.mDrawable = getResources().getDrawable(drawable);
-            } catch (Exception e) {
-
-            }
+        public ImageAction(int resId) {
+            this.mDrawable = mResourceUtil.getDrawable(resId);
         }
 
         public ImageAction(Drawable drawable) {
@@ -1386,11 +1273,11 @@ public class TitleBarView extends ViewGroup {
         }
 
         public TextAction(int mText) {
-            this.mText = getResources().getText(mText);
+            this.mText = mResourceUtil.getText(mText);
         }
 
         public TextAction(int mText, OnClickListener onClickListener) {
-            this.mText = getResources().getText(mText);
+            this.mText = mResourceUtil.getText(mText);
             this.onClickListener = onClickListener;
         }
 
@@ -1430,6 +1317,24 @@ public class TitleBarView extends ViewGroup {
             return onClickListener;
         }
 
+    }
+
+    /**
+     * 设置view背景drawable
+     *
+     * @param view
+     * @param drawable
+     */
+    private TitleBarView setViewBackground(View view, Drawable drawable) {
+        if (view == null) {
+            return this;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            view.setBackground(drawable);
+        } else {
+            view.setBackgroundDrawable(drawable);
+        }
+        return this;
     }
 
     /**

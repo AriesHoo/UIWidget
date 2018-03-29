@@ -39,6 +39,8 @@ import java.util.Map;
  * Description:
  * 1、继承自Dialog 并封装不同Builder模式
  * 2、修改Dialog继承关系并修改默认ListSheetBuilder模式属性设置
+ * 3、2018-3-29 13:40:24 新增设置ListBuilder默认imageView默认宽高及文字与图片间距属性控制
+ * 修改 getListView及getGridView返回对象错误问题
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
@@ -73,11 +75,11 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
      *
      * @return 未设置Item或无
      */
-    public TextView getListView() {
+    public ListView getListView() {
         return FindViewUtil.getTargetView(mContentView, R.id.lv_containerActionSheetDialog);
     }
 
-    public TextView getGridView() {
+    public GridView getGridView() {
         return FindViewUtil.getTargetView(mContentView, R.id.gv_containerActionSheetDialog);
     }
 
@@ -200,6 +202,8 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     .setItemPressedDrawableResource(R.color.colorActionSheetEdgePressed)
                     .setItemsDividerResource(R.color.colorActionSheetEdgeLineGray)
                     .setItemsDividerHeightResource(R.dimen.dp_action_sheet_list_line_height)
+                    .setItemsImageWidth(dp2px(26))
+                    .setItemsImageHeight(dp2px(26))
                     .setCancelMarginTop(dp2px(8));
         }
 
@@ -446,9 +450,10 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 if (data.drawable != null) {
                     holder.imageView.setVisibility(View.VISIBLE);
                     holder.imageView.setImageDrawable(data.drawable);
-                    ViewGroup.LayoutParams params = holder.imageView.getLayoutParams();
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.imageView.getLayoutParams();
                     params.height = mItemsImageHeight;
                     params.width = mItemsImageWidth;
+                    params.rightMargin = mTextDrawablePadding;
                     holder.imageView.setLayoutParams(params);
                 } else {
                     holder.imageView.setVisibility(View.GONE);
@@ -680,7 +685,6 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 }
                 setTextView(holder, data, i);
                 DrawableUtil.setDrawableWidthHeight(data.drawable, mItemsImageWidth, mItemsImageHeight);
-                holder.textView.setCompoundDrawablePadding(dp2px(10));
                 holder.textView.setCompoundDrawables(null, data.drawable, null, null);
                 holder.textView.setPadding(mItemsTextPaddingLeft, mItemsTextPaddingTop, mItemsTextPaddingRight, mItemsTextPaddingBottom);
                 if (!mItemsClickBackgroundEnable) {
@@ -738,6 +742,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
         protected OnItemClickListener mOnItemClickListener;
 
+        protected int mTextDrawablePadding;
         protected float mItemsTextSize = 16;
         protected int mItemsMinHeight = 45;
         protected ColorStateList mItemsTextColor;
@@ -761,7 +766,9 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     .setTitleTextColorResource(R.color.colorActionSheetTitleText)
                     .setCancelTextColorResource(R.color.colorActionSheetWeiXinText)
                     .setItemsTextColorResource(R.color.colorActionSheetWeiXinText)
-                    .setItemsMinHeight(dp2px(45)).setPadding(0);
+                    .setItemsMinHeight(dp2px(45))
+                    .setTextDrawablePadding(dp2px(12))
+                    .setPadding(0);
         }
 
         /**
@@ -772,6 +779,17 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setMarginTop(int top) {
             mMarginTop = top;
+            return (T) this;
+        }
+
+        /**
+         * 设置文本与img 间距
+         *
+         * @param padding
+         * @return
+         */
+        public T setTextDrawablePadding(int padding) {
+            this.mTextDrawablePadding = padding;
             return (T) this;
         }
 
@@ -1204,7 +1222,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          *
          * @return
          */
-        public BasisDialog<UIActionSheetDialog> create() {
+        public UIActionSheetDialog create() {
             View contentView = createContentView();
             mDialog = new UIActionSheetDialog(mContext);
             mDialog.setContentView(contentView);
@@ -1213,7 +1231,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             mDialog.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
             mDialog.setMargin(0, mMarginTop, 0, 0);
             afterSetContentView();
-            return mDialog;
+            return (UIActionSheetDialog) mDialog;
         }
 
         /**
@@ -1252,7 +1270,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             mTvTitle.setLineSpacing(mLineSpacingExtra, mLineSpacingMultiplier);
             mTvTitle.setGravity(mTitleGravity);
             mTvTitle.setPadding(mItemsTextPaddingLeft, mItemsTextPaddingTop, mItemsTextPaddingRight, mItemsTextPaddingBottom);
-            mTvTitle.setVisibility(View.VISIBLE);
+            mTvTitle.setCompoundDrawablePadding(mTextDrawablePadding);
             mTvTitle.setText(mTitleStr);
             mTvTitle.setTextSize(mTextSizeUnit, mTitleTextSize);
             mTvTitle.setTextColor(mTitleTextColor);
@@ -1279,6 +1297,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
             mTvCancel.setLineSpacing(mLineSpacingExtra, mLineSpacingMultiplier);
             mTvCancel.setGravity(mCancelGravity);
+            mTvCancel.setCompoundDrawablePadding(mTextDrawablePadding);
             mTvCancel.setPadding(mItemsTextPaddingLeft, mItemsTextPaddingTop, mItemsTextPaddingRight, mItemsTextPaddingBottom);
             mTvCancel.setText(mCancelStr);
             mTvCancel.setTextSize(mTextSizeUnit, mCancelTextSize);
@@ -1343,6 +1362,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 if (holder == null || holder.textView == null) {
                     return;
                 }
+                holder.textView.setCompoundDrawablePadding(mTextDrawablePadding);
                 setTextAttribute(holder.textView, data.text,
                         getTextColor(position, data.textColor), mItemsTextSize, mItemsGravity, false);
                 setTextViewLine(holder.textView);

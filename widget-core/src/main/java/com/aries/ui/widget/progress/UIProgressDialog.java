@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.widget.BasisDialog;
 import com.aries.ui.widget.R;
 
@@ -20,6 +22,7 @@ import com.aries.ui.widget.R;
  * E-Mail: AriesHoo@126.com
  * Function:UIProgress Dialog模式重构
  * Description:
+ * 1、新增progressBar颜色值设置
  */
 public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
 
@@ -36,40 +39,28 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
     }
 
     /**
+     * 获取Message控件
+     *
+     * @return
+     */
+    public TextView getMessage() {
+        return FindViewUtil.getTargetView(mContentView, R.id.tv_messageProgressDialog);
+    }
+
+    /**
      * Material 风格
      */
     public static class MaterialBuilder extends Builder<MaterialBuilder> {
 
         private MaterialProgressBar mProgressBar;
-        private int mLoadingColor = Color.BLUE;
         private int mDuration = 600;
         private boolean mRoundEnable;
         private float mBorderWidth = 6;
 
         public MaterialBuilder(Context context) {
             super(context);
-            mLoadingColor = mResourceUtil.getAttrColor(android.R.attr.colorAccent);
             setTextColor(mLoadingColor)
                     .setBorderWidth(dp2px(3));
-        }
-
-        /**
-         * 设置弧度颜色
-         *
-         * @param color
-         * @return
-         */
-        public MaterialBuilder setLoadingColor(int color) {
-            mLoadingColor = color;
-            return this;
-        }
-
-        /**
-         * @param res
-         * @return
-         */
-        public MaterialBuilder setLoadingColorResource(int res) {
-            return setLoadingColor(mResourceUtil.getColor(res));
         }
 
         /**
@@ -189,6 +180,9 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
         public View createProgressView() {
             mProgressBar = new ProgressBar(mContext);
             mProgressBar.setLayoutParams(new ViewGroup.LayoutParams(mLoadingSize, mLoadingSize));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mProgressBar.setIndeterminateTintList(ColorStateList.valueOf(mLoadingColor));
+            }
             if (mIndeterminateDrawable != null) {
                 mProgressBar.setIndeterminateDrawable(mIndeterminateDrawable);
             }
@@ -210,9 +204,11 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
         protected ColorStateList mTextColor;
         protected float mTextSize = 14;
         protected int mTextPadding = 16;
+        protected int mLoadingColor = Color.BLUE;
 
         public Builder(Context context) {
             super(context);
+            mLoadingColor = mResourceUtil.getAttrColor(android.R.attr.colorAccent);
             setBackgroundResource(R.color.colorLoadingBg)
                     .setLoadingSize(dp2px(30))
                     .setTextColorResource(R.color.colorLoadingText)
@@ -220,6 +216,26 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
                     .setMinHeight(dp2px(65))
                     .setBackgroundRadiusResource(R.dimen.dp_radius_loading)
                     .setPadding(dp2px(16));
+        }
+
+
+        /**
+         * 设置弧度颜色
+         *
+         * @param color
+         * @return
+         */
+        public T setLoadingColor(int color) {
+            mLoadingColor = color;
+            return (T) this;
+        }
+
+        /**
+         * @param res
+         * @return
+         */
+        public T setLoadingColorResource(int res) {
+            return setLoadingColor(mResourceUtil.getColor(res));
         }
 
         /**
@@ -298,7 +314,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
             return (T) this;
         }
 
-        public BasisDialog<UIProgressDialog> create() {
+        public UIProgressDialog create() {
             int margin = dp2px(12);
             View contentView = createContentView();
             mDialog = new UIProgressDialog(mContext);
@@ -307,7 +323,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
             mDialog.setGravity(Gravity.CENTER);
             mDialog.setMargin(margin, margin, margin, margin);
             afterSetContentView();
-            return mDialog;
+            return (UIProgressDialog) mDialog;
         }
 
         private View createContentView() {

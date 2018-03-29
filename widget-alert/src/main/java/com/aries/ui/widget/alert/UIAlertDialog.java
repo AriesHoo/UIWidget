@@ -30,6 +30,7 @@ import java.util.List;
  * E-Mail: AriesHoo@126.com
  * Function: UIAlert Dialog+Builder模式重构
  * Description:
+ * 1、2018-3-29 14:07:04 新增获取Title及Message回调
  */
 public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
 
@@ -41,6 +42,24 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
         View createBeforeTitle();
 
         List<View> createButtons();
+    }
+
+    /**
+     * 获取Title
+     *
+     * @return
+     */
+    public TextView getTitle() {
+        return FindViewUtil.getTargetView(mContentView, R.id.tv_titleAlertDialog);
+    }
+
+    /**
+     * 返回Message控件
+     *
+     * @return
+     */
+    public TextView getMessage() {
+        return FindViewUtil.getTargetView(mContentView, R.id.tv_messageAlertDialog);
     }
 
     /**
@@ -824,27 +843,22 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
             return (T) this;
         }
 
-        public BasisDialog<UIAlertDialog> create() {
+        public UIAlertDialog create() {
             int margin = dp2px(16);
             View contentView = createContentView();
             mDialog = new UIAlertDialog(mContext);
             mDialog.setContentView(contentView);
             setDialog();
             mDialog.setGravity(Gravity.CENTER);
-            mDialog.setMargin(margin,margin,margin,margin);
+            mDialog.setMargin(margin, margin, margin, margin);
             afterSetContentView();
-            return mDialog;
+            return (UIAlertDialog) mDialog;
         }
 
         private View createContentView() {
-//            int margin = dp2px(16);
-//            ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(
-//                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//            params.setMargins(margin, margin, margin, margin);
             mLLayoutRoot = new LinearLayout(mContext);
             mLLayoutRoot.setId(R.id.lLayout_rootAlertDialog);
             mLLayoutRoot.setOrientation(LinearLayout.VERTICAL);
-//            mLLayoutRoot.setLayoutParams(params);
             mLLayoutRoot.setMinimumWidth(mMinWidth);
             mLLayoutRoot.setMinimumHeight(mMinHeight);
             setRootView();

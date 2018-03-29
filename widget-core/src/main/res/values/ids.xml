@@ -12,7 +12,6 @@
     <item name="tv_titleActionSheetDialog" type="id"/>
     <item name="tv_cancelActionSheetDialog" type="id"/>
 
-
     <item name="lLayout_rootProgressDialog" type="id"/>
     <item name="tv_messageProgressDialog" type="id"/>
 </resources>

@@ -40,12 +40,12 @@ dependencies {
 //    compile 'com.github.AriesHoo.UIWidget:widget-collapsing:3.0.0-alpha'
 
 //    compile 'com.github.AriesHoo:UIWidget:2.0.9'
+    //图片加载
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.just.agentweb:agentweb:2.0.1'
-    apt 'com.jakewharton:butterknife-compiler:8.8.1'
-    //图片加载
     compile 'com.github.bumptech.glide:glide:4.0.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+    apt 'com.jakewharton:butterknife-compiler:8.8.1'
 }

@@ -34,8 +34,9 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 /**
  * Created: AriesHoo on 2017/7/18 14:50
- * Function: 颜色UIAlertView部分用法
- * Desc:
+ * E-Mail: AriesHoo@126.com
+ * Function: UIAlertDialog示例
+ * Description:
  */
 public class AlertActivity extends BaseActivity {
 
@@ -60,9 +61,7 @@ public class AlertActivity extends BaseActivity {
 
     @Override
     protected void setTitleBar() {
-        titleBar.setTitleMainText(UIAlertDialog.class.getSimpleName())
-                .setTitleSubTextMarquee(true)
-                .setTitleSubText("UIAlertView已标记废弃请使用UIAlertDialog替换,正式版本将完整移除");
+        titleBar.setTitleMainText(UIAlertDialog.class.getSimpleName());
     }
 
     @Override

@@ -23,7 +23,8 @@ import com.aries.ui.widget.R;
  * Created: AriesHoo on 2017/8/27 13:21
  * E-Mail: AriesHoo@126.com
  * Function: 自定义Material Design 风格ProgressBar
- * Description:1、2017-11-15 09:39:17 AriesHoo增加是否圆角属性控制
+ * Description:
+ * 1、2017-11-15 09:39:17 AriesHoo增加是否圆角属性控制
  */
 public class MaterialProgressBar extends View {
 

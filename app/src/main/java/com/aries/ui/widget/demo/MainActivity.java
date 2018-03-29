@@ -1,7 +1,6 @@
 package com.aries.ui.widget.demo;
 
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.aries.ui.widget.demo.adapter.WidgetAdapter;
@@ -12,6 +11,7 @@ import com.aries.ui.widget.demo.module.alert.AlertActivity;
 import com.aries.ui.widget.demo.module.loading.LoadingActivity;
 import com.aries.ui.widget.demo.module.radius.RadiusActivity;
 import com.aries.ui.widget.demo.module.title.TitleActivity;
+import com.aries.ui.widget.demo.util.SizeUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -48,9 +48,16 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> {
         titleBar.setTitleMainText(R.string.app_name)
                 .setTitleSubText(R.string.app_title_content)
                 .setLeftTextDrawable(0)
+                .setLeftTextDrawable(R.drawable.ic_github)
+                .setLeftTextDrawableWidth(SizeUtil.dp2px(32))
+                .setLeftTextDrawableHeight(SizeUtil.dp2px(32))
+                .setOnLeftTextClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        WebViewActivity.start(mContext,"https://github.com/AriesHoo/UIWidget/blob/master/README.md");
+                    }
+                })
                 .setTitleSubTextMarquee(true);
-        new AlertDialog.Builder(this)
-                .create();
     }
 
     @Override

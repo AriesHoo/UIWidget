@@ -1,5 +1,6 @@
 package com.aries.ui.widget.demo.module.action;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
@@ -11,7 +12,6 @@ import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.BasisDialog;
 import com.aries.ui.widget.action.sheet.UIActionSheetDialog;
-import com.aries.ui.widget.action.sheet.UIActionSheetView;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
 import com.aries.ui.widget.demo.util.SizeUtil;
@@ -21,8 +21,9 @@ import butterknife.OnClick;
 
 /**
  * Created: AriesHoo on 2017/7/18 15:07
- * Function: UIActionSheetView示例
- * Desc:
+ * E-Mail: AriesHoo@126.com
+ * Function: UIActionSheetDialog示例
+ * Description:
  */
 public class ActionSheetActivity extends BaseActivity {
 
@@ -46,9 +47,7 @@ public class ActionSheetActivity extends BaseActivity {
 
     @Override
     protected void setTitleBar() {
-        titleBar.setTitleMainText(UIActionSheetDialog.class.getSimpleName())
-                .setTitleSubTextMarquee(true)
-                .setTitleSubText("UIActionSheetView已标记废弃请使用UIActionSheetDialog替换,正式版本将完整移除");
+        titleBar.setTitleMainText(UIActionSheetDialog.class.getSimpleName());
     }
 
     @Override
@@ -118,13 +117,6 @@ public class ActionSheetActivity extends BaseActivity {
     }
 
 
-    private UIActionSheetView.OnSheetItemListener onActionSheetItemLister = new UIActionSheetView.OnSheetItemListener() {
-        @Override
-        public void onClick(int item) {
-            Toast.makeText(mContext, "item position:" + item, Toast.LENGTH_SHORT).show();
-        }
-    };
-
     private UIActionSheetDialog.OnItemClickListener mOnItemClickListener = new UIActionSheetDialog.OnItemClickListener() {
         @Override
         public void onClick(BasisDialog dialog, View itemView, int position) {
@@ -132,7 +124,7 @@ public class ActionSheetActivity extends BaseActivity {
         }
     };
 
-    @OnClick({R.id.sBtn_titleActionSheet, R.id.rtv_showActionSheet
+    @OnClick({R.id.sBtn_titleActionSheet, R.id.rtv_showActionSheet, R.id.rtv_showIconActionSheet
             , R.id.rtv_showIOSActionSheet, R.id.rtv_showWeiXinActionSheet, R.id.rtv_showGridActionSheet})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -163,10 +155,7 @@ public class ActionSheetActivity extends BaseActivity {
                         .show();
                 break;
             case R.id.rtv_showWeiXinActionSheet:
-                TextView textView = new TextView(this);
-                textView.setText("kkkkkk");
                 new UIActionSheetDialog.ListWeChatBuilder(this)
-                        .addHeaderView(textView)
                         .addItems(R.array.arrays_items_action)
                         .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetWeiXinText : android.R.color.holo_purple)
                         .setTitle(isShowTitle ? "标题" : null)
@@ -174,6 +163,18 @@ public class ActionSheetActivity extends BaseActivity {
                         .setOnItemClickListener(mOnItemClickListener)
                         .create().setDimAmount(isBackDim ? 0.6f : 0f)
                         .show();
+                break;
+            case R.id.rtv_showIconActionSheet:
+                UIActionSheetDialog sheetDialog = new UIActionSheetDialog.ListWeChatBuilder(this)
+                        .setBackgroundColor(Color.WHITE)
+                        .addItem("分享微信", R.drawable.ic_more_operation_share_friend)
+                        .addItem("分享朋友圈", R.drawable.ic_more_operation_share_moment)
+                        .addItem("分享微博", R.drawable.ic_more_operation_share_weibo)
+                        .addItem("分享短信", R.drawable.ic_more_operation_share_chat)
+                        .setTextDrawablePadding(SizeUtil.dp2px(28))
+                        .create();
+                sheetDialog.getListView().setPadding(0, SizeUtil.dp2px(10), 0, SizeUtil.dp2px(10));
+                sheetDialog.show();
                 break;
             case R.id.rtv_showGridActionSheet:
                 UIActionSheetDialog dialog = new UIActionSheetDialog.GridBuilder(this)
@@ -199,7 +200,8 @@ public class ActionSheetActivity extends BaseActivity {
                                 }
                             }
                         })
-                        .create().setDimAmount(isBackDim ? 0.6f : 0f);
+                        .create()
+                        .setDimAmount(isBackDim ? 0.6f : 0f);
                 dialog.show();
                 break;
         }
