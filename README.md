@@ -52,6 +52,41 @@ dependencies {
 }
 ```
 
+
+**Maven集成**
+
+```
+<repositories>
+     <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+     </repository>
+</repositories>
+```
+
+##### 3.0.0以后版本
+
+```
+<dependency>
+    <groupId>com.github.AriesHoo.UIWidget</groupId>
+    <artifactId>widget-core</artifactId>
+    <artifactId>widget-collapsing</artifactId>
+    <artifactId>widget-alert</artifactId>
+    <version>3.0.0-alpha3</version>
+</dependency>
+```
+
+##### 3.0.0以前版本
+
+```
+<dependency>
+    <groupId>com.github.AriesHoo</groupId>
+    <artifactId>UIWidget</artifactId>
+    <version>2.0.9</version>
+</dependency>
+```
+
+
 **UIAlertDialog属性控制**
 
 ```
