@@ -27,7 +27,7 @@ import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.util.StatusBarUtil;
-import com.aries.ui.view.alpha.AlphaLinearLayout;
+import com.aries.ui.view.alpha.AlphaImageView;
 import com.aries.ui.view.alpha.AlphaTextView;
 import com.aries.ui.view.title.util.ViewGroupUtils;
 import com.aries.ui.widget.R;
@@ -45,6 +45,7 @@ import com.aries.ui.widget.R;
  * 通过{@link NavigationViewHelper}或者{@link KeyboardHelper}类控制底部状态栏
  * 5、2018-3-29 09:21:17 通过ResourceUtil获取资源
  * 6、2018-3-29 12:02:53 删除废弃方法 setBottomEditTextControl
+ * 7、2018-3-30 10:43:49 设置View按下alpha 控制属性{@link #setViewPressedAlpha(float)}
  */
 public class TitleBarView extends ViewGroup {
 
@@ -67,10 +68,10 @@ public class TitleBarView extends ViewGroup {
     private LinearLayout mLLayoutLeft;//左边容器
     private LinearLayout mLLayoutCenter;//中间容器
     private LinearLayout mLLayoutRight;//右边容器
-    private TextView mTvLeft;//左边TextView
+    private AlphaTextView mTvLeft;//左边TextView
     private TextView mTvTitleMain;//主标题
     private TextView mTvTitleSub;//副标题
-    private TextView mTvRight;//右边TextView
+    private AlphaTextView mTvRight;//右边TextView
     private View mVDivider;//下方下划线
 
     /**
@@ -91,6 +92,7 @@ public class TitleBarView extends ViewGroup {
     private boolean mCenterGravityLeft = false;//中间部分是否左对齐--默认居中
     private int mCenterGravityLeftPadding;//中间部分左对齐是Layout左padding
     private boolean mStatusBarLightMode = false;//是否浅色状态栏(黑色文字及图标)
+    private float mViewPressedAlpha;
 
     private Drawable mStatusBackground;
     private Drawable mDividerBackground;
@@ -162,6 +164,7 @@ public class TitleBarView extends ViewGroup {
         mCenterGravityLeft = ta.getBoolean(R.styleable.TitleBarView_title_centerGravityLeft, false);
         mCenterGravityLeftPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_centerGravityLeftPadding, dip2px(DEFAULT_CENTER_GRAVITY_LEFT_PADDING));
         mStatusBarLightMode = ta.getBoolean(R.styleable.TitleBarView_title_statusBarLightMode, false);
+        mViewPressedAlpha = ta.getFloat(R.styleable.TitleBarView_title_viewPressedAlpha, 0.6f);
 
         mStatusBackground = ta.getDrawable(R.styleable.TitleBarView_title_statusBackground);
         mDividerBackground = ta.getDrawable(R.styleable.TitleBarView_title_dividerBackground);
@@ -216,7 +219,7 @@ public class TitleBarView extends ViewGroup {
         LayoutParams dividerParams = new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, mDividerHeight);
 
         mLLayoutLeft = new LinearLayout(context);
-        mLLayoutCenter = new AlphaLinearLayout(context);
+        mLLayoutCenter = new LinearLayout(context);
         mLLayoutRight = new LinearLayout(context);
         mVStatus = new View(context);
         mVDivider = new View(context);
@@ -269,6 +272,7 @@ public class TitleBarView extends ViewGroup {
         setDividerBackground(mDividerBackground);
         setDividerHeight(mDividerHeight);
         setDividerVisible(mDividerVisible);
+        setViewPressedAlpha(mViewPressedAlpha);
 
         setLeftText(mLeftText);
         setLeftTextSize(TypedValue.COMPLEX_UNIT_PX, mLeftTextSize);
@@ -650,6 +654,24 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setDividerVisible(boolean visible) {
         mDividerVisible = visible;
         mVDivider.setVisibility(visible ? VISIBLE : GONE);
+        return this;
+    }
+
+    /**
+     * 设置view点击按下时alpha变化
+     *
+     * @param alpha
+     * @return
+     */
+    public TitleBarView setViewPressedAlpha(float alpha) {
+        if (alpha > 1) {
+            alpha = 1.0f;
+        } else if (alpha < 0) {
+            alpha = 0f;
+        }
+        this.mViewPressedAlpha = alpha;
+        mTvLeft.getDelegate().getAlphaViewHelper().setPressedAlpha(mViewPressedAlpha);
+        mTvRight.getDelegate().getAlphaViewHelper().setPressedAlpha(mViewPressedAlpha);
         return this;
     }
 
@@ -1190,7 +1212,7 @@ public class TitleBarView extends ViewGroup {
         if (obj instanceof View) {
             view = (View) obj;
         } else if (obj instanceof String) {
-            TextView text = new TextView(getContext());
+            AlphaTextView text = new AlphaTextView(getContext());
             text.setGravity(Gravity.CENTER);
             text.setText((String) obj);
             text.setTextSize(TypedValue.COMPLEX_UNIT_PX, mActionTextSize);
@@ -1199,12 +1221,14 @@ public class TitleBarView extends ViewGroup {
             } else {
                 text.setTextColor(DEFAULT_TEXT_COLOR);
             }
+            text.getDelegate().getAlphaViewHelper().setPressedAlpha(mViewPressedAlpha);
             setViewBackground(text, mActionTextBackground);
             view = text;
         } else if (obj instanceof Drawable) {
-            ImageView img = new ImageView(getContext());
+            AlphaImageView img = new AlphaImageView(getContext());
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
             img.setImageDrawable((Drawable) obj);
+            img.getDelegate().getAlphaViewHelper().setPressedAlpha(mViewPressedAlpha);
             view = img;
         }
         view.setPadding(mActionPadding, 0, mActionPadding, 0);
@@ -1352,7 +1376,7 @@ public class TitleBarView extends ViewGroup {
      * @return
      */
     private int getNeedStatusBarHeight() {
-        return isNeedStatusBar() ? getStatusBarHeight() : 0;
+        return isNeedStatusBar() && isBelowStatusBar() ? getStatusBarHeight() : 0;
     }
 
     /**
@@ -1386,6 +1410,17 @@ public class TitleBarView extends ViewGroup {
     public static int dip2px(float dipValue) {
         final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
+    }
+
+    /**
+     * 判断在状态栏下发
+     *
+     * @return
+     */
+    private boolean isBelowStatusBar() {
+        int[] location = new int[2];
+        getLocationOnScreen(location);
+        return location[1] == 0;
     }
 
     /**

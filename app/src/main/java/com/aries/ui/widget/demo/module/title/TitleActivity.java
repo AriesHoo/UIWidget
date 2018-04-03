@@ -72,7 +72,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     @Override
     protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
         super.beforeControlNavigation(navigationHelper);
-        navigationHelper.setBottomView(mRecyclerView);
+        navigationHelper.setBottomView(mRecyclerView,true);
     }
 
     @Override

@@ -261,6 +261,11 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 ## 重大更新日志
 
+* 3.0.0-alpha4 更新
+        
+	* 新增BasisDialog控制虚拟导航栏效果的方法-初试
+	* 新增UIActionSheetDialog 控制View是否手指拖拽(通过V4包ViewDragHelper实现)
+	
 * 3.0.0-alpha3 更新
         
 	* 新增UIActionSheetDialog 设置文本与图片间隔

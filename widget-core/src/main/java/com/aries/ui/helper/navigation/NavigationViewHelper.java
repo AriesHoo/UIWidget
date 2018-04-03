@@ -38,12 +38,12 @@ public class NavigationViewHelper {
     private boolean mTransEnable;
     private boolean mPlusNavigationViewEnable;
     private boolean mControlBottomEditTextEnable = true;
-    private int mNavigationViewColor;
     private Drawable mNavigationViewDrawable;
     private Drawable mNavigationLayoutDrawable;
     private View mBottomView;//设置activity最底部View用于增加导航栏的padding/margin
     private boolean mBottomViewMarginEnable;//设置activity最底部View用于是否增加导航栏margin
 
+    private View mDecorView;
     private View mContentView;//activity xml设置根布局
     private LinearLayout mLinearLayout;
     private LinearLayout mLayoutNavigation;
@@ -53,6 +53,7 @@ public class NavigationViewHelper {
         mActivity = new SoftReference<>(activity);
         mContentView = ((ViewGroup) activity.getWindow().getDecorView()
                 .findViewById(android.R.id.content)).getChildAt(0);
+        mDecorView = activity.getWindow().getDecorView();
     }
 
     public static NavigationViewHelper with(Activity activity) {
@@ -100,6 +101,7 @@ public class NavigationViewHelper {
         setNavigationLayoutColor(Color.WHITE);
         if (mContentView != null && mContentView.getBackground() != null) {
             setNavigationLayoutDrawable(DrawableUtil.getNewDrawable(mContentView.getBackground()));
+            mDecorView.setBackgroundDrawable(DrawableUtil.getNewDrawable(mContentView.getBackground()));
         }
         return setNavigationViewColor(transEnable ? Color.TRANSPARENT : Color.argb(102, 0, 0, 0));
     }
@@ -133,7 +135,6 @@ public class NavigationViewHelper {
      * @return
      */
     public NavigationViewHelper setNavigationViewColor(int navigationViewColor) {
-        this.mNavigationViewColor = navigationViewColor;
         return setNavigationViewDrawable(new ColorDrawable(navigationViewColor));
     }
 
@@ -212,7 +213,7 @@ public class NavigationViewHelper {
         //控制底部输入框
         if (mControlBottomEditTextEnable) {
             boolean controlEnable = !mPlusNavigationViewEnable && mControlEnable && mBottomView == mContentView;
-            setBottomView(controlEnable ? null : mBottomView);
+            setBottomView(controlEnable ? null : mBottomView, mBottomViewMarginEnable);
             KeyboardHelper.with(activity)
                     .setControlNavigationBarEnable(controlEnable)
                     .setEnable();
@@ -232,22 +233,23 @@ public class NavigationViewHelper {
                     int height = heightKeep instanceof Integer ? (int) heightKeep : 0;
                     int heightReal = mNavigationHeight > height ? mNavigationHeight : 0 - height;
                     ViewGroup.LayoutParams params = mBottomView.getLayoutParams();
-                    if (params != null && params.height >= 0) {//默认
-                        params.height += mNavigationHeight;
-                    }
+
                     if (mBottomViewMarginEnable) {
                         ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) params;
                         if (marginLayoutParams != null) {
                             marginLayoutParams.bottomMargin += heightReal;
                         }
+                        mBottomView.setLayoutParams(marginLayoutParams);
                     } else {
+                        if (params != null && params.height >= 0) {//默认
+                            params.height += mNavigationHeight;
+                        }
                         mBottomView.setPadding(
                                 mBottomView.getPaddingLeft(),
                                 mBottomView.getPaddingTop(),
                                 mBottomView.getPaddingRight(),
                                 mBottomView.getPaddingBottom() + heightReal);
                     }
-                    Log.i(TAG, "heightReal:" + heightReal);
                     //将当前导航栏高度保存
                     mBottomView.setTag(TAG_NAVIGATION_BAR_HEIGHT, heightReal);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -256,7 +258,7 @@ public class NavigationViewHelper {
                         mBottomView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     }
                     if (mLogEnable)
-                        Log.i(TAG, "mBottomView:" + mBottomView + "设置成功");
+                        Log.i(TAG, "mBottomView:" + mBottomView + ";heightReal:" + heightReal + ";mBottomViewMarginEnable:" + mBottomViewMarginEnable);
                 }
             });
         }

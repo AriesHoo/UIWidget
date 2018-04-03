@@ -28,6 +28,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:'.concat(supportVersion)
     compile 'com.android.support:design:'.concat(supportVersion)
     compile 'com.android.support:recyclerview-v7:'.concat(supportVersion)
+    compile 'com.android.support:support-v4:'.concat(supportVersion)
     //只包含常用(TitleBarView、RadiusView、StatusViewHelper、NavigationViewHelper)
     compile project(':widget-core')
     //TitleBarView+CollapsingTitleBarLayout实现CollapsingToolbarLayout+Toolbar效果

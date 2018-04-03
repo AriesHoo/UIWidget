@@ -8,6 +8,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.BasisDialog;
@@ -35,6 +36,7 @@ public class ActionSheetActivity extends BaseActivity {
     @BindView(R.id.sBtn_cancelColorActionSheet) SwitchCompat sBtnCancelColor;
     @BindView(R.id.sBtn_backActionSheet) SwitchCompat sBtnBack;
     @BindView(R.id.rtv_showActionSheet) RadiusTextView rtvShow;
+    @BindView(R.id.rtv_showGridActionSheet) RadiusTextView rtvShowGrid;
 
     private boolean isShowMargin = true;
     private boolean isShowTitle = true;
@@ -48,6 +50,12 @@ public class ActionSheetActivity extends BaseActivity {
     @Override
     protected void setTitleBar() {
         titleBar.setTitleMainText(UIActionSheetDialog.class.getSimpleName());
+    }
+
+    @Override
+    protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
+        super.beforeControlNavigation(navigationHelper);
+        navigationHelper.setBottomView(rtvShowGrid, true);
     }
 
     @Override
@@ -171,6 +179,8 @@ public class ActionSheetActivity extends BaseActivity {
                         .addItem("分享朋友圈", R.drawable.ic_more_operation_share_moment)
                         .addItem("分享微博", R.drawable.ic_more_operation_share_weibo)
                         .addItem("分享短信", R.drawable.ic_more_operation_share_chat)
+                        //设置手指拖拽
+                        .setDragEnable(true)
                         .setTextDrawablePadding(SizeUtil.dp2px(28))
                         .create();
                 sheetDialog.getListView().setPadding(0, SizeUtil.dp2px(10), 0, SizeUtil.dp2px(10));

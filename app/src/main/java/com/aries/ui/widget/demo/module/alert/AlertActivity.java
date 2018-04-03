@@ -291,7 +291,7 @@ public class AlertActivity extends BaseActivity {
                             }
                         })
                         //设置 window show()监听
-                        .setOnShowListenerer(new DialogInterface.OnShowListener() {
+                        .setOnShowListener(new DialogInterface.OnShowListener() {
                             @Override
                             public void onShow(DialogInterface dialog) {
 

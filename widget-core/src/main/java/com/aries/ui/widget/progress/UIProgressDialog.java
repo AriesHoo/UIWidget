@@ -180,7 +180,8 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
         public View createProgressView() {
             mProgressBar = new ProgressBar(mContext);
             mProgressBar.setLayoutParams(new ViewGroup.LayoutParams(mLoadingSize, mLoadingSize));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                    && mIndeterminateDrawable == null) {
                 mProgressBar.setIndeterminateTintList(ColorStateList.valueOf(mLoadingColor));
             }
             if (mIndeterminateDrawable != null) {

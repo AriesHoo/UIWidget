@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.FindViewUtil;
+import com.aries.ui.view.DragLayout;
 import com.aries.ui.view.alpha.AlphaTextView;
 import com.aries.ui.widget.BasisDialog;
 import com.aries.ui.widget.R;
@@ -41,6 +42,7 @@ import java.util.Map;
  * 2、修改Dialog继承关系并修改默认ListSheetBuilder模式属性设置
  * 3、2018-3-29 13:40:24 新增设置ListBuilder默认imageView默认宽高及文字与图片间距属性控制
  * 修改 getListView及getGridView返回对象错误问题
+ * 4、2018-4-3 09:10:18 新增view拖拽关闭交互效果{@link Builder#setDragEnable(boolean)}
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
@@ -721,6 +723,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
         protected Drawable mSingleDrawable;
         protected Drawable mSinglePressedDrawable;
 
+        protected boolean mDragEnable = false;
         protected int mMarginTop;
         protected List<SheetItem> mListItem;
 
@@ -769,6 +772,17 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     .setItemsMinHeight(dp2px(45))
                     .setTextDrawablePadding(dp2px(12))
                     .setPadding(0);
+        }
+
+        /**
+         * 是否开启手指拖拽
+         *
+         * @param enable
+         * @return
+         */
+        public T setDragEnable(boolean enable) {
+            this.mDragEnable = enable;
+            return (T) this;
         }
 
         /**
@@ -1223,14 +1237,14 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          * @return
          */
         public UIActionSheetDialog create() {
-            View contentView = createContentView();
             mDialog = new UIActionSheetDialog(mContext);
+            View contentView = createContentView();
             mDialog.setContentView(contentView);
             setDialog();
             mDialog.setGravity(Gravity.BOTTOM);
             mDialog.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
             mDialog.setMargin(0, mMarginTop, 0, 0);
-            afterSetContentView();
+            afterSetContentView(contentView);
             return (UIActionSheetDialog) mDialog;
         }
 
@@ -1241,16 +1255,30 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         private View createContentView() {
             createDrawable();
+            DragLayout dragLayout = new DragLayout(mContext);
             mLLayoutRoot = new LinearLayout(mContext);
             mLLayoutRoot.setId(R.id.lLayout_rootActionSheetDialog);
             mLLayoutRoot.setOrientation(LinearLayout.VERTICAL);
             mLLayoutRoot.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mAdapter = mAdapter == null ? getDefaultAdapter() : mAdapter;
+            dragLayout.addView(mLLayoutRoot);
+            dragLayout.setDragEnable(mDragEnable);
+            dragLayout.setOnDragListener(new DragLayout.OnDragListener() {
+                @Override
+                public void onClosed() {
+                    mDialog.dismiss();
+                }
+
+                @Override
+                public void onOpened() {
+
+                }
+            });
             setRootView();
             createTitle();
             createItemView();
             createCancel();
-            return mLLayoutRoot;
+            return dragLayout;
         }
 
         /**

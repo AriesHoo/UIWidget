@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aries.ui.util.ResourceUtil;
+import com.aries.ui.view.DragLayout;
 
 /**
  * Created: AriesHoo on 2018/3/20/020 8:48
@@ -28,6 +29,7 @@ import com.aries.ui.util.ResourceUtil;
  * Description:
  * 1、新增基础Builder包装通用属性
  * 2、新增ContentView margin属性
+ * 3、新增控制虚拟导航栏功能
  */
 public class BasisDialog<T extends BasisDialog> extends Dialog {
 
@@ -40,21 +42,23 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     private int mWidth = WindowManager.LayoutParams.WRAP_CONTENT;
     private int mHeight = WindowManager.LayoutParams.WRAP_CONTENT;
     private int mWindowAnimations = -1;
+    protected TranslucentUtil mUtil;
 
     public interface OnTextViewLineListener {
         void onTextViewLineListener(TextView textView, int lineCount);
     }
 
     public BasisDialog(Context context) {
-        super(context);
+        this(context, 0);
     }
 
     public BasisDialog(Context context, int themeResId) {
         super(context, themeResId);
+        mUtil = new TranslucentUtil(getWindow(), context);
     }
 
-    protected BasisDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
+    protected int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
     @Override
@@ -73,6 +77,16 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
             mLayoutParams.windowAnimations = mWindowAnimations;// 动画
         }
         mWindow.setAttributes(mLayoutParams);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+                && mUtil.mNavBarAvailable) {
+            mWindow.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            View target = mContentView instanceof DragLayout ? ((DragLayout) mContentView).getChildAt(0) : mContentView;
+            if (target == null) return;
+            target.setPadding(target.getPaddingLeft(),
+                    target.getPaddingTop(),
+                    target.getPaddingRight(),
+                    mGravity == Gravity.BOTTOM ? mUtil.getNavigationBarHeight(getContext()) + target.getPaddingBottom() : mContentView.getPaddingBottom());
+        }
     }
 
     @Override
@@ -192,7 +206,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         protected float mLineSpacingExtra = 0.0f;
         protected int mTextSizeUnit = TypedValue.COMPLEX_UNIT_DIP;
 
-        protected boolean mCancelable;
+        protected boolean mCancelable = true;
         protected boolean mCanceledOnTouchOutside = true;
         protected OnTextViewLineListener mOnTextViewLineListener;
         protected OnDismissListener mOnDismissListener;
@@ -411,7 +425,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          * @param listener
          * @return
          */
-        public T setOnShowListenerer(OnShowListener listener) {
+        public T setOnShowListener(OnShowListener listener) {
             this.mOnShowListener = listener;
             return (T) this;
         }
@@ -464,16 +478,20 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         }
 
         protected void afterSetContentView() {
+            afterSetContentView(mLLayoutRoot);
+        }
+
+        protected void afterSetContentView(View parent) {
             //当设置点击其它地方dialog可消失需对root的父容器处理
             if (mCanceledOnTouchOutside) {
                 //设置点击事件防止事件透传至父容器
-                mLLayoutRoot.setOnClickListener(new View.OnClickListener() {
+                parent.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                     }
                 });
-                ((ViewGroup) mLLayoutRoot.getParent()).setOnClickListener(new View.OnClickListener() {
+                ((ViewGroup) parent.getParent()).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mDialog.dismiss();

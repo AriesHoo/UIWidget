@@ -18,8 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="vertical"
-            android:paddingBottom="12dp">
+            android:orientation="vertical">
 
 
             <android.support.v7.widget.SwitchCompat
@@ -116,11 +115,12 @@
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showIconActionSheet"
                 style="@style/RadiusStyleButton"
-                android:text="微信风格+icon(类ofo分享行程)"/>
+                android:text="icon+文本(类ofo分享行程)"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showGridActionSheet"
                 style="@style/RadiusStyleButton"
+                android:layout_marginBottom="12dp"
                 android:text="Grid风格"/>
         </LinearLayout>
     </ScrollView>

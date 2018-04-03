@@ -13,6 +13,7 @@
     app:title_leftTextDrawable="@drawable/ic_arrow_left"
     app:title_rightTextColor="@color/colorTextBlack"
     app:title_statusBarLightMode="true"
+    app:title_viewPressedAlpha="0.5"
     app:title_titleMainTextColor="@color/colorTextBlack"
     app:title_titleSubTextColor="@color/colorTextBlack"/>
 

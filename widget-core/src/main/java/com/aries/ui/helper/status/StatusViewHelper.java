@@ -209,9 +209,6 @@ public class StatusViewHelper {
                     @Override
                     public void onGlobalLayout() {
                         ViewGroup.LayoutParams params = mTopView.getLayoutParams();
-                        if (params != null && params.height >= 0) {//默认
-                            params.height = params.height + TitleBarView.getStatusBarHeight();
-                        }
                         Object isSet = mTopView.getTag(TAG_SET_STATUS_CONTROL);
                         if (isSet == null) {
                             if (mTopViewMarginEnable) {
@@ -221,6 +218,9 @@ public class StatusViewHelper {
                                     marginLayoutParams.topMargin += StatusBarUtil.getStatusBarHeight();
                                 }
                             } else {
+                                if (params != null && params.height >= 0) {//默认
+                                    params.height = params.height + TitleBarView.getStatusBarHeight();
+                                }
                                 mTopView.setPadding(
                                         mTopView.getPaddingLeft(),
                                         mTopView.getPaddingTop() + StatusBarUtil.getStatusBarHeight(),

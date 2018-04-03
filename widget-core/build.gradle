@@ -41,4 +41,8 @@ android {
         archives sourcesJar
         archives javadocJar
     }
+
+    dependencies {
+        provided 'com.android.support:support-v4:'.concat(supportVersion)
+    }
 }

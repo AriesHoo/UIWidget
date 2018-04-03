@@ -684,6 +684,8 @@
         <attr name="title_centerGravityLeftPadding" format="dimension"/>
         <!--是否浅色状态栏(黑色文字及图标)-->
         <attr name="title_statusBarLightMode" format="boolean"/>
+        <!--View 按下透明度-->
+        <attr name="title_viewPressedAlpha" format="float"/>
 
         <!--状态栏背景-->
         <attr name="title_statusBackground" format="color|reference"/>

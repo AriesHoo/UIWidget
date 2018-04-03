@@ -80,7 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setControlBottomEditTextEnable(true)
                 .setNavigationViewColor(Color.argb(102, 0, 0, 0))
                 .setNavigationLayoutColor(getResources().getColor(R.color.colorBackground))
-                .setBottomView(mContentView);
+                .setBottomView(mContentView,true);
         beforeControlNavigation(mNavigationViewHelper);
         mNavigationViewHelper.init();
         this.initView(savedInstanceState);
@@ -102,8 +102,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        setTitleBar();
         setTitleLine(isShowLine());
+        setTitleBar();
     }
 
     public void setTitleLine(boolean enable) {
