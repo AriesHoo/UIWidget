@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -43,8 +45,10 @@ import java.util.Map;
  * 3、2018-3-29 13:40:24 新增设置ListBuilder默认imageView默认宽高及文字与图片间距属性控制
  * 修改 getListView及getGridView返回对象错误问题
  * 4、2018-4-3 09:10:18 新增view拖拽关闭交互效果{@link Builder#setDragEnable(boolean)}
+ * 5、2018-4-3 12:50:31 将控制虚拟导航栏功能从BasisDialog移至此处
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
+    protected TranslucentUtil mUtil;
 
     public interface OnItemClickListener {
         void onClick(BasisDialog dialog, View itemView, int position);
@@ -52,6 +56,22 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
     public UIActionSheetDialog(Context context) {
         super(context, R.style.ActionSheetViewDialogStyle);
+        mUtil = new TranslucentUtil(getWindow(), context);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+                && mUtil.mNavBarAvailable) {
+            mWindow.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            View target = mContentView instanceof DragLayout ? ((DragLayout) mContentView).getChildAt(0) : mContentView;
+            if (target == null) return;
+            target.setPadding(target.getPaddingLeft(),
+                    target.getPaddingTop(),
+                    target.getPaddingRight(),
+                    mUtil.getNavigationBarHeight(getContext()) + target.getPaddingBottom());
+        }
     }
 
     /**

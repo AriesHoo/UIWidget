@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.aries.ui.helper.navigation.NavigationViewHelper;
+import com.aries.ui.util.RomUtil;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.demo.BuildConfig;
 import com.aries.ui.widget.demo.R;
@@ -74,13 +75,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         mNavigationViewHelper = NavigationViewHelper.with(this)
                 .setLogEnable(BuildConfig.DEBUG)
                 .setControlEnable(true)
-                .setTransEnable(false)
+                .setTransEnable(RomUtil.isEMUI())
                 //导航栏可关闭/开启的不建议设置该属性为true
                 .setPlusNavigationViewEnable(false)
                 .setControlBottomEditTextEnable(true)
-                .setNavigationViewColor(Color.argb(102, 0, 0, 0))
+                .setNavigationViewColor(Color.argb(RomUtil.isEMUI() ? 0 : 102, 0, 0, 0))
                 .setNavigationLayoutColor(getResources().getColor(R.color.colorBackground))
-                .setBottomView(mContentView,true);
+                .setBottomView(mContentView, true);
         beforeControlNavigation(mNavigationViewHelper);
         mNavigationViewHelper.init();
         this.initView(savedInstanceState);

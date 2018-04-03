@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aries.ui.util.ResourceUtil;
-import com.aries.ui.view.DragLayout;
 
 /**
  * Created: AriesHoo on 2018/3/20/020 8:48
@@ -30,10 +29,11 @@ import com.aries.ui.view.DragLayout;
  * 1、新增基础Builder包装通用属性
  * 2、新增ContentView margin属性
  * 3、新增控制虚拟导航栏功能
+ * 4、2018-4-3 12:51:47 移除控制虚拟导航栏功能
  */
 public class BasisDialog<T extends BasisDialog> extends Dialog {
 
-    private Window mWindow;
+    protected Window mWindow;
     protected View mContentView;
     private WindowManager.LayoutParams mLayoutParams;
     private float mAlpha = 1.0f;
@@ -42,7 +42,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     private int mWidth = WindowManager.LayoutParams.WRAP_CONTENT;
     private int mHeight = WindowManager.LayoutParams.WRAP_CONTENT;
     private int mWindowAnimations = -1;
-    protected TranslucentUtil mUtil;
+
 
     public interface OnTextViewLineListener {
         void onTextViewLineListener(TextView textView, int lineCount);
@@ -54,7 +54,6 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
 
     public BasisDialog(Context context, int themeResId) {
         super(context, themeResId);
-        mUtil = new TranslucentUtil(getWindow(), context);
     }
 
     protected int getScreenHeight() {
@@ -77,16 +76,6 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
             mLayoutParams.windowAnimations = mWindowAnimations;// 动画
         }
         mWindow.setAttributes(mLayoutParams);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                && mUtil.mNavBarAvailable) {
-            mWindow.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            View target = mContentView instanceof DragLayout ? ((DragLayout) mContentView).getChildAt(0) : mContentView;
-            if (target == null) return;
-            target.setPadding(target.getPaddingLeft(),
-                    target.getPaddingTop(),
-                    target.getPaddingRight(),
-                    mGravity == Gravity.BOTTOM ? mUtil.getNavigationBarHeight(getContext()) + target.getPaddingBottom() : mContentView.getPaddingBottom());
-        }
     }
 
     @Override
