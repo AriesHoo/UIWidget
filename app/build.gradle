@@ -36,9 +36,9 @@ dependencies {
     //UIAlertView
     compile project(':widget-alert')
 
-//    compile 'com.github.AriesHoo.UIWidget:widget-core:3.0.0-alpha'
-//    compile 'com.github.AriesHoo.UIWidget:widget-alert:3.0.0-alpha'
-//    compile 'com.github.AriesHoo.UIWidget:widget-collapsing:3.0.0-alpha'
+//    compile 'com.github.AriesHoo.UIWidget:widget-core:3.0.0-alpha4'
+//    compile 'com.github.AriesHoo.UIWidget:widget-alert:3.0.0-alpha4'
+//    compile 'com.github.AriesHoo.UIWidget:widget-collapsing:3.0.0-alpha4'
 
 //    compile 'com.github.AriesHoo:UIWidget:2.0.9'
     //图片加载

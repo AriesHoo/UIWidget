@@ -52,7 +52,7 @@ public class WebViewActivity extends BaseActivity {
                     public void onClick(View v) {
                         showDialog();
                     }
-                }));
+                }),0);
     }
 
     @Override

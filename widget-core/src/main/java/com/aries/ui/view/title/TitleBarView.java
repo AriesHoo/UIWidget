@@ -46,6 +46,7 @@ import com.aries.ui.widget.R;
  * 5、2018-3-29 09:21:17 通过ResourceUtil获取资源
  * 6、2018-3-29 12:02:53 删除废弃方法 setBottomEditTextControl
  * 7、2018-3-30 10:43:49 设置View按下alpha 控制属性{@link #setViewPressedAlpha(float)}
+ * 8、2018-4-4 15:06:21 调整设置{@link #setOutPadding(int)}以便增加左右TextView 点击范围
  */
 public class TitleBarView extends ViewGroup {
 
@@ -159,7 +160,7 @@ public class TitleBarView extends ViewGroup {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.TitleBarView);
         mImmersible = ta.getBoolean(R.styleable.TitleBarView_title_immersible, true);
         mOutPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_outPadding, dip2px(DEFAULT_OUT_PADDING));
-        mActionPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_actionPadding, dip2px(1));
+        mActionPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_actionPadding, dip2px(2));
         mCenterLayoutPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_centerLayoutPadding, dip2px(2));
         mCenterGravityLeft = ta.getBoolean(R.styleable.TitleBarView_title_centerGravityLeft, false);
         mCenterGravityLeftPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_centerGravityLeftPadding, dip2px(DEFAULT_CENTER_GRAVITY_LEFT_PADDING));
@@ -246,8 +247,6 @@ public class TitleBarView extends ViewGroup {
         addView(mLLayoutRight, params);//添加右边容器
         addView(mVDivider, dividerParams);//添加下划线View
         addView(mVStatus);//添加状态栏View
-        mLLayoutLeft.setClickable(false);
-
     }
 
     /**
@@ -506,8 +505,25 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView setOutPadding(int paddingValue) {
         mOutPadding = paddingValue;
-        mLLayoutLeft.setPadding(mOutPadding, 0, 0, 0);
-        mLLayoutRight.setPadding(0, 0, mOutPadding, 0);
+        if (TextUtils.isEmpty(mLeftText)
+                && mLeftTextDrawable == null
+                || mLLayoutLeft.indexOfChild(mTvLeft) != 0) {
+            mLLayoutLeft.setPadding(mOutPadding, 0, 0, 0);
+            mTvLeft.setPadding(0, 0, 0, 0);
+        } else {
+            mLLayoutLeft.setPadding(0, 0, 0, 0);
+            mTvLeft.setPadding(mOutPadding, 0, mOutPadding, 0);
+        }
+
+        if (TextUtils.isEmpty(mRightText)
+                && mRightTextDrawable == null
+                || mLLayoutRight.indexOfChild(mTvRight) != mLLayoutRight.getChildCount() - 1) {
+            mLLayoutRight.setPadding(0, 0, mOutPadding, 0);
+            mTvRight.setPadding(0, 0, 0, 0);
+        } else {
+            mLLayoutRight.setPadding(0, 0, 0, 0);
+            mTvRight.setPadding(mOutPadding, 0, mOutPadding, 0);
+        }
         return this;
     }
 
@@ -700,7 +716,7 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setLeftText(CharSequence title) {
         mLeftText = title;
         mTvLeft.setText(title);
-        return this;
+        return setOutPadding(mOutPadding);
     }
 
     public TitleBarView setLeftText(int id) {
@@ -769,7 +785,7 @@ public class TitleBarView extends ViewGroup {
         mLeftTextDrawable = drawable;
         DrawableUtil.setDrawableWidthHeight(mLeftTextDrawable, mLeftTextDrawableWidth, mLeftTextDrawableHeight);
         mTvLeft.setCompoundDrawables(mLeftTextDrawable, null, null, null);
-        return this;
+        return setOutPadding(mOutPadding);
     }
 
     public TitleBarView setLeftTextDrawable(int resId) {
@@ -1030,8 +1046,9 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setRightText(CharSequence title) {
+        mRightText = title;
         mTvRight.setText(title);
-        return this;
+        return setOutPadding(mOutPadding);
     }
 
     public TitleBarView setRightText(int id) {
@@ -1090,7 +1107,7 @@ public class TitleBarView extends ViewGroup {
         mRightTextDrawable = drawable;
         DrawableUtil.setDrawableWidthHeight(mRightTextDrawable, mRightTextDrawableWidth, mRightTextDrawableHeight);
         mTvRight.setCompoundDrawables(null, null, mRightTextDrawable, null);
-        return this;
+        return setOutPadding(mOutPadding);
     }
 
     public TitleBarView setRightTextDrawable(int resId) {
@@ -1159,7 +1176,7 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView addLeftAction(Action action, int position) {
         View view = inflateAction(action);
         mLLayoutLeft.addView(view, position);
-        return this;
+        return setOutPadding(mOutPadding);
     }
 
     public TitleBarView addLeftAction(Action action) {
@@ -1191,7 +1208,7 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView addRightAction(Action action, int position) {
         View view = inflateAction(action);
         mLLayoutRight.addView(view, position);
-        return this;
+        return setOutPadding(mOutPadding);
     }
 
     public TitleBarView addRightAction(Action action) {

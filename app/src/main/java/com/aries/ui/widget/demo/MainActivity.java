@@ -1,6 +1,7 @@
 package com.aries.ui.widget.demo;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 
 import com.aries.ui.widget.demo.adapter.WidgetAdapter;
@@ -70,6 +71,12 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> {
         list.add(new WidgetEntity("TitleBarView", "一款支持沉浸状态栏效果设置的ToolBar控件:支持xml设置是否沉浸、主标题及副标题、左边文字及icon、右边文字及icon、下划线;支持添加左边、中间及右边view方便扩展。", TitleActivity.class));
         mAdapter.setNewData(list);
         mAdapter.loadMoreEnd();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+//                titleBar.setLeftTextDrawable(0);
+            }
+        },5000);
     }
 
     @Override

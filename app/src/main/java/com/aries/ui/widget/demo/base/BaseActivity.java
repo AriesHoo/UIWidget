@@ -75,11 +75,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         mNavigationViewHelper = NavigationViewHelper.with(this)
                 .setLogEnable(BuildConfig.DEBUG)
                 .setControlEnable(true)
-                .setTransEnable(RomUtil.isEMUI())
+                .setTransEnable(isTrans())
                 //导航栏可关闭/开启的不建议设置该属性为true
-                .setPlusNavigationViewEnable(false)
+                .setPlusNavigationViewEnable(!isTrans())
                 .setControlBottomEditTextEnable(true)
-                .setNavigationViewColor(Color.argb(RomUtil.isEMUI() ? 0 : 102, 0, 0, 0))
+                .setNavigationViewColor(Color.argb(isTrans() ? 0 : 102, 0, 0, 0))
                 .setNavigationLayoutColor(getResources().getColor(R.color.colorBackground))
                 .setBottomView(mContentView, true);
         beforeControlNavigation(mNavigationViewHelper);
@@ -137,4 +137,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    protected boolean isTrans() {
+        return RomUtil.isEMUI() && (RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0);
+    }
 }
