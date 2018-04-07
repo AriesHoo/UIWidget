@@ -44,6 +44,7 @@ public class NavigationViewHelper {
     private boolean mBottomViewMarginEnable;//设置activity最底部View用于是否增加导航栏margin
 
     private View mDecorView;
+    private View mDecorContentView;
     private View mContentView;//activity xml设置根布局
     private LinearLayout mLinearLayout;
     private LinearLayout mLayoutNavigation;
@@ -51,9 +52,9 @@ public class NavigationViewHelper {
 
     private NavigationViewHelper(Activity activity) {
         mActivity = new SoftReference<>(activity);
-        mContentView = ((ViewGroup) activity.getWindow().getDecorView()
-                .findViewById(android.R.id.content)).getChildAt(0);
         mDecorView = activity.getWindow().getDecorView();
+        mDecorContentView = mDecorView.findViewById(android.R.id.content);
+        mContentView = ((ViewGroup) mDecorContentView).getChildAt(0);
     }
 
     public static NavigationViewHelper with(Activity activity) {

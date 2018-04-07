@@ -77,11 +77,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setControlEnable(true)
                 .setTransEnable(isTrans())
                 //导航栏可关闭/开启的不建议设置该属性为true
-                .setPlusNavigationViewEnable(!isTrans())
+                .setPlusNavigationViewEnable(RomUtil.isEMUI()&&!isTrans())
                 .setControlBottomEditTextEnable(true)
                 .setNavigationViewColor(Color.argb(isTrans() ? 0 : 102, 0, 0, 0))
                 .setNavigationLayoutColor(getResources().getColor(R.color.colorBackground))
-                .setBottomView(mContentView, true);
+                .setBottomView(mContentView, false);
         beforeControlNavigation(mNavigationViewHelper);
         mNavigationViewHelper.init();
         this.initView(savedInstanceState);

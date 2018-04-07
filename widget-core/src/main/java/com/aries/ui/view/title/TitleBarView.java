@@ -39,10 +39,8 @@ import com.aries.ui.widget.R;
  * Description:
  * 1、2017-11-21 10:30:14 AriesHoo 修改onMeasure及onLayout回调控制宽度获取TitleBarView实际宽度(之前为屏幕宽度)
  * 2、2017-12-4 10:09:50 AriesHoo 修改onMeasure中重新测量中间Layout时机避免TitleBarView测量显示错误(目前在Fragment嵌套在FragmentLayout里会出现不显示Title BUG)
- * 3、2018-2-3 10:39:42 属性大改造-去掉之前设置背景色和背景资源id 属性统一用对应的background 属性控制
- * 对应的java方法也会有相应的调整;TextColor修改成color|reference对应ColorStateList方便设置状态颜色
- * 4、2018-2-7 10:27:28 将 setBottomEditTextControl方法废弃
- * 通过{@link NavigationViewHelper}或者{@link KeyboardHelper}类控制底部状态栏
+ * 3、2018-2-3 10:39:42 属性大改造-去掉之前设置背景色和背景资源id 属性统一用对应的background 属性控制,对应的java方法也会有相应的调整;TextColor修改成color|reference对应ColorStateList方便设置状态颜色
+ * 4、2018-2-7 10:27:28 将 setBottomEditTextControl方法废弃;通过{@link NavigationViewHelper}或者{@link KeyboardHelper}类控制底部状态栏
  * 5、2018-3-29 09:21:17 通过ResourceUtil获取资源
  * 6、2018-3-29 12:02:53 删除废弃方法 setBottomEditTextControl
  * 7、2018-3-30 10:43:49 设置View按下alpha 控制属性{@link #setViewPressedAlpha(float)}
@@ -512,7 +510,7 @@ public class TitleBarView extends ViewGroup {
             mTvLeft.setPadding(0, 0, 0, 0);
         } else {
             mLLayoutLeft.setPadding(0, 0, 0, 0);
-            mTvLeft.setPadding(mOutPadding, 0, mOutPadding, 0);
+            mTvLeft.setPadding(mOutPadding, 0, mActionPadding, 0);
         }
 
         if (TextUtils.isEmpty(mRightText)
@@ -522,7 +520,7 @@ public class TitleBarView extends ViewGroup {
             mTvRight.setPadding(0, 0, 0, 0);
         } else {
             mLLayoutRight.setPadding(0, 0, 0, 0);
-            mTvRight.setPadding(mOutPadding, 0, mOutPadding, 0);
+            mTvRight.setPadding(mActionPadding, 0, mOutPadding, 0);
         }
         return this;
     }

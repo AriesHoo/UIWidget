@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.ResourceUtil;
 
 /**
@@ -500,9 +501,9 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
                 return;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                view.setBackground(drawable);
+                view.setBackground(DrawableUtil.getNewDrawable(drawable));
             } else {
-                view.setBackgroundDrawable(drawable);
+                view.setBackgroundDrawable(DrawableUtil.getNewDrawable(drawable));
             }
         }
 

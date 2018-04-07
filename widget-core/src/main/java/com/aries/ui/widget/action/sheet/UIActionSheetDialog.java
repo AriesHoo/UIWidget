@@ -46,6 +46,7 @@ import java.util.Map;
  * 修改 getListView及getGridView返回对象错误问题
  * 4、2018-4-3 09:10:18 新增view拖拽关闭交互效果{@link Builder#setDragEnable(boolean)}
  * 5、2018-4-3 12:50:31 将控制虚拟导航栏功能从BasisDialog移至此处
+ * 6、2018-4-6 21:43:20 调整设置cancel 及margin逻辑
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
     protected TranslucentUtil mUtil;
@@ -106,7 +107,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
     }
 
     public interface ICreateContentView {
-        void createItemView();
+        View createItemView();
 
         ListAdapter getDefaultAdapter();
     }
@@ -443,10 +444,11 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
         }
 
         @Override
-        public void createItemView() {
+        public View createItemView() {
             createLine(true);
             createList();
             createLine(false);
+            return mLvContainer;
         }
 
         @Override
@@ -489,18 +491,19 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 int size = getCount();
                 int sizeHeader = mListHeaderViews != null ? mListHeaderViews.size() : 0;
                 boolean hasTitle = !TextUtils.isEmpty(mTitleStr);
+                boolean hasMargin = mCancelMarginTop > 0 || TextUtils.isEmpty(mCancelStr);
                 if (size == 1) {
                     if (hasTitle || sizeHeader > 0) {
-                        background = mStateDrawableBottom;
+                        background = hasMargin ? mStateDrawableBottom : mStateDrawableCenter;
                     } else {
-                        background = mStateDrawableSingle;
+                        background = hasMargin ? mStateDrawableSingle : mStateDrawableTop;
                     }
                 } else {
                     if (hasTitle || sizeHeader > 0) {
                         if (i >= 0 && i < size - 1) {
                             background = mStateDrawableCenter;
                         } else {
-                            background = mStateDrawableBottom;
+                            background = hasMargin ? mStateDrawableBottom : mStateDrawableCenter;
                         }
                     } else {
                         if (i == 0) {
@@ -508,7 +511,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                         } else if (i < size - 1) {
                             background = mStateDrawableCenter;
                         } else {
-                            background = mStateDrawableBottom;
+                            background = hasMargin ? mStateDrawableBottom : mStateDrawableCenter;
                         }
                     }
                 }
@@ -652,7 +655,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
         }
 
         @Override
-        public void createItemView() {
+        public View createItemView() {
             mGvContainer = new GridView(mContext);
             mGvContainer.setLayoutParams(new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
@@ -683,6 +686,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     }
                 });
             }
+            return mGvContainer;
         }
 
         @Override
@@ -1268,6 +1272,8 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             return (UIActionSheetDialog) mDialog;
         }
 
+        View mViewItem;
+
         /**
          * 创建dialog ContentView
          *
@@ -1279,7 +1285,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             mLLayoutRoot = new LinearLayout(mContext);
             mLLayoutRoot.setId(R.id.lLayout_rootActionSheetDialog);
             mLLayoutRoot.setOrientation(LinearLayout.VERTICAL);
-            mLLayoutRoot.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            mLLayoutRoot.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mAdapter = mAdapter == null ? getDefaultAdapter() : mAdapter;
             dragLayout.addView(mLLayoutRoot);
             dragLayout.setDragEnable(mDragEnable);
@@ -1296,7 +1302,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             });
             setRootView();
             createTitle();
-            createItemView();
+            mViewItem = createItemView();
             createCancel();
             return dragLayout;
         }
@@ -1323,7 +1329,8 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             mTvTitle.setTextSize(mTextSizeUnit, mTitleTextSize);
             mTvTitle.setTextColor(mTitleTextColor);
 
-            if (mListItem != null && mListItem.size() > 0) {
+            if ((mListItem != null && mListItem.size() > 0) ||
+                    (!TextUtils.isEmpty(mCancelStr) && mCancelMarginTop <= 0)) {
                 background = mStateDrawableTop.getCurrent();
             }
             setViewBackground(mTvTitle, background);
@@ -1357,7 +1364,8 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     mTvCancel.setLayoutParams(lp);
                 }
             }
-            setViewBackground(mTvCancel, mStateDrawableSingle);
+            boolean single = mCancelMarginTop > 0 || TextUtils.isEmpty(mTitleStr) && mViewItem == null;
+            setViewBackground(mTvCancel, single ? mStateDrawableSingle : mStateDrawableBottom);
 
             mTvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
