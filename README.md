@@ -1,6 +1,6 @@
 # UIWidget
 --------------------------
-[![fir.im](https://img.shields.io/badge/download-fir.im-blue.svg)](http://fir.im/r84v)
+[![](https://img.shields.io/badge/download-demo-blue.svg)](https://raw.githubusercontent.com/AriesHoo/UIWidget/master/apk/sample.apk)
 [![](https://jitpack.io/v/AriesHoo/UIWidget.svg)](https://jitpack.io/#AriesHoo/UIWidget)
 [![](https://img.shields.io/github/release/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/releases)
 [![API](https://img.shields.io/badge/API-11%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=11)
