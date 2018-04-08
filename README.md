@@ -261,6 +261,11 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 ## 重大更新日志
 
+* 3.0.0-alpha5 更新
+        
+	* 修改TitleBarView 方法setOutPadding 逻辑以增加左右TextView 点击范围
+	* 修改UIActionSheetDialog 控制Title、Item、Cancel已经CancelMarginTop逻辑方法控制各种形式下背景Drawable
+	
 * 3.0.0-alpha4 更新
         
 	* 新增BasisDialog控制虚拟导航栏效果的方法-初试
