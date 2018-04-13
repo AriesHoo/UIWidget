@@ -34,9 +34,9 @@ allprojects {
 
 ```
 dependencies {
-     //compile 'com.github.AriesHoo.UIWidget:widget-core:3.0.0-alpha1'
-     //compile 'com.github.AriesHoo.UIWidget:widget-alert:3.0.0-alpha1'
-     //compile 'com.github.AriesHoo.UIWidget:widget-collapsing:3.0.0-alpha1'
+     //compile 'com.github.AriesHoo.UIWidget:widget-core:3.1.0'
+     //compile 'com.github.AriesHoo.UIWidget:widget-alert:3.1.0'
+     //compile 'com.github.AriesHoo.UIWidget:widget-collapsing:3.1.0'
      compile 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
      compile 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
      compile 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
@@ -72,7 +72,7 @@ dependencies {
     <artifactId>widget-core</artifactId>
     <artifactId>widget-collapsing</artifactId>
     <artifactId>widget-alert</artifactId>
-    <version>3.0.0-alpha3</version>
+    <version>3.1.0</version>
 </dependency>
 ```
 
@@ -261,6 +261,10 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 ## 重大更新日志
 
+* 3.1.0 更新
+        
+	* 发布正式版本
+	
 * 3.0.0-alpha5 更新
         
 	* 修改TitleBarView 方法setOutPadding 逻辑以增加左右TextView 点击范围
