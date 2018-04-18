@@ -27,6 +27,7 @@ import java.lang.ref.SoftReference;
  * Description:
  * 1、修改NavigationLayoutDrawable默认保持与activity的根布局背景一致
  * 2、2018-2-26 15:56:47 新增setBottomView(View bottomView, boolean enable)用于控制底部View设置padding/margin
+ * 3、2018-4-18 17:50:35 去掉设置Activity DecorView 背景操作避免滑动返回背景不透明BUG
  */
 public class NavigationViewHelper {
 
@@ -102,7 +103,6 @@ public class NavigationViewHelper {
         setNavigationLayoutColor(Color.WHITE);
         if (mContentView != null && mContentView.getBackground() != null) {
             setNavigationLayoutDrawable(DrawableUtil.getNewDrawable(mContentView.getBackground()));
-            mDecorView.setBackgroundDrawable(DrawableUtil.getNewDrawable(mContentView.getBackground()));
         }
         return setNavigationViewColor(transEnable ? Color.TRANSPARENT : Color.argb(102, 0, 0, 0));
     }
