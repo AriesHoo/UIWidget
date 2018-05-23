@@ -169,7 +169,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
 
         public T setIndeterminateDrawable(Drawable drawable) {
             mIndeterminateDrawable = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setIndeterminateDrawable(int resId) {
@@ -228,7 +228,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
          */
         public T setLoadingColor(int color) {
             mLoadingColor = color;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -247,7 +247,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
          */
         public T setLoadingSize(int size) {
             this.mLoadingSize = size;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -259,7 +259,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
          */
         public T setMessage(CharSequence charSequence) {
             this.mMessageStr = charSequence;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setMessage(int resId) {
@@ -275,7 +275,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
          */
         public T setTextColor(ColorStateList color) {
             this.mTextColor = color;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setTextColor(int color) {
@@ -288,7 +288,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
 
         public T setTextSize(float size) {
             this.mTextSize = size;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -301,7 +301,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
         public T setTextSize(int unit, float size) {
             this.mTextSize = size;
             this.mTextSizeUnit = unit;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -312,7 +312,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
          */
         public T setTextPadding(int padding) {
             this.mTextPadding = padding;
-            return (T) this;
+            return backBuilder();
         }
 
         public UIProgressDialog create() {

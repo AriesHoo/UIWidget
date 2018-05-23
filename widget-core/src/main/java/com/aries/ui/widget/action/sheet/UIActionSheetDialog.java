@@ -47,6 +47,7 @@ import java.util.Map;
  * 4、2018-4-3 09:10:18 新增view拖拽关闭交互效果{@link Builder#setDragEnable(boolean)}
  * 5、2018-4-3 12:50:31 将控制虚拟导航栏功能从BasisDialog移至此处
  * 6、2018-4-6 21:43:20 调整设置cancel 及margin逻辑
+ * 7、2018-5-23 16:54:27 调整Item背景处理逻辑避免因设置GridView 间隔造成问题
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
     protected TranslucentUtil mUtil;
@@ -243,7 +244,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 }
                 mListHeaderViews.add(view);
             }
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -259,7 +260,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 }
                 mListFooterViews.add(view);
             }
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemDrawable(Drawable drawable) {
@@ -267,7 +268,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     .setItemsTopDrawable(drawable)
                     .setItemsCenterDrawable(drawable)
                     .setItemsBottomDrawable(drawable);
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemDrawableResource(int res) {
@@ -283,7 +284,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     setItemsTopPressedDrawable(drawable)
                     .setItemsCenterPressedDrawable(drawable)
                     .setItemsBottomPressedDrawable(drawable);
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemPressedDrawableResource(int res) {
@@ -296,7 +297,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
         public T setItemsTopDrawable(Drawable drawable) {
             mTopDrawable = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsTopDrawableResource(int res) {
@@ -309,7 +310,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
         public T setItemsTopPressedDrawable(Drawable drawable) {
             mTopPressedDrawable = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsTopPressedDrawableResource(int res) {
@@ -322,7 +323,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
         public T setItemsCenterDrawable(Drawable drawable) {
             mCenterDrawable = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsCenterDrawableResource(int res) {
@@ -335,7 +336,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
         public T setItemsCenterPressedDrawable(Drawable drawable) {
             mCenterPressedDrawable = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsCenterPressedDrawableResource(int res) {
@@ -348,7 +349,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
         public T setItemsBottomDrawable(Drawable drawable) {
             mBottomDrawable = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsBottomDrawableResource(int res) {
@@ -361,7 +362,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
         public T setItemsBottomPressedDrawable(Drawable drawable) {
             mBottomPressedDrawable = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsBottomPressedDrawableResource(int res) {
@@ -374,7 +375,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
         public T setItemsDivider(Drawable drawable) {
             mItemsDivider = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsDividerColor(int color) {
@@ -387,7 +388,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
         public T setItemsDividerHeight(int height) {
             mItemsDividerHeight = height;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsDividerHeightResource(int res) {
@@ -787,7 +788,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             super(context);
             setBackgroundResource(R.color.colorActionSheetNormalBackground)
                     .setItemsSingleDrawableResource(R.color.colorActionSheetEdge)
-                    .setItemsSinglePressedDrawableResource(R.color.colorActionSheetEdge)
+                    .setItemsSinglePressedDrawableResource(R.color.colorActionSheetEdgePressed)
                     .setMarginTop((int) (getScreenHeight() * 0.2))
                     .setTextPadding(dp2px(16), dp2px(10), dp2px(16), dp2px(10))
                     .setTitleTextColorResource(R.color.colorActionSheetTitleText)
@@ -796,6 +797,8 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     .setItemsMinHeight(dp2px(45))
                     .setTextDrawablePadding(dp2px(12))
                     .setPadding(0);
+            mBottomDrawable = DrawableUtil.getNewDrawable(mSingleDrawable);
+            mBottomPressedDrawable = DrawableUtil.getNewDrawable(mSinglePressedDrawable);
         }
 
         /**
@@ -806,7 +809,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setDragEnable(boolean enable) {
             this.mDragEnable = enable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -817,7 +820,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setMarginTop(int top) {
             mMarginTop = top;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -828,7 +831,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setTextDrawablePadding(int padding) {
             this.mTextDrawablePadding = padding;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -845,7 +848,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             this.mItemsTextPaddingTop = top;
             this.mItemsTextPaddingRight = right;
             this.mItemsTextPaddingBottom = bottom;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -857,7 +860,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setTitle(CharSequence charSequence) {
             this.mTitleStr = charSequence;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setTitle(int resId) {
@@ -873,7 +876,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setTitleTextColor(ColorStateList color) {
             this.mTitleTextColor = color;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setTitleTextColor(int color) {
@@ -894,7 +897,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setTitleTextSize(float size) {
             this.mTitleTextSize = size;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -906,7 +909,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setTitleGravity(int gravity) {
             this.mTitleGravity = gravity;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -917,7 +920,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setCancel(CharSequence charSequence) {
             this.mCancelStr = charSequence;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setCancel(int resId) {
@@ -932,7 +935,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setCancelTextColor(ColorStateList color) {
             this.mCancelTextColor = color;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setCancelTextColor(int color) {
@@ -951,7 +954,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setCancelTextSize(float size) {
             this.mCancelTextSize = size;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -962,7 +965,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setCancelGravity(int gravity) {
             this.mCancelGravity = gravity;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -973,7 +976,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setCancelMarginTop(int margin) {
             this.mCancelMarginTop = margin;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -984,7 +987,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setAdapter(ListAdapter adapter) {
             this.mAdapter = adapter;
-            return (T) this;
+            return backBuilder();
         }
 
 
@@ -996,7 +999,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setItemsSingleDrawable(Drawable drawable) {
             mSingleDrawable = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsSingleDrawableResource(int res) {
@@ -1015,7 +1018,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setItemsSinglePressedDrawable(Drawable drawable) {
             mSinglePressedDrawable = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsSinglePressedDrawableResource(int res) {
@@ -1034,7 +1037,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setItemsMinHeight(int height) {
             this.mItemsMinHeight = height;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -1049,7 +1052,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setItemsTextColor(ColorStateList color) {
             this.mItemsTextColor = color;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemsTextColor(int color) {
@@ -1072,7 +1075,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 mMapItemColor = new HashMap<>();
             }
             mMapItemColor.put(position, color);
-            return (T) this;
+            return backBuilder();
         }
 
         public T setItemTextColor(int position, int color) {
@@ -1091,7 +1094,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setItemsTextSize(float size) {
             this.mItemsTextSize = size;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -1103,7 +1106,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setItemsGravity(int gravity) {
             this.mItemsGravity = gravity;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -1115,7 +1118,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setItemsTextGravity(int gravity) {
             this.mItemsTextGravity = gravity;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -1126,7 +1129,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setItemsImageWidth(int width) {
             mItemsImageWidth = width;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -1137,7 +1140,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setItemsImageHeight(int height) {
             mItemsImageHeight = height;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -1148,7 +1151,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setItemsClickDismissEnable(boolean enable) {
             this.mItemsClickDismissEnable = enable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -1164,7 +1167,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 }
                 mListItem.add(item);
             }
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -1203,7 +1206,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 }
                 mListItem.addAll(list);
             }
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -1221,7 +1224,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     addItem(item);
                 }
             }
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -1252,7 +1255,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         public T setOnItemClickListener(OnItemClickListener listener) {
             this.mOnItemClickListener = listener;
-            return (T) this;
+            return backBuilder();
         }
 
         /**

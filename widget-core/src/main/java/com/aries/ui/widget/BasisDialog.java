@@ -112,34 +112,38 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         return mContentView;
     }
 
+    public T backDialog() {
+        return (T) this;
+    }
+
     public T setAttributes(WindowManager.LayoutParams params) {
         this.mLayoutParams = params;
-        return (T) this;
+        return backDialog();
     }
 
     public T setAlpha(float alpha) {
         mAlpha = alpha;
-        return (T) this;
+        return backDialog();
     }
 
     public T setDimAmount(float dimAmount) {
         mDimAmount = dimAmount;
-        return (T) this;
+        return backDialog();
     }
 
     public T setGravity(int gravity) {
         mGravity = gravity;
-        return (T) this;
+        return backDialog();
     }
 
     public T setWidth(int w) {
         this.mWidth = w;
-        return (T) this;
+        return backDialog();
     }
 
     public T setHeight(int h) {
         this.mHeight = h;
-        return (T) this;
+        return backDialog();
     }
 
     /**
@@ -150,7 +154,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
      */
     public T setWindowAnimations(int res) {
         this.mWindowAnimations = res;
-        return (T) this;
+        return backDialog();
     }
 
     /**
@@ -164,7 +168,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
             params.setMargins(left, top, right, bottom);
             mContentView.setLayoutParams(params);
         }
-        return (T) this;
+        return backDialog();
     }
 
     protected void closeKeyboard() {
@@ -210,6 +214,10 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
             mResourceUtil = new ResourceUtil(mContext);
         }
 
+        public T backBuilder() {
+            return (T) this;
+        }
+
         /**
          * 设置根布局背景Drawable
          *
@@ -218,7 +226,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setBackground(Drawable drawable) {
             this.mBackground = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -249,7 +257,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setBackgroundRadius(float radius) {
             mBackgroundRadius = radius;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setBackgroundRadiusResource(int res) {
@@ -264,7 +272,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setElevation(float elevation) {
             this.mElevation = elevation;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setElevationResoure(int res) {
@@ -279,7 +287,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setPadding(int padding) {
             this.mPadding = padding;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -290,7 +298,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setMinWidth(int w) {
             this.mMinWidth = w;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setMinWidthResource(int res) {
@@ -305,7 +313,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setMinHeight(int h) {
             this.mMinHeight = h;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setMinHeightResource(int res) {
@@ -321,7 +329,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setLineSpacingMultiplier(float lineSpacingMultiplier) {
             mLineSpacingMultiplier = lineSpacingMultiplier;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -332,7 +340,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setLineSpacingExtra(float lineSpacingExtra) {
             mLineSpacingExtra = lineSpacingExtra;
-            return (T) this;
+            return backBuilder();
         }
 
 
@@ -345,7 +353,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setTextSizeUnit(int unit) {
             this.mTextSizeUnit = unit;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -357,7 +365,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setCancelable(boolean enable) {
             this.mCancelable = enable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -369,7 +377,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setCanceledOnTouchOutside(boolean enable) {
             this.mCanceledOnTouchOutside = enable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -381,7 +389,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setOnTextViewLineListener(OnTextViewLineListener listener) {
             this.mOnTextViewLineListener = listener;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -393,7 +401,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setOnDismissListener(OnDismissListener listener) {
             this.mOnDismissListener = listener;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -405,7 +413,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setOnKeyListener(OnKeyListener listener) {
             this.mOnKeyListener = listener;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -417,7 +425,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setOnShowListener(OnShowListener listener) {
             this.mOnShowListener = listener;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -429,7 +437,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
          */
         public T setOnCancelListener(OnCancelListener listener) {
             this.mOnCancelListener = listener;
-            return (T) this;
+            return backBuilder();
         }
 
         /**

@@ -4,7 +4,6 @@ apply plugin: 'com.github.dcendents.android-maven'
 android {
     def ext = rootProject.ext
     compileSdkVersion ext.compileSdkVersion
-    buildToolsVersion ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion ext.minSdkVersion
@@ -43,6 +42,6 @@ android {
     }
 
     dependencies {
-        provided 'com.android.support:support-v4:'.concat(supportVersion)
+        compileOnly 'com.android.support:support-v4:'.concat(supportVersion)
     }
 }

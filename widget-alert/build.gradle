@@ -4,7 +4,6 @@ apply plugin: 'com.github.dcendents.android-maven'
 android {
     def ext = rootProject.ext
     compileSdkVersion ext.compileSdkVersion
-    buildToolsVersion ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion ext.minSdkVersion
@@ -42,6 +41,6 @@ android {
         archives javadocJar
     }
     dependencies {
-        compile project(':widget-core')
+        implementation project(':widget-core')
     }
 }

@@ -31,6 +31,7 @@ import java.util.List;
  * Function: UIAlert Dialog+Builder模式重构
  * Description:
  * 1、2018-3-29 14:07:04 新增获取Title及Message回调
+ * 2、新增控制Button点击是否关闭弹框属性{@link Builder#setButtonClickDismissEnable(boolean)}
  */
 public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
 
@@ -204,7 +205,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setDivider(Drawable drawable) {
             mDivider = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setDividerColor(int color) {
@@ -223,7 +224,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setDividerWidth(int w) {
             mDividerWidth = w;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setDividerWidthResource(int res) {
@@ -324,7 +325,8 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
                     if (listener != null) {
                         listener.onClick(mDialog, witch);
                     }
-                    mDialog.dismiss();
+                    if (mButtonClickDismissEnable)
+                        mDialog.dismiss();
                 }
             });
             mListButton.add(btn);
@@ -418,6 +420,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
         protected ScrollView mSvView;
         protected LinearLayout mLLayoutView;
 
+        protected boolean mButtonClickDismissEnable = true;
         protected CharSequence mNegativeButtonStr;
         protected ColorStateList mNegativeButtonTextColor;
         protected float mNegativeButtonTextSize = 16;
@@ -454,7 +457,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setBorderLessButtonEnable(boolean enable) {
             this.mBorderLessButtonEnable = enable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -465,7 +468,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setBackgroundPressed(Drawable drawable) {
             this.mBackgroundPressed = drawable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -497,7 +500,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setTitle(CharSequence charSequence) {
             this.mTitleStr = charSequence;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setTitle(int resId) {
@@ -513,7 +516,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setTitleTextColor(ColorStateList color) {
             this.mTitleTextColor = color;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setTitleTextColor(int color) {
@@ -534,7 +537,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setTitleTextSize(float size) {
             this.mTitleTextSize = size;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -545,7 +548,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setTitleTextFakeBoldEnable(boolean enable) {
             this.mTitleTextFakeBoldEnable = enable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -557,7 +560,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setTitleTextGravity(int gravity) {
             this.mTitleTextGravity = gravity;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -569,7 +572,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setMessage(CharSequence charSequence) {
             this.mMessageStr = charSequence;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setMessage(int resId) {
@@ -585,7 +588,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setMessageTextColor(ColorStateList color) {
             this.mMessageTextColor = color;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setMessageTextColor(int color) {
@@ -606,7 +609,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setMessageTextSize(float size) {
             this.mMessageTextSize = size;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -617,7 +620,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setMessageTextFakeBoldEnable(boolean enable) {
             this.mMessageTextFakeBoldEnable = enable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -629,7 +632,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setMessageTextGravity(int gravity) {
             this.mMessageTextGravity = gravity;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -640,7 +643,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setCenterGravity(int gravity) {
             this.mCenterGravity = gravity;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -653,11 +656,22 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
             if (v != null) {
                 mListViews.add(v);
             }
-            return (T) this;
+            return backBuilder();
         }
 
         public T setView(int res) {
             return setView(View.inflate(mContext, res, null));
+        }
+
+        /**
+         * 设置点击Button是否关闭弹窗
+         *
+         * @param enable
+         * @return
+         */
+        public T setButtonClickDismissEnable(boolean enable) {
+            this.mButtonClickDismissEnable = enable;
+            return backBuilder();
         }
 
         /**
@@ -670,7 +684,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
         public T setNegativeButton(CharSequence charSequence, DialogInterface.OnClickListener listener) {
             this.mNegativeButtonStr = charSequence;
             this.mOnNegativeButtonClickListener = listener;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setNegativeButton(int resId, DialogInterface.OnClickListener listener) {
@@ -686,7 +700,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setNegativeButtonTextColor(ColorStateList color) {
             this.mNegativeButtonTextColor = color;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setNegativeButtonTextColor(int color) {
@@ -707,7 +721,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setNegativeButtonTextSize(float size) {
             this.mNegativeButtonTextSize = size;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -718,7 +732,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setNegativeButtonFakeBoldEnable(boolean enable) {
             this.mNegativeButtonTextFakeBoldEnable = enable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -731,7 +745,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
         public T setNeutralButton(CharSequence charSequence, DialogInterface.OnClickListener listener) {
             this.mNeutralButtonStr = charSequence;
             this.mOnNeutralButtonClickListener = listener;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setNeutralButton(int resId, DialogInterface.OnClickListener listener) {
@@ -747,7 +761,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setNeutralButtonTextColor(ColorStateList color) {
             this.mNeutralButtonTextColor = color;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setNeutralButtonTextColor(int color) {
@@ -768,7 +782,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setNeutralButtonTextSize(float size) {
             this.mNeutralButtonTextSize = size;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -779,7 +793,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setNeutralButtonFakeBoldEnable(boolean enable) {
             this.mNeutralButtonTextFakeBoldEnable = enable;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -792,7 +806,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
         public T setPositiveButton(CharSequence charSequence, DialogInterface.OnClickListener listener) {
             this.mPositiveButtonStr = charSequence;
             this.mOnPositiveButtonClickListener = listener;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setPositiveButton(int resId, DialogInterface.OnClickListener listener) {
@@ -808,7 +822,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setPositiveButtonTextColor(ColorStateList color) {
             this.mPositiveButtonTextColor = color;
-            return (T) this;
+            return backBuilder();
         }
 
         public T setPositiveButtonTextColor(int color) {
@@ -829,7 +843,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setPositiveButtonTextSize(float size) {
             this.mPositiveButtonTextSize = size;
-            return (T) this;
+            return backBuilder();
         }
 
         /**
@@ -840,7 +854,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
          */
         public T setPositiveButtonFakeBoldEnable(boolean enable) {
             this.mPositiveButtonTextFakeBoldEnable = enable;
-            return (T) this;
+            return backBuilder();
         }
 
         public UIAlertDialog create() {
