@@ -30,13 +30,13 @@ allprojects {
 }
 ```
 
-##### 3.0.0及以后版本-core为核心库、aler及collapsing默认compile了core库
+##### 3.0.0及以后版本-core为核心库、alert及collapsing默认compile了core库
 
 ```
 dependencies {
-     //compile 'com.github.AriesHoo.UIWidget:widget-core:3.1.0'
-     //compile 'com.github.AriesHoo.UIWidget:widget-alert:3.1.0'
-     //compile 'com.github.AriesHoo.UIWidget:widget-collapsing:3.1.0'
+     //compile 'com.github.AriesHoo.UIWidget:widget-core:3.2.0'
+     //compile 'com.github.AriesHoo.UIWidget:widget-alert:3.2.0'
+     //compile 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.0'
      compile 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
      compile 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
      compile 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
@@ -72,7 +72,7 @@ dependencies {
     <artifactId>widget-core</artifactId>
     <artifactId>widget-collapsing</artifactId>
     <artifactId>widget-alert</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0</version>
 </dependency>
 ```
 
@@ -261,6 +261,12 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 ## 重大更新日志
 
+* 3.2.0 更新
+        
+	* 修复:修复UIActionSheetDialog GridView模式下 不设置分割造成Cancel 样式错误
+	* 优化:使用AS 3.1.2 + Gradle 4.4进行优化
+	* 优化:增加AlphaViewHelper 按下及不可操作 alpha值通过Style 设置--参考demo Style样式
+	
 * 3.1.0 更新
         
 	* 发布正式版本
