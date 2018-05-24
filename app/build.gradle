@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     def ext = rootProject.ext
@@ -10,7 +9,7 @@ android {
         targetSdkVersion ext.targetSdkVersion
         versionCode ext.versionCode
         versionName ext.versionName
-//        multiDexEnabled true
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -36,9 +35,9 @@ dependencies {
     //UIAlertView
     implementation project(':widget-alert')
 
-//    compile 'com.github.AriesHoo.UIWidget:widget-core:3.0.0-alpha4'
-//    compile 'com.github.AriesHoo.UIWidget:widget-alert:3.0.0-alpha4'
-//    compile 'com.github.AriesHoo.UIWidget:widget-collapsing:3.0.0-alpha4'
+//    compile 'com.github.AriesHoo.UIWidget:widget-core:3.2.0'
+//    compile 'com.github.AriesHoo.UIWidget:widget-alert:3.2.0'
+//    compile 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.0'
 
     //图片加载
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
