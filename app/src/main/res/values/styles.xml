@@ -7,6 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textAllCaps">false</item>
+        <!--AlphaViewHelper默认按下透明(不可点击)透明度-->
+        <item name="pressedAlpha">0.8</item>
+        <item name="disabledAlpha">0.2</item>
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowNoDisplay">false</item>

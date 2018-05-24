@@ -14,8 +14,7 @@
     app:title_rightTextColor="@color/colorTextBlack"
     app:title_statusBarLightMode="true"
     app:title_titleMainTextColor="@color/colorTextBlack"
-    app:title_titleSubTextColor="@color/colorTextBlack"
-    app:title_viewPressedAlpha="0.5"/>
+    app:title_titleSubTextColor="@color/colorTextBlack"/>
 
 
 

@@ -3,6 +3,7 @@ package com.aries.ui.util;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.util.TypedValue;
 
 /**
@@ -104,5 +105,22 @@ public class ResourceUtil {
 
         }
         return result;
+    }
+
+    public float getAttrFloat(int attrRes) {
+        return getAttrFloat(attrRes, 1.0f);
+    }
+
+    public float getAttrFloat(int attrRes, float def) {
+        float result = def;
+        try {
+            TypedValue typedValue = new TypedValue();
+            mContext.getTheme().resolveAttribute(attrRes, typedValue, true);
+            result = typedValue.getFloat();
+        } catch (Exception e) {
+
+        }
+        Log.i("getAttrFloat", "result:" + result);
+        return result == 0 ? def : result;
     }
 }

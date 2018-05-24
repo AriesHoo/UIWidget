@@ -47,7 +47,7 @@ import java.util.Map;
  * 4、2018-4-3 09:10:18 新增view拖拽关闭交互效果{@link Builder#setDragEnable(boolean)}
  * 5、2018-4-3 12:50:31 将控制虚拟导航栏功能从BasisDialog移至此处
  * 6、2018-4-6 21:43:20 调整设置cancel 及margin逻辑
- * 7、2018-5-23 16:54:27 调整Item背景处理逻辑避免因设置GridView 间隔造成问题
+ * 7、2018-5-23 16:54:27 调整Cancel背景处理逻辑避免因设置GridView 间隔造成问题
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
     protected TranslucentUtil mUtil;
@@ -797,8 +797,6 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     .setItemsMinHeight(dp2px(45))
                     .setTextDrawablePadding(dp2px(12))
                     .setPadding(0);
-            mBottomDrawable = DrawableUtil.getNewDrawable(mSingleDrawable);
-            mBottomPressedDrawable = DrawableUtil.getNewDrawable(mSinglePressedDrawable);
         }
 
         /**
@@ -1367,7 +1365,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     mTvCancel.setLayoutParams(lp);
                 }
             }
-            boolean single = mCancelMarginTop > 0 || TextUtils.isEmpty(mTitleStr) && mViewItem == null;
+            boolean single = mCancelMarginTop > 0 || TextUtils.isEmpty(mTitleStr) && mViewItem == null || mBottomDrawable == null;
             setViewBackground(mTvCancel, single ? mStateDrawableSingle : mStateDrawableBottom);
 
             mTvCancel.setOnClickListener(new View.OnClickListener() {
