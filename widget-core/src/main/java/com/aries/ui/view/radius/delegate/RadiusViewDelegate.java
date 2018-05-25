@@ -13,7 +13,6 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 
 import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.widget.R;
@@ -31,6 +30,7 @@ import com.aries.ui.widget.R;
  * 5、2018-2-6 12:04:02 校正float类型参数xml属性解析方法
  * 6、2018-2-23 10:30:53 新增View在非波纹背景下各个状态切换时延属性
  * 7、2018-3-18 11:17:29 新增泛型返回方便子类继承的链式调用
+ * 8、2018-5-25 13:12:24 去掉默认控制是否可点击控制,调整水波纹效果开启逻辑
  */
 public class RadiusViewDelegate<T extends RadiusViewDelegate> {
 
@@ -101,9 +101,6 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         this.mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.RadiusSwitch);
         this.mResourceUtil = new ResourceUtil(context);
         initAttributes(context, attrs);
-        if (!(view instanceof CompoundButton) && !view.isClickable()) {
-            view.setClickable(mRippleEnable);
-        }
         view.setSelected(mSelected);
         setSelected(mSelected);
     }
@@ -135,21 +132,11 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         mBottomRightRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_bottomRightRadius, 0);
 
         mRippleColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_rippleColor, mContext.getResources().getColor(R.color.colorRadiusDefaultRipple));
-        mRippleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_rippleEnable, getDefaultRippleEnable());
+        mRippleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_rippleEnable, mView.isClickable());
         mSelected = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_selected, false);
         mEnterFadeDuration = mTypedArray.getInteger(R.styleable.RadiusSwitch_rv_enterFadeDuration, 0);
         mExitFadeDuration = mTypedArray.getInteger(R.styleable.RadiusSwitch_rv_exitFadeDuration, 0);
         mTypedArray.recycle();
-    }
-
-    /**
-     * 是否默认开启水波纹
-     *
-     * @return
-     */
-    private boolean getDefaultRippleEnable() {
-        boolean enable = !(mView instanceof CompoundButton) && !(mView instanceof EditText);
-        return enable;
     }
 
     protected T back() {
