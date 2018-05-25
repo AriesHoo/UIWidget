@@ -20,7 +20,7 @@ import com.aries.ui.widget.R;
  * Description:
  * 1、增加默认属性值
  */
-public class RadiusSwitchDelegate extends RadiusCompoundButtonDelegate<RadiusSwitchDelegate> {
+public class RadiusSwitchDelegate extends RadiusCompoundDelegate<RadiusSwitchDelegate> {
 
     private Switch mSwitch;
     private StateListDrawable mStateThumbDrawable;

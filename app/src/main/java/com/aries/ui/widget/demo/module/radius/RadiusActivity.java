@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aries.ui.view.radius.RadiusRadioButton;
 import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
 import com.aries.ui.widget.demo.R;
@@ -56,6 +57,8 @@ public class RadiusActivity extends BaseActivity {
         //以上是java代码设置GradientDrawable设置背景属性
         //以下是通过RadiusViewDelegate代理类设置达到相同效果大家可参照下依然是通过设置GradientDrawable属性
         rtvJavaBg.getDelegate()
+                .setTextCheckedColor(Color.BLUE)
+                .setBackgroundCheckedColor(Color.WHITE)
                 .setRadius(getResources().getDimension(R.dimen.dp_radius))
                 .setStrokeWidth(getResources().getDimensionPixelSize(R.dimen.dp_stroke_width))
                 .setStrokeColor(getResources().getColor(android.R.color.holo_purple))
@@ -69,6 +72,13 @@ public class RadiusActivity extends BaseActivity {
                         Toast.makeText(mContext, "isSelected:" + isSelected, Toast.LENGTH_SHORT).show();
                     }
                 }).init();
+
+        RadiusRadioButton radiusSwitch = new RadiusRadioButton(mContext);
+        radiusSwitch.getDelegate()
+                .setBackgroundSelectedColor(Color.BLUE)
+                .setBackgroundCheckedColor(Color.YELLOW)
+                .setRadius(4f)
+                .init();
     }
 
 

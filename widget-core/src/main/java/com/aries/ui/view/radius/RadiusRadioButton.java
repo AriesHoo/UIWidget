@@ -11,7 +11,7 @@ import com.aries.ui.view.radius.delegate.RadiusCompoundButtonDelegate;
  * E-Mail: AriesHoo@126.com
  * Function: 用于需要圆角矩形框背景的RadioButton的情况,减少直接使用RadioButton时引入的shape资源文件
  * Description:
- * 1、2018-2-5 14:27:16 初始化CompoundButton的 RadiusCompoundButtonDelegate
+ * 1、2018-2-5 14:27:16 初始化CompoundButton的 RadiusCompoundDelegate
  */
 public class RadiusRadioButton extends RadioButton {
     private RadiusCompoundButtonDelegate delegate;
@@ -31,7 +31,7 @@ public class RadiusRadioButton extends RadioButton {
      *
      * @return
      */
-    public RadiusCompoundButtonDelegate<RadiusCompoundButtonDelegate> getDelegate() {
+    public RadiusCompoundButtonDelegate getDelegate() {
         return delegate;
     }
 
@@ -68,7 +68,7 @@ public class RadiusRadioButton extends RadioButton {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        if (delegate != null){
+        if (delegate != null) {
             delegate.init();
         }
     }

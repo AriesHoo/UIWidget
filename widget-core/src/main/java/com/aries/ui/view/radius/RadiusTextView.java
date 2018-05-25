@@ -11,7 +11,7 @@ import com.aries.ui.view.radius.delegate.RadiusTextViewDelegate;
  * E-Mail: AriesHoo@126.com
  * Function: 用于需要圆角矩形框背景的TextView的情况,减少直接使用TextView时引入的shape资源文件
  * Description:
- * 1、2018-2-5 14:27:16 初始化TextView的 RadiusTextViewDelegate
+ * 1、2018-2-5 14:27:16 初始化TextView的 RadiusTextDelegate
  */
 public class RadiusTextView extends TextView {
     private RadiusTextViewDelegate delegate;
@@ -34,7 +34,7 @@ public class RadiusTextView extends TextView {
      *
      * @return
      */
-    public RadiusTextViewDelegate<RadiusTextViewDelegate> getDelegate() {
+    public RadiusTextViewDelegate getDelegate() {
         return delegate;
     }
 

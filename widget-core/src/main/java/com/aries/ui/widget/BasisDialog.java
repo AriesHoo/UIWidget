@@ -112,7 +112,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         return mContentView;
     }
 
-    public T backDialog() {
+    protected T backDialog() {
         return (T) this;
     }
 
@@ -214,7 +214,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
             mResourceUtil = new ResourceUtil(mContext);
         }
 
-        public T backBuilder() {
+        protected T backBuilder() {
             return (T) this;
         }
 
