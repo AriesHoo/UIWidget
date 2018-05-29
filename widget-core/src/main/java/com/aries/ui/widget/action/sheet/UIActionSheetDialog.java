@@ -9,6 +9,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ import java.util.Map;
  * 5、2018-4-3 12:50:31 将控制虚拟导航栏功能从BasisDialog移至此处
  * 6、2018-4-6 21:43:20 调整设置cancel 及margin逻辑
  * 7、2018-5-23 16:54:27 调整Cancel背景处理逻辑避免因设置GridView 间隔造成问题
+ * 8、2018-5-28 16:39:05 修改兼容Android O以上版本导航栏问题
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
     protected TranslucentUtil mUtil;
@@ -58,17 +60,19 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
     public UIActionSheetDialog(Context context) {
         super(context, R.style.ActionSheetViewDialogStyle);
-        mUtil = new TranslucentUtil(getWindow(), context);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+            mUtil = new TranslucentUtil(getWindow(), context);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O &&
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
                 && mUtil.mNavBarAvailable) {
             mWindow.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             View target = mContentView instanceof DragLayout ? ((DragLayout) mContentView).getChildAt(0) : mContentView;
-            if (target == null) return;
+            if (target == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
             target.setPadding(target.getPaddingLeft(),
                     target.getPaddingTop(),
                     target.getPaddingRight(),
@@ -786,10 +790,11 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
         public Builder(Context context) {
             super(context);
+            Log.i("height", "height:" + getScreenHeight());
             setBackgroundResource(R.color.colorActionSheetNormalBackground)
                     .setItemsSingleDrawableResource(R.color.colorActionSheetEdge)
                     .setItemsSinglePressedDrawableResource(R.color.colorActionSheetEdgePressed)
-                    .setMarginTop((int) (getScreenHeight() * 0.2))
+                    .setMarginTop((int) (getScreenHeight() * 0.1))
                     .setTextPadding(dp2px(16), dp2px(10), dp2px(16), dp2px(10))
                     .setTitleTextColorResource(R.color.colorActionSheetTitleText)
                     .setCancelTextColorResource(R.color.colorActionSheetWeiXinText)
