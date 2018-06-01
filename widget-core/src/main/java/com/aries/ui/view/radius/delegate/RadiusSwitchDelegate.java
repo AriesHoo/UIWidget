@@ -18,7 +18,7 @@ import com.aries.ui.widget.R;
  * E-Mail: AriesHoo@126.com
  * Function: 设置Switch thumb及track相关代理
  * Description:
- * 1、增加默认属性值
+ * 2018-6-1 09:40:27 1、增加默认属性值并调整设置Drawable逻辑
  */
 public class RadiusSwitchDelegate extends RadiusCompoundDelegate<RadiusSwitchDelegate> {
 
@@ -411,12 +411,8 @@ public class RadiusSwitchDelegate extends RadiusCompoundDelegate<RadiusSwitchDel
      */
     private void setSwitchDrawable() {
         mSwitch = (Switch) mView;
-        if (mStateThumbDrawable == null) {
-            mStateThumbDrawable = new StateListDrawable();
-        }
-        if (mStateTrackDrawable == null) {
-            mStateTrackDrawable = new StateListDrawable();
-        }
+        mStateThumbDrawable = new StateListDrawable();
+        mStateTrackDrawable = new StateListDrawable();
         mStateThumbDrawable.addState(new int[]{mStateChecked}, getStateDrawable(mThumbCheckedDrawable, mThumbRadius, mThumbDrawableWidth, mThumbDrawableHeight, mThumbStrokeWidth, mThumbStrokeCheckedColor));
         mStateThumbDrawable.addState(new int[]{mStateSelected}, getStateDrawable(mThumbSelectedDrawable, mThumbRadius, mThumbDrawableWidth, mThumbDrawableHeight, mThumbStrokeWidth, mThumbStrokeSelectedColor));
         mStateThumbDrawable.addState(new int[]{mStatePressed}, getStateDrawable(mThumbPressedDrawable, mThumbRadius, mThumbDrawableWidth, mThumbDrawableHeight, mThumbStrokeWidth, mThumbStrokePressedColor));

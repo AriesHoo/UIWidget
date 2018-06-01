@@ -126,6 +126,8 @@
     <!--drawable宽高属性当drawable为颜色值(ColorDrawable)时方有效-->
     <!--设置drawable为颜色值(ColorDrawable)时的圆角弧度-->
     <attr name="rv_buttonDrawableColorRadius" format="dimension"/>
+    <!--是否系统自带Button样式-->
+    <attr name="rv_buttonDrawableSystemEnable" format="boolean"/>
     <!--设置drawable为颜色值(ColorDrawable)时是否圆形-->
     <attr name="rv_buttonDrawableColorCircleEnable" format="boolean"/>
     <attr name="rv_buttonDrawableWidth" format="dimension"/>
@@ -212,6 +214,7 @@
         <attr name="rv_bottomCheckedDrawable"/>
 
         <attr name="rv_buttonDrawableColorRadius"/>
+        <attr name="rv_buttonDrawableSystemEnable"/>
         <attr name="rv_buttonDrawableColorCircleEnable"/>
         <attr name="rv_buttonDrawableWidth"/>
         <attr name="rv_buttonDrawableHeight"/>
@@ -328,6 +331,7 @@
         <attr name="rv_bottomCheckedDrawable"/>
 
         <attr name="rv_buttonDrawableColorRadius"/>
+        <attr name="rv_buttonDrawableSystemEnable"/>
         <attr name="rv_buttonDrawableColorCircleEnable"/>
         <attr name="rv_buttonDrawableWidth"/>
         <attr name="rv_buttonDrawableHeight"/>
@@ -415,6 +419,7 @@
         <attr name="rv_bottomCheckedDrawable"/>
 
         <attr name="rv_buttonDrawableColorRadius"/>
+        <attr name="rv_buttonDrawableSystemEnable"/>
         <attr name="rv_buttonDrawableColorCircleEnable"/>
         <attr name="rv_buttonDrawableWidth"/>
         <attr name="rv_buttonDrawableHeight"/>

@@ -24,6 +24,8 @@ import com.aries.ui.widget.R;
  * 1、2018-2-4 17:42:18 增加 CompoundButton 类(CheckBox和RadioButton)增加ButtonDrawable属性
  * 2、2018-2-5 11:02:51 增加TextView类设置drawable属性
  * 3、提前增加文本颜色值默认检查
+ * 4、2018-5-31 16:59:59 新增部分遗漏java属性
+ * 5、2018-5-31 17:00:47 修订设置Drawable后无法移除问题
  */
 public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusViewDelegate<T> {
 
@@ -200,6 +202,16 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
         return (T) this;
     }
 
+    public T setLeftDrawableColorRadius(float leftDrawableColorRadius) {
+        mLeftDrawableColorRadius = leftDrawableColorRadius;
+        return back();
+    }
+
+    public T setLeftDrawableColorCircleEnable(boolean leftDrawableColorCircleEnable) {
+        mLeftDrawableColorCircleEnable = leftDrawableColorCircleEnable;
+        return back();
+    }
+
     public T setLeftDrawableWidth(int leftDrawableWidth) {
         mLeftDrawableWidth = leftDrawableWidth;
         return (T) this;
@@ -259,6 +271,16 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setLeftCheckedDrawable(int resId) {
         return setLeftCheckedDrawable(getDrawable(resId));
+    }
+
+    public T setTopDrawableColorRadius(float topDrawableColorRadius) {
+        mTopDrawableColorRadius = topDrawableColorRadius;
+        return back();
+    }
+
+    public T setTopDrawableColorCircleEnable(boolean topDrawableColorCircleEnable) {
+        mTopDrawableColorCircleEnable = topDrawableColorCircleEnable;
+        return back();
     }
 
     public T setTopDrawableWidth(int topDrawableWidth) {
@@ -322,6 +344,16 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
         return setTopCheckedDrawable(getDrawable(resId));
     }
 
+    public T setRightDrawableColorRadius(float rightDrawableColorRadius) {
+        mRightDrawableColorRadius = rightDrawableColorRadius;
+        return back();
+    }
+
+    public T setRightDrawableColorCircleEnable(boolean rightDrawableColorCircleEnable) {
+        mRightDrawableColorCircleEnable = rightDrawableColorCircleEnable;
+        return back();
+    }
+
     public T setRightDrawableWidth(int rightDrawableWidth) {
         mRightDrawableWidth = rightDrawableWidth;
         return (T) this;
@@ -381,6 +413,16 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setRightCheckedDrawable(int resId) {
         return setRightCheckedDrawable(getDrawable(resId));
+    }
+
+    public T setBottomDrawableColorRadius(float bottomDrawableColorRadius) {
+        mBottomDrawableColorRadius = bottomDrawableColorRadius;
+        return back();
+    }
+
+    public T setBottomDrawableColorCircleEnable(boolean bottomDrawableColorCircleEnable) {
+        mBottomDrawableColorCircleEnable = bottomDrawableColorCircleEnable;
+        return back();
     }
 
     public T setBottomDrawableWidth(int bottomDrawableWidth) {
@@ -456,43 +498,40 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     private void setTextDrawable(Drawable normal, Drawable checked, Drawable selected, Drawable pressed,
                                  Drawable disabled, int gravity) {
-        if (normal != null || pressed != null || disabled != null
-                || selected != null || checked != null) {
-            int index = 0;
-            int width = mLeftDrawableWidth;
-            int height = mLeftDrawableHeight;
-            float radius = mLeftDrawableColorCircleEnable ? width + height / 2 : mLeftDrawableColorRadius;
-            switch (gravity) {
-                case Gravity.TOP:
-                    index = 1;
-                    width = mTopDrawableWidth;
-                    height = mTopDrawableHeight;
-                    radius = mTopDrawableColorCircleEnable ? width + height / 2 : mTopDrawableColorRadius;
-                    break;
-                case Gravity.RIGHT:
-                    index = 2;
-                    width = mRightDrawableWidth;
-                    height = mRightDrawableHeight;
-                    radius = mRightDrawableColorCircleEnable ? width + height / 2 : mRightDrawableColorRadius;
-                    break;
-                case Gravity.BOTTOM:
-                    index = 3;
-                    width = mBottomDrawableWidth;
-                    height = mBottomDrawableHeight;
-                    radius = mBottomDrawableColorCircleEnable ? width + height / 2 : mBottomDrawableColorRadius;
-                    break;
-            }
-            StateListDrawable stateDrawable = new StateListDrawable();
-            stateDrawable.addState(new int[]{mStateChecked}, getStateDrawable(checked, radius, width, height));
-            stateDrawable.addState(new int[]{mStateSelected}, getStateDrawable(selected, radius, width, height));
-            stateDrawable.addState(new int[]{mStatePressed}, getStateDrawable(pressed, radius, width, height));
-            stateDrawable.addState(new int[]{mStateDisabled}, getStateDrawable(disabled, radius, width, height));
-            stateDrawable.addState(new int[]{}, getStateDrawable(normal, radius, width, height));
-            DrawableUtil.setDrawableWidthHeight(stateDrawable, width, height);
-            Drawable[] drawables = mTextView.getCompoundDrawables();
-            drawables[index] = stateDrawable;
-            mTextView.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+        int index = 0;
+        int width = mLeftDrawableWidth;
+        int height = mLeftDrawableHeight;
+        float radius = mLeftDrawableColorCircleEnable ? width + height / 2 : mLeftDrawableColorRadius;
+        switch (gravity) {
+            case Gravity.TOP:
+                index = 1;
+                width = mTopDrawableWidth;
+                height = mTopDrawableHeight;
+                radius = mTopDrawableColorCircleEnable ? width + height / 2 : mTopDrawableColorRadius;
+                break;
+            case Gravity.RIGHT:
+                index = 2;
+                width = mRightDrawableWidth;
+                height = mRightDrawableHeight;
+                radius = mRightDrawableColorCircleEnable ? width + height / 2 : mRightDrawableColorRadius;
+                break;
+            case Gravity.BOTTOM:
+                index = 3;
+                width = mBottomDrawableWidth;
+                height = mBottomDrawableHeight;
+                radius = mBottomDrawableColorCircleEnable ? width + height / 2 : mBottomDrawableColorRadius;
+                break;
         }
+        StateListDrawable stateDrawable = new StateListDrawable();
+        stateDrawable.addState(new int[]{mStateChecked}, getStateDrawable(checked, radius, width, height));
+        stateDrawable.addState(new int[]{mStateSelected}, getStateDrawable(selected, radius, width, height));
+        stateDrawable.addState(new int[]{mStatePressed}, getStateDrawable(pressed, radius, width, height));
+        stateDrawable.addState(new int[]{mStateDisabled}, getStateDrawable(disabled, radius, width, height));
+        stateDrawable.addState(new int[]{}, getStateDrawable(normal, radius, width, height));
+        DrawableUtil.setDrawableWidthHeight(stateDrawable, width, height);
+        Drawable[] drawables = mTextView.getCompoundDrawables();
+        drawables[index] = stateDrawable;
+        mTextView.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
     }
 
     /**
@@ -505,6 +544,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      * @return
      */
     protected Drawable getStateDrawable(Drawable drawable, float radius, int width, int height) {
+        if (drawable == null) return drawable;
         if (drawable instanceof ColorDrawable) {
             ColorDrawable colorDrawable = (ColorDrawable) drawable;
             GradientDrawable gradientDrawable = new GradientDrawable();

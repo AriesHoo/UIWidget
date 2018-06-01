@@ -6,8 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -50,9 +48,9 @@ import java.util.Map;
  * 6、2018-4-6 21:43:20 调整设置cancel 及margin逻辑
  * 7、2018-5-23 16:54:27 调整Cancel背景处理逻辑避免因设置GridView 间隔造成问题
  * 8、2018-5-28 16:39:05 修改兼容Android O以上版本导航栏问题
+ * 9、2018-5-31 16:48:38 删除TranslucentUtil控制导航栏透明度
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
-    protected TranslucentUtil mUtil;
 
     public interface OnItemClickListener {
         void onClick(BasisDialog dialog, View itemView, int position);
@@ -60,24 +58,6 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
     public UIActionSheetDialog(Context context) {
         super(context, R.style.ActionSheetViewDialogStyle);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-            mUtil = new TranslucentUtil(getWindow(), context);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O &&
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                && mUtil.mNavBarAvailable) {
-            mWindow.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            View target = mContentView instanceof DragLayout ? ((DragLayout) mContentView).getChildAt(0) : mContentView;
-            if (target == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
-            target.setPadding(target.getPaddingLeft(),
-                    target.getPaddingTop(),
-                    target.getPaddingRight(),
-                    mUtil.getNavigationBarHeight(getContext()) + target.getPaddingBottom());
-        }
     }
 
     /**
@@ -794,7 +774,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             setBackgroundResource(R.color.colorActionSheetNormalBackground)
                     .setItemsSingleDrawableResource(R.color.colorActionSheetEdge)
                     .setItemsSinglePressedDrawableResource(R.color.colorActionSheetEdgePressed)
-                    .setMarginTop((int) (getScreenHeight() * 0.1))
+                    .setMarginTop((int) (getScreenHeight() * 0.3))
                     .setTextPadding(dp2px(16), dp2px(10), dp2px(16), dp2px(10))
                     .setTitleTextColorResource(R.color.colorActionSheetTitleText)
                     .setCancelTextColorResource(R.color.colorActionSheetWeiXinText)

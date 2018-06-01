@@ -304,6 +304,7 @@
                 android:orientation="vertical">
 
                 <com.aries.ui.view.radius.RadiusRadioButton
+                    android:id="@+id/radioTest_radius"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -315,12 +316,13 @@
                     rv:rv_buttonDrawableColorCircleEnable="true"
                     rv:rv_buttonDrawableHeight="60dp"
                     rv:rv_buttonDrawableWidth="60dp"
-                    rv:rv_textCheckedColor="@android:color/holo_blue_dark"/>
+                    rv:rv_textCheckedColor="@android:color/holo_red_dark"/>
 
                 <com.aries.ui.view.radius.RadiusRadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RadiusRadioButton System"
+                    rv:rv_buttonDrawableSystemEnable="true"
                     rv:rv_textCheckedColor="@android:color/holo_blue_dark"/>
 
                 <RadioButton
