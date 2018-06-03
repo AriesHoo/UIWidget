@@ -1,9 +1,12 @@
 package com.aries.ui.view.radius.delegate;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
@@ -52,10 +55,10 @@ public class RadiusCompoundDelegate<T extends RadiusCompoundDelegate> extends Ra
         mButtonSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_buttonSelectedDrawable);
         mButtonCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_buttonCheckedDrawable);
 
-        mButtonPressedDrawable = mButtonPressedDrawable == null ? mButtonDrawable : mButtonPressedDrawable;
-        mButtonDisabledDrawable = mButtonDisabledDrawable == null ? mButtonDrawable : mButtonDisabledDrawable;
-        mButtonSelectedDrawable = mButtonSelectedDrawable == null ? mButtonDrawable : mButtonSelectedDrawable;
-        mButtonCheckedDrawable = mButtonCheckedDrawable == null ? mButtonDrawable : mButtonCheckedDrawable;
+//        mButtonPressedDrawable = mButtonPressedDrawable == null ? mButtonDrawable : mButtonPressedDrawable;
+//        mButtonDisabledDrawable = mButtonDisabledDrawable == null ? mButtonDrawable : mButtonDisabledDrawable;
+//        mButtonSelectedDrawable = mButtonSelectedDrawable == null ? mButtonDrawable : mButtonSelectedDrawable;
+//        mButtonCheckedDrawable = mButtonCheckedDrawable == null ? mButtonDrawable : mButtonCheckedDrawable;
         super.initAttributes(context, attrs);
     }
 
@@ -198,12 +201,13 @@ public class RadiusCompoundDelegate<T extends RadiusCompoundDelegate> extends Ra
     private void setButtonDrawable() {
         mButton = (CompoundButton) mView;
         if (mButtonDrawableSystemEnable) return;
+        Log.i("setButtonDrawable","id:"+mButton.getId()+";mButtonDrawable:"+mButtonDrawable);
         if (mButtonDrawable == null
                 && mButtonPressedDrawable == null
                 && mButtonDisabledDrawable == null
                 && mButtonSelectedDrawable == null
                 && mButtonCheckedDrawable == null) {
-            mButton.setButtonDrawable(null);
+            mButton.setButtonDrawable(new ColorDrawable(Color.TRANSPARENT));
             return;
         }
         float radius = mButtonDrawableColorCircleEnable ?

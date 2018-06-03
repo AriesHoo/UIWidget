@@ -102,15 +102,14 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         this.mResourceUtil = new ResourceUtil(context);
         initAttributes(context, attrs);
         view.setSelected(mSelected);
-        setSelected(mSelected);
     }
 
     protected void initAttributes(Context context, AttributeSet attrs) {
         mBackgroundColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundColor, Integer.MAX_VALUE);
-        mBackgroundPressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundPressedColor, mBackgroundColor);
-        mBackgroundDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundDisabledColor, mBackgroundColor);
-        mBackgroundSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundSelectedColor, mBackgroundColor);
-        mBackgroundCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundCheckedColor, mBackgroundColor);
+        mBackgroundPressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundPressedColor, Integer.MAX_VALUE);
+        mBackgroundDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundDisabledColor, Integer.MAX_VALUE);
+        mBackgroundSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundSelectedColor, Integer.MAX_VALUE);
+        mBackgroundCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundCheckedColor, Integer.MAX_VALUE);
 
         mStrokeColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeColor, Color.GRAY);
         mStrokePressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokePressedColor, mStrokeColor);
@@ -471,8 +470,8 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         } else {
             gd.setCornerRadius(mRadius);
         }
-        gd.setStroke(mStrokeWidth, strokeColor, mStrokeDashWidth, mStrokeDashGap);
-        gd.setColor(color);
+        gd.setStroke(mStrokeWidth, getStrokeColor(strokeColor), mStrokeDashWidth, mStrokeDashGap);
+        gd.setColor(getBackColor(color));
     }
 
     /**
@@ -487,14 +486,19 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
                 || mBackgroundPressedColor != Integer.MAX_VALUE
                 || mBackgroundDisabledColor != Integer.MAX_VALUE
                 || mBackgroundSelectedColor != Integer.MAX_VALUE
-                || mStrokeWidth > 0 || mRadius > 0
-                || mTopLeftRadius > 0 || mTopLeftRadius > 0 || mBottomLeftRadius > 0 || mBottomRightRadius > 0;
+                || mStrokeWidth > 0
+                || mRadius > 0
+                || mTopLeftRadius > 0
+                || mTopLeftRadius > 0
+                || mBottomLeftRadius > 0
+                || mBottomRightRadius > 0;
 
         setDrawable(mBackgroundChecked, mBackgroundCheckedColor, mStrokeCheckedColor);
-        setDrawable(mBackgroundSelected, mBackgroundPressedColor, mStrokeSelectedColor);
+        setDrawable(mBackgroundSelected, mBackgroundSelectedColor, mStrokeSelectedColor);
         setDrawable(mBackground, mBackgroundColor, mStrokeColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                && mRippleEnable && mView.isEnabled() && !mView.isSelected()) {//5.0以上且设置水波属性并且可操作
+                && mRippleEnable
+                && mView.isClickable()) {//5.0以上且设置水波属性并且可操作
             RippleDrawable rippleDrawable = new RippleDrawable(
                     new ColorStateList(
                             new int[][]{
@@ -513,25 +517,16 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
             if (!isSetBg) {
                 return;
             }
+            setDrawable(mBackgroundPressed, mBackgroundPressedColor, mStrokePressedColor);
+            setDrawable(mBackgroundDisabled, mBackgroundDisabledColor, mStrokeDisabledColor);
             StateListDrawable mStateDrawable = new StateListDrawable();
             mStateDrawable.setEnterFadeDuration(mEnterFadeDuration);
             mStateDrawable.setExitFadeDuration(mExitFadeDuration);
-            if (mBackgroundPressedColor != Integer.MAX_VALUE || mStrokePressedColor != Integer.MAX_VALUE) {
-                setDrawable(mBackgroundPressed, mBackgroundPressedColor, mStrokePressedColor);
-                mStateDrawable.addState(new int[]{mStatePressed}, mBackgroundPressed);
-            }
-            if (mBackgroundSelectedColor != Integer.MAX_VALUE || mStrokeSelectedColor != Integer.MAX_VALUE) {
-                setDrawable(mBackgroundSelected, mBackgroundSelectedColor, mStrokeSelectedColor);
-                mStateDrawable.addState(new int[]{mStateSelected}, mBackgroundSelected);
-            }
-            if (mBackgroundCheckedColor != Integer.MAX_VALUE || mStrokeCheckedColor != Integer.MAX_VALUE) {
-                setDrawable(mBackgroundChecked, mBackgroundCheckedColor, mStrokeCheckedColor);
-                mStateDrawable.addState(new int[]{mStateChecked}, mBackgroundChecked);
-            }
-            if (mBackgroundDisabledColor != Integer.MAX_VALUE || mStrokeDisabledColor != Integer.MAX_VALUE) {
-                setDrawable(mBackgroundDisabled, mBackgroundDisabledColor, mStrokeDisabledColor);
-                mStateDrawable.addState(new int[]{mStateDisabled}, mBackgroundDisabled);
-            }
+
+            mStateDrawable.addState(new int[]{mStatePressed}, mBackgroundPressed);
+            mStateDrawable.addState(new int[]{mStateSelected}, mBackgroundSelected);
+            mStateDrawable.addState(new int[]{mStateChecked}, mBackgroundChecked);
+            mStateDrawable.addState(new int[]{mStateDisabled}, mBackgroundDisabled);
             mStateDrawable.addState(new int[]{}, mBackground);//默认状态--放置在最后否则其它状态不生效
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 mView.setBackground(mStateDrawable);
@@ -539,7 +534,42 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
                 mView.setBackgroundDrawable(mStateDrawable);
             }
         }
-        return;
+    }
+
+    /**
+     * 获取背景色
+     *
+     * @param color
+     * @return
+     */
+    private int getBackColor(int color) {
+        if (color != Integer.MAX_VALUE) return color;
+        if (mView.isSelected()) {
+            color = mBackgroundSelectedColor;
+        } else if (mView instanceof CompoundButton) {
+            if (((CompoundButton) mView).isChecked()) {
+                color = mBackgroundCheckedColor;
+            }
+        }
+        return color != Integer.MAX_VALUE ? color : mBackgroundColor;
+    }
+
+    /**
+     * 获取边框线颜色
+     *
+     * @param color
+     * @return
+     */
+    private int getStrokeColor(int color) {
+        if (color != Integer.MAX_VALUE) return color;
+        if (mView.isSelected()) {
+            color = mStrokeSelectedColor;
+        } else if (mView instanceof CompoundButton) {
+            if (((CompoundButton) mView).isChecked()) {
+                color = mStrokeCheckedColor;
+            }
+        }
+        return color != Integer.MAX_VALUE ? color : mStrokeColor;
     }
 
     /**

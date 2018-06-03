@@ -82,8 +82,7 @@ public class RadiusActivity extends BaseActivity {
                 .setRadius(4f)
                 .init();
         mRadioButtonTest.getDelegate()
-                .setButtonDrawable(null)
-                .setButtonCheckedDrawable(null)
+                .setButtonPressedDrawable(R.drawable.ic_cb_normal)
                 .init();
     }
 

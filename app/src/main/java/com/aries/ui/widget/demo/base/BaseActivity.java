@@ -2,6 +2,8 @@ package com.aries.ui.widget.demo.base;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
@@ -9,11 +11,13 @@ import android.util.Log;
 import android.view.View;
 
 import com.aries.ui.helper.navigation.NavigationViewHelper;
+import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.RomUtil;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.demo.BuildConfig;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.util.AppUtil;
+import com.aries.ui.widget.demo.util.SizeUtil;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -72,15 +76,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         mUnBinder = ButterKnife.bind(this);
         initTitle();
         this.beforeInitView();
+        Drawable drawableTop = new ColorDrawable(Color.LTGRAY);
+        DrawableUtil.setDrawableWidthHeight(drawableTop, SizeUtil.getScreenWidth(),SizeUtil.dp2px(0.5f));
         mNavigationViewHelper = NavigationViewHelper.with(this)
                 .setLogEnable(BuildConfig.DEBUG)
                 .setControlEnable(true)
                 .setTransEnable(isTrans())
                 //导航栏可关闭/开启的不建议设置该属性为true
-                .setPlusNavigationViewEnable(RomUtil.isEMUI()&&!isTrans())
+                .setPlusNavigationViewEnable(isTrans())
                 .setControlBottomEditTextEnable(true)
+                .setNavigationViewDrawableTop(drawableTop)
                 .setNavigationViewColor(Color.argb(isTrans() ? 0 : 102, 0, 0, 0))
-                .setNavigationLayoutColor(getResources().getColor(R.color.colorBackground))
+                .setNavigationLayoutColor(getResources().getColor(R.color.colorWhite))
                 .setBottomView(mContentView, false);
         beforeControlNavigation(mNavigationViewHelper);
         mNavigationViewHelper.init();

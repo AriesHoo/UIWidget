@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.aries.ui.util.DrawableUtil;
@@ -26,6 +27,7 @@ import com.aries.ui.widget.R;
  * 3、提前增加文本颜色值默认检查
  * 4、2018-5-31 16:59:59 新增部分遗漏java属性
  * 5、2018-5-31 17:00:47 修订设置Drawable后无法移除问题
+ * 6、2018-6-3 22:01:53 优化部分TextColor 未设置时默认颜色逻辑
  */
 public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusViewDelegate<T> {
 
@@ -86,10 +88,10 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
         mTextView = (TextView) mView;
         mTextColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textColor, Integer.MAX_VALUE);
         mTextColor = (mTextColor == Integer.MAX_VALUE ? mTextView.getTextColors().getDefaultColor() : mTextColor);
-        mTextPressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textPressedColor, mTextColor);
-        mTextDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textDisabledColor, mTextColor);
-        mTextSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textSelectedColor, mTextColor);
-        mTextCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textCheckedColor, mTextColor);
+        mTextPressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textPressedColor, Integer.MAX_VALUE);
+        mTextDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textDisabledColor, Integer.MAX_VALUE);
+        mTextSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textSelectedColor, Integer.MAX_VALUE);
+        mTextCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textCheckedColor, Integer.MAX_VALUE);
 
         mLeftDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_leftDrawableColorRadius, 0);
         mLeftDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_leftDrawableColorCircleEnable, false);
@@ -562,33 +564,42 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     private void setTextSelector() {
         mTextView = (TextView) mView;
-        mTextColor = (mTextColor == Integer.MAX_VALUE ? mTextView.getTextColors().getDefaultColor() : mTextColor);
-        if (mTextColor != Integer.MAX_VALUE
-                || mTextPressedColor != Integer.MAX_VALUE
-                || mTextDisabledColor != Integer.MAX_VALUE
-                || mTextSelectedColor != Integer.MAX_VALUE
-                || mTextCheckedColor != Integer.MAX_VALUE) {
-            ColorStateList colorStateList =
-                    getColorSelector(mTextColor, mTextPressedColor, mTextDisabledColor, mTextSelectedColor, mTextCheckedColor);
-            mTextView.setTextColor(colorStateList);
+        ColorStateList colorStateList =
+                getColorSelector(mTextColor,
+                        getTextColor(mTextPressedColor),
+                        getTextColor(mTextDisabledColor),
+                        getTextColor(mTextSelectedColor),
+                        getTextColor(mTextSelectedColor));
+        mTextView.setTextColor(colorStateList);
+    }
+
+    private int getTextColor(int color) {
+        if (color != Integer.MAX_VALUE) return color;
+        if (mView.isSelected()) {
+            color = mTextSelectedColor;
+        } else if (mTextView instanceof CompoundButton) {
+            if (((CompoundButton) mTextView).isChecked()) {
+                color = mTextCheckedColor;
+            }
         }
+        return color != Integer.MAX_VALUE ? color : mTextColor;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private ColorStateList getColorSelector(int normalColor, int pressedColor, int DisabledColor, int selectedColor, int checkedColor) {
+    private ColorStateList getColorSelector(int normalColor, int pressedColor, int disabledColor, int selectedColor, int checkedColor) {
         return new ColorStateList(
                 new int[][]{
-                        new int[]{mStateChecked},
-                        new int[]{mStateSelected},
                         new int[]{mStatePressed},
+                        new int[]{mStateSelected},
+                        new int[]{mStateChecked},
                         new int[]{mStateDisabled},
                         new int[]{}
                 },
                 new int[]{
-                        checkedColor,
-                        selectedColor,
                         pressedColor,
-                        DisabledColor,
+                        selectedColor,
+                        checkedColor,
+                        disabledColor,
                         normalColor
                 }
         );

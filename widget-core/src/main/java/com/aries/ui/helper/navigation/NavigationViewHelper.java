@@ -13,6 +13,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.FindViewUtil;
@@ -28,6 +29,7 @@ import java.lang.ref.SoftReference;
  * 1、修改NavigationLayoutDrawable默认保持与activity的根布局背景一致
  * 2、2018-2-26 15:56:47 新增setBottomView(View bottomView, boolean enable)用于控制底部View设置padding/margin
  * 3、2018-4-18 17:50:35 去掉设置Activity DecorView 背景操作避免滑动返回背景不透明BUG
+ * 4、2018-6-2 20:32:35 新增自定义NavigationView 增加DrawableTop属性
  */
 public class NavigationViewHelper {
 
@@ -39,6 +41,7 @@ public class NavigationViewHelper {
     private boolean mTransEnable;
     private boolean mPlusNavigationViewEnable;
     private boolean mControlBottomEditTextEnable = true;
+    private Drawable mNavigationViewDrawableTop;
     private Drawable mNavigationViewDrawable;
     private Drawable mNavigationLayoutDrawable;
     private View mBottomView;//设置activity最底部View用于增加导航栏的padding/margin
@@ -137,6 +140,17 @@ public class NavigationViewHelper {
      */
     public NavigationViewHelper setNavigationViewColor(int navigationViewColor) {
         return setNavigationViewDrawable(new ColorDrawable(navigationViewColor));
+    }
+
+    /**
+     * 设置假NavigationView DrawableTop属性
+     *
+     * @param drawable
+     * @return
+     */
+    public NavigationViewHelper setNavigationViewDrawableTop(Drawable drawable) {
+        this.mNavigationViewDrawableTop = drawable;
+        return this;
     }
 
     /**
@@ -329,15 +343,16 @@ public class NavigationViewHelper {
 
                 //创建假的NavigationView包裹ViewGroup用于设置背景与mContentView一致
                 mLayoutNavigation = (LinearLayout) linearLayout.findViewById(R.id.fake_navigation_layout);
-                View viewNavigation;
+                TextView viewNavigation;
                 if (mLayoutNavigation == null) {
                     mLayoutNavigation = new LinearLayout(mContext);
                     mLayoutNavigation.setId(R.id.fake_navigation_layout);
                     //创建假的NavigationView
-                    viewNavigation = new View(mContext);
+                    viewNavigation = new TextView(mContext);
                     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     viewNavigation.setId(R.id.fake_navigation_view);
+                    viewNavigation.setCompoundDrawables(null, mNavigationViewDrawableTop, null, null);
                     mLayoutNavigation.addView(viewNavigation, params);
                     linearLayout.addView(mLayoutNavigation,
                             new ViewGroup.LayoutParams(

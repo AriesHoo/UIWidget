@@ -59,6 +59,22 @@
                 rv:rv_strokeDashWidth="@dimen/dp_dash_width"
                 rv:rv_strokeWidth="2dp"/>
 
+            <com.aries.ui.view.radius.RadiusTextView
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="测试Select"
+                rv:rv_backgroundColor="@android:color/white"
+                rv:rv_backgroundSelectedColor="@android:color/holo_purple"
+                rv:rv_radiusHalfHeightEnable="true"
+                rv:rv_selected="true"
+                rv:rv_strokeColor="@android:color/holo_purple"
+                rv:rv_strokeWidth="0.5dp"
+                android:clickable="true"
+                rv:rv_rippleEnable="true"
+                rv:rv_textColor="@android:color/holo_purple"
+                rv:rv_textSelectedColor="@android:color/white"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -296,6 +312,7 @@
                 rv:rv_topDrawableWidth="60dp"
                 rv:rv_topSelectedDrawable="#ddff00"/>
 
+
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -312,7 +329,6 @@
                     android:paddingLeft="6dp"
                     android:text="RadiusRadioButton with Drawable"
                     rv:rv_buttonCheckedDrawable="@drawable/ic_cb_selected"
-                    rv:rv_buttonDrawable="@drawable/ic_cb_normal"
                     rv:rv_buttonDrawableColorCircleEnable="true"
                     rv:rv_buttonDrawableHeight="60dp"
                     rv:rv_buttonDrawableWidth="60dp"
