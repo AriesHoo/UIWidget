@@ -29,6 +29,7 @@ public class RadiusActivity extends BaseActivity {
     @BindView(R.id.tv_shapeRadius) TextView tvShape;
     @BindView(R.id.rtv_javaBg) RadiusTextView rtvJavaBg;
     @BindView(R.id.rtv_drawableRadius) RadiusTextView rtvDrawable;
+    @BindView(R.id.rtv_selectRadius) RadiusTextView rtvSelect;
     @BindView(R.id.radioTest_radius) RadiusRadioButton mRadioButtonTest;
     private GradientDrawable mBgDrawable = new GradientDrawable();
 
@@ -66,6 +67,12 @@ public class RadiusActivity extends BaseActivity {
                 .setStrokeDashWidth(getResources().getDimension(R.dimen.dp_dash_width))
                 .setStrokeDashGap(getResources().getDimension(R.dimen.dp_dash_gap))
                 .init();
+        rtvSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rtvSelect.setSelected(!rtvSelect.isSelected());
+            }
+        });
         rtvDrawable.getDelegate()
                 .setLeftDrawable(null)
                 .setOnSelectedChangeListener(new RadiusViewDelegate.OnSelectedChangeListener() {

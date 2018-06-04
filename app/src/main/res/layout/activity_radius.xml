@@ -60,18 +60,20 @@
                 rv:rv_strokeWidth="2dp"/>
 
             <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_selectRadius"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
+                android:layout_marginBottom="@dimen/dp_margin"
+                android:clickable="true"
                 android:gravity="center"
                 android:text="测试Select"
                 rv:rv_backgroundColor="@android:color/white"
                 rv:rv_backgroundSelectedColor="@android:color/holo_purple"
                 rv:rv_radiusHalfHeightEnable="true"
-                rv:rv_selected="true"
+                rv:rv_rippleEnable="true"
+                rv:rv_selected="false"
                 rv:rv_strokeColor="@android:color/holo_purple"
                 rv:rv_strokeWidth="0.5dp"
-                android:clickable="true"
-                rv:rv_rippleEnable="true"
                 rv:rv_textColor="@android:color/holo_purple"
                 rv:rv_textSelectedColor="@android:color/white"/>
 

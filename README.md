@@ -34,9 +34,9 @@ allprojects {
 
 ```
 dependencies {
-     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.1'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.1'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.1'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.3'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.3'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.3'
      implementation 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
@@ -72,7 +72,7 @@ dependencies {
     <artifactId>widget-core</artifactId>
     <artifactId>widget-collapsing</artifactId>
     <artifactId>widget-alert</artifactId>
-    <version>3.2.1</version>
+    <version>3.2.3</version>
 </dependency>
 ```
 
@@ -260,6 +260,12 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 ```
 
 ## 重大更新日志
+
+* 3.2.3 更新
+      
+    * 优化:优化UIActionSheetDialog 导航栏控制逻辑 
+    * 优化:新增NavigationViewHelper 设置假View DrawableTop属性
+    * 优化:调整RadiusView Drawable及TextColor、BackgroundColor、StrokeColor 设置逻辑
 
 * 3.2.1 更新
         
