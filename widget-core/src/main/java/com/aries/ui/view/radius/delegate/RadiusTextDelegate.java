@@ -28,6 +28,7 @@ import com.aries.ui.widget.R;
  * 4、2018-5-31 16:59:59 新增部分遗漏java属性
  * 5、2018-5-31 17:00:47 修订设置Drawable后无法移除问题
  * 6、2018-6-3 22:01:53 优化部分TextColor 未设置时默认颜色逻辑
+ * 7、2018-6-5 09:10:58 新增Left Top Right Bottom Drawable是否为系统属性配置
  */
 public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusViewDelegate<T> {
 
@@ -38,6 +39,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
     private int mTextSelectedColor;
     private int mTextCheckedColor;
 
+    private boolean mLeftDrawableSystemEnable;
     private float mLeftDrawableColorRadius;
     private boolean mLeftDrawableColorCircleEnable;
     private int mLeftDrawableWidth;
@@ -48,6 +50,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
     private Drawable mLeftSelectedDrawable;
     private Drawable mLeftCheckedDrawable;
 
+    private boolean mTopDrawableSystemEnable;
     private float mTopDrawableColorRadius;
     private boolean mTopDrawableColorCircleEnable;
     private int mTopDrawableWidth;
@@ -59,6 +62,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
     private Drawable mTopCheckedDrawable;
 
 
+    private boolean mRightDrawableSystemEnable;
     private float mRightDrawableColorRadius;
     private boolean mRightDrawableColorCircleEnable;
     private int mRightDrawableWidth;
@@ -69,6 +73,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
     private Drawable mRightSelectedDrawable;
     private Drawable mRightCheckedDrawable;
 
+    private boolean mBottomDrawableSystemEnable;
     private float mBottomDrawableColorRadius;
     private boolean mBottomDrawableColorCircleEnable;
     private int mBottomDrawableWidth;
@@ -93,6 +98,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
         mTextSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textSelectedColor, Integer.MAX_VALUE);
         mTextCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_textCheckedColor, Integer.MAX_VALUE);
 
+        mLeftDrawableSystemEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_leftDrawableSystemEnable, false);
         mLeftDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_leftDrawableColorRadius, 0);
         mLeftDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_leftDrawableColorCircleEnable, false);
         mLeftDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_leftDrawableWidth, -1);
@@ -103,6 +109,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
         mLeftSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_leftSelectedDrawable);
         mLeftCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_leftCheckedDrawable);
 
+        mTopDrawableSystemEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_topDrawableSystemEnable, false);
         mTopDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_topDrawableColorRadius, 0);
         mTopDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_topDrawableColorCircleEnable, false);
         mTopDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_topDrawableWidth, -1);
@@ -113,6 +120,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
         mTopSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_topSelectedDrawable);
         mTopCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_topCheckedDrawable);
 
+        mRightDrawableSystemEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_rightDrawableSystemEnable, false);
         mRightDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_rightDrawableColorRadius, 0);
         mRightDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_rightDrawableColorCircleEnable, false);
         mRightDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_rightDrawableWidth, -1);
@@ -123,6 +131,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
         mRightSelectedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_rightSelectedDrawable);
         mRightCheckedDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_rightCheckedDrawable);
 
+        mBottomDrawableSystemEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_bottomDrawableSystemEnable, false);
         mBottomDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_bottomDrawableColorRadius, 0);
         mBottomDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_bottomDrawableColorCircleEnable, false);
         mBottomDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_bottomDrawableWidth, -1);
@@ -138,14 +147,22 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
     @Override
     public void init() {
         setTextSelector();
-        setTextDrawable(mLeftDrawable, mLeftCheckedDrawable,
-                mLeftSelectedDrawable, mLeftPressedDrawable, mLeftDisabledDrawable, Gravity.LEFT);
-        setTextDrawable(mTopDrawable, mTopCheckedDrawable,
-                mTopSelectedDrawable, mTopPressedDrawable, mTopDisabledDrawable, Gravity.TOP);
-        setTextDrawable(mRightDrawable, mRightCheckedDrawable,
-                mRightSelectedDrawable, mRightPressedDrawable, mRightDisabledDrawable, Gravity.RIGHT);
-        setTextDrawable(mBottomDrawable, mBottomCheckedDrawable,
-                mBottomSelectedDrawable, mBottomPressedDrawable, mBottomDisabledDrawable, Gravity.BOTTOM);
+        if (!mLeftDrawableSystemEnable) {
+            setTextDrawable(mLeftDrawable, mLeftCheckedDrawable,
+                    mLeftSelectedDrawable, mLeftPressedDrawable, mLeftDisabledDrawable, Gravity.LEFT);
+        }
+        if (!mTopDrawableSystemEnable) {
+            setTextDrawable(mTopDrawable, mTopCheckedDrawable,
+                    mTopSelectedDrawable, mTopPressedDrawable, mTopDisabledDrawable, Gravity.TOP);
+        }
+        if (!mRightDrawableSystemEnable) {
+            setTextDrawable(mRightDrawable, mRightCheckedDrawable,
+                    mRightSelectedDrawable, mRightPressedDrawable, mRightDisabledDrawable, Gravity.RIGHT);
+        }
+        if (!mBottomDrawableSystemEnable) {
+            setTextDrawable(mBottomDrawable, mBottomCheckedDrawable,
+                    mBottomSelectedDrawable, mBottomPressedDrawable, mBottomDisabledDrawable, Gravity.BOTTOM);
+        }
         super.init();
     }
 
@@ -157,7 +174,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     public T setTextColor(int color) {
         this.mTextColor = color;
-        return (T) this;
+        return back();
     }
 
     /**
@@ -168,7 +185,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     public T setTextPressedColor(int color) {
         this.mTextPressedColor = color;
-        return (T) this;
+        return back();
     }
 
     /**
@@ -179,7 +196,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     public T setTextDisabledColor(int color) {
         this.mTextDisabledColor = color;
-        return (T) this;
+        return back();
     }
 
     /**
@@ -190,7 +207,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     public T setTextSelectedColor(int color) {
         this.mTextSelectedColor = color;
-        return (T) this;
+        return back();
     }
 
     /**
@@ -201,7 +218,18 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     public T setTextCheckedColor(int color) {
         this.mTextCheckedColor = color;
-        return (T) this;
+        return back();
+    }
+
+    /**
+     * 是否使用系统自带属性
+     *
+     * @param leftDrawableSystemEnable
+     * @return
+     */
+    public T setLeftDrawableSystemEnable(boolean leftDrawableSystemEnable) {
+        mLeftDrawableSystemEnable = leftDrawableSystemEnable;
+        return back();
     }
 
     public T setLeftDrawableColorRadius(float leftDrawableColorRadius) {
@@ -216,12 +244,12 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setLeftDrawableWidth(int leftDrawableWidth) {
         mLeftDrawableWidth = leftDrawableWidth;
-        return (T) this;
+        return back();
     }
 
     public T setLeftDrawableHeight(int leftDrawableHeight) {
         mLeftDrawableHeight = leftDrawableHeight;
-        return (T) this;
+        return back();
     }
 
     /**
@@ -232,7 +260,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     public T setLeftDrawable(Drawable drawable) {
         mLeftDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setLeftDrawable(int resId) {
@@ -241,7 +269,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setLeftPressedDrawable(Drawable drawable) {
         mLeftPressedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setLeftPressedDrawable(int resId) {
@@ -250,7 +278,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setLeftDisabledDrawable(Drawable drawable) {
         mLeftDisabledDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setLeftDisabledDrawable(int resId) {
@@ -259,7 +287,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setLeftSelectedDrawable(Drawable drawable) {
         mLeftSelectedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setLeftSelectedDrawable(int resId) {
@@ -268,11 +296,16 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setLeftCheckedDrawable(Drawable drawable) {
         mLeftCheckedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setLeftCheckedDrawable(int resId) {
         return setLeftCheckedDrawable(getDrawable(resId));
+    }
+
+    public T setTopDrawableSystemEnable(boolean topDrawableSystemEnable) {
+        mTopDrawableSystemEnable = topDrawableSystemEnable;
+        return back();
     }
 
     public T setTopDrawableColorRadius(float topDrawableColorRadius) {
@@ -287,12 +320,12 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setTopDrawableWidth(int topDrawableWidth) {
         mTopDrawableWidth = topDrawableWidth;
-        return (T) this;
+        return back();
     }
 
     public T setTopDrawableHeight(int topDrawableHeight) {
         mTopDrawableHeight = topDrawableHeight;
-        return (T) this;
+        return back();
     }
 
     /**
@@ -303,7 +336,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     public T setTopDrawable(Drawable drawable) {
         mTopDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setTopDrawable(int resId) {
@@ -312,7 +345,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setTopPressedDrawable(Drawable drawable) {
         mTopPressedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setTopPressedDrawable(int resId) {
@@ -321,7 +354,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setTopDisabledDrawable(Drawable drawable) {
         mTopDisabledDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setTopDisabledDrawable(int resId) {
@@ -330,7 +363,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setTopSelectedDrawable(Drawable drawable) {
         mTopSelectedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setTopSelectedDrawable(int resId) {
@@ -339,11 +372,16 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setTopCheckedDrawable(Drawable drawable) {
         mTopCheckedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setTopCheckedDrawable(int resId) {
         return setTopCheckedDrawable(getDrawable(resId));
+    }
+
+    public T setRightDrawableSystemEnable(boolean rightDrawableSystemEnable) {
+        mRightDrawableSystemEnable = rightDrawableSystemEnable;
+        return back();
     }
 
     public T setRightDrawableColorRadius(float rightDrawableColorRadius) {
@@ -358,12 +396,12 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setRightDrawableWidth(int rightDrawableWidth) {
         mRightDrawableWidth = rightDrawableWidth;
-        return (T) this;
+        return back();
     }
 
     public T setRightDrawableHeight(int rightDrawableHeight) {
         mRightDrawableHeight = rightDrawableHeight;
-        return (T) this;
+        return back();
     }
 
     /**
@@ -374,7 +412,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     public T setRightDrawable(Drawable drawable) {
         mRightDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setRightDrawable(int resId) {
@@ -383,7 +421,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setRightPressedDrawable(Drawable drawable) {
         mRightPressedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setRightPressedDrawable(int resId) {
@@ -392,7 +430,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setRightDisabledDrawable(Drawable drawable) {
         mRightDisabledDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setRightDisabledDrawable(int resId) {
@@ -401,7 +439,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setRightSelectedDrawable(Drawable drawable) {
         mRightSelectedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setRightSelectedDrawable(int resId) {
@@ -410,11 +448,16 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setRightCheckedDrawable(Drawable drawable) {
         mRightCheckedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setRightCheckedDrawable(int resId) {
         return setRightCheckedDrawable(getDrawable(resId));
+    }
+
+    public T setBottomDrawableSystemEnable(boolean bottomDrawableSystemEnable) {
+        mBottomDrawableSystemEnable = bottomDrawableSystemEnable;
+        return back();
     }
 
     public T setBottomDrawableColorRadius(float bottomDrawableColorRadius) {
@@ -429,12 +472,12 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setBottomDrawableWidth(int bottomDrawableWidth) {
         mBottomDrawableWidth = bottomDrawableWidth;
-        return (T) this;
+        return back();
     }
 
     public T setBottomDrawableHeight(int bottomDrawableHeight) {
         mBottomDrawableHeight = bottomDrawableHeight;
-        return (T) this;
+        return back();
     }
 
     /**
@@ -445,7 +488,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     public T setBottomDrawable(Drawable drawable) {
         mBottomDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setBottomDrawable(int resId) {
@@ -454,7 +497,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setBottomPressedDrawable(Drawable drawable) {
         mBottomPressedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setBottomPressedDrawable(int resId) {
@@ -463,7 +506,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setBottomDisabledDrawable(Drawable drawable) {
         mBottomDisabledDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setBottomDisabledDrawable(int resId) {
@@ -472,7 +515,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setBottomSelectedDrawable(Drawable drawable) {
         mBottomSelectedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setBottomSelectedDrawable(int resId) {
@@ -481,7 +524,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     public T setBottomCheckedDrawable(Drawable drawable) {
         mBottomCheckedDrawable = drawable;
-        return (T) this;
+        return back();
     }
 
     public T setBottomCheckedDrawable(int resId) {
@@ -500,6 +543,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     private void setTextDrawable(Drawable normal, Drawable checked, Drawable selected, Drawable pressed,
                                  Drawable disabled, int gravity) {
+
         int index = 0;
         int width = mLeftDrawableWidth;
         int height = mLeftDrawableHeight;
@@ -524,15 +568,20 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
                 radius = mBottomDrawableColorCircleEnable ? width + height / 2 : mBottomDrawableColorRadius;
                 break;
         }
-        StateListDrawable stateDrawable = new StateListDrawable();
-        stateDrawable.addState(new int[]{mStateChecked}, getStateDrawable(checked, radius, width, height));
-        stateDrawable.addState(new int[]{mStateSelected}, getStateDrawable(selected, radius, width, height));
-        stateDrawable.addState(new int[]{mStatePressed}, getStateDrawable(pressed, radius, width, height));
-        stateDrawable.addState(new int[]{mStateDisabled}, getStateDrawable(disabled, radius, width, height));
-        stateDrawable.addState(new int[]{}, getStateDrawable(normal, radius, width, height));
-        DrawableUtil.setDrawableWidthHeight(stateDrawable, width, height);
         Drawable[] drawables = mTextView.getCompoundDrawables();
-        drawables[index] = stateDrawable;
+        if (normal == null && pressed == null && disabled == null
+                && selected == null && checked == null) {
+            drawables[index] = null;
+        } else {
+            StateListDrawable stateDrawable = new StateListDrawable();
+            stateDrawable.addState(new int[]{mStateChecked}, getStateDrawable(checked, radius, width, height));
+            stateDrawable.addState(new int[]{mStateSelected}, getStateDrawable(selected, radius, width, height));
+            stateDrawable.addState(new int[]{mStatePressed}, getStateDrawable(pressed, radius, width, height));
+            stateDrawable.addState(new int[]{mStateDisabled}, getStateDrawable(disabled, radius, width, height));
+            stateDrawable.addState(new int[]{}, getStateDrawable(normal, radius, width, height));
+            DrawableUtil.setDrawableWidthHeight(stateDrawable, width, height);
+            drawables[index] = stateDrawable;
+        }
         mTextView.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
     }
 

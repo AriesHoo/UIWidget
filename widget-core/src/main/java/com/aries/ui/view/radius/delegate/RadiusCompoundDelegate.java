@@ -1,8 +1,6 @@
 package com.aries.ui.view.radius.delegate;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
@@ -25,8 +23,8 @@ public class RadiusCompoundDelegate<T extends RadiusCompoundDelegate> extends Ra
     private CompoundButton mButton;
     private StateListDrawable mStateButtonDrawable;
 
-    private float mButtonDrawableColorRadius;
     private boolean mButtonDrawableSystemEnable;
+    private float mButtonDrawableColorRadius;
     private boolean mButtonDrawableColorCircleEnable;
     private int mButtonDrawableWidth;
     private int mButtonDrawableHeight;
@@ -44,8 +42,8 @@ public class RadiusCompoundDelegate<T extends RadiusCompoundDelegate> extends Ra
 
     @Override
     protected void initAttributes(Context context, AttributeSet attrs) {
-        mButtonDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_buttonDrawableColorRadius, 0);
         mButtonDrawableSystemEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_buttonDrawableSystemEnable, false);
+        mButtonDrawableColorRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_buttonDrawableColorRadius, 0);
         mButtonDrawableColorCircleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_buttonDrawableColorCircleEnable, false);
         mButtonDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_buttonDrawableWidth, -1);
         mButtonDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_buttonDrawableHeight, -1);
@@ -69,17 +67,6 @@ public class RadiusCompoundDelegate<T extends RadiusCompoundDelegate> extends Ra
     }
 
     /**
-     * colorDrawable 圆角
-     *
-     * @param buttonDrawableColorRadius
-     * @return
-     */
-    public T setButtonDrawableColorRadius(float buttonDrawableColorRadius) {
-        mButtonDrawableColorRadius = buttonDrawableColorRadius;
-        return back();
-    }
-
-    /**
      * 是否系统自带ButtonDrawable
      *
      * @param buttonDrawableSystemEnable
@@ -87,6 +74,17 @@ public class RadiusCompoundDelegate<T extends RadiusCompoundDelegate> extends Ra
      */
     public T setButtonDrawableSystemEnable(boolean buttonDrawableSystemEnable) {
         mButtonDrawableSystemEnable = buttonDrawableSystemEnable;
+        return back();
+    }
+
+    /**
+     * colorDrawable 圆角
+     *
+     * @param buttonDrawableColorRadius
+     * @return
+     */
+    public T setButtonDrawableColorRadius(float buttonDrawableColorRadius) {
+        mButtonDrawableColorRadius = buttonDrawableColorRadius;
         return back();
     }
 
@@ -201,13 +199,13 @@ public class RadiusCompoundDelegate<T extends RadiusCompoundDelegate> extends Ra
     private void setButtonDrawable() {
         mButton = (CompoundButton) mView;
         if (mButtonDrawableSystemEnable) return;
-        Log.i("setButtonDrawable","id:"+mButton.getId()+";mButtonDrawable:"+mButtonDrawable);
+        Log.i("setButtonDrawable", "id:" + mButton.getId() + ";mButtonDrawable:" + mButtonDrawable);
         if (mButtonDrawable == null
                 && mButtonPressedDrawable == null
                 && mButtonDisabledDrawable == null
                 && mButtonSelectedDrawable == null
                 && mButtonCheckedDrawable == null) {
-            mButton.setButtonDrawable(new ColorDrawable(Color.TRANSPARENT));
+            mButton.setButtonDrawable(null);
             return;
         }
         float radius = mButtonDrawableColorCircleEnable ?

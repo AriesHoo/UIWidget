@@ -70,7 +70,7 @@ public class RadiusSwitchDelegate extends RadiusCompoundDelegate<RadiusSwitchDel
     @Override
     protected void initAttributes(Context context, AttributeSet attrs) {
         mColorAccent = mResourceUtil.getAttrColor(android.R.attr.colorAccent);
-        mColorDefault = Color.GRAY;
+        mColorDefault = Color.LTGRAY;
         mThumbDrawableWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_thumbDrawableWidth, dp2px(24));
         mThumbDrawableHeight = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_thumbDrawableHeight, dp2px(24));
         mThumbDrawable = mTypedArray.getDrawable(R.styleable.RadiusSwitch_rv_thumbDrawable);

@@ -2,10 +2,12 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:rv="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:background="@color/colorBackground">
 
     <include layout="@layout/layout_title_bar"/>
 
@@ -21,6 +23,29 @@
             android:orientation="vertical"
             android:padding="10dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_github"
+                android:drawablePadding="40dp"
+                android:text="Test"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="RadiusTextView with Drawable"
+                rv:rv_backgroundColor="@color/colorWhite"
+                rv:rv_leftDrawable="#fc4b51"
+                rv:rv_leftDrawableColorRadius="2.5dp"
+                rv:rv_leftDrawableHeight="20dp"
+                rv:rv_leftDrawableWidth="20dp"
+                rv:rv_leftSelectedDrawable="#ff0900"
+                rv:rv_rightDrawable="@drawable/ic_github"
+                rv:rv_selected="true"
+                rv:rv_textColor="#1a20d8"
+                rv:rv_textSelectedColor="#5526a6"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,7 +96,7 @@
                 rv:rv_backgroundSelectedColor="@android:color/holo_purple"
                 rv:rv_radiusHalfHeightEnable="true"
                 rv:rv_rippleEnable="true"
-                rv:rv_selected="false"
+                rv:rv_selected="true"
                 rv:rv_strokeColor="@android:color/holo_purple"
                 rv:rv_strokeWidth="0.5dp"
                 rv:rv_textColor="@android:color/holo_purple"

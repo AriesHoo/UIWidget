@@ -66,6 +66,8 @@
     <attr name="rv_textCheckedColor" format="color"/>
 
     <!--以下为TextView Drawable Left Top Right Bottom 宽高及各种状态属性-->
+    <!--是否系统自带drawableLeft样式-->
+    <attr name="rv_leftDrawableSystemEnable" format="boolean"/>
     <!--设置drawable为颜色值(ColorDrawable)时的圆角弧度-->
     <attr name="rv_leftDrawableColorRadius" format="dimension"/>
     <!--设置drawable为颜色值(ColorDrawable)时是否圆形-->
@@ -80,6 +82,8 @@
     <attr name="rv_leftCheckedDrawable" format="reference|color"/>
 
     <!--drawable宽高属性当drawable为颜色值(ColorDrawable)时必须设置否则显示不出-->
+    <!--是否系统自带drawableTop样式-->
+    <attr name="rv_topDrawableSystemEnable" format="boolean"/>
     <!--设置drawable为颜色值(ColorDrawable)时的圆角弧度-->
     <attr name="rv_topDrawableColorRadius" format="dimension"/>
     <!--设置drawable为颜色值(ColorDrawable)时是否圆形-->
@@ -94,6 +98,8 @@
     <attr name="rv_topCheckedDrawable" format="reference|color"/>
 
     <!--drawable宽高属性当drawable为颜色值(ColorDrawable)时必须设置否则显示不出-->
+    <!--是否系统自带drawableRight样式-->
+    <attr name="rv_rightDrawableSystemEnable" format="boolean"/>
     <!--设置drawable为颜色值(ColorDrawable)时的圆角弧度-->
     <attr name="rv_rightDrawableColorRadius" format="dimension"/>
     <!--设置drawable为颜色值(ColorDrawable)时是否圆形-->
@@ -108,6 +114,8 @@
     <attr name="rv_rightCheckedDrawable" format="reference|color"/>
 
     <!--drawable宽高属性当drawable为颜色值(ColorDrawable)时必须设置否则显示不出-->
+    <!--是否系统自带drawableBottom样式-->
+    <attr name="rv_bottomDrawableSystemEnable" format="boolean"/>
     <!--设置drawable为颜色值(ColorDrawable)时的圆角弧度-->
     <attr name="rv_bottomDrawableColorRadius" format="dimension"/>
     <!--设置drawable为颜色值(ColorDrawable)时是否圆形-->
@@ -124,10 +132,10 @@
 
     <!--以下为CompoundButton ButtonDrawable 宽高及不同状态属性-->
     <!--drawable宽高属性当drawable为颜色值(ColorDrawable)时方有效-->
-    <!--设置drawable为颜色值(ColorDrawable)时的圆角弧度-->
-    <attr name="rv_buttonDrawableColorRadius" format="dimension"/>
     <!--是否系统自带Button样式-->
     <attr name="rv_buttonDrawableSystemEnable" format="boolean"/>
+    <!--设置drawable为颜色值(ColorDrawable)时的圆角弧度-->
+    <attr name="rv_buttonDrawableColorRadius" format="dimension"/>
     <!--设置drawable为颜色值(ColorDrawable)时是否圆形-->
     <attr name="rv_buttonDrawableColorCircleEnable" format="boolean"/>
     <attr name="rv_buttonDrawableWidth" format="dimension"/>
@@ -173,6 +181,7 @@
         <attr name="rv_textSelectedColor"/>
         <attr name="rv_textCheckedColor"/>
 
+        <attr name="rv_leftDrawableSystemEnable"/>
         <attr name="rv_leftDrawableColorRadius"/>
         <attr name="rv_leftDrawableColorCircleEnable"/>
         <attr name="rv_leftDrawableWidth"/>
@@ -183,6 +192,7 @@
         <attr name="rv_leftSelectedDrawable"/>
         <attr name="rv_leftCheckedDrawable"/>
 
+        <attr name="rv_topDrawableSystemEnable"/>
         <attr name="rv_topDrawableColorRadius"/>
         <attr name="rv_topDrawableColorCircleEnable"/>
         <attr name="rv_topDrawableWidth"/>
@@ -193,6 +203,7 @@
         <attr name="rv_topSelectedDrawable"/>
         <attr name="rv_topCheckedDrawable"/>
 
+        <attr name="rv_rightDrawableSystemEnable"/>
         <attr name="rv_rightDrawableColorRadius"/>
         <attr name="rv_rightDrawableColorCircleEnable"/>
         <attr name="rv_rightDrawableWidth"/>
@@ -203,6 +214,7 @@
         <attr name="rv_rightSelectedDrawable"/>
         <attr name="rv_rightCheckedDrawable"/>
 
+        <attr name="rv_bottomDrawableSystemEnable"/>
         <attr name="rv_bottomDrawableColorRadius"/>
         <attr name="rv_bottomDrawableColorCircleEnable"/>
         <attr name="rv_bottomDrawableWidth"/>
@@ -213,8 +225,8 @@
         <attr name="rv_bottomSelectedDrawable"/>
         <attr name="rv_bottomCheckedDrawable"/>
 
-        <attr name="rv_buttonDrawableColorRadius"/>
         <attr name="rv_buttonDrawableSystemEnable"/>
+        <attr name="rv_buttonDrawableColorRadius"/>
         <attr name="rv_buttonDrawableColorCircleEnable"/>
         <attr name="rv_buttonDrawableWidth"/>
         <attr name="rv_buttonDrawableHeight"/>
@@ -290,6 +302,7 @@
         <attr name="rv_textSelectedColor"/>
         <attr name="rv_textCheckedColor"/>
 
+        <attr name="rv_leftDrawableSystemEnable"/>
         <attr name="rv_leftDrawableColorRadius"/>
         <attr name="rv_leftDrawableColorCircleEnable"/>
         <attr name="rv_leftDrawableWidth"/>
@@ -300,6 +313,7 @@
         <attr name="rv_leftSelectedDrawable"/>
         <attr name="rv_leftCheckedDrawable"/>
 
+        <attr name="rv_topDrawableSystemEnable"/>
         <attr name="rv_topDrawableColorRadius"/>
         <attr name="rv_topDrawableColorCircleEnable"/>
         <attr name="rv_topDrawableWidth"/>
@@ -310,6 +324,7 @@
         <attr name="rv_topSelectedDrawable"/>
         <attr name="rv_topCheckedDrawable"/>
 
+        <attr name="rv_rightDrawableSystemEnable"/>
         <attr name="rv_rightDrawableColorRadius"/>
         <attr name="rv_rightDrawableColorCircleEnable"/>
         <attr name="rv_rightDrawableWidth"/>
@@ -320,6 +335,7 @@
         <attr name="rv_rightSelectedDrawable"/>
         <attr name="rv_rightCheckedDrawable"/>
 
+        <attr name="rv_bottomDrawableSystemEnable"/>
         <attr name="rv_bottomDrawableColorRadius"/>
         <attr name="rv_bottomDrawableColorCircleEnable"/>
         <attr name="rv_bottomDrawableWidth"/>
@@ -330,8 +346,8 @@
         <attr name="rv_bottomSelectedDrawable"/>
         <attr name="rv_bottomCheckedDrawable"/>
 
-        <attr name="rv_buttonDrawableColorRadius"/>
         <attr name="rv_buttonDrawableSystemEnable"/>
+        <attr name="rv_buttonDrawableColorRadius"/>
         <attr name="rv_buttonDrawableColorCircleEnable"/>
         <attr name="rv_buttonDrawableWidth"/>
         <attr name="rv_buttonDrawableHeight"/>
@@ -378,6 +394,7 @@
         <attr name="rv_textSelectedColor"/>
         <attr name="rv_textCheckedColor"/>
 
+        <attr name="rv_leftDrawableSystemEnable"/>
         <attr name="rv_leftDrawableColorRadius"/>
         <attr name="rv_leftDrawableColorCircleEnable"/>
         <attr name="rv_leftDrawableWidth"/>
@@ -388,6 +405,7 @@
         <attr name="rv_leftSelectedDrawable"/>
         <attr name="rv_leftCheckedDrawable"/>
 
+        <attr name="rv_topDrawableSystemEnable"/>
         <attr name="rv_topDrawableColorRadius"/>
         <attr name="rv_topDrawableColorCircleEnable"/>
         <attr name="rv_topDrawableWidth"/>
@@ -398,6 +416,7 @@
         <attr name="rv_topSelectedDrawable"/>
         <attr name="rv_topCheckedDrawable"/>
 
+        <attr name="rv_rightDrawableSystemEnable"/>
         <attr name="rv_rightDrawableColorRadius"/>
         <attr name="rv_rightDrawableColorCircleEnable"/>
         <attr name="rv_rightDrawableWidth"/>
@@ -408,6 +427,7 @@
         <attr name="rv_rightSelectedDrawable"/>
         <attr name="rv_rightCheckedDrawable"/>
 
+        <attr name="rv_bottomDrawableSystemEnable"/>
         <attr name="rv_bottomDrawableColorRadius"/>
         <attr name="rv_bottomDrawableColorCircleEnable"/>
         <attr name="rv_bottomDrawableWidth"/>
@@ -418,8 +438,8 @@
         <attr name="rv_bottomSelectedDrawable"/>
         <attr name="rv_bottomCheckedDrawable"/>
 
-        <attr name="rv_buttonDrawableColorRadius"/>
         <attr name="rv_buttonDrawableSystemEnable"/>
+        <attr name="rv_buttonDrawableColorRadius"/>
         <attr name="rv_buttonDrawableColorCircleEnable"/>
         <attr name="rv_buttonDrawableWidth"/>
         <attr name="rv_buttonDrawableHeight"/>
@@ -466,6 +486,7 @@
         <attr name="rv_textSelectedColor"/>
         <attr name="rv_textCheckedColor"/>
 
+        <attr name="rv_leftDrawableSystemEnable"/>
         <attr name="rv_leftDrawableColorRadius"/>
         <attr name="rv_leftDrawableColorCircleEnable"/>
         <attr name="rv_leftDrawableWidth"/>
@@ -476,6 +497,7 @@
         <attr name="rv_leftSelectedDrawable"/>
         <attr name="rv_leftCheckedDrawable"/>
 
+        <attr name="rv_topDrawableSystemEnable"/>
         <attr name="rv_topDrawableColorRadius"/>
         <attr name="rv_topDrawableColorCircleEnable"/>
         <attr name="rv_topDrawableWidth"/>
@@ -486,6 +508,7 @@
         <attr name="rv_topSelectedDrawable"/>
         <attr name="rv_topCheckedDrawable"/>
 
+        <attr name="rv_rightDrawableSystemEnable"/>
         <attr name="rv_rightDrawableColorRadius"/>
         <attr name="rv_rightDrawableColorCircleEnable"/>
         <attr name="rv_rightDrawableWidth"/>
@@ -496,6 +519,7 @@
         <attr name="rv_rightSelectedDrawable"/>
         <attr name="rv_rightCheckedDrawable"/>
 
+        <attr name="rv_bottomDrawableSystemEnable"/>
         <attr name="rv_bottomDrawableColorRadius"/>
         <attr name="rv_bottomDrawableColorCircleEnable"/>
         <attr name="rv_bottomDrawableWidth"/>
@@ -542,6 +566,7 @@
         <attr name="rv_textSelectedColor"/>
         <attr name="rv_textCheckedColor"/>
 
+        <attr name="rv_leftDrawableSystemEnable"/>
         <attr name="rv_leftDrawableColorRadius"/>
         <attr name="rv_leftDrawableColorCircleEnable"/>
         <attr name="rv_leftDrawableWidth"/>
@@ -552,6 +577,7 @@
         <attr name="rv_leftSelectedDrawable"/>
         <attr name="rv_leftCheckedDrawable"/>
 
+        <attr name="rv_topDrawableSystemEnable"/>
         <attr name="rv_topDrawableColorRadius"/>
         <attr name="rv_topDrawableColorCircleEnable"/>
         <attr name="rv_topDrawableWidth"/>
@@ -562,6 +588,7 @@
         <attr name="rv_topSelectedDrawable"/>
         <attr name="rv_topCheckedDrawable"/>
 
+        <attr name="rv_rightDrawableSystemEnable"/>
         <attr name="rv_rightDrawableColorRadius"/>
         <attr name="rv_rightDrawableColorCircleEnable"/>
         <attr name="rv_rightDrawableWidth"/>
@@ -572,6 +599,7 @@
         <attr name="rv_rightSelectedDrawable"/>
         <attr name="rv_rightCheckedDrawable"/>
 
+        <attr name="rv_bottomDrawableSystemEnable"/>
         <attr name="rv_bottomDrawableColorRadius"/>
         <attr name="rv_bottomDrawableColorCircleEnable"/>
         <attr name="rv_bottomDrawableWidth"/>

@@ -102,14 +102,15 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         this.mResourceUtil = new ResourceUtil(context);
         initAttributes(context, attrs);
         view.setSelected(mSelected);
+        setSelected(mSelected);
     }
 
     protected void initAttributes(Context context, AttributeSet attrs) {
         mBackgroundColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundColor, Integer.MAX_VALUE);
-        mBackgroundPressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundPressedColor, Integer.MAX_VALUE);
-        mBackgroundDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundDisabledColor, Integer.MAX_VALUE);
-        mBackgroundSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundSelectedColor, Integer.MAX_VALUE);
-        mBackgroundCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundCheckedColor, Integer.MAX_VALUE);
+        mBackgroundPressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundPressedColor, mBackgroundColor);
+        mBackgroundDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundDisabledColor, mBackgroundColor);
+        mBackgroundSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundSelectedColor, mBackgroundColor);
+        mBackgroundCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundCheckedColor, mBackgroundColor);
 
         mStrokeColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeColor, Color.GRAY);
         mStrokePressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokePressedColor, mStrokeColor);
@@ -486,12 +487,8 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
                 || mBackgroundPressedColor != Integer.MAX_VALUE
                 || mBackgroundDisabledColor != Integer.MAX_VALUE
                 || mBackgroundSelectedColor != Integer.MAX_VALUE
-                || mStrokeWidth > 0
-                || mRadius > 0
-                || mTopLeftRadius > 0
-                || mTopLeftRadius > 0
-                || mBottomLeftRadius > 0
-                || mBottomRightRadius > 0;
+                || mStrokeWidth > 0 || mRadius > 0
+                || mTopLeftRadius > 0 || mTopLeftRadius > 0 || mBottomLeftRadius > 0 || mBottomRightRadius > 0;
 
         setDrawable(mBackgroundChecked, mBackgroundCheckedColor, mStrokeCheckedColor);
         setDrawable(mBackgroundSelected, mBackgroundSelectedColor, mStrokeSelectedColor);
@@ -534,6 +531,7 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
                 mView.setBackgroundDrawable(mStateDrawable);
             }
         }
+        return;
     }
 
     /**
@@ -571,7 +569,6 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         }
         return color != Integer.MAX_VALUE ? color : mStrokeColor;
     }
-
     /**
      * 水波纹效果完成后最终展示的背景Drawable
      *
