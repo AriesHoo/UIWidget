@@ -45,6 +45,6 @@ android {
         archives javadocJar
     }
     dependencies {
-        implementation project(':widget-core')
+        api project(':widget-core')
     }
 }
