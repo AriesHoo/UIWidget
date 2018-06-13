@@ -10,9 +10,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 
 import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.widget.R;
@@ -31,6 +34,8 @@ import com.aries.ui.widget.R;
  * 6、2018-2-23 10:30:53 新增View在非波纹背景下各个状态切换时延属性
  * 7、2018-3-18 11:17:29 新增泛型返回方便子类继承的链式调用
  * 8、2018-5-25 13:12:24 去掉默认控制是否可点击控制,调整水波纹效果开启逻辑
+ * 9、2018-6-13 10:06:08 调整默认backgroundColor及strokeColor颜色值以优化
+ * 10、2018-6-13 10:51:11 新增背景及边框色pressed状态下透明度属性-当且仅当未设置对应pressedColor时生效
  */
 public class RadiusViewDelegate<T extends RadiusViewDelegate> {
 
@@ -50,12 +55,14 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
     private int mBackgroundDisabledColor;
     private int mBackgroundSelectedColor;
     private int mBackgroundCheckedColor;
+    protected int mBackgroundPressedAlpha = 0;
 
     private int mStrokeColor;
     private int mStrokePressedColor;
     private int mStrokeDisabledColor;
     private int mStrokeSelectedColor;
     private int mStrokeCheckedColor;
+    protected int mStrokePressedAlpha = 0;
 
     private int mStrokeWidth;
     private float mStrokeDashWidth;
@@ -71,7 +78,7 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
     private float mBottomRightRadius;
 
     private int mRippleColor;
-    private boolean mRippleEnable;
+    protected boolean mRippleEnable;
     private boolean mSelected;
     private int mEnterFadeDuration = 0;
     private int mExitFadeDuration = 0;
@@ -102,21 +109,25 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         this.mResourceUtil = new ResourceUtil(context);
         initAttributes(context, attrs);
         view.setSelected(mSelected);
-        setSelected(mSelected);
+        setBackgroundPressedAlpha(mBackgroundPressedAlpha)
+                .setStrokePressedAlpha(mStrokePressedAlpha)
+                .setSelected(mSelected);
     }
 
     protected void initAttributes(Context context, AttributeSet attrs) {
         mBackgroundColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundColor, Integer.MAX_VALUE);
-        mBackgroundPressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundPressedColor, mBackgroundColor);
-        mBackgroundDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundDisabledColor, mBackgroundColor);
-        mBackgroundSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundSelectedColor, mBackgroundColor);
-        mBackgroundCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundCheckedColor, mBackgroundColor);
+        mBackgroundPressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundPressedColor, Integer.MAX_VALUE);
+        mBackgroundDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundDisabledColor, Integer.MAX_VALUE);
+        mBackgroundSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundSelectedColor, Integer.MAX_VALUE);
+        mBackgroundCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_backgroundCheckedColor, Integer.MAX_VALUE);
+        mBackgroundPressedAlpha = mTypedArray.getInteger(R.styleable.RadiusSwitch_rv_backgroundPressedAlpha, mBackgroundPressedAlpha);
 
-        mStrokeColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeColor, Color.GRAY);
-        mStrokePressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokePressedColor, mStrokeColor);
-        mStrokeDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeDisabledColor, mStrokeColor);
-        mStrokeSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeSelectedColor, mStrokeColor);
-        mStrokeCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeCheckedColor, mStrokeColor);
+        mStrokeColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeColor, Integer.MAX_VALUE);
+        mStrokePressedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokePressedColor, Integer.MAX_VALUE);
+        mStrokeDisabledColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeDisabledColor, Integer.MAX_VALUE);
+        mStrokeSelectedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeSelectedColor, Integer.MAX_VALUE);
+        mStrokeCheckedColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_strokeCheckedColor, Integer.MAX_VALUE);
+        mStrokePressedAlpha = mTypedArray.getInteger(R.styleable.RadiusSwitch_rv_strokePressedAlpha, mStrokePressedAlpha);
 
         mStrokeWidth = mTypedArray.getDimensionPixelSize(R.styleable.RadiusSwitch_rv_strokeWidth, 0);
         mStrokeDashWidth = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_strokeDashWidth, 0);
@@ -199,6 +210,22 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
     }
 
     /**
+     * 背景色按下状态透明度(0-255默认102 仅当未设置backgroundPressedColor有效)
+     *
+     * @param alpha
+     * @return
+     */
+    public T setBackgroundPressedAlpha(int alpha) {
+        if (alpha > 255) {
+            alpha = 255;
+        } else if (alpha < 0) {
+            alpha = 0;
+        }
+        this.mBackgroundPressedAlpha = alpha;
+        return back();
+    }
+
+    /**
      * 设置边框线常态颜色
      *
      * @param strokeColor
@@ -250,6 +277,22 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
      */
     public T setStrokeCheckedColor(int strokeCheckedColor) {
         this.mStrokeCheckedColor = strokeCheckedColor;
+        return back();
+    }
+
+    /**
+     * 边框色按下状态透明度(0-255默认102 仅当未设置strokePressedColor有效)
+     *
+     * @param alpha
+     * @return
+     */
+    public T setStrokePressedAlpha(int alpha) {
+        if (alpha > 255) {
+            alpha = 255;
+        } else if (alpha < 0) {
+            alpha = 0;
+        }
+        this.mStrokePressedAlpha = alpha;
         return back();
     }
 
@@ -480,6 +523,9 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
      * 设置完所有属性后调用设置背景
      */
     public void init() {
+        if (mView instanceof EditText) {
+            Log.i("v", "click:" + mView.isClickable() + ";enable:" + mView.isEnabled());
+        }
         //获取view当前drawable--用于判断是否通过默认属性设置背景
         Drawable mDrawable = mView.getBackground();
         //判断是否使用自定义颜色值
@@ -503,7 +549,7 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
                                     new int[]{}
                             },
                             new int[]{
-                                    mRippleColor != Integer.MAX_VALUE ? mRippleColor : mBackgroundPressedColor,
+                                    mRippleColor != Integer.MAX_VALUE ? mRippleColor : getBackColor(mBackgroundPressedColor),
                                     mRippleColor
                             }
                     )
@@ -549,7 +595,8 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
                 color = mBackgroundCheckedColor;
             }
         }
-        return color != Integer.MAX_VALUE ? color : mBackgroundColor;
+        color = color != Integer.MAX_VALUE ? color : mBackgroundColor == Integer.MAX_VALUE ? Color.WHITE : mBackgroundColor;
+        return mView.isPressed() && !mRippleEnable ? calculateColor(color, mBackgroundPressedAlpha) : color;
     }
 
     /**
@@ -567,8 +614,10 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
                 color = mStrokeCheckedColor;
             }
         }
-        return color != Integer.MAX_VALUE ? color : mStrokeColor;
+        color = color != Integer.MAX_VALUE ? color : mStrokeColor == Integer.MAX_VALUE ? Color.TRANSPARENT : mStrokeColor;
+        return mView.isPressed() && !mRippleEnable ? calculateColor(color, mStrokePressedAlpha) : color;
     }
+
     /**
      * 水波纹效果完成后最终展示的背景Drawable
      *
@@ -589,5 +638,26 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
     protected int dp2px(float dipValue) {
         final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
+    }
+
+    /**
+     * 给颜色值添加透明度
+     *
+     * @param color color值
+     * @param alpha alpha值 0-255
+     * @return 最终的状态栏颜色
+     */
+    protected int calculateColor(@ColorInt int color, int alpha) {
+        if (alpha == 0) {
+            return color;
+        }
+        float a = 1 - alpha / 255f;
+        int red = color >> 16 & 0xff;
+        int green = color >> 8 & 0xff;
+        int blue = color & 0xff;
+        red = (int) (red * a + 0.5);
+        green = (int) (green * a + 0.5);
+        blue = (int) (blue * a + 0.5);
+        return 0xff << 24 | red << 16 | green << 8 | blue;
     }
 }

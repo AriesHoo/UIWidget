@@ -113,15 +113,13 @@ public class RadiusSwitchDelegate extends RadiusCompoundDelegate<RadiusSwitchDel
         mTrackDisabledDrawable = mTrackDisabledDrawable == null ? mTrackDrawable : mTrackDisabledDrawable;
         mTrackSelectedDrawable = mTrackSelectedDrawable == null ? mTrackDrawable : mTrackSelectedDrawable;
         mTrackCheckedDrawable = mTrackCheckedDrawable == null ? new ColorDrawable(mColorAccent) : mTrackCheckedDrawable;
-
-
         super.initAttributes(context, attrs);
     }
 
     @Override
     public void init() {
-        setSwitchDrawable();
         super.init();
+        setSwitchDrawable();
     }
 
     /**

@@ -62,8 +62,8 @@ public class RadiusCompoundDelegate<T extends RadiusCompoundDelegate> extends Ra
 
     @Override
     public void init() {
-        setButtonDrawable();
         super.init();
+        setButtonDrawable();
     }
 
     /**

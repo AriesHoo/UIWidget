@@ -12,6 +12,7 @@ import com.aries.ui.view.radius.delegate.RadiusTextViewDelegate;
  * Function: 用于需要圆角矩形框背景的EditText的情况,减少直接使用EditText时引入的shape资源文件
  * Description:
  * 1、2018-2-5 14:27:16 初始化TextView的 RadiusTextDelegate
+ * 2、2018-6-13 11:28:09 默认设置不可点击
  */
 public class RadiusEditText extends EditText {
     private RadiusTextViewDelegate delegate;
@@ -26,6 +27,7 @@ public class RadiusEditText extends EditText {
 
     public RadiusEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setClickable(false);
         delegate = new RadiusTextViewDelegate(this, context, attrs);
         setFocusableInTouchMode(true);
     }
@@ -73,6 +75,14 @@ public class RadiusEditText extends EditText {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         if (delegate != null) {
+            delegate.init();
+        }
+    }
+
+    @Override
+    public void setPressed(boolean pressed) {
+        super.setPressed(pressed);
+        if (delegate != null && pressed) {
             delegate.init();
         }
     }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import com.aries.ui.helper.alpha.AlphaViewHelper;
 import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
 
 /**
@@ -15,7 +14,6 @@ import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
  */
 public class RadiusLinearLayout extends LinearLayout {
     private RadiusViewDelegate delegate;
-    private AlphaViewHelper mAlphaViewHelper;
 
     public RadiusLinearLayout(Context context) {
         this(context, null);
@@ -24,7 +22,6 @@ public class RadiusLinearLayout extends LinearLayout {
     public RadiusLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         delegate = new RadiusViewDelegate(this, context, attrs);
-        mAlphaViewHelper = new AlphaViewHelper(this);
     }
 
     /**
@@ -71,13 +68,15 @@ public class RadiusLinearLayout extends LinearLayout {
         super.setEnabled(enabled);
         if (delegate != null) {
             delegate.init();
-            mAlphaViewHelper.onEnabledChanged(this,enabled);
         }
     }
 
     @Override
     public void setPressed(boolean pressed) {
         super.setPressed(pressed);
-        mAlphaViewHelper.onPressedChanged(this,pressed);
+        if (delegate != null && pressed) {
+            delegate.init();
+        }
     }
+
 }

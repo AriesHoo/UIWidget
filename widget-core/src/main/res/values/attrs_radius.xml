@@ -11,6 +11,8 @@
     <attr name="rv_backgroundSelectedColor" format="color"/>
     <!-- 圆角矩形背景色Checked -->
     <attr name="rv_backgroundCheckedColor" format="color"/>
+    <!-- 圆角矩形背景色按下状态透明度(0-255默认0 仅当未设置backgroundPressedColor有效) -->
+    <attr name="rv_backgroundPressedAlpha" format="integer"/>
     <!-- 圆角边框颜色-->
     <attr name="rv_strokeColor" format="color"/>
     <!-- 圆角边框颜色Pressed -->
@@ -21,6 +23,8 @@
     <attr name="rv_strokeSelectedColor" format="color"/>
     <!-- 圆角边框颜色Checked -->
     <attr name="rv_strokeCheckedColor" format="color"/>
+    <!-- 圆角矩形边框色按下状态透明度(0-255默认0 仅当未设置strokePressedColor有效) -->
+    <attr name="rv_strokePressedAlpha" format="integer"/>
 
     <!-- 圆角线框,单位dp-->
     <attr name="rv_strokeWidth" format="dimension"/>
@@ -152,12 +156,14 @@
         <attr name="rv_backgroundDisabledColor"/>
         <attr name="rv_backgroundSelectedColor"/>
         <attr name="rv_backgroundCheckedColor"/>
+        <attr name="rv_backgroundPressedAlpha"/>
 
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeDisabledColor"/>
         <attr name="rv_strokeSelectedColor"/>
         <attr name="rv_strokeCheckedColor"/>
+        <attr name="rv_strokePressedAlpha"/>
 
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeDashWidth"/>
@@ -273,12 +279,14 @@
         <attr name="rv_backgroundDisabledColor"/>
         <attr name="rv_backgroundSelectedColor"/>
         <attr name="rv_backgroundCheckedColor"/>
+        <attr name="rv_backgroundPressedAlpha"/>
 
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeDisabledColor"/>
         <attr name="rv_strokeSelectedColor"/>
         <attr name="rv_strokeCheckedColor"/>
+        <attr name="rv_strokePressedAlpha"/>
 
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeDashWidth"/>
@@ -365,12 +373,14 @@
         <attr name="rv_backgroundDisabledColor"/>
         <attr name="rv_backgroundSelectedColor"/>
         <attr name="rv_backgroundCheckedColor"/>
+        <attr name="rv_backgroundPressedAlpha"/>
 
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeDisabledColor"/>
         <attr name="rv_strokeSelectedColor"/>
         <attr name="rv_strokeCheckedColor"/>
+        <attr name="rv_strokePressedAlpha"/>
 
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeDashWidth"/>
@@ -457,12 +467,14 @@
         <attr name="rv_backgroundDisabledColor"/>
         <attr name="rv_backgroundSelectedColor"/>
         <attr name="rv_backgroundCheckedColor"/>
+        <attr name="rv_backgroundPressedAlpha"/>
 
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeDisabledColor"/>
         <attr name="rv_strokeSelectedColor"/>
         <attr name="rv_strokeCheckedColor"/>
+        <attr name="rv_strokePressedAlpha"/>
 
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeDashWidth"/>
@@ -537,12 +549,14 @@
         <attr name="rv_backgroundDisabledColor"/>
         <attr name="rv_backgroundSelectedColor"/>
         <attr name="rv_backgroundCheckedColor"/>
+        <attr name="rv_backgroundPressedAlpha"/>
 
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeDisabledColor"/>
         <attr name="rv_strokeSelectedColor"/>
         <attr name="rv_strokeCheckedColor"/>
+        <attr name="rv_strokePressedAlpha"/>
 
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeDashWidth"/>
@@ -617,12 +631,14 @@
         <attr name="rv_backgroundDisabledColor"/>
         <attr name="rv_backgroundSelectedColor"/>
         <attr name="rv_backgroundCheckedColor"/>
+        <attr name="rv_backgroundPressedAlpha"/>
 
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeDisabledColor"/>
         <attr name="rv_strokeSelectedColor"/>
         <attr name="rv_strokeCheckedColor"/>
+        <attr name="rv_strokePressedAlpha"/>
 
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeDashWidth"/>
@@ -648,12 +664,14 @@
         <attr name="rv_backgroundDisabledColor"/>
         <attr name="rv_backgroundSelectedColor"/>
         <attr name="rv_backgroundCheckedColor"/>
+        <attr name="rv_backgroundPressedAlpha"/>
 
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeDisabledColor"/>
         <attr name="rv_strokeSelectedColor"/>
         <attr name="rv_strokeCheckedColor"/>
+        <attr name="rv_strokePressedAlpha"/>
 
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeDashWidth"/>
@@ -678,12 +696,14 @@
         <attr name="rv_backgroundDisabledColor"/>
         <attr name="rv_backgroundSelectedColor"/>
         <attr name="rv_backgroundCheckedColor"/>
+        <attr name="rv_backgroundPressedAlpha"/>
 
         <attr name="rv_strokeColor"/>
         <attr name="rv_strokePressedColor"/>
         <attr name="rv_strokeDisabledColor"/>
         <attr name="rv_strokeSelectedColor"/>
         <attr name="rv_strokeCheckedColor"/>
+        <attr name="rv_strokePressedAlpha"/>
 
         <attr name="rv_strokeWidth"/>
         <attr name="rv_strokeDashWidth"/>

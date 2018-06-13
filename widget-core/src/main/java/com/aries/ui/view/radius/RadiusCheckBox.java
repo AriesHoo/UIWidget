@@ -73,6 +73,14 @@ public class RadiusCheckBox extends CheckBox {
     }
 
     @Override
+    public void setPressed(boolean pressed) {
+        super.setPressed(pressed);
+        if (delegate != null && pressed) {
+            delegate.init();
+        }
+    }
+
+    @Override
     public void setChecked(boolean checked) {
         super.setChecked(checked);
         if (delegate != null)

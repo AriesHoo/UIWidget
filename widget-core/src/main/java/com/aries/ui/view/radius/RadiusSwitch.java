@@ -26,6 +26,7 @@ public class RadiusSwitch extends Switch {
         super(context, attrs);
         delegate = new RadiusSwitchDelegate(this, context, attrs);
     }
+
     /**
      * 获取代理类用于Java代码控制shape属性
      *
@@ -71,5 +72,20 @@ public class RadiusSwitch extends Switch {
         if (delegate != null) {
             delegate.init();
         }
+    }
+
+    @Override
+    public void setPressed(boolean pressed) {
+        super.setPressed(pressed);
+        if (delegate != null && pressed) {
+            delegate.init();
+        }
+    }
+
+    @Override
+    public void setChecked(boolean checked) {
+        super.setChecked(checked);
+        if (delegate != null)
+            delegate.init();
     }
 }

@@ -3,6 +3,7 @@ package com.aries.ui.view.radius.delegate;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -146,6 +147,7 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
 
     @Override
     public void init() {
+        super.init();
         setTextSelector();
         if (!mLeftDrawableSystemEnable) {
             setTextDrawable(mLeftDrawable, mLeftCheckedDrawable,
@@ -163,7 +165,6 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
             setTextDrawable(mBottomDrawable, mBottomCheckedDrawable,
                     mBottomSelectedDrawable, mBottomPressedDrawable, mBottomDisabledDrawable, Gravity.BOTTOM);
         }
-        super.init();
     }
 
     /**
@@ -626,12 +627,13 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
         if (color != Integer.MAX_VALUE) return color;
         if (mView.isSelected()) {
             color = mTextSelectedColor;
-        } else if (mTextView instanceof CompoundButton) {
-            if (((CompoundButton) mTextView).isChecked()) {
+        } else if (mView instanceof CompoundButton) {
+            if (((CompoundButton) mView).isChecked()) {
                 color = mTextCheckedColor;
             }
         }
-        return color != Integer.MAX_VALUE ? color : mTextColor;
+        color = color != Integer.MAX_VALUE ? color : mTextColor == Integer.MAX_VALUE ? Color.WHITE : mTextColor;
+        return mView.isPressed() && !mRippleEnable ? calculateColor(color, mBackgroundPressedAlpha) : color;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

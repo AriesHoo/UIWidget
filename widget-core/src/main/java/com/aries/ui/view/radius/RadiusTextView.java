@@ -75,4 +75,12 @@ public class RadiusTextView extends TextView {
             delegate.init();
         }
     }
+
+    @Override
+    public void setPressed(boolean pressed) {
+        super.setPressed(pressed);
+        if (delegate != null && pressed) {
+            delegate.init();
+        }
+    }
 }
