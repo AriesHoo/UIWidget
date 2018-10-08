@@ -20,10 +20,9 @@ import android.widget.EditText;
 import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.widget.R;
 
-
 /**
- * Created: AriesHoo on 2017-02-10 14:25
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 10:01
+ * @E-Mail: AriesHoo@126.com
  * Function:  公共属性解析代理类
  * Description:
  * 1、2017-11-15 09:36:14 添加Java属性设置链式调用支持
@@ -50,6 +49,7 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
     private GradientDrawable mBackgroundChecked = new GradientDrawable();
 
     //以下为xml属性对应解析参数
+
     private int mBackgroundColor;
     private int mBackgroundPressedColor;
     private int mBackgroundDisabledColor;
@@ -570,7 +570,8 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
             mStateDrawable.addState(new int[]{mStateSelected}, mBackgroundSelected);
             mStateDrawable.addState(new int[]{mStateChecked}, mBackgroundChecked);
             mStateDrawable.addState(new int[]{mStateDisabled}, mBackgroundDisabled);
-            mStateDrawable.addState(new int[]{}, mBackground);//默认状态--放置在最后否则其它状态不生效
+            //默认状态--放置在最后否则其它状态不生效
+            mStateDrawable.addState(new int[]{}, mBackground);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 mView.setBackground(mStateDrawable);
             } else {
@@ -587,7 +588,9 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
      * @return
      */
     private int getBackColor(int color) {
-        if (color != Integer.MAX_VALUE) return color;
+        if (color != Integer.MAX_VALUE) {
+            return color;
+        }
         if (mView.isSelected()) {
             color = mBackgroundSelectedColor;
         } else if (mView instanceof CompoundButton) {
@@ -606,7 +609,9 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
      * @return
      */
     private int getStrokeColor(int color) {
-        if (color != Integer.MAX_VALUE) return color;
+        if (color != Integer.MAX_VALUE) {
+            return color;
+        }
         if (mView.isSelected()) {
             color = mStrokeSelectedColor;
         } else if (mView instanceof CompoundButton) {

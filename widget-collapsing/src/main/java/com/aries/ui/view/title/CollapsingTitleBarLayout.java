@@ -46,12 +46,13 @@ import java.lang.annotation.RetentionPolicy;
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
- * Created: AriesHoo on 2018/2/7/007 15:53
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 10:50
+ * @E-Mail: AriesHoo@126.com
  * Function: 参考 {@link android.support.design.widget.CollapsingToolbarLayout},
  * 适配 {@link TitleBarView}
  * Description:
  * 1、set方法增加返回本对象支持链式调用
+ * 2、2018-8-28 14:20:46 新增设置展开及收缩文字大小方法{@link #setCollapsedTitleTextSize(float)}{@link #setExpandedTitleTextSize(float)}
  */
 public class CollapsingTitleBarLayout extends FrameLayout {
 
@@ -733,6 +734,11 @@ public class CollapsingTitleBarLayout extends FrameLayout {
         return this;
     }
 
+    public CollapsingTitleBarLayout setCollapsedTitleTextSize(float size) {
+        mCollapsingTextHelper.setCollapsedTextSize(size);
+        return this;
+    }
+
     /**
      * Sets the horizontal alignment of the collapsed title and the vertical gravity that will
      * be used when there is extra space in the collapsed bounds beyond what is required for
@@ -775,6 +781,11 @@ public class CollapsingTitleBarLayout extends FrameLayout {
      */
     public CollapsingTitleBarLayout setExpandedTitleTextColor(@NonNull ColorStateList colors) {
         mCollapsingTextHelper.setExpandedTextColor(colors);
+        return this;
+    }
+
+    public CollapsingTitleBarLayout setExpandedTitleTextSize(float size) {
+        mCollapsingTextHelper.setExpandedTextSize(size);
         return this;
     }
 

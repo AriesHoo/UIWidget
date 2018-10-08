@@ -19,8 +19,8 @@ import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.widget.R;
 
 /**
- * Created: AriesHoo on 2018/2/5/005 13:53
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 9:59
+ * @E-Mail: AriesHoo@126.com
  * Function: TextView特有代理类
  * Description:
  * 1、2018-2-4 17:42:18 增加 CompoundButton 类(CheckBox和RadioButton)增加ButtonDrawable属性

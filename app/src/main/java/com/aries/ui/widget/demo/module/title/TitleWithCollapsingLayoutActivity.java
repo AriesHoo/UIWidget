@@ -19,9 +19,9 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * Created: AriesHoo on 2018/2/7/007 17:36
- * E-Mail: AriesHoo@126.com
- * Function:  TitleBarView+CollapsingTitleBarLayout 类Toolbar+CollapsingToolbarLayout
+ * @Author: AriesHoo on 2018/8/10 18:11
+ * @E-Mail: AriesHoo@126.com
+ * Function: TitleBarView+CollapsingTitleBarLayout 类Toolbar+CollapsingToolbarLayout
  * Description:
  */
 public class TitleWithCollapsingLayoutActivity extends BaseRecycleActivity<WidgetEntity> {

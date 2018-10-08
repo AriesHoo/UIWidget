@@ -14,6 +14,7 @@ package com.aries.ui.view.title.util;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
@@ -22,6 +23,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
+/**
+ * @Author: AriesHoo on 2018/7/19 10:47
+ * @E-Mail: AriesHoo@126.com
+ * Function: 动画工具
+ * Description:
+ */
 public class AnimationUtils {
 
     public static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();

@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.aries.ui.widget.R;
 
 /**
- * Created: AriesHoo on 2018/2/6/006 9:47
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 9:58
+ * @E-Mail: AriesHoo@126.com
  * Function: 设置Switch thumb及track相关代理
  * Description:
  * 2018-6-1 09:40:27 1、增加默认属性值并调整设置Drawable逻辑
@@ -26,7 +26,9 @@ public class RadiusSwitchDelegate extends RadiusCompoundDelegate<RadiusSwitchDel
     private StateListDrawable mStateThumbDrawable;
     private StateListDrawable mStateTrackDrawable;
 
-    //以下为xml对应属性解析
+    /**
+     * 以下为xml对应属性解析
+     */
     private int mThumbDrawableWidth;
     private int mThumbDrawableHeight;
     private Drawable mThumbDrawable;
@@ -60,12 +62,12 @@ public class RadiusSwitchDelegate extends RadiusCompoundDelegate<RadiusSwitchDel
     private float mTrackRadius;
     private int mColorAccent;
     private int mColorDefault;
+
     //以上为xml对应属性解析
 
     public RadiusSwitchDelegate(TextView view, Context context, AttributeSet attrs) {
         super(view, context, attrs);
     }
-
 
     @Override
     protected void initAttributes(Context context, AttributeSet attrs) {

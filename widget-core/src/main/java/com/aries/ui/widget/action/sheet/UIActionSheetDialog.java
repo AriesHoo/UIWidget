@@ -35,8 +35,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created: AriesHoo on 2018/2/7/007 13:21
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 10:35
+ * @E-Mail: AriesHoo@126.com
  * Function: UIActionSheet效果Dialog
  * Description:
  * 1、继承自Dialog 并封装不同Builder模式
@@ -53,6 +53,14 @@ import java.util.Map;
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
     public interface OnItemClickListener {
+
+        /**
+         * Item点击事件
+         *
+         * @param dialog
+         * @param itemView
+         * @param position
+         */
         void onClick(BasisDialog dialog, View itemView, int position);
     }
 
@@ -92,8 +100,18 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
     }
 
     public interface ICreateContentView {
+        /**
+         * 创建ItemView
+         *
+         * @return
+         */
         View createItemView();
 
+        /**
+         * 设置默认适配器
+         *
+         * @return
+         */
         ListAdapter getDefaultAdapter();
     }
 

@@ -18,6 +18,12 @@ package com.aries.ui.view.title.util;
 import android.content.Context;
 import android.content.res.TypedArray;
 
+/**
+ * @Author: AriesHoo on 2018/7/19 10:48
+ * @E-Mail: AriesHoo@126.com
+ * Function: 主题工具类
+ * Description:
+ */
 public class ThemeUtils {
 
     private static final int[] APPCOMPAT_CHECK_ATTRS = {

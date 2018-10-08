@@ -23,14 +23,15 @@ import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.ResourceUtil;
 
 /**
- * Created: AriesHoo on 2018/3/20/020 8:48
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 8:46
+ * @E-Mail: AriesHoo@126.com
  * Function: Widget Dialog模式基类
  * Description:
  * 1、新增基础Builder包装通用属性
  * 2、新增ContentView margin属性
  * 3、新增控制虚拟导航栏功能
  * 4、2018-4-3 12:51:47 移除控制虚拟导航栏功能
+ * 5、2018-7-19 09:02:00 修改点击contentView 父容器逻辑处理
  */
 public class BasisDialog<T extends BasisDialog> extends Dialog {
 
@@ -43,9 +44,16 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     private int mWidth = WindowManager.LayoutParams.WRAP_CONTENT;
     private int mHeight = WindowManager.LayoutParams.WRAP_CONTENT;
     private int mWindowAnimations = -1;
+    protected boolean mCanceledOnTouchOutside;
 
 
     public interface OnTextViewLineListener {
+        /**
+         * TextView及其控件行数变化监听
+         *
+         * @param textView
+         * @param lineCount
+         */
         void onTextViewLineListener(TextView textView, int lineCount);
     }
 
@@ -71,10 +79,13 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         mLayoutParams.width = mWidth;
         mLayoutParams.height = mHeight;
         mLayoutParams.gravity = mGravity;
-        mLayoutParams.alpha = mAlpha;// 透明度
-        mLayoutParams.dimAmount = mDimAmount;// 黑暗度
+        // 透明度
+        mLayoutParams.alpha = mAlpha;
+        // 黑暗度
+        mLayoutParams.dimAmount = mDimAmount;
         if (mWindowAnimations != -1) {
-            mLayoutParams.windowAnimations = mWindowAnimations;// 动画
+            // 动画
+            mLayoutParams.windowAnimations = mWindowAnimations;
         }
         mWindow.setAttributes(mLayoutParams);
     }
@@ -101,6 +112,12 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     public void dismiss() {
         closeKeyboard();
         super.dismiss();
+    }
+
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        super.setCanceledOnTouchOutside(cancel);
+        this.mCanceledOnTouchOutside = cancel;
     }
 
     /**
@@ -492,7 +509,9 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
                 ((ViewGroup) parent.getParent()).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mDialog.dismiss();
+                        if (mDialog.mCanceledOnTouchOutside) {
+                            mDialog.dismiss();
+                        }
                     }
                 });
             }

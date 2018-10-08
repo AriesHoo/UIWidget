@@ -33,9 +33,9 @@ import com.aries.ui.view.title.util.ViewGroupUtils;
 import com.aries.ui.widget.R;
 
 /**
- * Created: AriesHoo on 2017-02-09 09:42
- * E-Mail: AriesHoo@126.com
- * Function:定制标题栏
+ * @Author: AriesHoo on 2018/7/19 10:21
+ * @E-Mail: AriesHoo@126.com
+ * Function: 定制标题栏-支持沉浸式
  * Description:
  * 1、2017-11-21 10:30:14 AriesHoo 修改onMeasure及onLayout回调控制宽度获取TitleBarView实际宽度(之前为屏幕宽度)
  * 2、2017-12-4 10:09:50 AriesHoo 修改onMeasure中重新测量中间Layout时机避免TitleBarView测量显示错误(目前在Fragment嵌套在FragmentLayout里会出现不显示Title BUG)
@@ -45,33 +45,84 @@ import com.aries.ui.widget.R;
  * 6、2018-3-29 12:02:53 删除废弃方法 setBottomEditTextControl
  * 7、2018-3-30 10:43:49 设置View按下alpha 控制属性{@link #setViewPressedAlpha(float)}
  * 8、2018-4-4 15:06:21 调整设置{@link #setOutPadding(int)}以便增加左右TextView 点击范围
+ * 9、2018-10-8 13:50:42 修改xml设置主标题{@link #setTitleMainText(CharSequence)}无法实时显示问题
  */
 public class TitleBarView extends ViewGroup {
 
-    public static final int DEFAULT_STATUS_BAR_ALPHA = 102;//默认透明度--5.0以上优化半透明状态栏一致
-    private static final int DEFAULT_TEXT_COLOR = Color.BLACK;//默认文本颜色
-    private static final float DEFAULT_MAIN_TEXT_SIZE = 18;//主标题size dp
-    private static final float DEFAULT_TEXT_SIZE = 14;//文本默认size dp
-    private static final float DEFAULT_SUB_TEXT_SIZE = 14;//副标题默认size dp
-    private static final float DEFAULT_OUT_PADDING = 12;//左右padding dp--ToolBar默认16dp
-    private static final float DEFAULT_CENTER_GRAVITY_LEFT_PADDING = 24;//左右padding dp--ToolBar默认32dp
-
-    private int mStatusBarHeight;//状态栏高度
-    private int mScreenWidth;//TitleBarView实际占用宽度
+    /**
+     * 默认透明度--5.0以上优化半透明状态栏一致
+     */
+    public static final int DEFAULT_STATUS_BAR_ALPHA = 102;
+    /**
+     * 默认文本颜色
+     */
+    private static final int DEFAULT_TEXT_COLOR = Color.BLACK;
+    /**
+     * 主标题size dp
+     */
+    private static final float DEFAULT_MAIN_TEXT_SIZE = 18;
+    /**
+     * 文本默认size dp
+     */
+    private static final float DEFAULT_TEXT_SIZE = 14;
+    /**
+     * 副标题默认size dp
+     */
+    private static final float DEFAULT_SUB_TEXT_SIZE = 14;
+    /**
+     * 左右padding dp--ToolBar默认16dp
+     */
+    private static final float DEFAULT_OUT_PADDING = 12;
+    /**
+     * 左右padding dp--ToolBar默认32dp
+     */
+    private static final float DEFAULT_CENTER_GRAVITY_LEFT_PADDING = 24;
+    /**
+     * 状态栏高度
+     */
+    private int mStatusBarHeight;
+    /**
+     * TitleBarView实际占用宽度
+     */
+    private int mScreenWidth;
 
     private Context mContext;
     /**
-     * 自定义View
+     * 自定义View-状态栏View-用于单独设置颜色
      */
-    private View mVStatus;//状态栏View-用于单独设置颜色
-    private LinearLayout mLLayoutLeft;//左边容器
-    private LinearLayout mLLayoutCenter;//中间容器
-    private LinearLayout mLLayoutRight;//右边容器
-    private AlphaTextView mTvLeft;//左边TextView
-    private TextView mTvTitleMain;//主标题
-    private TextView mTvTitleSub;//副标题
-    private AlphaTextView mTvRight;//右边TextView
-    private View mVDivider;//下方下划线
+    private View mVStatus;
+    /**
+     * 左边容器
+     */
+    private LinearLayout mLLayoutLeft;
+    /**
+     * 中间容器
+     */
+    private LinearLayout mLLayoutCenter;
+    /**
+     * 右边容器
+     */
+    private LinearLayout mLLayoutRight;
+    /**
+     * 左边TextView
+     */
+    private AlphaTextView mTvLeft;
+    /**
+     * 主标题
+     */
+    private TextView mTvTitleMain;
+    /**
+     * 副标题
+     */
+    private TextView mTvTitleSub;
+    /**
+     * 右边TextView
+     */
+    private AlphaTextView mTvRight;
+    /**
+     * 下方下划线
+     */
+    private View mVDivider;
 
     /**
      * 是否增加状态栏高度
@@ -87,10 +138,22 @@ public class TitleBarView extends ViewGroup {
     private boolean mImmersible = false;
     private int mOutPadding;
     private int mActionPadding;
-    private int mCenterLayoutPadding;//中间部分是Layout左右padding
-    private boolean mCenterGravityLeft = false;//中间部分是否左对齐--默认居中
-    private int mCenterGravityLeftPadding;//中间部分左对齐是Layout左padding
-    private boolean mStatusBarLightMode = false;//是否浅色状态栏(黑色文字及图标)
+    /**
+     * 中间部分是Layout左右padding
+     */
+    private int mCenterLayoutPadding;
+    /**
+     * 中间部分是否左对齐--默认居中
+     */
+    private boolean mCenterGravityLeft = false;
+    /**
+     * 中间部分左对齐是Layout左padding
+     */
+    private int mCenterGravityLeftPadding;
+    /**
+     * 是否浅色状态栏(黑色文字及图标)
+     */
+    private boolean mStatusBarLightMode = false;
     private float mViewPressedAlpha;
 
     private Drawable mStatusBackground;
@@ -240,11 +303,16 @@ public class TitleBarView extends ViewGroup {
 
         mLLayoutLeft.addView(mTvLeft, params);
         mLLayoutRight.addView(mTvRight, params);
-        addView(mLLayoutLeft, params);//添加左边容器
-        addView(mLLayoutCenter, params);//添加中间容器
-        addView(mLLayoutRight, params);//添加右边容器
-        addView(mVDivider, dividerParams);//添加下划线View
-        addView(mVStatus);//添加状态栏View
+        //添加左边容器
+        addView(mLLayoutLeft, params);
+        //添加中间容器
+        addView(mLLayoutCenter, params);
+        //添加右边容器
+        addView(mLLayoutRight, params);
+        //添加下划线View
+        addView(mVDivider, dividerParams);
+        //添加状态栏View
+        addView(mVStatus);
     }
 
     /**
@@ -416,9 +484,7 @@ public class TitleBarView extends ViewGroup {
                 window.setStatusBarColor(Color.TRANSPARENT);
             }
         }
-//        if (mStatusBackground == null) {
         setStatusAlpha(immersible ? isTransStatusBar ? 0 : 102 : 255);
-//        }
         return this;
     }
 
@@ -459,18 +525,20 @@ public class TitleBarView extends ViewGroup {
         int center = mLLayoutCenter.getMeasuredWidth();
         //判断左、中、右实际占用宽度是否等于或者超过屏幕宽度
         boolean isMuchScreen = left + right + center >= mScreenWidth;
-        if (!mCenterGravityLeft) {//不设置中间布局左对齐才进行中间布局重新测量
-            if (isMuchScreen) {
-                center = mScreenWidth - left - right;
-            } else {
-                if (left > right) {
-                    center = mScreenWidth - 2 * left;
-                } else {
-                    center = mScreenWidth - 2 * right;
-                }
-            }
-            mLLayoutCenter.measure(MeasureSpec.makeMeasureSpec(center, MeasureSpec.EXACTLY), heightMeasureSpec);
+        if (mCenterGravityLeft) {
+            return;
         }
+        //不设置中间布局左对齐才进行中间布局重新测量
+        if (isMuchScreen) {
+            center = mScreenWidth - left - right;
+        } else {
+            if (left > right) {
+                center = mScreenWidth - 2 * left;
+            } else {
+                center = mScreenWidth - 2 * right;
+            }
+        }
+        mLLayoutCenter.measure(MeasureSpec.makeMeasureSpec(center, MeasureSpec.EXACTLY), heightMeasureSpec);
     }
 
     /**
@@ -512,7 +580,6 @@ public class TitleBarView extends ViewGroup {
             mLLayoutLeft.setPadding(0, 0, 0, 0);
             mTvLeft.setPadding(mOutPadding, 0, mActionPadding, 0);
         }
-
         if (TextUtils.isEmpty(mRightText)
                 && mRightTextDrawable == null
                 || mLLayoutRight.indexOfChild(mTvRight) != mLLayoutRight.getChildCount() - 1) {
@@ -827,11 +894,17 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView setTitleMainText(CharSequence charSequence) {
         mTvTitleMain.setText(charSequence);
-        if (!TextUtils.isEmpty(charSequence)
-                && !hasChildView(mLLayoutCenter, mTvTitleMain)
-                && (getParent() != null && !getParent().getClass().getSimpleName().equals("CollapsingTitleBarLayout"))) {//非空且还未添加主标题
-            mLLayoutCenter.addView(mTvTitleMain, 0);
+        if (hasChildView(mLLayoutCenter, mTvTitleMain)) {
+            return this;
         }
+        if (TextUtils.isEmpty(charSequence)) {
+            return this;
+        }
+        //CollapsingTitleBarLayout 作为父控件则不进行操作
+        if ((getParent() != null && getParent().getClass().getSimpleName().equals("CollapsingTitleBarLayout"))) {
+            return this;
+        }
+        mLLayoutCenter.addView(mTvTitleMain, 0);
         return this;
     }
 
@@ -936,7 +1009,8 @@ public class TitleBarView extends ViewGroup {
             mTvTitleSub.setVisibility(VISIBLE);
         }
         mTvTitleSub.setText(charSequence);
-        if (!TextUtils.isEmpty(charSequence) && !hasChildView(mLLayoutCenter, mTvTitleSub)) {//非空且还未添加副标题
+        //非空且还未添加副标题
+        if (!TextUtils.isEmpty(charSequence) && !hasChildView(mLLayoutCenter, mTvTitleSub)) {
             if (hasChildView(mLLayoutCenter, mTvTitleMain)) {
                 mTvTitleMain.setSingleLine();
                 mTvTitleSub.setSingleLine();

@@ -7,8 +7,8 @@ import android.widget.FrameLayout;
 import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
 
 /**
- * Created: AriesHoo on 2017-02-10 14:24
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 10:04
+ * @E-Mail: AriesHoo@126.com
  * Function: 用于需要圆角矩形框背景的FrameLayout的情况,减少直接使用FrameLayout时引入的shape资源文件
  * Description:
  */

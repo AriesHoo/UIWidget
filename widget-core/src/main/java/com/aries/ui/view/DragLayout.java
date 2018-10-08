@@ -15,8 +15,8 @@ import android.widget.FrameLayout;
 import static android.R.attr.height;
 
 /**
- * Created: AriesHoo on 2018/4/2/002 10:39
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 10:31
+ * @E-Mail: AriesHoo@126.com
  * Function: 通过ViewDragHelper实现拖拽效果
  * Description:
  */
@@ -24,7 +24,6 @@ public class DragLayout extends FrameLayout {
 
     private static final int INVALID_POINTER = -1;
     private final float mDensity;
-    private View mTarget;
     boolean mDragEnable = true;
     private ViewDragHelper mDragHelper;
     private OnDragListener mListener;
@@ -121,8 +120,9 @@ public class DragLayout extends FrameLayout {
             return super.onTouchEvent(ev);
         }
         try {
-            if (mDragEnable)
+            if (mDragEnable) {
                 mDragHelper.processTouchEvent(ev);
+            }
         } catch (Exception ignored) {
         }
         return true;
@@ -165,8 +165,15 @@ public class DragLayout extends FrameLayout {
      * set listener
      */
     public interface OnDragListener {
+
+        /**
+         * Drag关闭回调
+         */
         void onClosed();
 
+        /**
+         * Drag开启回调
+         */
         void onOpened();
     }
 

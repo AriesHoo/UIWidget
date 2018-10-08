@@ -144,6 +144,7 @@ public class ActionSheetActivity extends BaseActivity {
                         .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetNormalItemText : android.R.color.holo_purple)
                         .setTitle(isShowTitle ? "标题" : null)
                         .setCancel(R.string.cancel)
+                        .setItemsMinHeight(200)
                         .setCancelMarginTop(SizeUtil.dp2px(isShowMargin ? 8 : 0))
                         .setCancelTextColorResource(isDefaultCancelColor ? R.color.colorActionSheetNormalItemText : android.R.color.darker_gray)
                         .setOnItemClickListener(mOnItemClickListener)

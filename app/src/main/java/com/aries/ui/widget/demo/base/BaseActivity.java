@@ -77,7 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initTitle();
         this.beforeInitView();
         Drawable drawableTop = new ColorDrawable(Color.LTGRAY);
-        DrawableUtil.setDrawableWidthHeight(drawableTop, SizeUtil.getScreenWidth(),SizeUtil.dp2px(0.5f));
+        DrawableUtil.setDrawableWidthHeight(drawableTop, SizeUtil.getScreenWidth(), SizeUtil.dp2px(0.5f));
         mNavigationViewHelper = NavigationViewHelper.with(this)
                 .setLogEnable(BuildConfig.DEBUG)
                 .setControlEnable(true)
@@ -95,13 +95,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void initTitle() {
-        titleBar = (TitleBarView) findViewById(R.id.titleBar);
+        titleBar = findViewById(R.id.titleBar);
         if (titleBar == null) {
             return;
         }
         type = titleBar.getStatusBarModeType();
-        if (type <= 0) {//无法设置白底黑字
-            titleBar.setStatusAlpha(102);//5.0 半透明模式alpha-102
+        //无法设置白底黑字
+        if (type <= 0) {
+            //5.0 半透明模式alpha-102
+            titleBar.setStatusAlpha(102);
         }
         titleBar.setTitleMainText(mContext.getClass().getSimpleName());
         titleBar.setOnLeftTextClickListener(new View.OnClickListener() {
@@ -136,6 +138,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mUnBinder.unbind();
     }
 
+    @Override
     protected void onResume() {
         if (this.mIsFirstShow) {
             this.mIsFirstShow = false;

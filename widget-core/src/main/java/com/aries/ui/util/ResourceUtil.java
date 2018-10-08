@@ -3,12 +3,11 @@ package com.aries.ui.util;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.util.TypedValue;
 
 /**
- * Created: AriesHoo on 2018/3/20/020 11:06
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 9:49
+ * @E-Mail: AriesHoo@126.com
  * Function: 资源文件获取帮助类
  * Description:
  */
@@ -120,7 +119,6 @@ public class ResourceUtil {
         } catch (Exception e) {
 
         }
-        Log.i("getAttrFloat", "result:" + result);
         return result == 0 ? def : result;
     }
 }

@@ -4,15 +4,18 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Rect;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.aries.ui.util.StatusBarUtil;
+
 /**
- * Created: AriesHoo on 2018/1/29/029 16:12
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 9:31
+ * @E-Mail: AriesHoo@126.com
  * Function: 软键盘和虚拟导航栏统一设置
  * Description:
  * 1、2018-2-7 12:27:36 修改是否控制NavigationBar参数及对应java方法
@@ -25,8 +28,9 @@ public class KeyboardHelper {
     private int mKeyMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED;
 
     public static KeyboardHelper with(Activity activity) {
-        if (activity == null)
+        if (activity == null) {
             throw new IllegalArgumentException("Activity不能为null");
+        }
         return new KeyboardHelper(activity);
     }
 
@@ -52,7 +56,7 @@ public class KeyboardHelper {
     private KeyboardHelper(Activity activity, Window window) {
         this.mWindow = window;
         this.mDecorView = activity.getWindow().getDecorView();
-        ViewGroup frameLayout = (ViewGroup) mWindow.getDecorView().findViewById(android.R.id.content);
+        ViewGroup frameLayout = mWindow.getDecorView().findViewById(android.R.id.content);
         this.mContentView = frameLayout.getChildAt(0) != null ? frameLayout.getChildAt(0) : frameLayout;
     }
 
@@ -111,20 +115,43 @@ public class KeyboardHelper {
         return this;
     }
 
+    boolean showInput = false;
+    int statusBarHeight;
     /**
      * 设置View变化监听
      */
     private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
+            statusBarHeight = StatusBarUtil.getStatusBarHeight();
             Rect r = new Rect();
-            mDecorView.getWindowVisibleDisplayFrame(r); //获取当前窗口可视区域大小的
-            int height = mDecorView.getContext().getResources().getDisplayMetrics().heightPixels; //获取屏幕密度，不包含导航栏
-            int diff = height - r.bottom +
-                    (mControlNavigationBarEnable ? NavigationBarUtil.getNavigationBarHeight(mWindow.getWindowManager()) : 0);
-            if (diff >= 0) {
-                mContentView.setPadding(0, mContentView.getPaddingTop(), 0, diff);
+            //可视区域
+            mContentView.getWindowVisibleDisplayFrame(r);
+            int heightDiff = mContentView.getRootView().getHeight() - (r.bottom - r.top);
+            Log.i("heightDiff", "heightDiff:" + heightDiff);
+            if (heightDiff > 100) {
+//                if (!showInput) {
+//                    showInput = true;
+//                }
+                //导航栏
+                int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(mWindow.getWindowManager());
+                if (mContentView.getPaddingBottom() != heightDiff - statusBarHeight - navigationBarHeight) {
+                    if (navigationBarHeight == 0 && r.top == 0) {
+                        mContentView.setPadding(0, 0, 0, heightDiff);
+                    } else {
+                        mContentView.setPadding(0, 0, 0, heightDiff - statusBarHeight - navigationBarHeight);
+                    }
+                }
+            } else {
+//                if (!showInput) {
+//                    return;
+//                }
+                showInput = false;
+                if (mContentView.getPaddingBottom() != 0) {
+                    mContentView.setPadding(0, 0, 0, 0);
+                }
             }
+
         }
     };
 }

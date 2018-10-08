@@ -9,8 +9,8 @@ import android.widget.Switch;
 import com.aries.ui.view.radius.delegate.RadiusSwitchDelegate;
 
 /**
- * Created: AriesHoo on 2018/2/11/011 14:05
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 10:06
+ * @E-Mail: AriesHoo@126.com
  * Function: switch自定义--api 16以上
  * Description:
  */
@@ -62,8 +62,9 @@ public class RadiusSwitch extends Switch {
     @Override
     public void setSelected(boolean selected) {
         super.setSelected(selected);
-        if (delegate != null)
+        if (delegate != null) {
             delegate.setSelected(selected);
+        }
     }
 
     @Override
@@ -85,7 +86,8 @@ public class RadiusSwitch extends Switch {
     @Override
     public void setChecked(boolean checked) {
         super.setChecked(checked);
-        if (delegate != null)
+        if (delegate != null) {
             delegate.init();
+        }
     }
 }

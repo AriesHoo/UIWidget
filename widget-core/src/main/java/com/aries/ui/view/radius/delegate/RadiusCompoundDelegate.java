@@ -12,8 +12,8 @@ import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.widget.R;
 
 /**
- * Created: AriesHoo on 2018/2/6/006 9:47
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 9:57
+ * @E-Mail: AriesHoo@126.com
  * Function: 设置CompoundButton ButtonDrawable相关代理
  * Description:
  * 1、新增控制是否Button为系统自带属性

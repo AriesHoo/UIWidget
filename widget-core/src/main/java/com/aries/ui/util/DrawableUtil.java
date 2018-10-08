@@ -3,8 +3,8 @@ package com.aries.ui.util;
 import android.graphics.drawable.Drawable;
 
 /**
- * Created: AriesHoo on 2018/2/5/005 12:02
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 9:47
+ * @E-Mail: AriesHoo@126.com
  * Function: Drawable设置相关工具类
  * Description:
  */

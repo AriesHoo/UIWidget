@@ -72,7 +72,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     @Override
     protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
         super.beforeControlNavigation(navigationHelper);
-        navigationHelper.setBottomView(mRecyclerView,true);
+        navigationHelper.setBottomView(mRecyclerView, true);
     }
 
     @Override
@@ -101,6 +101,14 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
             text += "-Flyme" + RomUtil.getFlymeVersionCode();
         } else if (RomUtil.isEMUI()) {
             text += "-EMUI" + RomUtil.getEMUIVersion();
+        } else if (RomUtil.isVIVO()) {
+            text += "-VIVO" + RomUtil.getVIVOVersion();
+        } else if (RomUtil.isOPPO()) {
+            text += "-OPPO" + RomUtil.getOPPOVersion();
+        } else if (RomUtil.isSmartisan()) {
+            text += "-SMARTISAN" + RomUtil.getSmartisanVersion();
+        } else if (RomUtil.isQiKu()) {
+            text += "-QIKU" + RomUtil.getQiKuVersion();
         }
         return text;
     }
@@ -123,18 +131,18 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
 
     @Override
     protected void initView(Bundle bundle) {
-        drawerRoot.setScrimColor(Color.argb(30,0,0,0));//背景高亮
+        drawerRoot.setScrimColor(Color.argb(30, 0, 0, 0));//背景高亮
         drawerRoot.setDrawerElevation(40);//海拔高度
 //        mContentView.setBackgroundDrawable(null);
         GlideManager.loadCircleImg("https://avatars3.githubusercontent.com/u/19605922?v=4&s=460", ivHead);
         titleBarDrawer.setImmersible(mContext, isImmersible, isLight);
         vHeader = View.inflate(mContext, R.layout.layout_title_header, null);
-        sBtnImmersible = (SwitchCompat) vHeader.findViewById(R.id.sBtn_immersible);
-        sBtnLight = (SwitchCompat) vHeader.findViewById(R.id.sBtn_light);
-        sBtnLine = (SwitchCompat) vHeader.findViewById(R.id.sBtn_line);
-        lLayoutAlpha = (LinearLayout) vHeader.findViewById(R.id.lLayout_alpha);
-        sBarAlpha = (SeekBar) vHeader.findViewById(R.id.sBar_alpha);
-        tvStatusAlpha = (TextView) vHeader.findViewById(R.id.tv_statusAlpha);
+        sBtnImmersible = vHeader.findViewById(R.id.sBtn_immersible);
+        sBtnLight = vHeader.findViewById(R.id.sBtn_light);
+        sBtnLine = vHeader.findViewById(R.id.sBtn_line);
+        lLayoutAlpha = vHeader.findViewById(R.id.lLayout_alpha);
+        sBarAlpha = vHeader.findViewById(R.id.sBar_alpha);
+        tvStatusAlpha = vHeader.findViewById(R.id.tv_statusAlpha);
         initView();
         setDrawerList();
         initData();

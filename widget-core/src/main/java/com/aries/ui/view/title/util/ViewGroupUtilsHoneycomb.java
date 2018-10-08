@@ -8,6 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+/**
+ * @Author: AriesHoo on 2018/7/19 10:39
+ * @E-Mail: AriesHoo@126.com
+ * Function: 
+ * Description: 
+ */
 @TargetApi(11)
 public class ViewGroupUtilsHoneycomb {
 

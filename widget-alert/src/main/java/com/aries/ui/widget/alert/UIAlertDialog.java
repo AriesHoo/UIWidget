@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created: AriesHoo on 2018/3/20/020 16:26
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 10:46
+ * @E-Mail: AriesHoo@126.com
  * Function: UIAlert Dialog+Builder模式重构
  * Description:
  * 1、2018-3-29 14:07:04 新增获取Title及Message回调
@@ -40,8 +40,19 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
     }
 
     public interface ICreateButtons {
+
+        /**
+         * 设置Title 之前的View
+         *
+         * @return
+         */
         View createBeforeTitle();
 
+        /**
+         * 创建Button
+         *
+         * @return
+         */
         List<View> createButtons();
     }
 
@@ -325,8 +336,9 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
                     if (listener != null) {
                         listener.onClick(mDialog, witch);
                     }
-                    if (mButtonClickDismissEnable)
+                    if (mButtonClickDismissEnable) {
                         mDialog.dismiss();
+                    }
                 }
             });
             mListButton.add(btn);

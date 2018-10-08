@@ -20,8 +20,8 @@ import android.view.animation.LinearInterpolator;
 import com.aries.ui.widget.R;
 
 /**
- * Created: AriesHoo on 2017/8/27 13:21
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 10:40
+ * @E-Mail: AriesHoo@126.com
  * Function: 自定义Material Design 风格ProgressBar
  * Description:
  * 1、2017-11-15 09:39:17 AriesHoo增加是否圆角属性控制
@@ -41,7 +41,10 @@ public class MaterialProgressBar extends View {
 
     private int arcColor = Color.BLUE;
     private float borderWidth = 6;
-    private int duration = 600;//最小300(600与5.0以上接近),最大建议不超过1000
+    /**
+     * 最小300(600与5.0以上接近),最大建议不超过1000
+     */
+    private int duration = 600;
     private boolean mRoundEnable = true;
 
     public MaterialProgressBar(Context context) {

@@ -4,9 +4,10 @@ import android.app.Application;
 import android.content.Context;
 
 /**
- * Created: AriesHoo on 2017/6/29 17:00
+ * @Author: AriesHoo on 2018/7/19 9:31
+ * @E-Mail: AriesHoo@126.com
  * Function:
- * Desc:
+ * Description:
  */
 public class App extends Application {
 

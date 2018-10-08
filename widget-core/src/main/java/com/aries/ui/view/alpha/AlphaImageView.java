@@ -7,9 +7,9 @@ import android.widget.ImageView;
 import com.aries.ui.view.alpha.delegate.AlphaDelegate;
 
 /**
- * Created: AriesHoo on 2018/3/14/014 9:42
- * E-Mail: AriesHoo@126.com
- * Function: 控制Alpha
+ * @Author: AriesHoo on 2018/7/19 9:55
+ * @E-Mail: AriesHoo@126.com
+ * Function: 控制Alpha 按下效果
  * Description:
  */
 public class AlphaImageView extends ImageView {

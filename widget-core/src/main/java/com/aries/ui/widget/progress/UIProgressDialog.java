@@ -2,7 +2,6 @@ package com.aries.ui.widget.progress;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
@@ -18,8 +17,8 @@ import com.aries.ui.widget.BasisDialog;
 import com.aries.ui.widget.R;
 
 /**
- * Created: AriesHoo on 2018/3/19/019 17:36
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 10:43
+ * @E-Mail: AriesHoo@126.com
  * Function:UIProgress Dialog模式重构
  * Description:
  * 1、新增progressBar颜色值设置
@@ -31,10 +30,25 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
     }
 
     public interface ICreateContentView {
+        /**
+         * 设置ProgressView
+         *
+         * @return
+         */
         View createProgressView();
 
+        /**
+         * 设置排列方向
+         *
+         * @return
+         */
         int getGravity();
 
+        /**
+         * 水平/竖直
+         *
+         * @return
+         */
         int getOrientation();
     }
 
@@ -205,7 +219,7 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
         protected ColorStateList mTextColor;
         protected float mTextSize = 14;
         protected int mTextPadding = 16;
-        protected int mLoadingColor = Color.BLUE;
+        protected int mLoadingColor;
 
         public Builder(Context context) {
             super(context);

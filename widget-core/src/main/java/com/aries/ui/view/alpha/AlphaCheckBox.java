@@ -7,9 +7,9 @@ import android.widget.RadioButton;
 import com.aries.ui.view.alpha.delegate.AlphaDelegate;
 
 /**
- * Created: AriesHoo on 2018/3/25/025 10:30
- * E-Mail: AriesHoo@126.com
- * Function:
+ * @Author: AriesHoo on 2018/7/19 9:52
+ * @E-Mail: AriesHoo@126.com
+ * Function: 控制Alpha 按下效果
  * Description:
  */
 public class AlphaCheckBox extends RadioButton {

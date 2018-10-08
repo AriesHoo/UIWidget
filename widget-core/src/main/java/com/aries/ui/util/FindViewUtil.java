@@ -4,8 +4,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created: AriesHoo on 2018/2/9/009 10:44
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 9:47
+ * @E-Mail: AriesHoo@126.com
  * Function: 查找View工具类
  * Description:
  * 1、2018-2-24 10:10:55 新增查找某个id的目标View
@@ -22,31 +22,32 @@ public class FindViewUtil {
      * @return
      */
     public static <T extends View> T getTargetView(View rootView, Class<? extends View> targetClass, int id) {
-        if (rootView != null) {
-            //满足View id是目标id
-            if (rootView.getId() == id) {
-                if (targetClass == null || targetClass == rootView.getClass()) {
-                    return (T) rootView;
-                }
-                //满足View class是目标class
-            } else if (targetClass == rootView.getClass()) {
-                if (id == View.NO_ID || id == rootView.getId()) {
-                    return (T) rootView;
-                }
+        if (rootView == null) {
+            return null;
+        }
+        //满足View id是目标id
+        if (rootView.getId() == id) {
+            if (targetClass == null || targetClass == rootView.getClass()) {
+                return (T) rootView;
             }
-            //以上条件都不满足才进行
-            if (rootView instanceof ViewGroup) {
-                ViewGroup contentView = (ViewGroup) rootView;
-                int size = contentView.getChildCount();
-                //循环遍历所有子View
-                for (int i = 0; i < size; i++) {
-                    View childView = contentView.getChildAt(i);
-                    //递归查找
-                    View target = getTargetView(childView, targetClass, id);
-                    //如果找到了返回;如果没有找到继续当前的循环
-                    if (target != null) {
-                        return (T) target;
-                    }
+            //满足View class是目标class
+        } else if (targetClass == rootView.getClass()) {
+            if (id == View.NO_ID || id == rootView.getId()) {
+                return (T) rootView;
+            }
+        }
+        //以上条件都不满足才进行
+        if (rootView instanceof ViewGroup) {
+            ViewGroup contentView = (ViewGroup) rootView;
+            int size = contentView.getChildCount();
+            //循环遍历所有子View
+            for (int i = 0; i < size; i++) {
+                View childView = contentView.getChildAt(i);
+                //递归查找
+                View target = getTargetView(childView, targetClass, id);
+                //如果找到了返回;如果没有找到继续当前的循环
+                if (target != null) {
+                    return (T) target;
                 }
             }
         }

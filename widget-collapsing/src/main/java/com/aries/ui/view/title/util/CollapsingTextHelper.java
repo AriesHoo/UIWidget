@@ -42,7 +42,12 @@ import com.aries.ui.view.collapsing.R;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-
+/**
+ * @Author: AriesHoo on 2018/7/19 10:48
+ * @E-Mail: AriesHoo@126.com
+ * Function: 折叠文本帮助类
+ * Description:
+ */
 @RestrictTo(LIBRARY_GROUP)
 public final class CollapsingTextHelper {
 

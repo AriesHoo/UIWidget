@@ -5,8 +5,21 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * @Author: AriesHoo on 2018/7/19 10:07
+ * @E-Mail: AriesHoo@126.com
+ * Function: Title配合CollapsingTitleBarLayout实现效果
+ * Description:
+ */
 public class ViewGroupUtils {
     private interface ViewGroupUtilsImpl {
+        /**
+         * 测量回调
+         *
+         * @param parent
+         * @param child
+         * @param rect
+         */
         void offsetDescendantRect(ViewGroup parent, View child, Rect rect);
     }
 

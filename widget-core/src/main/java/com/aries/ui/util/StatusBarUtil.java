@@ -12,8 +12,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * Created: AriesHoo on 2017/7/17 9:52
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 9:50
+ * @E-Mail: AriesHoo@126.com
  * Function: 状态栏工具类(状态栏文字颜色)
  * Description:
  * 1、修改状态栏黑白字 功能逻辑--参考 https://github.com/QMUI/QMUI_Android  QMUIStatusBarHelper类
@@ -87,9 +87,11 @@ public class StatusBarUtil {
                 darkModeFlag = field.getInt(layoutParams);
                 Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
                 if (darkText) {
-                    extraFlagField.invoke(window, darkModeFlag, darkModeFlag);//状态栏透明且黑色字体
+                    //状态栏透明且黑色字体
+                    extraFlagField.invoke(window, darkModeFlag, darkModeFlag);
                 } else {
-                    extraFlagField.invoke(window, 0, darkModeFlag);//清除黑色字体
+                    //清除黑色字体
+                    extraFlagField.invoke(window, 0, darkModeFlag);
                 }
                 result = true;
             } catch (Exception e) {
@@ -145,14 +147,13 @@ public class StatusBarUtil {
     private static boolean setStatusBarModeForAndroidM(Window window, boolean darkText) {
         boolean result = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int systemUi = darkText ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            int systemUi = darkText ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             systemUi = changeStatusBarModeRetainFlag(window, systemUi);
             window.getDecorView().setSystemUiVisibility(systemUi);
             result = true;
         }
         return result;
     }
-
 
     /**
      * 判断系统是否支持状态栏文字及图标颜色变化
@@ -163,8 +164,9 @@ public class StatusBarUtil {
         if (RomUtil.getMIUIVersionCode() >= 6 || RomUtil.getFlymeVersionCode() >= 4
                 || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
             return true;
-        } else
+        } else {
             return false;
+        }
     }
 
     /**

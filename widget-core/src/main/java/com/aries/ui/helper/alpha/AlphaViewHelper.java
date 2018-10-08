@@ -9,8 +9,8 @@ import com.aries.ui.widget.R;
 import java.lang.ref.WeakReference;
 
 /**
- * Created: AriesHoo on 2018/3/12/012 12:41
- * E-Mail: AriesHoo@126.com
+ * @Author: AriesHoo on 2018/7/19 9:26
+ * @E-Mail: AriesHoo@126.com
  * Function: 设置View按下状态透明度变化帮助类
  * Description:
  * 1、新增全局style设置透明度属性
@@ -26,7 +26,9 @@ public class AlphaViewHelper {
     private ResourceUtil mResourceUtil;
 
     public AlphaViewHelper(View target) {
-        if (target == null) return;
+        if (target == null) {
+            return;
+        }
         mTarget = new WeakReference<>(target);
         mResourceUtil = new ResourceUtil(target.getContext());
         float press = mResourceUtil.getAttrFloat(R.attr.pressedAlpha);
