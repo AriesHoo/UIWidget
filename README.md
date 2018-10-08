@@ -30,13 +30,16 @@ allprojects {
 }
 ```
 
+[![](https://jitpack.io/v/AriesHoo/UIWidget.svg)](https://jitpack.io/#AriesHoo/UIWidget)
+[![](https://img.shields.io/github/release/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/releases)
+
 ##### 3.0.0及以后版本-core为核心库、alert及collapsing默认compile了core库
 
 ```
 dependencies {
-     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.3'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.3'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.3'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.6'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.6'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.6'
      implementation 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
