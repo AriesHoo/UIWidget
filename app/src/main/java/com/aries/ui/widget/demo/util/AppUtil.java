@@ -8,9 +8,10 @@ import android.os.Bundle;
 
 
 /**
- * Created: AriesHoo on 2017-03-14 08:54
- * Function: app使用工具类
- * Desc:
+ * @Author: AriesHoo on 2017-03-14 08:54
+ * @E-Mail: AriesHoo@126.com
+ * @Function: app使用工具类
+ * @Description:
  */
 public class AppUtil {
 
@@ -34,6 +35,7 @@ public class AppUtil {
             e.printStackTrace();
         }
     }
+
     /**
      * @param activity
      * @param bundle

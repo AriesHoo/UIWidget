@@ -21,6 +21,8 @@ import com.aries.ui.util.StatusBarUtil;
  * 1、2018-2-7 12:27:36 修改是否控制NavigationBar参数及对应java方法
  */
 public class KeyboardHelper {
+
+    private Activity mActivity;
     private Window mWindow;
     private View mDecorView;
     private View mContentView;
@@ -47,6 +49,7 @@ public class KeyboardHelper {
     }
 
     private KeyboardHelper(Activity activity, Dialog dialog, View contentView) {
+        this.mActivity = activity;
         this.mWindow = dialog != null ? dialog.getWindow() : activity.getWindow();
         this.mDecorView = activity.getWindow().getDecorView();
         this.mContentView = contentView != null ? contentView
@@ -54,6 +57,7 @@ public class KeyboardHelper {
     }
 
     private KeyboardHelper(Activity activity, Window window) {
+        this.mActivity = activity;
         this.mWindow = window;
         this.mDecorView = activity.getWindow().getDecorView();
         ViewGroup frameLayout = mWindow.getDecorView().findViewById(android.R.id.content);

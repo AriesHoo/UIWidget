@@ -150,4 +150,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected boolean isTrans() {
         return RomUtil.isEMUI() && (RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0);
     }
+
 }
