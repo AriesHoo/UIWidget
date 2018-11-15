@@ -6,7 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.aries.ui.widget.demo.util.AppUtil;
+import com.aries.ui.helper.navigation.NavigationBarUtil;
 
 /**
  * @Author: AriesHoo on 2018/7/19 9:31
@@ -29,7 +29,7 @@ public class App extends Application {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                Log.i("onActivityCreated", "isNavigationBarExist:" + AppUtil.isNavigationBarExist(activity));
+                Log.i("onActivityCreated", "isNavigationBarExist:" + NavigationBarUtil.hasNavBar(activity));
             }
 
             @Override

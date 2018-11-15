@@ -40,7 +40,7 @@ public class AppUtil {
      * @param activity
      * @param bundle
      */
-    public static void startActivity(Activity mContext, Class<? extends Activity> activity, Bundle bundle) {
+    public static void startActivity(Context mContext, Class<? extends Activity> activity, Bundle bundle) {
         if (mContext == null) {
             return;
         }
@@ -53,7 +53,7 @@ public class AppUtil {
         mContext.startActivity(intent);
     }
 
-    public static void startActivity(Activity mContext, Class<? extends Activity> activity) {
+    public static void startActivity(Context mContext, Class<? extends Activity> activity) {
         startActivity(mContext, activity, null);
     }
 
@@ -65,11 +65,12 @@ public class AppUtil {
         context.startActivity(intent);
     }
 
-    public static void shareShareText(Activity mActivity, String url) {
+    public static void shareShareText(Context mActivity, String url) {
         if (mActivity == null) {
             return;
         }
         Intent shareIntent = new Intent();
+        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, url);
         shareIntent.setType("text/plain");
