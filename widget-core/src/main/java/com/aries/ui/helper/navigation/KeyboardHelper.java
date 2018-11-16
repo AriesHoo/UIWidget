@@ -134,9 +134,9 @@ public class KeyboardHelper {
             int heightDiff = mContentView.getRootView().getHeight() - (r.bottom - r.top);
             Log.i("heightDiff", "heightDiff:" + heightDiff);
             if (heightDiff > 100) {
-//                if (!showInput) {
-//                    showInput = true;
-//                }
+                if (!showInput) {
+                    showInput = true;
+                }
                 //导航栏
                 int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(mWindow.getWindowManager());
                 if (mContentView.getPaddingBottom() != heightDiff - statusBarHeight - navigationBarHeight) {
@@ -147,9 +147,9 @@ public class KeyboardHelper {
                     }
                 }
             } else {
-//                if (!showInput) {
-//                    return;
-//                }
+                if (!showInput) {
+                    return;
+                }
                 showInput = false;
                 if (mContentView.getPaddingBottom() != 0) {
                     mContentView.setPadding(0, 0, 0, 0);

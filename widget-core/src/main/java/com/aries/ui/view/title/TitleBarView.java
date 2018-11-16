@@ -6,10 +6,12 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -46,6 +48,10 @@ import com.aries.ui.widget.R;
  * 7、2018-3-30 10:43:49 设置View按下alpha 控制属性{@link #setViewPressedAlpha(float)}
  * 8、2018-4-4 15:06:21 调整设置{@link #setOutPadding(int)}以便增加左右TextView 点击范围
  * 9、2018-10-8 13:50:42 修改xml设置主标题{@link #setTitleMainText(CharSequence)}无法实时显示问题
+ * 10、2018-11-15 16:05:01 修改设置TextDrawable逻辑--避免将已设置的drawable覆盖掉{@link #setRightTextDrawable(Drawable)}{@link #setLeftTextDrawable(Drawable)}
+ * 11、2018-11-16 10:12:34 新增TextView/ImageView tint和tintMode属性及对应方法
+ * 12、2018-11-16 10:15:10 新增设置color 资源id相关方法
+ * 13、2018-11-16 11:21:23 新增是否增加状态栏高度属性title_statusBarPlusEnable--慎用(一般当TitleBarView不在状态栏下边但是长得又像时使用)
  */
 public class TitleBarView extends ViewGroup {
 
@@ -127,7 +133,7 @@ public class TitleBarView extends ViewGroup {
     /**
      * 是否增加状态栏高度
      */
-    private boolean mIsPlusStatusHeight = true;
+    private boolean mStatusBarPlusEnable = true;
     /**
      * 设置状态栏浅色或深色模式类型标记;>0则表示支持模式切换
      */
@@ -166,6 +172,8 @@ public class TitleBarView extends ViewGroup {
     private ColorStateList mLeftTextColor;
     private Drawable mLeftTextBackground;
     private Drawable mLeftTextDrawable;
+    private ColorStateList mLeftTextDrawableTint;
+    private PorterDuff.Mode mLeftTextDrawableTintMode;
     private int mLeftTextDrawableWidth;
     private int mLeftTextDrawableHeight;
     private int mLeftTextDrawablePadding;
@@ -189,6 +197,8 @@ public class TitleBarView extends ViewGroup {
     private ColorStateList mRightTextColor;
     private Drawable mRightTextBackground;
     private Drawable mRightTextDrawable;
+    private ColorStateList mRightTextDrawableTint;
+    private PorterDuff.Mode mRightTextDrawableTintMode;
     private int mRightTextDrawableWidth;
     private int mRightTextDrawableHeight;
     private int mRightTextDrawablePadding;
@@ -197,6 +207,8 @@ public class TitleBarView extends ViewGroup {
     private int mActionTextSize;
     private ColorStateList mActionTextColor;
     private Drawable mActionTextBackground;
+    private ColorStateList mActionTint;
+    private PorterDuff.Mode mActionTintMode;
     private Rect mTitleContainerRect;
     private ResourceUtil mResourceUtil;
 
@@ -220,6 +232,7 @@ public class TitleBarView extends ViewGroup {
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.TitleBarView);
         mImmersible = ta.getBoolean(R.styleable.TitleBarView_title_immersible, true);
+        mStatusBarPlusEnable = ta.getBoolean(R.styleable.TitleBarView_title_statusBarPlusEnable, true);
         mOutPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_outPadding, dip2px(DEFAULT_OUT_PADDING));
         mActionPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_actionPadding, dip2px(2));
         mCenterLayoutPadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_centerLayoutPadding, dip2px(2));
@@ -238,6 +251,8 @@ public class TitleBarView extends ViewGroup {
         mLeftTextColor = ta.getColorStateList(R.styleable.TitleBarView_title_leftTextColor);
         mLeftTextBackground = ta.getDrawable(R.styleable.TitleBarView_title_leftTextBackground);
         mLeftTextDrawable = ta.getDrawable(R.styleable.TitleBarView_title_leftTextDrawable);
+        mLeftTextDrawableTint = ta.getColorStateList(R.styleable.TitleBarView_title_leftTextDrawableTint);
+        mLeftTextDrawableTintMode = parseTintMode(ta.getInt(R.styleable.TitleBarView_title_leftTextDrawableTintMode, -1), mLeftTextDrawableTintMode);
         mLeftTextDrawableWidth = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawableWidth, -1);
         mLeftTextDrawableHeight = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawableHeight, -1);
         mLeftTextDrawablePadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_leftTextDrawablePadding, dip2px(1));
@@ -261,6 +276,8 @@ public class TitleBarView extends ViewGroup {
         mRightTextColor = ta.getColorStateList(R.styleable.TitleBarView_title_rightTextColor);
         mRightTextBackground = ta.getDrawable(R.styleable.TitleBarView_title_rightTextBackground);
         mRightTextDrawable = ta.getDrawable(R.styleable.TitleBarView_title_rightTextDrawable);
+        mRightTextDrawableTint = ta.getColorStateList(R.styleable.TitleBarView_title_rightTextDrawableTint);
+        mRightTextDrawableTintMode = parseTintMode(ta.getInt(R.styleable.TitleBarView_title_rightTextDrawableTintMode, -1), mRightTextDrawableTintMode);
         mRightTextDrawableWidth = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextDrawableWidth, -1);
         mRightTextDrawableHeight = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextDrawableHeight, -1);
         mRightTextDrawablePadding = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_rightTextDrawablePadding, dip2px(1));
@@ -268,7 +285,28 @@ public class TitleBarView extends ViewGroup {
         mActionTextSize = ta.getDimensionPixelSize(R.styleable.TitleBarView_title_actionTextSize, dip2px(DEFAULT_TEXT_SIZE));
         mActionTextColor = ta.getColorStateList(R.styleable.TitleBarView_title_actionTextColor);
         mActionTextBackground = ta.getDrawable(R.styleable.TitleBarView_title_actionTextBackground);
+        mActionTint = ta.getColorStateList(R.styleable.TitleBarView_title_actionTint);
+        mActionTintMode = parseTintMode(ta.getInt(R.styleable.TitleBarView_title_actionTintMode, -1), mActionTintMode);
         ta.recycle();//回收
+    }
+
+    public PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode) {
+        switch (value) {
+            case 3:
+                return PorterDuff.Mode.SRC_OVER;
+            case 5:
+                return PorterDuff.Mode.SRC_IN;
+            case 9:
+                return PorterDuff.Mode.SRC_ATOP;
+            case 14:
+                return PorterDuff.Mode.MULTIPLY;
+            case 15:
+                return PorterDuff.Mode.SCREEN;
+            case 16:
+                return PorterDuff.Mode.ADD;
+            default:
+                return defaultMode;
+        }
     }
 
     /**
@@ -341,15 +379,19 @@ public class TitleBarView extends ViewGroup {
 
         setLeftText(mLeftText);
         setLeftTextSize(TypedValue.COMPLEX_UNIT_PX, mLeftTextSize);
+        setLeftTextColor(DEFAULT_TEXT_COLOR);
         setLeftTextColor(mLeftTextColor);
         setLeftTextBackground(mLeftTextBackground);
         setLeftTextDrawable(mLeftTextDrawable);
+        setLeftTextDrawableTint(mLeftTextDrawableTint);
+        setLeftTextDrawableTintMode(mLeftTextDrawableTintMode);
         setLeftTextDrawableWidth(mLeftTextDrawableWidth);
         setLeftTextDrawableHeight(mLeftTextDrawableHeight);
         setLeftTextDrawablePadding(mLeftTextDrawablePadding);
 
         setTitleMainText(mTitleMainText);
         setTitleMainTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleMainTextSize);
+        setTitleMainTextColor(DEFAULT_TEXT_COLOR);
         setTitleMainTextColor(mTitleMainTextColor);
         setTitleMainTextBackground(mTitleMainTextBackground);
         setTitleMainTextFakeBold(mTitleMainTextFakeBold);
@@ -357,6 +399,7 @@ public class TitleBarView extends ViewGroup {
 
         setTitleSubText(mTitleSubText);
         setTitleSubTextSize(TypedValue.COMPLEX_UNIT_PX, mTitleSubTextSize);
+        setTitleSubTextColor(DEFAULT_TEXT_COLOR);
         setTitleSubTextColor(mTitleSubTextColor);
         setTitleSubTextBackground(mTitleSubTextBackground);
         setTitleSubTextFakeBold(mTitleSubTextFakeBold);
@@ -364,9 +407,12 @@ public class TitleBarView extends ViewGroup {
 
         setRightText(mRightText);
         setRightTextSize(TypedValue.COMPLEX_UNIT_PX, mRightTextSize);
+        setRightTextColor(DEFAULT_TEXT_COLOR);
         setRightTextColor(mRightTextColor);
         setRightTextBackground(mRightTextBackground);
         setRightTextDrawable(mRightTextDrawable);
+        setRightTextDrawable(mRightTextDrawable);
+        setRightTextDrawableTint(mRightTextDrawableTint);
         setRightTextDrawableWidth(mRightTextDrawableWidth);
         setRightTextDrawableHeight(mRightTextDrawableHeight);
         setRightTextDrawablePadding(mRightTextDrawablePadding);
@@ -448,11 +494,11 @@ public class TitleBarView extends ViewGroup {
     }
 
     public TitleBarView setImmersible(Activity activity, boolean immersible) {
-        return setImmersible(activity, immersible, true);
+        return setImmersible(activity, immersible, mStatusBarPlusEnable);
     }
 
     public TitleBarView setImmersible(Activity activity, boolean immersible, boolean isTransStatusBar) {
-        return setImmersible(activity, immersible, isTransStatusBar, true);
+        return setImmersible(activity, immersible, isTransStatusBar, mStatusBarPlusEnable);
     }
 
     /**
@@ -465,7 +511,7 @@ public class TitleBarView extends ViewGroup {
      */
     public TitleBarView setImmersible(Activity activity, boolean immersible, boolean isTransStatusBar, boolean isPlusStatusBar) {
         this.mImmersible = immersible;
-        this.mIsPlusStatusHeight = isPlusStatusBar;
+        this.mStatusBarPlusEnable = isPlusStatusBar;
         mStatusBarHeight = getNeedStatusBarHeight();
         if (activity == null) {
             return this;
@@ -569,6 +615,12 @@ public class TitleBarView extends ViewGroup {
         return this;
     }
 
+    /**
+     * 距左右边距--根据具体情况设置
+     *
+     * @param paddingValue
+     * @return
+     */
     public TitleBarView setOutPadding(int paddingValue) {
         mOutPadding = paddingValue;
         if (TextUtils.isEmpty(mLeftText)
@@ -594,10 +646,16 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView setCenterLayoutPadding(int centerLayoutPadding) {
         this.mCenterLayoutPadding = centerLayoutPadding;
-        mLLayoutCenter.setPadding(mCenterLayoutPadding, mLLayoutCenter.getTop(), mCenterLayoutPadding, mLLayoutCenter.getPaddingBottom());
+        mLLayoutCenter.setPadding(mCenterLayoutPadding, mLLayoutCenter.getPaddingTop(), mCenterLayoutPadding, mLLayoutCenter.getPaddingBottom());
         return this;
     }
 
+    /**
+     * 设置中间是否左对齐
+     *
+     * @param enable
+     * @return
+     */
     public TitleBarView setCenterGravityLeft(boolean enable) {
         this.mCenterGravityLeft = enable;
         mTvTitleMain.setGravity(mCenterGravityLeft ? Gravity.LEFT : Gravity.CENTER);
@@ -778,6 +836,10 @@ public class TitleBarView extends ViewGroup {
                 .setActionTextColor(colors);
     }
 
+    public TitleBarView setTextColorResource(int res) {
+        return setTextColor(mResourceUtil.getColorStateList(res));
+    }
+
     public TitleBarView setLeftText(CharSequence title) {
         mLeftText = title;
         mTvLeft.setText(title);
@@ -818,10 +880,12 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setLeftTextColor(ColorStateList colors) {
         if (colors != null) {
             mTvLeft.setTextColor(colors);
-        } else {
-            setLeftTextColor(DEFAULT_TEXT_COLOR);
         }
         return this;
+    }
+
+    public TitleBarView setLeftTextColorResource(int res) {
+        return setLeftTextColor(mResourceUtil.getColorStateList(res));
     }
 
     public TitleBarView setLeftTextBackground(Drawable drawable) {
@@ -849,12 +913,63 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setLeftTextDrawable(Drawable drawable) {
         mLeftTextDrawable = drawable;
         DrawableUtil.setDrawableWidthHeight(mLeftTextDrawable, mLeftTextDrawableWidth, mLeftTextDrawableHeight);
-        mTvLeft.setCompoundDrawables(mLeftTextDrawable, null, null, null);
+        Drawable[] drawables = mTvLeft.getCompoundDrawables();
+        mTvLeft.setCompoundDrawables(mLeftTextDrawable, drawables[1], drawables[2], drawables[3]);
+        setTextDrawableTint(mTvLeft, mLeftTextDrawableTint, mLeftTextDrawableTintMode);
         return setOutPadding(mOutPadding);
     }
 
     public TitleBarView setLeftTextDrawable(int resId) {
         return setLeftTextDrawable(mResourceUtil.getDrawable(resId));
+    }
+
+    public TitleBarView setLeftTextDrawableTint(int color) {
+        return setLeftTextDrawableTint(ColorStateList.valueOf(color));
+    }
+
+    public TitleBarView setLeftTextDrawableTint(ColorStateList colors) {
+        if (colors == null) {
+            return this;
+        }
+        mLeftTextDrawableTint = colors;
+        return setTextDrawableTint(mTvLeft, mLeftTextDrawableTint, mLeftTextDrawableTintMode);
+    }
+
+    public TitleBarView setLeftTextDrawableTintResource(int res) {
+        return setLeftTextDrawableTint(mResourceUtil.getColorStateList(res));
+    }
+
+    public TitleBarView setLeftTextDrawableTintMode(PorterDuff.Mode mode) {
+        if (mode == null) {
+            return this;
+        }
+        mLeftTextDrawableTintMode = mode;
+        return setTextDrawableTint(mTvLeft, mLeftTextDrawableTint, mLeftTextDrawableTintMode);
+    }
+
+    private TitleBarView setTextDrawableTint(TextView textView, ColorStateList tint, PorterDuff.Mode tintMode) {
+        if (tint == null && tintMode == null) {
+            return this;
+        }
+        Drawable[] drawables = textView.getCompoundDrawables();
+        for (Drawable item : drawables) {
+            if (item != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (tint != null) {
+                        DrawableCompat.setTintList(item, tint);
+                    }
+                    if (tintMode != null) {
+                        DrawableCompat.setTintMode(item, tintMode);
+                    }
+                } else {
+                    if (tint != null) {
+                        item = item.mutate();
+                        item.setColorFilter(tint.getDefaultColor(), tintMode != null ? tintMode : PorterDuff.Mode.SRC_ATOP);
+                    }
+                }
+            }
+        }
+        return this;
     }
 
     public TitleBarView setLeftTextDrawableWidth(int width) {
@@ -938,10 +1053,12 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setTitleMainTextColor(ColorStateList colors) {
         if (colors != null) {
             mTvTitleMain.setTextColor(colors);
-        } else {
-            setTitleMainTextColor(DEFAULT_TEXT_COLOR);
         }
         return this;
+    }
+
+    public TitleBarView setTitleMainTextColorResource(int res) {
+        return setTitleMainTextColor(mResourceUtil.getColorStateList(res));
     }
 
     public TitleBarView setTitleMainTextBackground(Drawable drawable) {
@@ -1048,10 +1165,12 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setTitleSubTextColor(ColorStateList colors) {
         if (colors != null) {
             mTvTitleSub.setTextColor(colors);
-        } else {
-            setTitleSubTextColor(DEFAULT_TEXT_COLOR);
         }
         return this;
+    }
+
+    public TitleBarView setTitleSubTextColorResource(int res) {
+        return setTitleSubTextColor(mResourceUtil.getColorStateList(res));
     }
 
     public TitleBarView setTitleSubTextBackground(Drawable drawable) {
@@ -1151,10 +1270,12 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setRightTextColor(ColorStateList colors) {
         if (colors != null) {
             mTvRight.setTextColor(colors);
-        } else {
-            setRightTextColor(DEFAULT_TEXT_COLOR);
         }
         return this;
+    }
+
+    public TitleBarView setRightTextColorResource(int res) {
+        return setRightTextColor(mResourceUtil.getColorStateList(res));
     }
 
     public TitleBarView setRightTextBackground(Drawable drawable) {
@@ -1178,12 +1299,38 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setRightTextDrawable(Drawable drawable) {
         mRightTextDrawable = drawable;
         DrawableUtil.setDrawableWidthHeight(mRightTextDrawable, mRightTextDrawableWidth, mRightTextDrawableHeight);
-        mTvRight.setCompoundDrawables(null, null, mRightTextDrawable, null);
+        Drawable[] drawables = mTvRight.getCompoundDrawables();
+        mTvRight.setCompoundDrawables(drawables[0], drawables[1], mRightTextDrawable, drawables[3]);
+        setTextDrawableTint(mTvRight, mRightTextDrawableTint, mRightTextDrawableTintMode);
         return setOutPadding(mOutPadding);
     }
 
     public TitleBarView setRightTextDrawable(int resId) {
         return setRightTextDrawable(mResourceUtil.getDrawable(resId));
+    }
+
+    public TitleBarView setRightTextDrawableTint(int color) {
+        return setRightTextDrawableTint(ColorStateList.valueOf(color));
+    }
+
+    public TitleBarView setRightTextDrawableTint(ColorStateList colors) {
+        if (colors == null) {
+            return this;
+        }
+        mRightTextDrawableTint = colors;
+        return setTextDrawableTint(mTvRight, mRightTextDrawableTint, mRightTextDrawableTintMode);
+    }
+
+    public TitleBarView setRightTextDrawableTintResource(int res) {
+        return setRightTextDrawableTint(mResourceUtil.getColorStateList(res));
+    }
+
+    public TitleBarView setRightTextDrawableTintMode(PorterDuff.Mode mode) {
+        if (mode == null) {
+            return this;
+        }
+        mRightTextDrawableTintMode = mode;
+        return setTextDrawableTint(mTvRight, mRightTextDrawableTint, mRightTextDrawableTintMode);
     }
 
     public TitleBarView setRightTextDrawablePadding(int drawablePadding) {
@@ -1232,6 +1379,10 @@ public class TitleBarView extends ViewGroup {
         return this;
     }
 
+    public TitleBarView setActionTextColorResource(int res) {
+        return setActionTextColor(mResourceUtil.getColorStateList(res));
+    }
+
     public TitleBarView setActionTextBackground(Drawable drawable) {
         this.mActionTextBackground = drawable;
         return this;
@@ -1243,6 +1394,93 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView setActionTextBackgroundResource(int resId) {
         return setActionTextBackground(mResourceUtil.getDrawable(resId));
+    }
+
+    public TitleBarView setActionTint(int color) {
+        return setActionTint(ColorStateList.valueOf(color));
+    }
+
+    public TitleBarView setActionTint(ColorStateList colors) {
+        if (colors == null) {
+            return this;
+        }
+        mActionTint = colors;
+        return setActionTint();
+    }
+
+    public TitleBarView setActionTintResource(int res) {
+        return setActionTint(mResourceUtil.getColorStateList(res));
+    }
+
+    public TitleBarView setActionTintMode(PorterDuff.Mode mode) {
+        if (mode == null) {
+            return this;
+        }
+        mActionTintMode = mode;
+        return setActionTint();
+    }
+
+    private TitleBarView setActionTint() {
+        if (mActionTint == null && mActionTintMode == null) {
+            return this;
+        }
+        int sizeLeft = mLLayoutLeft.getChildCount();
+        int sizeCenter = mLLayoutCenter.getChildCount();
+        int sizeRight = mLLayoutRight.getChildCount();
+        for (int i = 0; i < sizeLeft; i++) {
+            View view = mLLayoutLeft.getChildAt(i);
+            if (view instanceof TextView) {
+                if (view != mTvLeft) {
+                    setTextDrawableTint((TextView) view, mActionTint, mActionTintMode);
+                }
+            } else if (view instanceof ImageView) {
+                setImageTint((ImageView) view, mActionTint, mActionTintMode);
+            }
+        }
+        for (int i = 0; i < sizeCenter; i++) {
+            View view = mLLayoutCenter.getChildAt(i);
+            if (view instanceof TextView) {
+                if (view != mTvTitleMain && view != mTvTitleSub) {
+                    setTextDrawableTint((TextView) view, mActionTint, mActionTintMode);
+                }
+            } else if (view instanceof ImageView) {
+                setImageTint((ImageView) view, mActionTint, mActionTintMode);
+            }
+        }
+        for (int i = 0; i < sizeRight; i++) {
+            View view = mLLayoutRight.getChildAt(i);
+            if (view instanceof TextView) {
+                if (view != mTvRight) {
+                    setTextDrawableTint((TextView) view, mActionTint, mActionTintMode);
+                }
+            } else if (view instanceof ImageView) {
+                setImageTint((ImageView) view, mActionTint, mActionTintMode);
+            }
+        }
+        return this;
+    }
+
+    private void setImageTint(ImageView imageView, ColorStateList tint, PorterDuff.Mode tintMode) {
+        if (imageView.getDrawable() == null) {
+            return;
+        }
+        if (tint == null && tintMode == null) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mActionTint != null) {
+                imageView.setImageTintList(mActionTint);
+            }
+            if (mActionTintMode != null) {
+                imageView.setImageTintMode(mActionTintMode);
+            }
+        } else {
+            Drawable drawable = imageView.getDrawable();
+            if (drawable != null && mActionTint != null) {
+                drawable = drawable.mutate();
+                drawable.setColorFilter(mActionTint.getDefaultColor(), mActionTintMode != null ? mActionTintMode : PorterDuff.Mode.SRC_ATOP);
+            }
+        }
     }
 
     public TitleBarView addLeftAction(Action action, int position) {
@@ -1313,12 +1551,14 @@ public class TitleBarView extends ViewGroup {
             text.getDelegate().getAlphaViewHelper().setPressedAlpha(mViewPressedAlpha);
             setViewBackground(text, mActionTextBackground);
             view = text;
+            setTextDrawableTint(text, mActionTint, mActionTintMode);
         } else if (obj instanceof Drawable) {
             AlphaImageView img = new AlphaImageView(getContext());
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
             img.setImageDrawable((Drawable) obj);
             img.getDelegate().getAlphaViewHelper().setPressedAlpha(mViewPressedAlpha);
             view = img;
+            setImageTint(img, mActionTint, mActionTintMode);
         }
         view.setPadding(mActionPadding, 0, mActionPadding, 0);
         view.setTag(action);
@@ -1465,7 +1705,7 @@ public class TitleBarView extends ViewGroup {
      * @return
      */
     private int getNeedStatusBarHeight() {
-        return isNeedStatusBar() && isBelowStatusBar() ? getStatusBarHeight() : 0;
+        return isNeedStatusBar() ? getStatusBarHeight() : 0;
     }
 
     /**
@@ -1478,7 +1718,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     private boolean isNeedStatusBar() {
-        return mIsPlusStatusHeight && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        return mStatusBarPlusEnable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
     /**
@@ -1499,17 +1739,6 @@ public class TitleBarView extends ViewGroup {
     public static int dip2px(float dipValue) {
         final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
-    }
-
-    /**
-     * 判断在状态栏下发
-     *
-     * @return
-     */
-    private boolean isBelowStatusBar() {
-        int[] location = new int[2];
-        getLocationOnScreen(location);
-        return location[1] == 0;
     }
 
     /**

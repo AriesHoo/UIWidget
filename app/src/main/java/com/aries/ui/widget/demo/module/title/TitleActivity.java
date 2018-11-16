@@ -36,9 +36,10 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * Created: AriesHoo on 2017-02-09 10:24
- * Function: 演示TitleBarView常见用法
- * Desc:
+ * @Author: AriesHoo on 2018/11/16 11:31
+ * @E-Mail: AriesHoo@126.com
+ * @Function: 演示TitleBarView常见用法
+ * @Description:
  */
 public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
 
@@ -81,7 +82,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
                 .setTitleSubText(getSubText())
 //                .setLeftTextDrawableWidth(24)
 //                .setLeftTextDrawableHeight(24)
-                .setRightTextDrawable(isWhite ? R.drawable.ic_menu : R.drawable.ic_menu_white)
+                .setRightTextDrawable(R.drawable.ic_menu)
 //                .setRightTextDrawableWidth(10)
 //                .setRightText("菜单")
 //                .setRightTextDrawableHeight(10)
@@ -308,10 +309,10 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
         if (entity.colorRes != 0) {
             isWhite = entity.colorRes == android.R.color.white;
             titleBar.setBgResource(entity.colorRes)
-                    .setLeftTextDrawable(isWhite ? R.drawable.ic_arrow_left : R.drawable.ic_arrow_back_white)
-                    .setRightTextDrawable(isWhite ? R.drawable.ic_menu : R.drawable.ic_menu_white)
-                    .setTitleMainTextColor(isWhite ? getResources().getColor(R.color.colorTextBlack) : Color.WHITE)
-                    .setTitleSubTextColor(isWhite ? getResources().getColor(R.color.colorTextBlack) : Color.WHITE);
+                    .setLeftTextDrawableTintResource(isWhite ? R.color.colorTextBlack : R.color.colorWhite)
+                    .setRightTextDrawableTintResource(isWhite ? R.color.colorTextBlack : R.color.colorWhite)
+                    .setTitleMainTextColorResource(isWhite ? R.color.colorTextBlack : R.color.colorWhite)
+                    .setTitleSubTextColorResource(isWhite ? R.color.colorTextBlack : R.color.colorWhite);
             if (type > 0 && isImmersible) {
                 if (isWhite) {
                     StatusBarUtil.setStatusBarLightMode(mContext);

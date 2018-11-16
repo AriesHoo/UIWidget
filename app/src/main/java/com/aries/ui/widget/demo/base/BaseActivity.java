@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
@@ -90,7 +91,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setNavigationLayoutColor(getResources().getColor(R.color.colorWhite))
                 .setBottomView(mContentView, false);
         beforeControlNavigation(mNavigationViewHelper);
-        mNavigationViewHelper.init();
+        //不推荐4.4版本使用透明导航栏--话说现在谁还用那么低版本的手机
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mNavigationViewHelper.init();
+        }
         this.initView(savedInstanceState);
     }
 

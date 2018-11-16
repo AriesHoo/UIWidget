@@ -4,6 +4,8 @@
     <declare-styleable name="TitleBarView">
         <!--是否沉浸式状态栏,默认true-->
         <attr name="title_immersible" format="boolean"/>
+        <!--是否增加状态栏高度-->
+        <attr name="title_statusBarPlusEnable" format="boolean"/>
         <!--内边距(距左右),默认12dp;ToolBar16dp-->
         <attr name="title_outPadding" format="dimension"/>
         <!--添加子View 内边距,默认1dp-->
@@ -38,6 +40,17 @@
         <attr name="title_leftTextBackground" format="color|reference"/>
         <!--左边文字drawable资源-->
         <attr name="title_leftTextDrawable" format="reference"/>
+        <!--左边文字drawable资源drawableTint-->
+        <attr name="title_leftTextDrawableTint" format="color|reference"/>
+        <!--左边文字drawable资源drawableTintMode-->
+        <attr name="title_leftTextDrawableTintMode">
+            <enum name="src_over" value="3"/>
+            <enum name="src_in" value="5"/>
+            <enum name="src_atop" value="9"/>
+            <enum name="multiply" value="14"/>
+            <enum name="screen" value="15"/>
+            <enum name="add" value="16"/>
+        </attr>
         <!--左边文字drawable资源宽度,默认drawable原始宽度-->
         <attr name="title_leftTextDrawableWidth" format="dimension"/>
         <!--左边文字drawable资源高度,默认drawable原始高度-->
@@ -81,6 +94,17 @@
         <attr name="title_rightTextBackground" format="color|reference"/>
         <!--右边文字drawable资源-->
         <attr name="title_rightTextDrawable" format="reference"/>
+        <!--右边文字drawable资源drawableTint-->
+        <attr name="title_rightTextDrawableTint" format="color|reference"/>
+        <!--右边文字drawable资源drawableTintMode-->
+        <attr name="title_rightTextDrawableTintMode">
+            <enum name="src_over" value="3"/>
+            <enum name="src_in" value="5"/>
+            <enum name="src_atop" value="9"/>
+            <enum name="multiply" value="14"/>
+            <enum name="screen" value="15"/>
+            <enum name="add" value="16"/>
+        </attr>
         <!--右边文字drawable资源宽度,默认drawable原始宽度-->
         <attr name="title_rightTextDrawableWidth" format="dimension"/>
         <!--右边文字drawable资源高度,默认drawable原始高度-->
@@ -94,6 +118,18 @@
         <attr name="title_actionTextColor" format="color|reference"/>
         <!--添加TextView文字背景-->
         <attr name="title_actionTextBackground" format="color|reference"/>
+
+        <!--添加的ImageView/TextView drawable资源drawableTint-->
+        <attr name="title_actionTint" format="color|reference"/>
+        <!--添加的ImageView/TextView drawable资源drawableTintMode-->
+        <attr name="title_actionTintMode">
+            <enum name="src_over" value="3"/>
+            <enum name="src_in" value="5"/>
+            <enum name="src_atop" value="9"/>
+            <enum name="multiply" value="14"/>
+            <enum name="screen" value="15"/>
+            <enum name="add" value="16"/>
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="MaterialProgressBar">

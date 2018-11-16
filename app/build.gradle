@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dexOptions{
+        preDexLibraries = false
+    }
 }
 
 dependencies {
@@ -34,9 +38,9 @@ dependencies {
     //UIAlertView
     implementation project(':widget-alert')
 
-//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.5'
-//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.5'
-//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.5'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.6'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.6'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.6'
 
     //图片加载
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
@@ -46,4 +50,5 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.android.support:multidex:1.0.0'
 }

@@ -17,16 +17,15 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * Created: AriesHoo on 2017/8/17 15:09
- * Function: 带底部输入框处理方案
- * Desc:
+ * @Author: AriesHoo on 2018/11/16 11:27
+ * @E-Mail: AriesHoo@126.com
+ * @Function: 带底部输入框处理方案
+ * @Description:
  */
 public class TitleFragment extends Fragment {
 
-    @BindView(R.id.titleBar)
-    TitleBarView titleBar;
-    @BindView(R.id.rtv_send)
-    RadiusTextView rtvSend;
+    @BindView(R.id.titleBar) TitleBarView titleBar;
+    @BindView(R.id.rtv_send) RadiusTextView rtvSend;
     private Unbinder unbinder;
     private View mContentView;
 
@@ -49,7 +48,7 @@ public class TitleFragment extends Fragment {
     private void initView() {
         titleBar.setTitleMainText(getClass().getSimpleName())
                 .setTitleMainTextColor(Color.WHITE)
-                .setLeftTextDrawable(R.drawable.ic_arrow_back_white)
+                .setLeftTextDrawableTint(Color.WHITE)
                 .setOnLeftTextClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -60,7 +59,7 @@ public class TitleFragment extends Fragment {
                 .setCenterGravityLeft(true)
                 //软键盘弹起处理--参考
 //                .setBottomEditTextControl()
-                .setBgColor(getResources().getColor(android.R.color.holo_purple));
+                .setBgResource(android.R.color.holo_purple);
 
 //        //底部有输入框时使用--最后一个参数false
 //        titleBar.setImmersible(getActivity(), true, true, false);
