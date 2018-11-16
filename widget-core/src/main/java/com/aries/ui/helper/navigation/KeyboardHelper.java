@@ -126,9 +126,8 @@ public class KeyboardHelper {
             Rect r = new Rect();
             mDecorView.getWindowVisibleDisplayFrame(r); //获取当前窗口可视区域大小的
             int height = Resources.getSystem().getDisplayMetrics().heightPixels; //获取屏幕密度，不包含导航栏
-            int heightNavigation = NavigationBarUtil.getNavigationBarHeight(mWindow.getWindowManager());
-            int diff = height - r.bottom +
-                    (mControlNavigationBarEnable ? NavigationBarUtil.getNavigationBarHeight(mWindow.getWindowManager()) : 0);
+            int heightNavigation = mActivity!=null?NavigationBarUtil.getNavigationBarHeight(mActivity):NavigationBarUtil.getNavigationBarHeight(mWindow.getWindowManager());
+            int diff = height - r.bottom + (mControlNavigationBarEnable ? heightNavigation : 0);
             if (diff >= 0) {
                 mContentView.setPadding(0, mContentView.getPaddingTop(), 0, diff);
             }

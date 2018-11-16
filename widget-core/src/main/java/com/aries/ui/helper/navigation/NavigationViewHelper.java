@@ -221,7 +221,7 @@ public class NavigationViewHelper {
         }
         setControlEnable(mControlEnable);
         final Window window = activity.getWindow();
-        mNavigationHeight = NavigationBarUtil.getNavigationBarHeight(window.getWindowManager());
+        mNavigationHeight = NavigationBarUtil.getNavigationBarHeight(activity);
         addOnGlobalLayoutListener();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         //5.0默认半透明
@@ -307,12 +307,11 @@ public class NavigationViewHelper {
                     if (activity == null) {
                         return;
                     }
-                    Window window = activity.getWindow();
                     //导航栏高度变化
-                    if (NavigationBarUtil.getNavigationBarHeight(window.getWindowManager()) != mNavigationHeight) {
+                    if (NavigationBarUtil.getNavigationBarHeight(activity) != mNavigationHeight) {
                         if (mLogEnable) {
                             Log.i(TAG, "导航栏变化前高度:" + mNavigationHeight + ";变化后高度:" +
-                                    NavigationBarUtil.getNavigationBarHeight(window.getWindowManager())+";paddingBottom:"+mContentView.getPaddingBottom());
+                                    NavigationBarUtil.getNavigationBarHeight(activity) + ";paddingBottom:" + mContentView.getPaddingBottom());
                         }
                         //导航栏可关闭的不建议使用加NavigationView模式
                         init();

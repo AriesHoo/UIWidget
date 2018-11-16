@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
  * @E-Mail: AriesHoo@126.com
  * Function: Drawable设置相关工具类
  * Description:
+ * 1、2018-11-16 16:36:09 修改newDrawable返回
  */
 public class DrawableUtil {
 
@@ -38,7 +39,7 @@ public class DrawableUtil {
         if (drawable == null) {
             return drawable;
         }
-        return drawable.getConstantState().newDrawable();
+        return drawable.mutate();
     }
 
 }
