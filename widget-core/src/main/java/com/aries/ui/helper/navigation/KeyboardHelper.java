@@ -2,16 +2,14 @@ package com.aries.ui.helper.navigation;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-
-import com.aries.ui.util.StatusBarUtil;
 
 /**
  * @Author: AriesHoo on 2018/7/19 9:31
@@ -119,43 +117,21 @@ public class KeyboardHelper {
         return this;
     }
 
-    boolean showInput = false;
-    int statusBarHeight;
     /**
      * 设置View变化监听
      */
     private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         @Override
         public void onGlobalLayout() {
-            statusBarHeight = StatusBarUtil.getStatusBarHeight();
             Rect r = new Rect();
-            //可视区域
-            mContentView.getWindowVisibleDisplayFrame(r);
-            int heightDiff = mContentView.getRootView().getHeight() - (r.bottom - r.top);
-            Log.i("heightDiff", "heightDiff:" + heightDiff);
-            if (heightDiff > 100) {
-                if (!showInput) {
-                    showInput = true;
-                }
-                //导航栏
-                int navigationBarHeight = NavigationBarUtil.getNavigationBarHeight(mWindow.getWindowManager());
-                if (mContentView.getPaddingBottom() != heightDiff - statusBarHeight - navigationBarHeight) {
-                    if (navigationBarHeight == 0 && r.top == 0) {
-                        mContentView.setPadding(0, 0, 0, heightDiff);
-                    } else {
-                        mContentView.setPadding(0, 0, 0, heightDiff - statusBarHeight - navigationBarHeight);
-                    }
-                }
-            } else {
-                if (!showInput) {
-                    return;
-                }
-                showInput = false;
-                if (mContentView.getPaddingBottom() != 0) {
-                    mContentView.setPadding(0, 0, 0, 0);
-                }
+            mDecorView.getWindowVisibleDisplayFrame(r); //获取当前窗口可视区域大小的
+            int height = Resources.getSystem().getDisplayMetrics().heightPixels; //获取屏幕密度，不包含导航栏
+            int heightNavigation = NavigationBarUtil.getNavigationBarHeight(mWindow.getWindowManager());
+            int diff = height - r.bottom +
+                    (mControlNavigationBarEnable ? NavigationBarUtil.getNavigationBarHeight(mWindow.getWindowManager()) : 0);
+            if (diff >= 0) {
+                mContentView.setPadding(0, mContentView.getPaddingTop(), 0, diff);
             }
-
         }
     };
 }

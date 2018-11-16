@@ -71,7 +71,6 @@ public class TitleFragment extends Fragment {
 //        } else {
 //            mContentView.setBackgroundResource(android.R.color.holo_purple);
 //        }
-
     }
 
     @Override
