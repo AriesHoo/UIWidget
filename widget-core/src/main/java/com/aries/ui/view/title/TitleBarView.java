@@ -52,6 +52,7 @@ import com.aries.ui.widget.R;
  * 11、2018-11-16 10:12:34 新增TextView/ImageView tint和tintMode属性及对应方法
  * 12、2018-11-16 10:15:10 新增设置color 资源id相关方法
  * 13、2018-11-16 11:21:23 新增是否增加状态栏高度属性title_statusBarPlusEnable--慎用(一般当TitleBarView不在状态栏下边但是长得又像时使用)
+ * 14、2018-11-20 15:09:23 修改addAction逻辑避免生产null对象View
  */
 public class TitleBarView extends ViewGroup {
 
@@ -1485,6 +1486,9 @@ public class TitleBarView extends ViewGroup {
 
     public TitleBarView addLeftAction(Action action, int position) {
         View view = inflateAction(action);
+        if (view == null) {
+            return this;
+        }
         mLLayoutLeft.addView(view, position);
         return setOutPadding(mOutPadding);
     }
@@ -1498,6 +1502,9 @@ public class TitleBarView extends ViewGroup {
      */
     public TitleBarView addCenterAction(Action action, int position) {
         View view = inflateAction(action);
+        if (view == null) {
+            return this;
+        }
         mLLayoutCenter.addView(view, position);
         return this;
     }
@@ -1517,6 +1524,9 @@ public class TitleBarView extends ViewGroup {
      */
     public TitleBarView addRightAction(Action action, int position) {
         View view = inflateAction(action);
+        if (view == null) {
+            return this;
+        }
         mLLayoutRight.addView(view, position);
         return setOutPadding(mOutPadding);
     }
