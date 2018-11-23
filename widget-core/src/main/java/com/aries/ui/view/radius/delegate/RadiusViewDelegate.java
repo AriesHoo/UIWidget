@@ -35,6 +35,7 @@ import com.aries.ui.widget.R;
  * 8、2018-5-25 13:12:24 去掉默认控制是否可点击控制,调整水波纹效果开启逻辑
  * 9、2018-6-13 10:06:08 调整默认backgroundColor及strokeColor颜色值以优化
  * 10、2018-6-13 10:51:11 新增背景及边框色pressed状态下透明度属性-当且仅当未设置对应pressedColor时生效
+ * 11、2018-11-23 13:13:30 修改设置水波纹逻辑解决xml设置enable false 预览有效果运行无效BUG
  */
 public class RadiusViewDelegate<T extends RadiusViewDelegate> {
 
@@ -541,6 +542,7 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         setDrawable(mBackground, mBackgroundColor, mStrokeColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                 && mRippleEnable
+                && mView.isEnabled()
                 && mView.isClickable()) {//5.0以上且设置水波属性并且可操作
             RippleDrawable rippleDrawable = new RippleDrawable(
                     new ColorStateList(
