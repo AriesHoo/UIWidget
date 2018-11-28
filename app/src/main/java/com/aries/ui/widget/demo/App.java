@@ -7,6 +7,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
+import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationBarUtil;
 
 /**
@@ -45,7 +46,10 @@ public class App extends MultiDexApplication {
 
             @Override
             public void onActivityPaused(Activity activity) {
-
+                //Activity销毁前的时机需要关闭软键盘-在onActivityStopped及onActivityDestroyed生命周期内已无法关闭
+                if (activity.isFinishing()) {
+                    KeyboardHelper.closeKeyboard(activity);
+                }
             }
 
             @Override

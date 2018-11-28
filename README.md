@@ -333,6 +333,11 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/title.gif)
 
+[KeyboardHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
+
+![模拟器软键盘控制](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard01.gif)
+
+![华为可隐藏软键盘控制](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard02.gif)
 
 ## License
 

@@ -51,4 +51,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.android.support:multidex:1.0.0'
+    //滑动返回Activity
+    implementation 'cn.bingoogolapple:bga-swipebacklayout:1.2.0@aar'
 }

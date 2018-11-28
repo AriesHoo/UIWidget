@@ -187,9 +187,11 @@ public class StatusBarUtil {
     private static int changeStatusBarModeRetainFlag(Window window, int out) {
         out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_FULLSCREEN);
+        //隐藏导航栏按键
         out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        //隐藏导航栏背景View
         out = retainSystemUiFlag(window, out, View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         return out;
     }

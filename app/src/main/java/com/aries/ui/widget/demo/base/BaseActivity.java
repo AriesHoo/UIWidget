@@ -66,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("getSystemUiVisibility", getWindow().getDecorView().getSystemUiVisibility() + ";onCreate");
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         this.mContext = this;
@@ -82,18 +83,15 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setLogEnable(BuildConfig.DEBUG)
                 .setControlEnable(true)
                 .setTransEnable(isTrans())
-                //导航栏可关闭/开启的不建议设置该属性为true
                 .setPlusNavigationViewEnable(isTrans())
                 .setControlBottomEditTextEnable(true)
                 .setNavigationViewDrawableTop(drawableTop)
                 .setNavigationViewColor(Color.argb(isTrans() ? 0 : 102, 0, 0, 0))
-                .setNavigationLayoutColor(getResources().getColor(R.color.colorWhite))
+                .setNavigationLayoutColor(Color.WHITE)
                 .setBottomView(mContentView);
         beforeControlNavigation(mNavigationViewHelper);
         //不推荐4.4版本使用透明导航栏--话说现在谁还用那么低版本的手机
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mNavigationViewHelper.init();
-//        }
+        mNavigationViewHelper.init();
         this.initView(savedInstanceState);
     }
 

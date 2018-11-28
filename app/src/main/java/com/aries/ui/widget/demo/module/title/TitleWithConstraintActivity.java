@@ -33,6 +33,8 @@ public class TitleWithConstraintActivity extends BaseActivity {
     protected void setTitleBar() {
         titleBar.setTitleMainText("TitleBarView结合ConstraintLayout使用")
                 .setTextColor(Color.WHITE)
+                .setLeftTextDrawableTint(Color.WHITE)
+                .setRightTextDrawableTint(Color.WHITE)
                 .setStatusBarLightMode(false)
                 .setTitleMainTextMarquee(true)
                 .setRightTextDrawable(R.drawable.ic_menu_white)

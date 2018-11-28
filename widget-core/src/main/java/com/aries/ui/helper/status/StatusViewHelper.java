@@ -196,9 +196,11 @@ public class StatusViewHelper {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                     && (mPlusStatusViewEnable || (!mPlusStatusViewEnable && mTransEnable))) {
+
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 if (mTransEnable || mPlusStatusViewEnable) {
                     window.setStatusBarColor(Color.TRANSPARENT);
@@ -235,9 +237,7 @@ public class StatusViewHelper {
                                 mTopView.getPaddingRight(),
                                 mTopView.getPaddingBottom());
                     }
-                    if (mLogEnable) {
-                        Log.i(TAG, "mTopView:" + mTopView + "设置成功");
-                    }
+                    log("mTopView:" + mTopView + "设置成功");
                 }
                 mTopView.setTag(TAG_SET_STATUS_CONTROL, true);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -293,5 +293,11 @@ public class StatusViewHelper {
 
     protected boolean isSupportStatusBarControl() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
+    private void log(String log) {
+        if (mLogEnable) {
+            Log.i(TAG, log);
+        }
     }
 }
