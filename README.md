@@ -337,9 +337,13 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 [模拟器软键盘控制](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard01.gif)
 
-[华为可隐藏软键盘控制](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard02.gif)
+华为可隐藏软键盘控制
 
-[华为全面屏手势控制](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard03.gif)
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard02.gif)
+
+华为全面屏手势控制
+
+[](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard03.gif)
 
 ## License
 
