@@ -18,6 +18,45 @@
 [[Download]](https://raw.githubusercontent.com/AriesHoo/UIWidget/master/apk/sample.apk)
 
 ![](/apk/qr.png)
+
+## 录屏预览
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/widget.png)
+
+[UIAlertDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/alert.gif)
+
+[UIActionSheetDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/action.gif)
+
+[UIProgressDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/loading.gif)
+
+[RadiusView](https://github.com/AriesHoo/RadiusView)
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/radius.gif)
+
+[TitleBarView](https://github.com/AriesHoo/TitleBarView)
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/title.gif)
+
+[KeyboardHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
+
+模拟器软键盘控制
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard01.gif)
+
+华为可隐藏软键盘控制
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard02.gif)
+
+华为全面屏手势控制
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard03.gif)
+
   
 **Gradle集成**
 
@@ -308,44 +347,6 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 	
 * 2.0.5 更新
     * TitleBarView父容器为ConstraintLayout高度测量不准BUG-参考[TitleWithConstraintActivity](https://github.com/AriesHoo/UIWidget/blob/master/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleWithConstraintActivity.java)
-
-## 录屏预览
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/widget.png)
-
-[UIAlertDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/alert.gif)
-
-[UIActionSheetDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/action.gif)
-
-[UIProgressDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/loading.gif)
-
-[RadiusView](https://github.com/AriesHoo/RadiusView)
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/radius.gif)
-
-[TitleBarView](https://github.com/AriesHoo/TitleBarView)
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/title.gif)
-
-[KeyboardHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
-
-模拟器软键盘控制
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard01.gif)
-
-华为可隐藏软键盘控制
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard02.gif)
-
-华为全面屏手势控制
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard03.gif)
 
 ## License
 
