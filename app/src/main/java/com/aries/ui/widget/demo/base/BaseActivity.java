@@ -68,6 +68,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("getSystemUiVisibility", getWindow().getDecorView().getSystemUiVisibility() + ";onCreate");
         super.onCreate(savedInstanceState);
+        Log.i("savedInstanceState","savedInstanceState:"+savedInstanceState);
         Log.d(TAG, "onCreate");
         this.mContext = this;
         this.beforeSetView();

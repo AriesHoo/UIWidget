@@ -153,14 +153,19 @@ public class KeyboardHelper {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
+                //被系统回收后还可以恢复
+                if (activity.isFinishing()) {
+                    return;
+                }
                 //移除监听
                 mActivity.getApplication().unregisterActivityLifecycleCallbacks(this);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     mDecorView.getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
-                }else {
+                } else {
                     mDecorView.getViewTreeObserver().removeGlobalOnLayoutListener(onGlobalLayoutListener);
                 }
-                log("onActivityDestroyed--" + activity.getClass().getSimpleName() + ";KeyboardOpened:" + mIsKeyboardOpened);
+                log("onActivityDestroyed--" + activity.getClass().getSimpleName() + ";KeyboardOpened:" + mIsKeyboardOpened +
+                        ";isFinishing:" + activity.isFinishing());
             }
         });
     }
@@ -260,7 +265,7 @@ public class KeyboardHelper {
                 if (remove) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         mDecorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }else {
+                    } else {
                         mDecorView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     }
                 }

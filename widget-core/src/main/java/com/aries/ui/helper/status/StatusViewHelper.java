@@ -198,9 +198,11 @@ public class StatusViewHelper {
                     && (mPlusStatusViewEnable || (!mPlusStatusViewEnable && mTransEnable))) {
 
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//                window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
                 window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 if (mTransEnable || mPlusStatusViewEnable) {
                     window.setStatusBarColor(Color.TRANSPARENT);
