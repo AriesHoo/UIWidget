@@ -335,7 +335,9 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 [KeyboardHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
 
-[模拟器软键盘控制](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard01.gif)
+模拟器软键盘控制
+
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard01.gif)
 
 华为可隐藏软键盘控制
 
@@ -343,7 +345,7 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 华为全面屏手势控制
 
-[](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard03.gif)
+![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard03.gif)
 
 ## License
 
