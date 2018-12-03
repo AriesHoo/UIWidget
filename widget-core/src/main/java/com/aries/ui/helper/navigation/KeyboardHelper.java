@@ -28,6 +28,7 @@ import android.widget.EditText;
  * 1、2018-2-7 12:27:36 修改是否控制NavigationBar参数及对应java方法
  * 2、2018-11-28 11:57:07 优化软键盘弹出关闭方案;增加相应监听回调;去掉是否控制导航栏方法
  * 3、2018-11-28 13:53:41 新增软键盘控制相应静态方法--如开关软键盘
+ * 4、2018-12-3 17:44:59 修改设置padding逻辑避免部分情况计算底部padding错误问题
  */
 public class KeyboardHelper {
 
@@ -251,6 +252,7 @@ public class KeyboardHelper {
             int heightDiff = mActivity.getWindow().getDecorView().getRootView().getHeight() - r.bottom;
             boolean isOpen = heightDiff > visibleThreshold;
             heightDiff -= NavigationBarUtil.getFakeNavigationBarHeight(mActivity);
+            heightDiff -= NavigationBarUtil.getRealNavigationBarHeight(mActivity);
             if (isOpen == mIsKeyboardOpened && !isOpen) {
                 return;
             }

@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.RomUtil;
@@ -68,7 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("getSystemUiVisibility", getWindow().getDecorView().getSystemUiVisibility() + ";onCreate");
         super.onCreate(savedInstanceState);
-        Log.i("savedInstanceState","savedInstanceState:"+savedInstanceState);
+        Log.i("savedInstanceState", "savedInstanceState:" + savedInstanceState);
         Log.d(TAG, "onCreate");
         this.mContext = this;
         this.beforeSetView();
@@ -92,7 +94,20 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setBottomView(mContentView);
         beforeControlNavigation(mNavigationViewHelper);
         //不推荐4.4版本使用透明导航栏--话说现在谁还用那么低版本的手机
-        mNavigationViewHelper.init();
+        if (isControlNavigation()) {
+            mNavigationViewHelper.init();
+        } else {
+            if (!isControlNavigation()) {
+                KeyboardHelper.with(this)
+                        .setEnable()
+                        .setOnKeyboardVisibilityChangedListener(new KeyboardHelper.OnKeyboardVisibilityChangedListener() {
+                            @Override
+                            public boolean onKeyboardVisibilityChanged(Activity activity, boolean isOpen, int heightDiff, int navigationHeight) {
+                                return false;
+                            }
+                        });
+            }
+        }
         this.initView(savedInstanceState);
     }
 
@@ -153,4 +168,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         return RomUtil.isEMUI() && (RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0);
     }
 
+    /**
+     * 是否控制底部导航栏---目前发现小米8上检查是否有导航栏出现问题
+     *
+     * @return
+     */
+    private boolean isControlNavigation() {
+        Log.i(TAG, "mode:" + Build.MODEL);
+        return true;
+    }
 }
