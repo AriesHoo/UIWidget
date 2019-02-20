@@ -70,11 +70,11 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> {
     protected void initView(Bundle bundle) {
         int padding = getResources().getDimensionPixelSize(R.dimen.dp_margin);
         TextView textView = new TextView(mContext);
-        textView.setText(Html.fromHtml("是否全面屏:" + NavigationBarUtil.isFullScreenDevice(mContext) + "<br>屏幕纵横比:" + NavigationBarUtil.getAspectRatio(mContext) + "<br>是否有导航栏:" + NavigationBarUtil.hasNavBar(mContext) + "<br>导航栏高度:" + NavigationBarUtil.getNavigationBarHeight(mContext)));
+        textView.setText(Html.fromHtml("是否全面屏:" + NavigationBarUtil.isFullScreenDevice(mContext) + "<br>屏幕纵横比:" + NavigationBarUtil.getAspectRatio(mContext) + "<br>是否开启全面屏手势:" + NavigationBarUtil.isOpenFullScreenGestures(mContext) + "<br>是否有导航栏:" + NavigationBarUtil.hasNavBar(mContext) + "<br>导航栏高度:" + NavigationBarUtil.getNavigationBarHeight(mContext)));
         textView.setTextColor(ContextCompat.getColor(mContext, R.color.colorTextBlack));
         textView.setPadding(padding, padding, padding, padding);
-        textView.setLineSpacing(2f,2f);
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,getResources().getDimensionPixelSize(R.dimen.dp_text_size_main));
+        textView.setLineSpacing(2f, 2f);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.dp_text_size_main));
         mAdapter.addHeaderView(textView);
         List<WidgetEntity> list = new ArrayList<>();
         list.add(new WidgetEntity("UIAlertDialog", "一款自定义Alert效果控件:属性命名及调用方式同Android原生AlertDialog,增加样式背景及文本相关属性自定义自定义。", AlertActivity.class));

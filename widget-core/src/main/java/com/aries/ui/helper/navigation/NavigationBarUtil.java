@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
  * Description:
  * 1、2018-11-9 11:30:44 修改获取虚拟导航栏高度方法增加VIVO及MIUI全面屏判断
  * 2、2018-11-28 13:21:53 新增华为、三星导航栏可动态隐藏显示判断逻辑
+ * 3、2018-12-17 10:11:29 新增是否开启全面屏手势方法{@link #isOpenFullScreenGestures(Context)}
  */
 public class NavigationBarUtil {
 
@@ -52,6 +53,55 @@ public class NavigationBarUtil {
     private volatile static float mAspectRatio = 1.97f;
 
     /**
+     * 判断手机是否开启全面屏手势
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isOpenFullScreenGestures(Context context) {
+        if (context == null || !isFullScreenDevice(context)) {
+            return false;
+        }
+        //判断小米手机是否开启了全面屏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (Settings.Global.getInt(context.getContentResolver(), MIUI_FORCE_FSG_NAV_BAR, 0) != 0) {
+                return true;
+            }
+        }
+        //ViVo是否开启了全面屏手势
+        if (Settings.Secure.getInt(context.getContentResolver(), VIVO_NAVIGATION_GESTURE_ON, 0) != 0) {
+            return true;
+        }
+        //华为导航栏隐藏
+        if (Settings.System.getInt(context.getContentResolver(), NAVIGATION_BAR_IS_MIN, 0) == 1) {
+            return true;
+        }
+        //三星导航栏隐藏
+        if (Settings.System.getInt(context.getContentResolver(), NAVIGATION_BAR_HIDE_BAR_ENABLED, 0) == 1) {
+            return true;
+        }
+        //其它导航栏隐藏
+        if ("immersive.navigation=*".equals(Settings.System.getString(context.getContentResolver(), NAVIGATION_BAR_POLICY_CONTROL))) {
+            return true;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            //华为导航栏隐藏
+            if (Settings.Global.getInt(context.getContentResolver(), NAVIGATION_BAR_IS_MIN, 0) == 1) {
+                return true;
+            }
+            //三星导航栏隐藏
+            if (Settings.Global.getInt(context.getContentResolver(), NAVIGATION_BAR_HIDE_BAR_ENABLED, 0) == 1) {
+                return true;
+            }
+            //其它导航栏隐藏
+            if ("immersive.navigation=*".equals(Settings.Global.getString(context.getContentResolver(), NAVIGATION_BAR_POLICY_CONTROL))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * 是否开启虚拟导航栏
      *
      * @param activity
@@ -62,41 +112,8 @@ public class NavigationBarUtil {
         if (activity == null) {
             return false;
         }
-        //判断小米手机是否开启了全面屏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            if (Settings.Global.getInt(activity.getContentResolver(), MIUI_FORCE_FSG_NAV_BAR, 0) != 0) {
-                return false;
-            }
-        }
-        //ViVo是否开启全面屏
-        if (Settings.Secure.getInt(activity.getContentResolver(), VIVO_NAVIGATION_GESTURE_ON, 0) != 0) {
+        if (isOpenFullScreenGestures(activity)) {
             return false;
-        }
-        //华为导航栏隐藏
-        if (Settings.System.getInt(activity.getContentResolver(), NAVIGATION_BAR_IS_MIN, 0) == 1) {
-            return false;
-        }
-        //三星导航栏隐藏
-        if (Settings.System.getInt(activity.getContentResolver(), NAVIGATION_BAR_HIDE_BAR_ENABLED, 0) == 1) {
-            return false;
-        }
-        //其它导航栏隐藏
-        if ("immersive.navigation=*".equals(Settings.System.getString(activity.getContentResolver(), NAVIGATION_BAR_POLICY_CONTROL))) {
-            return false;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            //华为导航栏隐藏
-            if (Settings.Global.getInt(activity.getContentResolver(), NAVIGATION_BAR_IS_MIN, 0) == 1) {
-                return false;
-            }
-            //三星导航栏隐藏
-            if (Settings.Global.getInt(activity.getContentResolver(), NAVIGATION_BAR_HIDE_BAR_ENABLED, 0) == 1) {
-                return false;
-            }
-            //其它导航栏隐藏
-            if ("immersive.navigation=*".equals(Settings.Global.getString(activity.getContentResolver(), NAVIGATION_BAR_POLICY_CONTROL))) {
-                return false;
-            }
         }
         //其他手机根据屏幕真实高度与显示高度是否相同来判断
         WindowManager windowManager = activity.getWindowManager();
@@ -249,7 +266,9 @@ public class NavigationBarUtil {
         if (windowManager != null) {
             Display display = windowManager.getDefaultDisplay();
             Point point = new Point();
-            display.getRealSize(point);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                display.getRealSize(point);
+            }
             float width, height;
             if (point.x < point.y) {
                 width = point.x;

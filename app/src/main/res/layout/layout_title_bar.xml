@@ -16,6 +16,7 @@
     app:title_rightTextColor="@color/colorTextBlack"
     app:title_rightTextDrawableTint="@color/colorTextBlack"
     app:title_statusBarLightMode="true"
+    app:title_titleMainText="@string/app_name"
     app:title_titleMainTextColor="@color/colorTextBlack"
     app:title_titleSubTextColor="@color/colorTextBlack"/>
 
