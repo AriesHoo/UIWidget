@@ -76,9 +76,9 @@ allprojects {
 
 ```
 dependencies {
-     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.6'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.6'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.6'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.7'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.7'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.7'
      implementation 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
@@ -114,7 +114,7 @@ dependencies {
     <artifactId>widget-core</artifactId>
     <artifactId>widget-collapsing</artifactId>
     <artifactId>widget-alert</artifactId>
-    <version>3.2.3</version>
+    <version>3.2.7</version>
 </dependency>
 ```
 
@@ -351,7 +351,7 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 ## License
 
 ```
-Copyright 2016-2018 Aries Hoo
+Copyright 2016-2019 Aries Hoo
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
