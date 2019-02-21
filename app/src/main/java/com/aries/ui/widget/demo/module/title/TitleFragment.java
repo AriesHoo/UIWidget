@@ -2,8 +2,6 @@ package com.aries.ui.widget.demo.module.title;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +10,8 @@ import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.demo.R;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;

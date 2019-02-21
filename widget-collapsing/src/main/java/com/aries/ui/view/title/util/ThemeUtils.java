@@ -27,7 +27,7 @@ import android.content.res.TypedArray;
 public class ThemeUtils {
 
     private static final int[] APPCOMPAT_CHECK_ATTRS = {
-            android.support.v7.appcompat.R.attr.colorPrimary
+            androidx.appcompat.R.attr.colorPrimary
     };
 
     public static void checkAppCompatTheme(Context context) {

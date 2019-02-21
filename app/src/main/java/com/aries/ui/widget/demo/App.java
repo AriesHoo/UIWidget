@@ -3,12 +3,13 @@ package com.aries.ui.widget.demo;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
 import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationBarUtil;
+
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 /**
  * @Author: AriesHoo on 2018/7/19 9:31

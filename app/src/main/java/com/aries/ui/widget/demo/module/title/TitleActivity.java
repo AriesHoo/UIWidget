@@ -3,9 +3,6 @@ package com.aries.ui.widget.demo.module.title;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -33,6 +30,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 /**

@@ -11,7 +11,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -33,6 +32,8 @@ import com.aries.ui.view.alpha.AlphaImageView;
 import com.aries.ui.view.alpha.AlphaTextView;
 import com.aries.ui.view.title.util.ViewGroupUtils;
 import com.aries.ui.widget.R;
+
+import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
  * @Author: AriesHoo on 2018/7/19 10:21

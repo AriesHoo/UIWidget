@@ -21,7 +21,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_msgLoading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
 
             <View style="@style/LineGray.Horizontal"/>
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_radiusBackLoading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
 
             <View style="@style/LineGray.Horizontal"/>
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_viewBackLoading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
 
             <View style="@style/LineGray.Horizontal"/>
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_progressLoading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
 
             <View style="@style/LineGray.Horizontal"/>
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_backLoading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

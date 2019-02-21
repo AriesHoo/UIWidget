@@ -10,7 +10,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +18,8 @@ import android.widget.EditText;
 
 import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.widget.R;
+
+import androidx.annotation.ColorInt;
 
 /**
  * @Author: AriesHoo on 2018/7/19 10:01

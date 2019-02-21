@@ -6,8 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
@@ -21,6 +19,8 @@ import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.util.AppUtil;
 import com.aries.ui.widget.demo.util.SizeUtil;
 
+import androidx.annotation.LayoutRes;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 

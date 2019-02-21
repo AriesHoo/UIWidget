@@ -2,7 +2,6 @@ package com.aries.ui.widget.demo.module.action;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -17,6 +16,7 @@ import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
 import com.aries.ui.widget.demo.util.SizeUtil;
 
+import androidx.appcompat.widget.SwitchCompat;
 import butterknife.BindView;
 import butterknife.OnClick;
 

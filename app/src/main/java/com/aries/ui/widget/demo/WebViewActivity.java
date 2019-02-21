@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -21,6 +20,7 @@ import com.aries.ui.widget.demo.util.AppUtil;
 import com.just.library.AgentWeb;
 import com.just.library.ChromeClientCallbackManager;
 
+import androidx.appcompat.app.AlertDialog;
 import butterknife.BindView;
 
 public class WebViewActivity extends BaseActivity {

@@ -1,8 +1,6 @@
 package com.aries.ui.widget.demo.module.title;
 
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.aries.ui.helper.navigation.NavigationViewHelper;
@@ -15,10 +13,12 @@ import com.aries.ui.widget.demo.entity.TitleEntity;
 import com.aries.ui.widget.demo.entity.WidgetEntity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 
 /**

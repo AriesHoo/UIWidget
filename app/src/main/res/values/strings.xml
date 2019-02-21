@@ -2,6 +2,7 @@
     <string name="app_name">UIWidget</string>
     <string name="app_title_content">UIWidget-一个封装开发经常使用UI控件库</string>
     <string name="back">返回</string>
+    <string name="loading">loading..</string>
     <string-array name="arrays_items_action">
         <item>条目0</item>
         <item>条目1</item>

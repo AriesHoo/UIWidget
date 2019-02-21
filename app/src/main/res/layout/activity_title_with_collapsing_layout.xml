@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="256dp">
-
         <com.aries.ui.view.title.CollapsingTitleBarLayout
             android:id="@+id/lLayout_titleBar"
             android:layout_width="match_parent"
@@ -38,13 +36,13 @@
                 app:title_leftTextDrawable="@drawable/ic_arrow_back_white"
                 app:title_statusBarLightMode="false"/>
         </com.aries.ui.view.title.CollapsingTitleBarLayout>
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

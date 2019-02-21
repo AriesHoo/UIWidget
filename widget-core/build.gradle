@@ -46,6 +46,6 @@ android {
     }
 
     dependencies {
-        compileOnly 'com.android.support:support-v4:'.concat(supportVersion)
+        compileOnly 'androidx.appcompat:appcompat:'.concat(supportVersion)
     }
 }

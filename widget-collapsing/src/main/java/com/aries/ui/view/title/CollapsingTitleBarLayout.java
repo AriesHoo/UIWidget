@@ -10,21 +10,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -33,22 +18,39 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 
+import com.aries.ui.view.collapsing.R;
 import com.aries.ui.view.title.util.AnimationUtils;
 import com.aries.ui.view.title.util.CollapsingTextHelper;
 import com.aries.ui.view.title.util.ThemeUtils;
 import com.aries.ui.view.title.util.ViewGroupUtils;
 import com.aries.ui.view.title.util.ViewOffsetHelper;
-import com.aries.ui.view.collapsing.R;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 
 /**
  * @Author: AriesHoo on 2018/7/19 10:50
  * @E-Mail: AriesHoo@126.com
- * Function: 参考 {@link android.support.design.widget.CollapsingToolbarLayout},
+ * Function: 参考 {@link com.google.android.material.appbar.CollapsingToolbarLayout},
  * 适配 {@link TitleBarView}
  * Description:
  * 1、set方法增加返回本对象支持链式调用
@@ -168,11 +170,9 @@ public class CollapsingTitleBarLayout extends FrameLayout {
 
         setWillNotDraw(false);
 
-        ViewCompat.setOnApplyWindowInsetsListener(this,
-                new android.support.v4.view.OnApplyWindowInsetsListener() {
-                    @Override
-                    public WindowInsetsCompat onApplyWindowInsets(View v,
-                                                                  WindowInsetsCompat insets) {
+        ViewCompat.setOnApplyWindowInsetsListener(this, new androidx.core.view.OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
                         return onWindowInsetChanged(insets);
                     }
                 });

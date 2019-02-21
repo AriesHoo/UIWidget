@@ -10,9 +10,12 @@ android {
         versionCode ext.versionCode
         versionName ext.versionName
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug{
+            useProguard true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -22,17 +25,21 @@ android {
     dexOptions{
         preDexLibraries = false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     def supportVersion = rootProject.ext.supportVersion
-    implementation 'com.android.support:appcompat-v7:'.concat(supportVersion)
-    implementation 'com.android.support:design:'.concat(supportVersion)
-    implementation 'com.android.support:recyclerview-v7:'.concat(supportVersion)
-    implementation 'com.android.support:support-v4:'.concat(supportVersion)
+    implementation 'androidx.appcompat:appcompat:'.concat(supportVersion)
+    implementation 'com.google.android.material:material:'.concat(supportVersion)
+    implementation 'androidx.recyclerview:recyclerview:'.concat(supportVersion)
     //只包含常用(TitleBarView、RadiusView、StatusViewHelper、NavigationViewHelper)
-    implementation project(':widget-core')
+//    implementation project(':widget-core')
     //TitleBarView+CollapsingTitleBarLayout实现CollapsingToolbarLayout+Toolbar效果
     implementation project(':widget-collapsing')
     //UIAlertView
@@ -43,14 +50,12 @@ dependencies {
 //    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.7'
 
     //图片加载
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.8.0'
-    implementation 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
+    implementation 'com.jakewharton:butterknife:10.1.0'
     implementation 'com.just.agentweb:agentweb:2.0.1'
-    implementation 'com.github.bumptech.glide:glide:4.0.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    implementation 'com.android.support:multidex:1.0.0'
-    //滑动返回Activity
-    implementation 'cn.bingoogolapple:bga-swipebacklayout:1.2.0@aar'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    implementation 'androidx.multidex:multidex:2.0.0+'
 }

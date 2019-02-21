@@ -1,8 +1,8 @@
 package com.aries.ui.widget.demo;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
@@ -23,6 +23,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Created: AriesHoo on 2017/7/14 10:02
@@ -75,6 +77,7 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> {
         textView.setPadding(padding, padding, padding, padding);
         textView.setLineSpacing(2f, 2f);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.dp_text_size_main));
+        textView.setBackgroundColor(Color.WHITE);
         mAdapter.addHeaderView(textView);
         List<WidgetEntity> list = new ArrayList<>();
         list.add(new WidgetEntity("UIAlertDialog", "一款自定义Alert效果控件:属性命名及调用方式同Android原生AlertDialog,增加样式背景及文本相关属性自定义自定义。", AlertActivity.class));

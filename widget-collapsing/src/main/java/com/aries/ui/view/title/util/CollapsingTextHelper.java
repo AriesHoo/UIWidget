@@ -26,12 +26,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.RestrictTo;
-import android.support.v4.text.TextDirectionHeuristicsCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.TintTypedArray;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -40,7 +34,15 @@ import android.view.animation.Interpolator;
 
 import com.aries.ui.view.collapsing.R;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import androidx.annotation.ColorInt;
+import androidx.annotation.RestrictTo;
+import androidx.appcompat.widget.TintTypedArray;
+import androidx.core.text.TextDirectionHeuristicsCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 
 /**
  * @Author: AriesHoo on 2018/7/19 10:48

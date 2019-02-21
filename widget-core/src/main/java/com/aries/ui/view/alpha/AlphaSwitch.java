@@ -2,7 +2,7 @@ package com.aries.ui.view.alpha;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.RadioButton;
+import android.widget.Switch;
 
 import com.aries.ui.view.alpha.delegate.AlphaDelegate;
 
@@ -12,7 +12,7 @@ import com.aries.ui.view.alpha.delegate.AlphaDelegate;
  * Function: 控制Alpha 按下效果
  * Description:
  */
-public class AlphaSwitch extends RadioButton {
+public class AlphaSwitch extends Switch {
     private AlphaDelegate delegate;
 
     public AlphaSwitch(Context context) {

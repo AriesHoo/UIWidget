@@ -1,7 +1,6 @@
 package com.aries.ui.widget.demo.module.loading;
 
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CompoundButton;
 
@@ -9,6 +8,7 @@ import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
 import com.aries.ui.widget.progress.UIProgressDialog;
 
+import androidx.appcompat.widget.SwitchCompat;
 import butterknife.BindView;
 import butterknife.OnClick;
 
