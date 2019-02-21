@@ -303,6 +303,14 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 ## 重大更新日志
 
+* 3.2.7-androidx
+
+    * 3.2.7 更换androidx支持
+    
+* 3.2.7 更新
+      
+    * 3.2.6 beta 的最后一个稳定support版本
+    
 * 3.2.3 更新
       
     * 优化:优化UIActionSheetDialog 导航栏控制逻辑 
