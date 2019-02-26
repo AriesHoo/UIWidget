@@ -15,9 +15,13 @@
 [CollapsingTitleBarLayout](https://github.com/AriesHoo/UIWidget/blob/master/widget-collapsing/src/main/java/com/aries/ui/view/title/CollapsingTitleBarLayout.java)、[StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)、[NavigationViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/NavigationViewHelper.java)
 等项目常用UI库
 
-[[Download]](https://raw.githubusercontent.com/AriesHoo/UIWidget/master/apk/sample.apk)
+[[Download-蒲公英]](https://www.pgyer.com/CE6Z)
 
-![](/apk/qr.png)
+![Download-蒲公英](/apk/qr_pgyer.png)
+
+[[Download-github]](https://raw.githubusercontent.com/AriesHoo/UIWidget/master/apk/sample.apk)
+
+![Download-github](/apk/qr.png)
 
 ## 录屏预览
 
