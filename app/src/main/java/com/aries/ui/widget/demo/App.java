@@ -3,10 +3,12 @@ package com.aries.ui.widget.demo;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationBarUtil;
+import com.aries.ui.widget.demo.util.SPUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
 
@@ -24,7 +26,17 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        CrashReport.initCrashReport(getApplicationContext(), "40c6910a0c", false);
+        CrashReport.initCrashReport(getApplicationContext());
+        String appChannel = (String) SPUtil.get(getApplicationContext(), SPConstant.SP_KEY_APP_CHANNEL, "");
+        Log.i("appChannel", "appChannel0:" + appChannel);
+        if (TextUtils.isEmpty(appChannel)) {
+            appChannel = CrashReport.getAppChannel();
+            Log.i("appChannel", "appChannel1:" + appChannel);
+            SPUtil.put(getApplicationContext(), SPConstant.SP_KEY_APP_CHANNEL, appChannel);
+        } else {
+            CrashReport.setAppChannel(getApplicationContext(), appChannel);
+        }
+        Log.i("appChannel", "appChannel2:" + appChannel);
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {

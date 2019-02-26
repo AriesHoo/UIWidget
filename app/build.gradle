@@ -10,7 +10,12 @@ android {
         versionCode ext.versionCode
         versionName ext.versionName
         multiDexEnabled true
+//        multiDexKeepProguard file("multidexKeep.pro")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                app_channel   : "UIWidget",
+                bugly_id      : "40c6910a0c"
+        ]
     }
     signingConfigs {
         release {
@@ -28,7 +33,7 @@ android {
             signingConfig signingConfigs.release
         }
         release {
-            debuggable false
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
