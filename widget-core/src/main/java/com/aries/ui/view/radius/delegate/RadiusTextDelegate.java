@@ -30,6 +30,7 @@ import com.aries.ui.widget.R;
  * 5、2018-5-31 17:00:47 修订设置Drawable后无法移除问题
  * 6、2018-6-3 22:01:53 优化部分TextColor 未设置时默认颜色逻辑
  * 7、2018-6-5 09:10:58 新增Left Top Right Bottom Drawable是否为系统属性配置
+ * 8、2019-2-26 15:36:08 优化{@link #setTextDrawable(Drawable, Drawable, Drawable, Drawable, Drawable, int)} 逻辑
  */
 public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusViewDelegate<T> {
 
@@ -544,7 +545,9 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     private void setTextDrawable(Drawable normal, Drawable checked, Drawable selected, Drawable pressed,
                                  Drawable disabled, int gravity) {
-
+        if (normal == null && checked == null && selected == null && pressed == null && disabled == null) {
+            return;
+        }
         int index = 0;
         int width = mLeftDrawableWidth;
         int height = mLeftDrawableHeight;
@@ -624,7 +627,9 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
     }
 
     private int getTextColor(int color) {
-        if (color != Integer.MAX_VALUE) return color;
+        if (color != Integer.MAX_VALUE) {
+            return color;
+        }
         if (mView.isSelected()) {
             color = mTextSelectedColor;
         } else if (mView instanceof CompoundButton) {

@@ -74,7 +74,7 @@ public class RadiusLinearLayout extends LinearLayout {
     @Override
     public void setPressed(boolean pressed) {
         super.setPressed(pressed);
-        if (delegate != null && pressed) {
+        if (delegate != null) {
             delegate.init();
         }
     }

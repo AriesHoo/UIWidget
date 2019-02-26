@@ -21,11 +21,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleBar"/>
 
-    <ImageView
+    <com.aries.ui.view.radius.RadiusTextView
         android:id="@+id/iv_nextTitle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@color/colorAccent"
+        android:background="@color/colorAccent"
         app:layout_constraintDimensionRatio="H,16:9"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

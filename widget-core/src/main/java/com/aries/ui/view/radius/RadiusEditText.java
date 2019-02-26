@@ -82,7 +82,7 @@ public class RadiusEditText extends EditText {
     @Override
     public void setPressed(boolean pressed) {
         super.setPressed(pressed);
-        if (delegate != null && pressed) {
+        if (delegate != null) {
             delegate.init();
         }
     }

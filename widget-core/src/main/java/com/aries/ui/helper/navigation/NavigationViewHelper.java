@@ -281,9 +281,8 @@ public class NavigationViewHelper {
         addNavigationBar(window);
         if (mLayoutNavigation != null) {
             ViewGroup.LayoutParams params = mLayoutNavigation.getLayoutParams();
-            params.height = mNavigationHeight;
+            params.height = mPlusNavigationViewEnable ? mNavigationHeight : 0;
             mLayoutNavigation.setLayoutParams(params);
-            mLayoutNavigation.setVisibility(mPlusNavigationViewEnable ? View.VISIBLE : View.GONE);
         }
         log("mBottomView:" + mBottomView + ";mPlusNavigationViewEnable:" + mPlusNavigationViewEnable);
         if (mBottomView == null || mPlusNavigationViewEnable) {

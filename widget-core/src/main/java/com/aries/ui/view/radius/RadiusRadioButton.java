@@ -61,8 +61,9 @@ public class RadiusRadioButton extends RadioButton {
     @Override
     public void setSelected(boolean selected) {
         super.setSelected(selected);
-        if (delegate != null)
+        if (delegate != null) {
             delegate.setSelected(selected);
+        }
     }
 
     @Override
@@ -76,7 +77,7 @@ public class RadiusRadioButton extends RadioButton {
     @Override
     public void setPressed(boolean pressed) {
         super.setPressed(pressed);
-        if (delegate != null && pressed) {
+        if (delegate != null) {
             delegate.init();
         }
     }
@@ -84,7 +85,8 @@ public class RadiusRadioButton extends RadioButton {
     @Override
     public void setChecked(boolean checked) {
         super.setChecked(checked);
-        if (delegate != null)
+        if (delegate != null) {
             delegate.init();
+        }
     }
 }
