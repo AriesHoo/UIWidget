@@ -20,7 +20,7 @@ import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.R;
 
-import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
 /**
  * @Author: AriesHoo on 2018/7/19 9:43
@@ -32,7 +32,7 @@ public class StatusViewHelper {
 
     public final static int TAG_SET_STATUS_CONTROL = 0x10000012;
     private String TAG = getClass().getSimpleName();
-    private SoftReference<Activity> mActivity;
+    private WeakReference<Activity> mActivity;
     private boolean mLogEnable;
     private boolean mControlEnable;
     private boolean mTransEnable;
@@ -55,7 +55,7 @@ public class StatusViewHelper {
     private LinearLayout mLayoutStatus;
 
     private StatusViewHelper(Activity activity) {
-        mActivity = new SoftReference<>(activity);
+        mActivity = new WeakReference<>(activity);
         mContentView = ((ViewGroup) activity.getWindow().getDecorView()
                 .findViewById(android.R.id.content)).getChildAt(0);
     }

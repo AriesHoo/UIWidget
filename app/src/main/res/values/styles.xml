@@ -28,16 +28,16 @@
         <item name="android:paddingLeft">24dp</item>
         <item name="android:paddingRight">24dp</item>
         <item name="android:textSize">@dimen/dp_text_size_main</item>
-        <item name="com.aries.ui.widget.demo:rv_backgroundColor">@color/colorWhite</item>
-        <item name="com.aries.ui.widget.demo:rv_backgroundPressedColor">@color/colorWhitePressed
+        <item name="rv_backgroundColor">@color/colorWhite</item>
+        <item name="rv_backgroundPressedColor">@color/colorWhitePressed
         </item>
-        <item name="com.aries.ui.widget.demo:rv_radiusHalfHeightEnable">true</item>
-        <item name="com.aries.ui.widget.demo:rv_strokeColor">@color/colorTextBlack</item>
-        <item name="com.aries.ui.widget.demo:rv_strokePressedColor">@color/colorTextBlackLight
+        <item name="rv_radiusHalfHeightEnable">true</item>
+        <item name="rv_strokeColor">@color/colorTextBlack</item>
+        <item name="rv_strokePressedColor">@color/colorTextBlackLight
         </item>
-        <item name="com.aries.ui.widget.demo:rv_strokeWidth">@dimen/dp_line_size</item>
-        <item name="com.aries.ui.widget.demo:rv_textColor">@color/colorTextBlack</item>
-        <item name="com.aries.ui.widget.demo:rv_textPressedColor">@color/colorTextBlackLight</item>
+        <item name="rv_strokeWidth">@dimen/dp_line_size</item>
+        <item name="rv_textColor">@color/colorTextBlack</item>
+        <item name="rv_textPressedColor">@color/colorTextBlackLight</item>
     </style>
 
     <!--展开状态样式-->

@@ -20,6 +20,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import java.lang.ref.WeakReference;
+
 /**
  * @Author: AriesHoo on 2018/7/19 9:31
  * @E-Mail: AriesHoo@126.com
@@ -29,13 +31,12 @@ import android.widget.EditText;
  * 2、2018-11-28 11:57:07 优化软键盘弹出关闭方案;增加相应监听回调;去掉是否控制导航栏方法
  * 3、2018-11-28 13:53:41 新增软键盘控制相应静态方法--如开关软键盘
  * 4、2018-12-3 17:44:59 修改设置padding逻辑避免部分情况计算底部padding错误问题
+ * 5、2019-2-25 14:00:37 将activity对象弱引用避免内存泄露;优化注册activity 销毁逻辑
  */
 public class KeyboardHelper {
 
-    private Activity mActivity;
-    private Window mWindow;
-    private View mDecorView;
-    private View mContentView;
+    private WeakReference<Activity> mActivity;
+    private  WeakReference<View> mContentView;
     private int mKeyMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED;
     /**
      * 显示软键盘的延迟时间
@@ -90,24 +91,23 @@ public class KeyboardHelper {
     }
 
     private KeyboardHelper(Activity activity, Dialog dialog, View contentView) {
-        this.mActivity = activity;
+        this.mActivity = new WeakReference<>(activity);
         checkNull();
         register();
-        this.mWindow = dialog != null ? dialog.getWindow() : activity.getWindow();
-        this.mDecorView = activity.getWindow().getDecorView();
-        this.mContentView = contentView != null ? contentView : mWindow.getDecorView().findViewById(android.R.id.content);
+        Window window = dialog != null ? dialog.getWindow() : activity.getWindow();
+        View mContentView = contentView != null ? contentView : window.getDecorView().findViewById(android.R.id.content);
         mPaddingBottom = mContentView.getPaddingBottom();
+        this.mContentView = new WeakReference<>(mContentView);
     }
 
     private KeyboardHelper(Activity activity, Window window) {
-        this.mActivity = activity;
+        this.mActivity = new WeakReference<>(activity);
         checkNull();
         register();
-        this.mWindow = window;
-        this.mDecorView = activity.getWindow().getDecorView();
-        ViewGroup frameLayout = mWindow.getDecorView().findViewById(android.R.id.content);
-        this.mContentView = frameLayout.getChildAt(0) != null ? frameLayout.getChildAt(0) : frameLayout;
-        mPaddingBottom = mContentView.getPaddingBottom();
+        ViewGroup frameLayout = window.getDecorView().findViewById(android.R.id.content);
+        View contentView = frameLayout.getChildAt(0) != null ? frameLayout.getChildAt(0) : frameLayout;
+        mPaddingBottom = contentView.getPaddingBottom();
+        this.mContentView = new WeakReference<>(contentView);
     }
 
     private void checkNull() {
@@ -117,7 +117,11 @@ public class KeyboardHelper {
     }
 
     private void register() {
-        mActivity.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+        Activity activity = mActivity.get();
+        if (activity == null) {
+            return;
+        }
+        activity.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             }
@@ -154,19 +158,22 @@ public class KeyboardHelper {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-                //被系统回收后还可以恢复
-                if (activity.isFinishing()) {
+                if (activity == null) {
                     return;
-                }
-                //移除监听
-                mActivity.getApplication().unregisterActivityLifecycleCallbacks(this);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mDecorView.getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
-                } else {
-                    mDecorView.getViewTreeObserver().removeGlobalOnLayoutListener(onGlobalLayoutListener);
                 }
                 log("onActivityDestroyed--" + activity.getClass().getSimpleName() + ";KeyboardOpened:" + mIsKeyboardOpened +
                         ";isFinishing:" + activity.isFinishing());
+                //被系统回收后还可以恢复
+                if (!activity.isFinishing()) {
+                    return;
+                }
+                //移除监听
+                activity.getApplication().unregisterActivityLifecycleCallbacks(this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    activity.getWindow().getDecorView().getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
+                } else {
+                    activity.getWindow().getDecorView().getViewTreeObserver().removeGlobalOnLayoutListener(onGlobalLayoutListener);
+                }
             }
         });
     }
@@ -206,10 +213,14 @@ public class KeyboardHelper {
      * @param mode
      */
     public KeyboardHelper setEnable(int mode) {
-        mWindow.setSoftInputMode(mode);
+        Activity activity = mActivity.get();
+        if (activity == null) {
+            return this;
+        }
+        activity.getWindow().setSoftInputMode(mode);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 当在一个视图树中全局布局发生改变或者视图树中的某个视图的可视状态发生改变时,所要调用的回调函数的接口类
-            mDecorView.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
+            activity.getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
         }
         return this;
     }
@@ -228,9 +239,13 @@ public class KeyboardHelper {
      * @param mode
      */
     public KeyboardHelper setDisable(int mode) {
-        mWindow.setSoftInputMode(mode);
+        Activity activity = mActivity.get();
+        if (activity == null) {
+            return this;
+        }
+        activity.getWindow().setSoftInputMode(mode);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mDecorView.getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
+            activity.getWindow().getDecorView().getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
         }
         return this;
     }
@@ -244,15 +259,20 @@ public class KeyboardHelper {
 
         @Override
         public void onGlobalLayout() {
+            Activity activity = mActivity.get();
+            View contentView = mContentView.get();
+            if (activity == null||contentView==null) {
+                return;
+            }
             if (visibleThreshold <= 0) {
                 visibleThreshold = Math.round((int) (KEYBOARD_VISIBLE_THRESHOLD_DP * Resources.getSystem().getDisplayMetrics().density + 0.5f));
             }
             //获取当前窗口可视区域大小的
-            mContentView.getWindowVisibleDisplayFrame(r);
-            int heightDiff = mActivity.getWindow().getDecorView().getRootView().getHeight() - r.bottom;
+            contentView.getWindowVisibleDisplayFrame(r);
+            int heightDiff = activity.getWindow().getDecorView().getRootView().getHeight() - r.bottom;
             boolean isOpen = heightDiff > visibleThreshold;
-            heightDiff -= NavigationBarUtil.getFakeNavigationBarHeight(mActivity);
-            heightDiff -= NavigationBarUtil.getRealNavigationBarHeight(mActivity);
+            heightDiff -= NavigationBarUtil.getFakeNavigationBarHeight(activity);
+            heightDiff -= NavigationBarUtil.getRealNavigationBarHeight(activity);
             if (isOpen == mIsKeyboardOpened && !isOpen) {
                 return;
             }
@@ -261,18 +281,18 @@ public class KeyboardHelper {
                 mPaddingBottom = mPaddingBottom % heightDiff;
             }
             mIsKeyboardOpened = isOpen;
-            mContentView.setPadding(mContentView.getPaddingLeft(), mContentView.getPaddingTop(), mContentView.getPaddingRight(), mPaddingBottom + heightDiff);
+            contentView.setPadding(contentView.getPaddingLeft(), contentView.getPaddingTop(), contentView.getPaddingRight(), mPaddingBottom + heightDiff);
             if (mOnKeyboardVisibilityChangedListener != null) {
-                boolean remove = mOnKeyboardVisibilityChangedListener.onKeyboardVisibilityChanged(mActivity, isOpen, heightDiff, NavigationBarUtil.getNavigationBarHeight(mActivity));
+                boolean remove = mOnKeyboardVisibilityChangedListener.onKeyboardVisibilityChanged(activity, isOpen, heightDiff, NavigationBarUtil.getNavigationBarHeight(activity));
                 if (remove) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        mDecorView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        activity.getWindow().getDecorView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     } else {
-                        mDecorView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        activity.getWindow().getDecorView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     }
                 }
             }
-            log("setting:" + (Settings.System.getString(mActivity.getContentResolver(), "policy_control")) + ";diff:" + heightDiff + ";paddingBottom:" + mPaddingBottom);
+            log("setting:" + (Settings.System.getString(activity.getContentResolver(), "policy_control")) + ";diff:" + heightDiff + ";paddingBottom:" + mPaddingBottom);
         }
     };
 

@@ -296,7 +296,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
         });
         if (canLight && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             sBtnLight.setChecked(false);
-            sBarAlpha.setProgress(titleBarDrawer.DEFAULT_STATUS_BAR_ALPHA);
+            sBarAlpha.setProgress(TitleBarView.DEFAULT_STATUS_BAR_ALPHA);
         } else {
             sBarAlpha.setProgress(0);
         }

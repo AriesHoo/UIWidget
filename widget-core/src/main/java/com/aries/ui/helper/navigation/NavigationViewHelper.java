@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.widget.R;
 
-import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
 /**
  * @Author: AriesHoo on 2018/11/27 18:14
@@ -35,7 +35,7 @@ public class NavigationViewHelper {
 
     public final static int TAG_NAVIGATION_BAR_HEIGHT = 0x10000012;
     private String TAG = getClass().getSimpleName();
-    private SoftReference<Activity> mActivity;
+    private WeakReference<Activity> mActivity;
     private boolean mLogEnable;
     private boolean mControlEnable;
     private boolean mTransEnable;
@@ -70,7 +70,7 @@ public class NavigationViewHelper {
     private KeyboardHelper.OnKeyboardVisibilityChangedListener mOnKeyboardVisibilityChangedListener;
 
     private NavigationViewHelper(Activity activity) {
-        mActivity = new SoftReference<>(activity);
+        mActivity = new WeakReference<>(activity);
         mDecorView = activity.getWindow().getDecorView();
         mDecorContentView = mDecorView.findViewById(android.R.id.content);
         mContentView = ((ViewGroup) mDecorContentView).getChildAt(0);

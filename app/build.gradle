@@ -12,13 +12,26 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        release {
+            storeFile file('../fast.jks')
+            storePassword 'fast123#@!'
+            keyAlias 'fast'
+            keyPassword 'fast123#@!'
+        }
+    }
     buildTypes {
         debug{
-            useProguard true
-        }
-        release {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        release {
+            debuggable false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
@@ -34,6 +47,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
     def supportVersion = rootProject.ext.supportVersion
     implementation 'androidx.appcompat:appcompat:'.concat(supportVersion)
     implementation 'com.google.android.material:material:'.concat(supportVersion)
@@ -58,4 +74,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     implementation 'androidx.multidex:multidex:2.0.0+'
+    implementation 'com.tencent.bugly:crashreport:2.8.6.0'
 }

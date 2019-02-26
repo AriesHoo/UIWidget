@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationBarUtil;
+import com.squareup.leakcanary.LeakCanary;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -19,16 +21,10 @@ import androidx.multidex.MultiDexApplication;
  */
 public class App extends MultiDexApplication {
 
-    private static Context mContext;
-
-    public static Context getContext() {
-        return mContext;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        mContext = this;
+        CrashReport.initCrashReport(getApplicationContext(), "40c6910a0c", false);
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -68,6 +64,13 @@ public class App extends MultiDexApplication {
 
             }
         });
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+
     }
 
     @Override
