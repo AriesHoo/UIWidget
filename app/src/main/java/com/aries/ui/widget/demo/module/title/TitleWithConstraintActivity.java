@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aries.ui.helper.navigation.NavigationViewHelper;
+import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
 
@@ -15,19 +16,19 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Created: AriesHoo on 2017/11/14 8:59
- * E-Mail: AriesHoo@126.com
- * Function: TitleBarView结合ConstraintLayout
- * Description:
+ * @Author: AriesHoo on 2019/2/28 9:44
+ * @E-Mail: AriesHoo@126.com
+ * @Function: TitleBarView结合ConstraintLayout
+ * @Description:
  */
 public class TitleWithConstraintActivity extends BaseActivity {
 
 
-    String text = "问题一:不清楚为什么TitleBarView的父容器为ConstraintLayout(约束布局)时,根据测量状态栏高度来重新绘制TitleBarView高度的时候整个TitleBarView高度会是增加两个StatusBarView(状态栏)的高度,现在处理方法为:" +
-            "<font color=\"#C00000\">在TitleBarView的onMeasure回调中将动态增加StatusBarView高度的1/2(其它为1倍),onLayout的回调中重新摆放各子View位置时top设置为StatusBarView的1/2(其它为1倍),具体查看源码.</font>" +
-            "<br>问题二:ConstraintLayout布局中使用NavigationViewHelper控制底部虚拟导航栏如导航栏可动态隐藏开启会造成TitleBarView被盖住;目前使用ConstraintLayout不进行NavigationViewHelper控制;" +
-            "有更好的解决方案或者有清楚原理的万望指点迷津";
+    String text = "问题一:不清楚为什么TitleBarView的父容器为ConstraintLayout(约束布局)时,根据测量状态栏高度来重新绘制TitleBarView高度时会多回调一次导致实际高度增加,现在处理方法为:" +
+            "增加一个全局变量控制当TitleBarView高度变化时进行测量;建议不在ConstraintLayout使用TitleBarView或参看StatusViewHelperActivity;有更好的解决方案或者有清楚原理的万望指点迷津";
     @BindView(R.id.tv_content) TextView tvContent;
+    @BindView(R.id.rtv_nextTitle) RadiusTextView mRtvNext;
+    @BindView(R.id.tv_nextTitle) TextView mTvNext;
 
     @Override
     protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
@@ -45,7 +46,7 @@ public class TitleWithConstraintActivity extends BaseActivity {
                 .setTitleMainTextMarquee(true)
                 .setRightTextDrawable(R.drawable.ic_menu_white)
                 .setLeftTextDrawable(R.drawable.ic_arrow_back_white)
-                .setBgResource(android.R.color.holo_blue_dark);
+                .setBgColor(Color.BLUE);
     }
 
     @Override
@@ -56,23 +57,20 @@ public class TitleWithConstraintActivity extends BaseActivity {
     @Override
     protected void initView(Bundle var1) {
         tvContent.setText(Html.fromHtml(text));
-//        mContentView.setBackgroundColor(Color.TRANSPARENT);
     }
 
 
-    @OnClick({R.id.tv_content, R.id.iv_nextTitle})
+    @OnClick({R.id.tv_content, R.id.rtv_nextTitle, R.id.tv_nextTitle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_content:
                 break;
-            case R.id.iv_nextTitle:
+            case R.id.rtv_nextTitle:
                 Toast.makeText(mContext, "1", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.tv_nextTitle:
+                Toast.makeText(mContext, "2", Toast.LENGTH_SHORT).show();
+                break;
         }
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
     }
 }

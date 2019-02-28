@@ -17,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.aries.ui.util.ResourceUtil;
+import com.aries.ui.view.radius.RadiusSwitch;
 import com.aries.ui.widget.R;
 
 import androidx.annotation.ColorInt;
@@ -144,8 +145,8 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         mBottomLeftRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_bottomLeftRadius, 0);
         mBottomRightRadius = mTypedArray.getDimension(R.styleable.RadiusSwitch_rv_bottomRightRadius, 0);
 
-        mRippleColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_rippleColor, mContext.getResources().getColor(R.color.colorRadiusDefaultRipple));
-        mRippleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_rippleEnable, mView.isClickable());
+        mRippleColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_rippleColor, mResourceUtil.getColor(R.color.colorRadiusDefaultRipple));
+        mRippleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_rippleEnable, mView.isClickable() && !(mView instanceof RadiusSwitch));
         mSelected = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_selected, false);
         mEnterFadeDuration = mTypedArray.getInteger(R.styleable.RadiusSwitch_rv_enterFadeDuration, 0);
         mExitFadeDuration = mTypedArray.getInteger(R.styleable.RadiusSwitch_rv_exitFadeDuration, 0);

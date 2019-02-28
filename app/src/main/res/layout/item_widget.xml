@@ -34,6 +34,5 @@
         android:textSize="14dp"/>
 
     <View
-        style="@style/LineGray.Horizontal"
-        android:layout_alignParentBottom="true"/>
+        style="@style/LineGray.Horizontal"/>
 </com.aries.ui.view.radius.RadiusRelativeLayout>

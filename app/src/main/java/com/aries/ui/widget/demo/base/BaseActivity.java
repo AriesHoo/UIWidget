@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +15,6 @@ import com.aries.ui.util.RomUtil;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.demo.BuildConfig;
 import com.aries.ui.widget.demo.R;
-import com.aries.ui.widget.demo.module.title.TitleWithConstraintActivity;
 import com.aries.ui.widget.demo.util.AppUtil;
 import com.aries.ui.widget.demo.util.SizeUtil;
 
@@ -172,10 +170,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * 是否控制底部导航栏---目前发现小米8上检查是否有导航栏出现问题
      * TitleWithConstraintActivity ConstraintLayout 布局中布局变化会造成ConstraintLayout控件位置盖住TitleBarView情况;暂未找到解决方案
+     *
      * @return
      */
     private boolean isControlNavigation() {
-        Log.i(TAG, "mode:" + Build.MODEL);
-        return !(this instanceof TitleWithConstraintActivity);
+        return true;
     }
 }

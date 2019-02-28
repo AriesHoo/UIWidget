@@ -16,6 +16,7 @@ import com.aries.ui.widget.demo.module.action.ActionSheetActivity;
 import com.aries.ui.widget.demo.module.alert.AlertActivity;
 import com.aries.ui.widget.demo.module.loading.LoadingActivity;
 import com.aries.ui.widget.demo.module.radius.RadiusActivity;
+import com.aries.ui.widget.demo.module.status.StatusViewHelperActivity;
 import com.aries.ui.widget.demo.module.title.TitleActivity;
 import com.aries.ui.widget.demo.util.SizeUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -85,6 +86,7 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> {
         list.add(new WidgetEntity("UIProgressDialog", "一款仿微博、微信、MD loading控件:扩展背景及loading 样式设置。", LoadingActivity.class));
         list.add(new WidgetEntity("RadiusView", "一款扩展原生TextView、EditText、LinearLayout、FrameLayout、RelativeLayout控件库:主要实现xml设置圆角、手指按下、不可操作样式-减少drawable文件创建;同时支持5.0以上水波纹效果设置。", RadiusActivity.class));
         list.add(new WidgetEntity("TitleBarView", "一款支持沉浸状态栏效果设置的ToolBar控件:支持xml设置是否沉浸、主标题及副标题、左边文字及icon、右边文字及icon、下划线;支持添加左边、中间及右边view方便扩展。", TitleActivity.class));
+        list.add(new WidgetEntity("StatusViewHelper", "支持顶部自定义标题栏沉浸效果帮助类。", StatusViewHelperActivity.class));
         mAdapter.setNewData(list);
         mAdapter.loadMoreEnd();
         new Handler().postDelayed(new Runnable() {

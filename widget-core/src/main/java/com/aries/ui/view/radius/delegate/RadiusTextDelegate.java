@@ -545,9 +545,6 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
      */
     private void setTextDrawable(Drawable normal, Drawable checked, Drawable selected, Drawable pressed,
                                  Drawable disabled, int gravity) {
-        if (normal == null && checked == null && selected == null && pressed == null && disabled == null) {
-            return;
-        }
         int index = 0;
         int width = mLeftDrawableWidth;
         int height = mLeftDrawableHeight;
@@ -578,11 +575,21 @@ public class RadiusTextDelegate<T extends RadiusTextDelegate> extends RadiusView
             drawables[index] = null;
         } else {
             StateListDrawable stateDrawable = new StateListDrawable();
-            stateDrawable.addState(new int[]{mStateChecked}, getStateDrawable(checked, radius, width, height));
-            stateDrawable.addState(new int[]{mStateSelected}, getStateDrawable(selected, radius, width, height));
-            stateDrawable.addState(new int[]{mStatePressed}, getStateDrawable(pressed, radius, width, height));
-            stateDrawable.addState(new int[]{mStateDisabled}, getStateDrawable(disabled, radius, width, height));
-            stateDrawable.addState(new int[]{}, getStateDrawable(normal, radius, width, height));
+            if (checked != null) {
+                stateDrawable.addState(new int[]{mStateChecked}, getStateDrawable(checked, radius, width, height));
+            }
+            if (selected != null) {
+                stateDrawable.addState(new int[]{mStateSelected}, getStateDrawable(selected, radius, width, height));
+            }
+            if (pressed != null) {
+                stateDrawable.addState(new int[]{mStatePressed}, getStateDrawable(pressed, radius, width, height));
+            }
+            if (disabled != null) {
+                stateDrawable.addState(new int[]{mStateDisabled}, getStateDrawable(disabled, radius, width, height));
+            }
+            if (normal != null) {
+                stateDrawable.addState(new int[]{}, getStateDrawable(normal, radius, width, height));
+            }
             DrawableUtil.setDrawableWidthHeight(stateDrawable, width, height);
             drawables[index] = stateDrawable;
         }

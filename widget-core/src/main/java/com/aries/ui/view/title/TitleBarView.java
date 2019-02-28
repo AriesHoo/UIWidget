@@ -54,6 +54,8 @@ import androidx.core.graphics.drawable.DrawableCompat;
  * 12、2018-11-16 10:15:10 新增设置color 资源id相关方法
  * 13、2018-11-16 11:21:23 新增是否增加状态栏高度属性title_statusBarPlusEnable--慎用(一般当TitleBarView不在状态栏下边但是长得又像时使用)
  * 14、2018-11-20 15:09:23 修改addAction逻辑避免生产null对象View
+ * 15、2019-2-28 11:15:59 修改{@link #setHeight(int)}未实时生效问题
+ * 16、2019-2-28 11:16:38 修改{@link #onMeasure(int, int)}及{@link #onLayout(boolean, int, int, int, int)} 逻辑处理父容器ConstraintLayout问题
  */
 public class TitleBarView extends ViewGroup {
 
@@ -540,14 +542,19 @@ public class TitleBarView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        if (!changed) {
+            return;
+        }
         //实时获取避免因横竖屏切换造成测量错误
         mScreenWidth = getMeasuredWidth();
         mStatusBarHeight = getNeedStatusBarHeight();
         int left = mLLayoutLeft.getMeasuredWidth();
         int right = mLLayoutRight.getMeasuredWidth();
         int center = mLLayoutCenter.getMeasuredWidth();
-        mLLayoutLeft.layout(0, isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2, left, mLLayoutLeft.getMeasuredHeight() + mStatusBarHeight);
-        mLLayoutRight.layout(mScreenWidth - right, isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2, mScreenWidth, mLLayoutRight.getMeasuredHeight() + mStatusBarHeight);
+        //左边 中间 右边layout 顶部在状态栏以下 底部在下划线以上
+        mLLayoutLeft.layout(0, mStatusBarHeight, left, getMeasuredHeight() - mDividerHeight);
+        //右边layout 左边 整个控件宽度- layout本身宽度
+        mLLayoutRight.layout(mScreenWidth - right, mStatusBarHeight, mScreenWidth, getMeasuredHeight() - mDividerHeight);
         boolean isMuchScreen = left + right + center >= mScreenWidth;
         if (left > right) {
             mLLayoutCenter.layout(left, mStatusBarHeight, isMuchScreen ? mScreenWidth - right : mScreenWidth - left, getMeasuredHeight() - mDividerHeight);
@@ -558,18 +565,31 @@ public class TitleBarView extends ViewGroup {
         mVStatus.layout(0, 0, getMeasuredWidth(), mStatusBarHeight);
     }
 
+    private int mHeight = -1;
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mStatusBarHeight = getNeedStatusBarHeight();
+        mScreenWidth = getMeasuredWidth();
+        //测量子控件宽高
         measureChild(mLLayoutLeft, widthMeasureSpec, heightMeasureSpec);
         measureChild(mLLayoutRight, widthMeasureSpec, heightMeasureSpec);
         measureChild(mLLayoutCenter, widthMeasureSpec, heightMeasureSpec);
         measureChild(mVDivider, widthMeasureSpec, heightMeasureSpec);
         measureChild(mVStatus, widthMeasureSpec, heightMeasureSpec);
-        //重新测量宽高--增加状态栏及下划线的高度
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec) + (isNormalParent() ? mStatusBarHeight : mStatusBarHeight / 2) + mDividerHeight);
-        mScreenWidth = getMeasuredWidth();
+        //重新测量宽高--增加状态栏及下划线的高度开始
+        //父容器为ConstraintLayout约束布局特殊处理
+        if (mHeight <= 0) {
+            mHeight = MeasureSpec.getSize(heightMeasureSpec) + mStatusBarHeight + mDividerHeight;
+        }
+        //普通的父容器正常操作
+        if (isNormalParent()) {
+            mHeight = MeasureSpec.getSize(heightMeasureSpec) + mStatusBarHeight + mDividerHeight;
+        }
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), mHeight);
+        //重新测量宽高--增加状态栏及下划线的高度结束
 
+        //重新测量左 中 右 宽度 保证中间布局 居正中
         int left = mLLayoutLeft.getMeasuredWidth();
         int right = mLLayoutRight.getMeasuredWidth();
         int center = mLLayoutCenter.getMeasuredWidth();
@@ -600,9 +620,22 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setHeight(int height) {
         ViewGroup.LayoutParams params = getLayoutParams();
         if (params != null) {
+            if (params.height != height) {
+                mHeight = -1;
+            }
             params.height = height;
+            setLayoutParams(params);
         }
         return this;
+    }
+
+    @Override
+    public void setLayoutParams(LayoutParams params) {
+        ViewGroup.LayoutParams par = getLayoutParams();
+        if (par != null && params != null && par.height != params.height) {
+            mHeight = -1;
+        }
+        super.setLayoutParams(params);
     }
 
     public TitleBarView setBgDrawable(Drawable background) {
@@ -951,7 +984,8 @@ public class TitleBarView extends ViewGroup {
         return setTextDrawableTint(mTvLeft, mLeftTextDrawableTint, mLeftTextDrawableTintMode);
     }
 
-    private TitleBarView setTextDrawableTint(TextView textView, ColorStateList tint, PorterDuff.Mode tintMode) {
+    private TitleBarView setTextDrawableTint(TextView textView, ColorStateList
+            tint, PorterDuff.Mode tintMode) {
         if (tint == null && tintMode == null) {
             return this;
         }
@@ -1464,7 +1498,8 @@ public class TitleBarView extends ViewGroup {
         return this;
     }
 
-    private void setImageTint(ImageView imageView, ColorStateList tint, PorterDuff.Mode tintMode) {
+    private void setImageTint(ImageView imageView, ColorStateList tint, PorterDuff.Mode
+            tintMode) {
         if (imageView.getDrawable() == null) {
             return;
         }

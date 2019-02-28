@@ -198,7 +198,9 @@ public class RadiusCompoundDelegate<T extends RadiusCompoundDelegate> extends Ra
      */
     private void setButtonDrawable() {
         mButton = (CompoundButton) mView;
-        if (mButtonDrawableSystemEnable) return;
+        if (mButtonDrawableSystemEnable) {
+            return;
+        }
         Log.i("setButtonDrawable", "id:" + mButton.getId() + ";mButtonDrawable:" + mButtonDrawable);
         if (mButtonDrawable == null
                 && mButtonPressedDrawable == null

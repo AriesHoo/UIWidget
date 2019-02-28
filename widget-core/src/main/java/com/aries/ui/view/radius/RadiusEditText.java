@@ -67,8 +67,9 @@ public class RadiusEditText extends EditText {
     @Override
     public void setSelected(boolean selected) {
         super.setSelected(selected);
-        if (delegate != null)
+        if (delegate != null) {
             delegate.setSelected(selected);
+        }
     }
 
     @Override

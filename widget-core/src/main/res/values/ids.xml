@@ -14,4 +14,10 @@
 
     <item name="lLayout_rootProgressDialog" type="id"/>
     <item name="tv_messageProgressDialog" type="id"/>
+
+    <item name="lLayout_leftTitleBarView" type="id"/>
+    <item name="lLayout_centerTitleBarView" type="id"/>
+    <item name="lLayout_rightTitleBarView" type="id"/>
+    <item name="v_statusTitleBarView" type="id"/>
+    <item name="v_dividerTitleBarView" type="id"/>
 </resources>

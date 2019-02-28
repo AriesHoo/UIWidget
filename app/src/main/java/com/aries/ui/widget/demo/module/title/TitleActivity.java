@@ -173,7 +173,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
         list.add(new TitleEntity("紫色主题", "点击切换紫色主题", android.R.color.holo_purple));
         mAdapter.setHeaderView(vHeader);
         mAdapter.setNewData(list);
-        ViewUtil.getInstance().setViewHeight(fLayoutDrawer, (int) (getResources().getDimension(R.dimen.dp_drawer_header)) + titleBar.getStatusBarHeight());
+        ViewUtil.getInstance().setViewHeight(fLayoutDrawer, (int) (getResources().getDimension(R.dimen.dp_drawer_header)) + TitleBarView.getStatusBarHeight());
     }
 
     private void initView() {
@@ -273,27 +273,19 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
 
             }
         });
-        drawerRoot.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+//        drawerRoot.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
 //            @Override
 //            public void onDrawerOpened(View drawerView) {
 //                super.onDrawerOpened(drawerView);
-//                if (type > 0) {
-//                    StatusBarUtil.setStatusBarDarkMode(mContext);
-//                }
+//                titleBar.setHeight(SizeUtil.dp2px(60));
 //            }
 //
 //            @Override
 //            public void onDrawerClosed(View drawerView) {
 //                super.onDrawerClosed(drawerView);
-//                if (type > 0) {
-//                    if (isWhite && isImmersible) {
-//                        StatusBarUtil.setStatusBarLightMode(mContext);
-//                    } else {
-//                        StatusBarUtil.setStatusBarDarkMode(mContext);
-//                    }
-//                }
+//                titleBar.setHeight(SizeUtil.dp2px(48));
 //            }
-        });
+//        });
         if (canLight && Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             sBtnLight.setChecked(false);
             sBarAlpha.setProgress(TitleBarView.DEFAULT_STATUS_BAR_ALPHA);

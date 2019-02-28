@@ -66,28 +66,4 @@ public class RadiusSwitch extends Switch {
             delegate.setSelected(selected);
         }
     }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        if (delegate != null) {
-            delegate.init();
-        }
-    }
-
-    @Override
-    public void setPressed(boolean pressed) {
-        super.setPressed(pressed);
-        if (delegate != null) {
-            delegate.init();
-        }
-    }
-
-    @Override
-    public void setChecked(boolean checked) {
-        super.setChecked(checked);
-        if (delegate != null) {
-            delegate.init();
-        }
-    }
 }

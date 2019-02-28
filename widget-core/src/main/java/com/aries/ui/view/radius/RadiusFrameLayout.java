@@ -59,23 +59,8 @@ public class RadiusFrameLayout extends FrameLayout {
     @Override
     public void setSelected(boolean selected) {
         super.setSelected(selected);
-        if (delegate != null)
+        if (delegate != null) {
             delegate.setSelected(selected);
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        if (delegate != null) {
-            delegate.init();
-        }
-    }
-
-    @Override
-    public void setPressed(boolean pressed) {
-        super.setPressed(pressed);
-        if (delegate != null) {
-            delegate.init();
         }
     }
 }
