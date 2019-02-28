@@ -542,9 +542,6 @@ public class TitleBarView extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        if (!changed) {
-            return;
-        }
         //实时获取避免因横竖屏切换造成测量错误
         mScreenWidth = getMeasuredWidth();
         mStatusBarHeight = getNeedStatusBarHeight();
@@ -570,7 +567,6 @@ public class TitleBarView extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mStatusBarHeight = getNeedStatusBarHeight();
-        mScreenWidth = getMeasuredWidth();
         //测量子控件宽高
         measureChild(mLLayoutLeft, widthMeasureSpec, heightMeasureSpec);
         measureChild(mLLayoutRight, widthMeasureSpec, heightMeasureSpec);
@@ -590,6 +586,7 @@ public class TitleBarView extends ViewGroup {
         //重新测量宽高--增加状态栏及下划线的高度结束
 
         //重新测量左 中 右 宽度 保证中间布局 居正中
+        mScreenWidth = getMeasuredWidth();
         int left = mLLayoutLeft.getMeasuredWidth();
         int right = mLLayoutRight.getMeasuredWidth();
         int center = mLLayoutCenter.getMeasuredWidth();
