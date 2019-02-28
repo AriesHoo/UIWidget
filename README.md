@@ -80,9 +80,9 @@ allprojects {
 
 ```
 dependencies {
-     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.8'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.8'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.8'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.8.1'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.8.1'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.8.1'
      implementation 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
@@ -118,7 +118,7 @@ dependencies {
     <artifactId>widget-core</artifactId>
     <artifactId>widget-collapsing</artifactId>
     <artifactId>widget-alert</artifactId>
-    <version>3.2.8</version>
+    <version>3.2.8.1</version>
 </dependency>
 ```
 
@@ -323,7 +323,7 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 * 3.2.1 更新
         
-	* 修复:RadiusView下新增TextView及CheckBox等代理类用于解决泛型错误BUG
+    * 修复:RadiusView下新增TextView及CheckBox等代理类用于解决泛型错误BUG
     * 优化:使用AS 3.1.2 + Gradle 4.4进行优化
     * 优化:增加AlphaViewHelper 按下及不可操作 alpha值通过Style 设置--参考demo Style样式
     * 优化:去掉默认控制是否可点击控制,调整水波纹效果开启逻辑
