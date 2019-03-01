@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationBarUtil;
+import com.aries.ui.widget.demo.util.NotificationUtil;
 import com.aries.ui.widget.demo.util.SPUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -23,9 +24,12 @@ import androidx.multidex.MultiDexApplication;
  */
 public class App extends MultiDexApplication {
 
+    public static Context sContext;
     @Override
     public void onCreate() {
         super.onCreate();
+        sContext = this;
+        NotificationUtil.getInstance().init(this);
         CrashReport.initCrashReport(getApplicationContext());
         String appChannel = (String) SPUtil.get(getApplicationContext(), SPConstant.SP_KEY_APP_CHANNEL, "");
         Log.i("appChannel", "appChannel0:" + appChannel);
