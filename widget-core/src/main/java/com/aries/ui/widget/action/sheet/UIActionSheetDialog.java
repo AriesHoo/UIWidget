@@ -49,6 +49,7 @@ import java.util.Map;
  * 7、2018-5-23 16:54:27 调整Cancel背景处理逻辑避免因设置GridView 间隔造成问题
  * 8、2018-5-28 16:39:05 修改兼容Android O以上版本导航栏问题
  * 9、2018-5-31 16:48:38 删除TranslucentUtil控制导航栏透明度
+ * 10、2019-3-11 15:40:52 修改Drawable 设置逻辑避免因Item高度变化适配问题
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
@@ -468,8 +469,8 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 if (convertView == null) {
                     convertView = View.inflate(mContext, R.layout.item_action_sheet_list, null);
                     holder = new ViewHolder();
-                    holder.imageView = (ImageView) convertView.findViewById(R.id.iv_iconActionSheetList);
-                    holder.textView = (TextView) convertView.findViewById(R.id.tv_msgActionSheetList);
+                    holder.imageView = convertView.findViewById(R.id.iv_iconActionSheetList);
+                    holder.textView = convertView.findViewById(R.id.tv_msgActionSheetList);
                     convertView.setTag(holder);
                 } else {
                     holder = (ViewHolder) convertView.getTag();
@@ -1324,7 +1325,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             mTvTitle.setId(R.id.tv_titleActionSheetDialog);
             mLLayoutRoot.addView(mTvTitle);
 
-            Drawable background = mStateDrawableSingle.getCurrent();
+            Drawable background = mStateDrawableSingle;
             mTvTitle.setLineSpacing(mLineSpacingExtra, mLineSpacingMultiplier);
             mTvTitle.setGravity(mTitleGravity);
             mTvTitle.setPadding(mItemsTextPaddingLeft, mItemsTextPaddingTop, mItemsTextPaddingRight, mItemsTextPaddingBottom);
@@ -1337,7 +1338,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     (!TextUtils.isEmpty(mCancelStr) && mCancelMarginTop <= 0)) {
                 background = mStateDrawableTop.getCurrent();
             }
-            setViewBackground(mTvTitle, background);
+            setViewBackground(mTvTitle, DrawableUtil.getNewDrawable(background));
             setTextViewLine(mTvTitle);
         }
 
@@ -1369,7 +1370,7 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 }
             }
             boolean single = mCancelMarginTop > 0 || TextUtils.isEmpty(mTitleStr) && mViewItem == null || mBottomDrawable == null;
-            setViewBackground(mTvCancel, single ? mStateDrawableSingle : mStateDrawableBottom);
+            setViewBackground(mTvCancel, DrawableUtil.getNewDrawable(single ? mStateDrawableSingle : mStateDrawableBottom));
 
             mTvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override

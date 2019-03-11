@@ -37,9 +37,9 @@ public class DrawableUtil {
      */
     public static Drawable getNewDrawable(Drawable drawable) {
         if (drawable == null) {
-            return drawable;
+            return null;
         }
-        return drawable.mutate();
+        return drawable.getConstantState().newDrawable();
     }
 
 }

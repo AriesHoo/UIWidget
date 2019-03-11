@@ -37,6 +37,8 @@ public class ActionSheetActivity extends BaseActivity {
     @BindView(R.id.sBtn_backActionSheet) SwitchCompat sBtnBack;
     @BindView(R.id.rtv_showActionSheet) RadiusTextView rtvShow;
     @BindView(R.id.rtv_showGridActionSheet) RadiusTextView rtvShowGrid;
+//    private String mFilePath = FastFileUtil.getCacheDir();
+//    private String mFormat = "保存图片<br><small><font color='#2394FE'>图片文件夹路径:%1s</font></small>";
 
     private boolean isShowMargin = true;
     private boolean isShowTitle = true;
@@ -152,6 +154,7 @@ public class ActionSheetActivity extends BaseActivity {
                 break;
             case R.id.rtv_showIOSActionSheet:
                 new UIActionSheetDialog.ListIOSBuilder(this)
+//                        .addItem(Html.fromHtml(String.format(mFormat, mFilePath)))
                         .addItems(R.array.arrays_items_action)
                         .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetItemText : android.R.color.holo_purple)
                         .setTitle(isShowTitle ? "标题" : null)

@@ -24,6 +24,10 @@ import androidx.multidex.MultiDexApplication;
  */
 public class App extends MultiDexApplication {
 
+    public static Context getContext() {
+        return sContext;
+    }
+
     public static Context sContext;
     @Override
     public void onCreate() {

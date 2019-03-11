@@ -22,6 +22,20 @@ import androidx.core.content.FileProvider;
  */
 public class FastFileUtil {
 
+    public static String getCacheDir() {
+        Context context = App.getContext();
+        //storage/emulated/0/Android/data/<package-name>/cache/xxx/
+        File cacheDir = context.getExternalCacheDir();
+        String fileDir = "fast_external_cache_dir";
+        if (cacheDir == null) {
+            //data/data/<package-name>/cache/xxx/
+            cacheDir = context.getCacheDir();
+            fileDir = "fast_cache_dir";
+        }
+        //该路径需和fast_file_path配置一致
+        cacheDir = new File(cacheDir, fileDir);
+        return cacheDir.getAbsolutePath();
+    }
     /**
      * 安装apk 包路径在FastFileProvider 配置路径下
      *
