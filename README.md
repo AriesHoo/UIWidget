@@ -80,9 +80,9 @@ allprojects {
 
 ```
 dependencies {
-     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.8.1'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.8.1'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.8.1'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.10'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.10'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.10'
      implementation 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
