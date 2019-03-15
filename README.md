@@ -118,7 +118,7 @@ dependencies {
     <artifactId>widget-core</artifactId>
     <artifactId>widget-collapsing</artifactId>
     <artifactId>widget-alert</artifactId>
-    <version>3.2.8.1</version>
+    <version>3.2.10</version>
 </dependency>
 ```
 
