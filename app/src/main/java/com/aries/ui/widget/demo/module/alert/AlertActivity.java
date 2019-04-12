@@ -33,10 +33,10 @@ import static android.content.DialogInterface.BUTTON_NEUTRAL;
 import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 /**
- * Created: AriesHoo on 2017/7/18 14:50
- * E-Mail: AriesHoo@126.com
- * Function: UIAlertDialog示例
- * Description:
+ * @Author: AriesHoo on 2019/4/11 12:21
+ * @E-Mail: AriesHoo@126.com
+ * @Function: UIAlertDialog示例
+ * @Description:
  */
 public class AlertActivity extends BaseActivity {
 
@@ -61,13 +61,13 @@ public class AlertActivity extends BaseActivity {
 
     @Override
     protected void setTitleBar() {
-        titleBar.setTitleMainText(UIAlertDialog.class.getSimpleName());
     }
 
     @Override
     protected int getLayout() {
         return R.layout.activity_alert;
     }
+
 
     @Override
     protected void initView(Bundle var1) {
@@ -348,11 +348,15 @@ public class AlertActivity extends BaseActivity {
                 editText.getDelegate()
                         .setTextColor(Color.GRAY)
                         .setRadius(6f)
+                        .setLeftDrawableWidth(SizeUtil.dp2px(16))
+                        .setLeftDrawableHeight(SizeUtil.dp2px(16))
+                        .setLeftDrawable(R.drawable.ic_search_normal)
                         .setBackgroundColor(Color.WHITE)
                         .setStrokeColor(Color.GRAY)
                         .setStrokeWidth(SizeUtil.dp2px(0.5f));
                 editText.setMinHeight(SizeUtil.dp2px(40));
                 editText.setGravity(Gravity.CENTER_VERTICAL);
+                editText.setCompoundDrawablePadding(SizeUtil.dp2px(6));
                 editText.setPadding(SizeUtil.dp2px(12), 0, SizeUtil.dp2px(12), 0);
                 editText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
                 editText.setHint("请输入内容");
@@ -374,8 +378,10 @@ public class AlertActivity extends BaseActivity {
                         })
                         .create()
                         .setDimAmount(isBackDim ? 0.6f : 0f)
+                        .setGravity(Gravity.BOTTOM)
                         .show();
-//                editText.requestFocus();
+                //决定是否自动弹出软键盘
+                editText.requestFocus();
                 break;
 
         }

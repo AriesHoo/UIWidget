@@ -67,4 +67,24 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="TitleBarStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:layout_height">@dimen/dp_title_bar_height</item>
+        <item name="title_statusBarPlusEnable">false</item>
+        <item name="title_dividerHeight">@dimen/dp_line_size</item>
+        <item name="title_dividerBackground">@color/colorLineGray</item>
+        <item name="title_titleMainTextColor">@color/colorTextBlack</item>
+    </style>
+
+    <style name="SwitchStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:checked">false</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textColor">@color/colorTextBlack</item>
+        <item name="android:textSize">@dimen/dp_text_size_main</item>
+    </style>
 </resources>

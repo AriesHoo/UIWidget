@@ -337,7 +337,6 @@ public class UIProgressDialog extends BasisDialog<UIProgressDialog> {
             setDialog();
             mDialog.setGravity(Gravity.CENTER);
             mDialog.setMargin(margin, margin, margin, margin);
-            afterSetContentView();
             return (UIProgressDialog) mDialog;
         }
 

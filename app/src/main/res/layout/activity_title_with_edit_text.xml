@@ -1,46 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:id="@+id/lLayout_containerTestEdit"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:paddingBottom="20dp">
+              tools:background="@color/colorBackground">
 
     <include layout="@layout/layout_title_bar"/>
 
-    <View
+    <TextView
+        android:id="@+id/tv_tipTitleEdit"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:ellipsize="none"
+        android:lineSpacingExtra="4dp"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="0dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <EditText
-                android:id="@+id/et_bottomTitle"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"/>
-
-            <View
-                android:id="@+id/v_bottom"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"/>
-        </LinearLayout>
+            android:background="@color/colorWhite"
+            android:ellipsize="none"
+            android:lineSpacingExtra="4dp"
+            android:padding="@dimen/dp_margin"
+            android:text="@string/title_edit_tip"
+            android:textColor="@color/colorTextBlack"/>
     </ScrollView>
 
-    <TextView
+    <com.aries.ui.view.radius.RadiusEditText
+        android:id="@+id/et_bottomTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="45dp"
+        android:layout_marginStart="@dimen/dp_margin"
+        android:layout_marginEnd="@dimen/dp_margin"
+        android:layout_marginBottom="@dimen/dp_margin"
+        android:gravity="center_vertical"
+        android:hint="输入内容-注意文字距离底部间距"
         android:padding="10dp"
-        android:text="我是底部-注意文字距离底部间距"
         android:textColor="@color/colorTextBlack"
-        android:textSize="16dp"/>
+        android:textSize="@dimen/dp_text_size_main"
+        app:rv_backgroundColor="@color/colorWhite"
+        app:rv_radius="6dp"
+        app:rv_strokeColor="@color/colorLineGray"
+        app:rv_strokeWidth="@dimen/dp_line_size"/>
 </LinearLayout>

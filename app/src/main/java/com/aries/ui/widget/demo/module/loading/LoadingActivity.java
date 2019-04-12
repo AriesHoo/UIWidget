@@ -13,10 +13,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Created: AriesHoo on 2017/7/18 16:38
- * E-Mail: AriesHoo@126.com
- * Function:UIProgressDialog示例
- * Description:
+ * @Author: AriesHoo on 2019/4/11 15:32
+ * @E-Mail: AriesHoo@126.com
+ * @Function: UIProgressDialog示例
+ * @Description:
  */
 public class LoadingActivity extends BaseActivity {
 
@@ -34,7 +34,6 @@ public class LoadingActivity extends BaseActivity {
 
     @Override
     protected void setTitleBar() {
-        titleBar.setTitleMainText(UIProgressDialog.class.getSimpleName());
     }
 
     @Override

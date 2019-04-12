@@ -9,7 +9,6 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,11 +31,12 @@ import java.lang.ref.WeakReference;
  * 3、2018-11-28 13:53:41 新增软键盘控制相应静态方法--如开关软键盘
  * 4、2018-12-3 17:44:59 修改设置padding逻辑避免部分情况计算底部padding错误问题
  * 5、2019-2-25 14:00:37 将activity对象弱引用避免内存泄露;优化注册activity 销毁逻辑
+ * 6、2019-4-11 13:10:30 优化Dialog 参数定义{@link #KeyboardHelper(Activity, Dialog)}
  */
 public class KeyboardHelper {
 
     private WeakReference<Activity> mActivity;
-    private  WeakReference<View> mContentView;
+    private WeakReference<View> mContentView;
     private int mKeyMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED;
     /**
      * 显示软键盘的延迟时间
@@ -54,17 +54,24 @@ public class KeyboardHelper {
      * 保存软键盘历史开启状态
      */
     private boolean mIsKeyboardOpened = false;
+    /**
+     * 保存底部距顶部
+     */
+    private int mHeightDiff;
+    /**
+     * 软键盘开关状态转换回调--即有软键盘开关变化才会回调
+     */
     private OnKeyboardVisibilityChangedListener mOnKeyboardVisibilityChangedListener;
     private boolean mLogEnable;
 
     public interface OnKeyboardVisibilityChangedListener {
 
         /**
-         * 软键盘开启隐藏监听
+         * 软键盘开关状态转换回调--即有软键盘开关变化才会回调
          *
          * @param activity         当前Activity
          * @param isOpen           软键盘是否开启
-         * @param heightDiff       预留让软件盘上移高度--给contentView设置的paddingBottom
+         * @param heightDiff       预留让软件盘上移高度--给contentView累加设置的paddingBottom
          * @param navigationHeight 当前导航栏高度
          * @return true 监听一次即移除全局监听,false一直监听
          */
@@ -78,6 +85,13 @@ public class KeyboardHelper {
         return new KeyboardHelper(activity);
     }
 
+    public static KeyboardHelper with(Activity activity, Dialog dialog) {
+        if (activity == null) {
+            throw new IllegalArgumentException("Activity不能为null");
+        }
+        return new KeyboardHelper(activity, dialog);
+    }
+
     private KeyboardHelper(Activity activity) {
         this(activity, ((ViewGroup) activity.getWindow().getDecorView().findViewById(android.R.id.content)).getChildAt(0));
     }
@@ -87,7 +101,8 @@ public class KeyboardHelper {
     }
 
     private KeyboardHelper(Activity activity, Dialog dialog) {
-        this(activity, dialog, dialog.getWindow().findViewById(android.R.id.content));
+        this(activity, dialog, dialog != null ? dialog.getWindow().findViewById(android.R.id.content) :
+                ((ViewGroup) activity.getWindow().getDecorView().findViewById(android.R.id.content)).getChildAt(0));
     }
 
     private KeyboardHelper(Activity activity, Dialog dialog, View contentView) {
@@ -190,6 +205,8 @@ public class KeyboardHelper {
     }
 
     /**
+     * 设置软键盘开关状态转换回调--即有软键盘开关变化才会回调
+     *
      * @param listener
      * @return
      */
@@ -261,7 +278,7 @@ public class KeyboardHelper {
         public void onGlobalLayout() {
             Activity activity = mActivity.get();
             View contentView = mContentView.get();
-            if (activity == null||contentView==null) {
+            if (activity == null || contentView == null) {
                 return;
             }
             if (visibleThreshold <= 0) {
@@ -273,7 +290,11 @@ public class KeyboardHelper {
             boolean isOpen = heightDiff > visibleThreshold;
             heightDiff -= NavigationBarUtil.getFakeNavigationBarHeight(activity);
             heightDiff -= NavigationBarUtil.getRealNavigationBarHeight(activity);
+            //
             if (isOpen == mIsKeyboardOpened && !isOpen) {
+                return;
+            }
+            if (heightDiff == mHeightDiff) {
                 return;
             }
             //避免Activity多少初始化造成paddingBottom累加--一般paddingBottom不会超过软键盘高度
@@ -281,6 +302,7 @@ public class KeyboardHelper {
                 mPaddingBottom = mPaddingBottom % heightDiff;
             }
             mIsKeyboardOpened = isOpen;
+            mHeightDiff = heightDiff;
             contentView.setPadding(contentView.getPaddingLeft(), contentView.getPaddingTop(), contentView.getPaddingRight(), mPaddingBottom + heightDiff);
             if (mOnKeyboardVisibilityChangedListener != null) {
                 boolean remove = mOnKeyboardVisibilityChangedListener.onKeyboardVisibilityChanged(activity, isOpen, heightDiff, NavigationBarUtil.getNavigationBarHeight(activity));
@@ -292,7 +314,7 @@ public class KeyboardHelper {
                     }
                 }
             }
-            log("setting:" + (Settings.System.getString(activity.getContentResolver(), "policy_control")) + ";diff:" + heightDiff + ";paddingBottom:" + mPaddingBottom);
+            log("fakeNavigation:" + NavigationBarUtil.getFakeNavigationBarHeight(activity) + ";navigation:" + NavigationBarUtil.getNavigationBarHeight(activity) + ";diff:" + heightDiff + ";paddingBottom:" + mPaddingBottom);
         }
     };
 

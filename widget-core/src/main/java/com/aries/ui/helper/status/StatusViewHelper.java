@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.util.StatusBarUtil;
-import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.R;
 
 import java.lang.ref.WeakReference;
@@ -51,10 +50,15 @@ public class StatusViewHelper {
      * activity xml设置根布局
      */
     private View mContentView;
+    private int mStatusBarColor;
     private LinearLayout mLinearLayout;
     private LinearLayout mLayoutStatus;
+    private View mViewStatus;
 
     private StatusViewHelper(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mStatusBarColor = activity.getWindow().getStatusBarColor();
+        }
         mActivity = new WeakReference<>(activity);
         mContentView = ((ViewGroup) activity.getWindow().getDecorView()
                 .findViewById(android.R.id.content)).getChildAt(0);
@@ -87,9 +91,7 @@ public class StatusViewHelper {
     public StatusViewHelper setControlEnable(boolean controlEnable) {
         mControlEnable = controlEnable;
         if (!controlEnable) {
-            setPlusStatusViewEnable(true)
-                    .setStatusViewColor(Color.BLACK)
-                    .setStatusLayoutColor(Color.BLACK);
+            setPlusStatusViewEnable(false);
         }
         return this;
     }
@@ -118,6 +120,9 @@ public class StatusViewHelper {
      */
     public StatusViewHelper setPlusStatusViewEnable(boolean plusStatusViewEnable) {
         this.mPlusStatusViewEnable = plusStatusViewEnable;
+        if (mPlusStatusViewEnable) {
+            setTransEnable(true);
+        }
         return this;
     }
 
@@ -193,55 +198,81 @@ public class StatusViewHelper {
         //透明状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 透明状态栏
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                    && (mPlusStatusViewEnable || (!mPlusStatusViewEnable && mTransEnable))) {
-
+            if (mControlEnable) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            } else {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//                window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
-//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-                window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                window.getDecorView().setSystemUiVisibility(
+                        mControlEnable ? window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN :
+                                window.getDecorView().getSystemUiVisibility() ^ View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                if (mTransEnable || mPlusStatusViewEnable) {
-                    window.setStatusBarColor(Color.TRANSPARENT);
+                window.setStatusBarColor(!mControlEnable ? Color.BLACK : Color.TRANSPARENT);
+                if (!mTransEnable) {
+                    window.setStatusBarColor(Color.argb(102, 0, 0, 0));
                 }
             }
+
         }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            // 透明状态栏
+//            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+//                    && (mPlusStatusViewEnable || (!mPlusStatusViewEnable && mTransEnable))) {
+//
+//                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+////                window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
+////                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+////                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//                window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
+//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//                if (mTransEnable || mPlusStatusViewEnable) {
+//                    window.setStatusBarColor(Color.TRANSPARENT);
+//                }
+//            }
+//
+//        }
         addStatusBar(window);
         if (mLayoutStatus != null) {
             mLayoutStatus.setVisibility(mPlusStatusViewEnable ? View.VISIBLE : View.GONE);
         }
-        if (mTopView == null || mPlusStatusViewEnable) {
+        if (mTopView == null) {
             return;
         }
         mTopView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                ViewGroup.LayoutParams params = mTopView.getLayoutParams();
-                Object isSet = mTopView.getTag(TAG_SET_STATUS_CONTROL);
-                if (isSet == null) {
-                    if (mTopViewMarginEnable) {
-                        ViewGroup.MarginLayoutParams marginLayoutParams =
-                                (ViewGroup.MarginLayoutParams) mTopView.getLayoutParams();
-                        if (marginLayoutParams != null) {
-                            marginLayoutParams.topMargin += StatusBarUtil.getStatusBarHeight();
-                        }
-                    } else {
-                        //默认
-                        if (params != null && params.height >= 0) {
-                            params.height = params.height + TitleBarView.getStatusBarHeight();
-                        }
-                        mTopView.setPadding(
-                                mTopView.getPaddingLeft(),
-                                mTopView.getPaddingTop() + StatusBarUtil.getStatusBarHeight(),
-                                mTopView.getPaddingRight(),
-                                mTopView.getPaddingBottom());
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mTopView.getLayoutParams();
+                //是否处理过topView
+                Object control = mTopView.getTag(TAG_SET_STATUS_CONTROL);
+                boolean isSet = control != null && control instanceof Boolean ? ((Boolean) control) : false;
+                if (mTopViewMarginEnable) {
+                    if (params != null) {
+                        params.topMargin += isSet ? 0 : StatusBarUtil.getStatusBarHeight();
+                        params.topMargin -= !mPlusStatusViewEnable ? 0 : StatusBarUtil.getStatusBarHeight();
                     }
+                } else {
+                    //默认
+                    if (params != null && params.height >= 0) {
+                        params.height += isSet ? 0 : StatusBarUtil.getStatusBarHeight();
+                        params.height -= !mPlusStatusViewEnable ? 0 : StatusBarUtil.getStatusBarHeight();
+                    }
+                    mTopView.setPadding(
+                            mTopView.getPaddingLeft(),
+                            mTopView.getPaddingTop() + (isSet ? 0 : StatusBarUtil.getStatusBarHeight()),
+                            mTopView.getPaddingRight(),
+                            mTopView.getPaddingBottom());
+                    mTopView.setPadding(
+                            mTopView.getPaddingLeft(),
+                            mTopView.getPaddingTop() - (!mPlusStatusViewEnable ? 0 : StatusBarUtil.getStatusBarHeight()),
+                            mTopView.getPaddingRight(),
+                            mTopView.getPaddingBottom());
                     log("mTopView:" + mTopView + "设置成功");
                 }
-                mTopView.setTag(TAG_SET_STATUS_CONTROL, true);
+                mTopView.setTag(TAG_SET_STATUS_CONTROL, !mPlusStatusViewEnable);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     mTopView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 } else {
@@ -252,6 +283,7 @@ public class StatusViewHelper {
     }
 
     private void addStatusBar(Window window) {
+        setStatusView();
         if (!isSupportStatusBarControl()) {
             return;
         }
@@ -263,34 +295,42 @@ public class StatusViewHelper {
             Context mContext = window.getContext();
             //创建假的StatusView包裹ViewGroup用于设置背景与mContentView一致
             mLayoutStatus = linearLayout.findViewById(R.id.fake_status_layout);
-            View viewStatus;
+
             if (mLayoutStatus == null) {
                 mLayoutStatus = new LinearLayout(mContext);
                 mLayoutStatus.setId(R.id.fake_status_layout);
                 //创建假的StatusView
-                viewStatus = new View(mContext);
+                mViewStatus = new View(mContext);
                 ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, TitleBarView.getStatusBarHeight());
-                viewStatus.setId(R.id.fake_status_view);
-                mLayoutStatus.addView(viewStatus, params);
+                        ViewGroup.LayoutParams.MATCH_PARENT, StatusBarUtil.getStatusBarHeight());
+                mViewStatus.setId(R.id.fake_status_view);
+                mLayoutStatus.addView(mViewStatus, params);
                 linearLayout.addView(mLayoutStatus, 0,
                         new ViewGroup.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT));
             } else {
-                viewStatus = mLayoutStatus.findViewById(R.id.fake_status_view);
+                mViewStatus = mLayoutStatus.findViewById(R.id.fake_status_view);
             }
-            if (mLayoutStatus != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mLayoutStatus.setBackground(mStatusLayoutDrawable);
-                    viewStatus.setBackground(mStatusViewDrawable);
-                } else {
-                    mLayoutStatus.setBackgroundDrawable(mStatusLayoutDrawable);
-                    viewStatus.setBackgroundDrawable(mStatusViewDrawable);
-                }
-            }
+            setStatusView();
         }
 
+    }
+
+    private void setStatusView() {
+        if (mLayoutStatus != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mLayoutStatus.setBackground(mStatusLayoutDrawable);
+                mViewStatus.setBackground(mStatusViewDrawable);
+            } else {
+                mLayoutStatus.setBackgroundDrawable(mStatusLayoutDrawable);
+                mViewStatus.setBackgroundDrawable(mStatusViewDrawable);
+            }
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewStatus.getLayoutParams();
+            if (params != null) {
+                params.height = isSupportStatusBarControl() && mPlusStatusViewEnable ? StatusBarUtil.getStatusBarHeight() : 0;
+            }
+        }
     }
 
     protected boolean isSupportStatusBarControl() {

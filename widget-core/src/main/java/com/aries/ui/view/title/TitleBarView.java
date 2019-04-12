@@ -56,6 +56,9 @@ import androidx.core.graphics.drawable.DrawableCompat;
  * 14、2018-11-20 15:09:23 修改addAction逻辑避免生产null对象View
  * 15、2019-2-28 11:15:59 修改{@link #setHeight(int)}未实时生效问题
  * 16、2019-2-28 11:16:38 修改{@link #onMeasure(int, int)}及{@link #onLayout(boolean, int, int, int, int)} 逻辑处理父容器ConstraintLayout问题
+ * 17、2019-4-10 15:29:00 新增左边、中间、右边布局全部Api对应ViewGroup addView
+ * {@link #addLeftAction(Action, int, LayoutParams)}{@link #addCenterAction(Action, int, LayoutParams)}{@link #addRightAction(Action, int, LayoutParams)}
+ * 18、2019-4-12 10:19:16 修改{@link #setImmersible(Activity, boolean, boolean, boolean)}逻辑以达到真正意义上撤销沉浸功能
  */
 public class TitleBarView extends ViewGroup {
 
@@ -329,7 +332,6 @@ public class TitleBarView extends ViewGroup {
         mVDivider = new View(context);
 
         mLLayoutLeft.setGravity(Gravity.CENTER_VERTICAL);
-        mLLayoutCenter.setOrientation(LinearLayout.VERTICAL);
         mLLayoutRight.setGravity(Gravity.CENTER_VERTICAL);
 
         mTvLeft = new AlphaTextView(context);
@@ -368,7 +370,7 @@ public class TitleBarView extends ViewGroup {
         if (context instanceof Activity) {
             setImmersible((Activity) context, mImmersible);
             if (mStatusBarLightMode) {
-                setStatusBarLightMode(mStatusBarLightMode);
+                setStatusBarLightMode(true);
             }
         }
         setOutPadding(mOutPadding);
@@ -522,18 +524,23 @@ public class TitleBarView extends ViewGroup {
         }
         //透明状态栏
         Window window = activity.getWindow();
+        //Android 4.4以上
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mVStatus.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, mStatusBarHeight));
             // 透明状态栏
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (mImmersible) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            } else {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            }
+            //Android 5.1以上
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-                window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                window.getDecorView().setSystemUiVisibility(
+                        mImmersible ? window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN :
+                                window.getDecorView().getSystemUiVisibility() ^ View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(Color.TRANSPARENT);
+                window.setStatusBarColor(!mImmersible ? Color.BLACK : Color.TRANSPARENT);
             }
         }
         setStatusAlpha(immersible ? isTransStatusBar ? 0 : 102 : 255);
@@ -568,11 +575,12 @@ public class TitleBarView extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mStatusBarHeight = getNeedStatusBarHeight();
         //测量子控件宽高
-        measureChild(mLLayoutLeft, widthMeasureSpec, heightMeasureSpec);
-        measureChild(mLLayoutRight, widthMeasureSpec, heightMeasureSpec);
-        measureChild(mLLayoutCenter, widthMeasureSpec, heightMeasureSpec);
-        measureChild(mVDivider, widthMeasureSpec, heightMeasureSpec);
-        measureChild(mVStatus, widthMeasureSpec, heightMeasureSpec);
+//        measureChild(mLLayoutLeft, widthMeasureSpec, heightMeasureSpec);
+//        measureChild(mLLayoutRight, widthMeasureSpec, heightMeasureSpec);
+//        measureChild(mLLayoutCenter, widthMeasureSpec, heightMeasureSpec);
+//        measureChild(mVDivider, widthMeasureSpec, heightMeasureSpec);
+//        measureChild(mVStatus, widthMeasureSpec, heightMeasureSpec);
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
         //重新测量宽高--增加状态栏及下划线的高度开始
         //父容器为ConstraintLayout约束布局特殊处理
         if (mHeight <= 0) {
@@ -707,7 +715,7 @@ public class TitleBarView extends ViewGroup {
     public TitleBarView setCenterGravityLeftPadding(int padding) {
         if (mCenterGravityLeft) {
             mCenterGravityLeftPadding = padding;
-            mLLayoutCenter.setPadding(mCenterGravityLeftPadding, mLLayoutCenter.getTop(), mLLayoutCenter.getPaddingRight(), mLLayoutCenter.getPaddingBottom());
+            mLLayoutCenter.setPadding(mCenterGravityLeftPadding, mLLayoutCenter.getPaddingTop(), mLLayoutCenter.getPaddingRight(), mLLayoutCenter.getPaddingBottom());
         } else {
             return setCenterLayoutPadding(mCenterLayoutPadding);
         }
@@ -989,16 +997,23 @@ public class TitleBarView extends ViewGroup {
         Drawable[] drawables = textView.getCompoundDrawables();
         for (Drawable item : drawables) {
             if (item != null) {
+                item = item.mutate();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (tint != null) {
-                        DrawableCompat.setTintList(item, tint);
-                    }
-                    if (tintMode != null) {
-                        DrawableCompat.setTintMode(item, tintMode);
+                    try {
+                        if (tint != null) {
+                            DrawableCompat.setTintList(item, tint);
+                        }
+                        if (tintMode != null) {
+                            DrawableCompat.setTintMode(item, tintMode);
+                        }
+                    } catch (Exception e) {
+                        if (tint != null) {
+                            item = item.mutate();
+                            item.setColorFilter(tint.getDefaultColor(), tintMode != null ? tintMode : PorterDuff.Mode.SRC_ATOP);
+                        }
                     }
                 } else {
                     if (tint != null) {
-                        item = item.mutate();
                         item.setColorFilter(tint.getDefaultColor(), tintMode != null ? tintMode : PorterDuff.Mode.SRC_ATOP);
                     }
                 }
@@ -1055,6 +1070,10 @@ public class TitleBarView extends ViewGroup {
             return this;
         }
         mLLayoutCenter.addView(mTvTitleMain, 0);
+        //有主副标题竖直布局
+        if (hasChildView(mLLayoutCenter, mTvTitleMain) && hasChildView(mLLayoutCenter, mTvTitleSub)) {
+            mLLayoutCenter.setOrientation(LinearLayout.VERTICAL);
+        }
         return this;
     }
 
@@ -1168,6 +1187,10 @@ public class TitleBarView extends ViewGroup {
                 mTvTitleSub.setSingleLine();
             }
             mLLayoutCenter.addView(mTvTitleSub);
+        }
+        //有主副标题竖直布局
+        if (hasChildView(mLLayoutCenter, mTvTitleMain) && hasChildView(mLLayoutCenter, mTvTitleSub)) {
+            mLLayoutCenter.setOrientation(LinearLayout.VERTICAL);
         }
         return this;
     }
@@ -1519,28 +1542,49 @@ public class TitleBarView extends ViewGroup {
         }
     }
 
+    /**
+     * 自定义左边部分布局
+     *
+     * @param action
+     * @return
+     */
+    public TitleBarView addLeftAction(Action action) {
+        return addLeftAction(action, -1);
+    }
+
     public TitleBarView addLeftAction(Action action, int position) {
         View view = inflateAction(action);
         if (view == null) {
             return this;
         }
-        mLLayoutLeft.addView(view, position);
-        return setOutPadding(mOutPadding);
+        return addLeftAction(action, position, view.getLayoutParams());
     }
 
-    public TitleBarView addLeftAction(Action action) {
-        return addLeftAction(action, -1);
-    }
-
-    /**
-     * 自定义中间部分布局
-     */
-    public TitleBarView addCenterAction(Action action, int position) {
+    public TitleBarView addLeftAction(Action action, int width, int height) {
         View view = inflateAction(action);
         if (view == null) {
             return this;
         }
-        mLLayoutCenter.addView(view, position);
+        LayoutParams params = view.getLayoutParams();
+        if (params == null) {
+            params = generateDefaultLayoutParams();
+        }
+        return addLeftAction(action, -1, params);
+    }
+
+    public TitleBarView addLeftAction(Action action, LayoutParams params) {
+        return addLeftAction(action, -1, params);
+    }
+
+    public TitleBarView addLeftAction(Action action, int position, LayoutParams params) {
+        View view = inflateAction(action);
+        if (view == null) {
+            return this;
+        }
+        if (params == null) {
+            params = generateDefaultLayoutParams();
+        }
+        mLLayoutLeft.addView(view, position, params);
         return this;
     }
 
@@ -1551,23 +1595,90 @@ public class TitleBarView extends ViewGroup {
         return addCenterAction(action, -1);
     }
 
+    public TitleBarView addCenterAction(Action action, int position) {
+        View view = inflateAction(action);
+        if (view == null) {
+            return this;
+        }
+        return addCenterAction(action, position, view.getLayoutParams());
+    }
+
+    public TitleBarView addCenterAction(Action action, int width, int height) {
+        View view = inflateAction(action);
+        if (view == null) {
+            return this;
+        }
+        LayoutParams params = view.getLayoutParams();
+        if (params == null) {
+            params = generateDefaultLayoutParams();
+        }
+        params.width = width;
+        params.height = height;
+        return addCenterAction(action, -1, params);
+    }
+
+    public TitleBarView addCenterAction(Action action, LayoutParams params) {
+        return addCenterAction(action, -1, params);
+    }
+
+    public TitleBarView addCenterAction(Action action, int position, LayoutParams params) {
+        View view = inflateAction(action);
+        if (view == null) {
+            return this;
+        }
+        if (params == null) {
+            params = generateDefaultLayoutParams();
+        }
+        mLLayoutCenter.addView(view, position, params);
+        return this;
+    }
+
     /**
      * 在标题栏右边添加action
      *
      * @param action
-     * @param position 添加的位置
+     * @return
      */
+    public TitleBarView addRightAction(Action action) {
+        return addRightAction(action, -1);
+    }
+
     public TitleBarView addRightAction(Action action, int position) {
         View view = inflateAction(action);
         if (view == null) {
             return this;
         }
-        mLLayoutRight.addView(view, position);
-        return setOutPadding(mOutPadding);
+        return addRightAction(action, position, view.getLayoutParams());
     }
 
-    public TitleBarView addRightAction(Action action) {
-        return addRightAction(action, -1);
+    public TitleBarView addRightAction(Action action, int width, int height) {
+        View view = inflateAction(action);
+        if (view == null) {
+            return this;
+        }
+        LayoutParams params = view.getLayoutParams();
+        if (params == null) {
+            params = generateDefaultLayoutParams();
+        }
+        params.width = width;
+        params.height = height;
+        return addRightAction(action, -1, params);
+    }
+
+    public TitleBarView addRightAction(Action action, LayoutParams params) {
+        return addLeftAction(action, -1, params);
+    }
+
+    public TitleBarView addRightAction(Action action, int position, LayoutParams params) {
+        View view = inflateAction(action);
+        if (view == null) {
+            return this;
+        }
+        if (params == null) {
+            params = generateDefaultLayoutParams();
+        }
+        mLLayoutRight.addView(view, position, params);
+        return this;
     }
 
     /**
@@ -1579,8 +1690,9 @@ public class TitleBarView extends ViewGroup {
     private View inflateAction(Action action) {
         View view = null;
         Object obj = action.getData();
-        if (obj == null)
+        if (obj == null) {
             return null;
+        }
         if (obj instanceof View) {
             view = (View) obj;
         } else if (obj instanceof String) {

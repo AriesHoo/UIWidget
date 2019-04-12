@@ -877,7 +877,6 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
             setDialog();
             mDialog.setGravity(Gravity.CENTER);
             mDialog.setMargin(margin, margin, margin, margin);
-            afterSetContentView();
             return (UIAlertDialog) mDialog;
         }
 

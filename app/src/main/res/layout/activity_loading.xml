@@ -23,66 +23,28 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_msgLoading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="显示Message"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="显示Message"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_radiusBackLoading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="背景圆角"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="背景圆角"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_viewBackLoading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="自定义View背景"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="自定义View背景"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_progressLoading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="自定义Progress"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="自定义Progress"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_backLoading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="背景半透明"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
+                style="@style/SwitchStyle"
+                android:text="背景半透明"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showLoading"

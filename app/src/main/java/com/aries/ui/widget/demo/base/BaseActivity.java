@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.aries.ui.helper.navigation.KeyboardHelper;
@@ -24,11 +25,11 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * Created: AriesHoo on 2017/7/3 16:04
- * Function: title 基类
- * Desc:
+ * @Author: AriesHoo on 2019/4/11 15:34
+ * @E-Mail: AriesHoo@126.com
+ * @Function: title 基类
+ * @Description:
  */
-
 public abstract class BaseActivity extends AppCompatActivity {
 
     protected TitleBarView titleBar;
@@ -51,6 +52,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * 获取contentView xml id
+     *
+     * @return
+     */
     @LayoutRes
     protected abstract int getLayout();
 
@@ -96,16 +102,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isControlNavigation()) {
             mNavigationViewHelper.init();
         } else {
-            if (!isControlNavigation()) {
-                KeyboardHelper.with(this)
-                        .setEnable()
-                        .setOnKeyboardVisibilityChangedListener(new KeyboardHelper.OnKeyboardVisibilityChangedListener() {
-                            @Override
-                            public boolean onKeyboardVisibilityChanged(Activity activity, boolean isOpen, int heightDiff, int navigationHeight) {
-                                return false;
-                            }
-                        });
-            }
+            KeyboardHelper.with(this)
+                    .setEnable()
+                    .setOnKeyboardVisibilityChangedListener(new KeyboardHelper.OnKeyboardVisibilityChangedListener() {
+                        @Override
+                        public boolean onKeyboardVisibilityChanged(Activity activity, boolean isOpen, int heightDiff, int navigationHeight) {
+                            return false;
+                        }
+                    });
         }
         this.initView(savedInstanceState);
     }
@@ -121,7 +125,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             //5.0 半透明模式alpha-102
             titleBar.setStatusAlpha(102);
         }
-        titleBar.setTitleMainText(mContext.getClass().getSimpleName());
+        titleBar.setTitleMainText(getTitle());
         titleBar.setOnLeftTextClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,6 +156,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mUnBinder.unbind();
+        if (mNavigationViewHelper != null) {
+            mNavigationViewHelper.onDestroy();
+        }
     }
 
     @Override
@@ -161,6 +168,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             this.loadData();
         }
         super.onResume();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        KeyboardHelper.handleAutoCloseKeyboard(true, getCurrentFocus(), ev, this);
+        return super.dispatchTouchEvent(ev);
     }
 
     protected boolean isTrans() {

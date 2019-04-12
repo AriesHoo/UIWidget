@@ -22,10 +22,10 @@ import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 
 /**
- * Created: AriesHoo on 2018/2/7/007 17:36
- * E-Mail: AriesHoo@126.com
- * Function:  TitleBarView+CollapsingTitleBarLayout 类Toolbar+CollapsingToolbarLayout
- * Description:
+ * @Author: AriesHoo on 2019/4/11 13:03
+ * @E-Mail: AriesHoo@126.com
+ * @Function: TitleBarView+CollapsingTitleBarLayout 类Toolbar+CollapsingToolbarLayout
+ * @Description:
  */
 public class ToolWithCollapsingLayoutActivity extends BaseRecycleActivity<WidgetEntity> {
     private BaseQuickAdapter mAdapter;

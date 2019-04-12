@@ -1,6 +1,7 @@
 package com.aries.ui.helper.navigation;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -30,12 +31,15 @@ import java.lang.ref.WeakReference;
  * 3、2018-4-18 17:50:35 去掉设置Activity DecorView 背景操作避免滑动返回背景不透明BUG
  * 4、2018-6-2 20:32:35 新增自定义NavigationView 增加DrawableTop属性
  * 5、2018-11-28 14:52:23 修改导航栏控制逻辑新增软键盘开关状态监听
+ * 6、2019-4-10 16:26:38 新增Dialog底部导航栏沉浸控制效果{@link #with(Activity, Dialog)}{@link #init()} 并增加{@link #onDestroy()}
  */
 public class NavigationViewHelper {
 
     public final static int TAG_NAVIGATION_BAR_HEIGHT = 0x10000012;
+    public final static int TAG_NAVIGATION_PADDING_BOTTOM = 0x10000013;
     private String TAG = getClass().getSimpleName();
     private WeakReference<Activity> mActivity;
+    private WeakReference<Dialog> mDialog;
     private boolean mLogEnable;
     private boolean mControlEnable;
     private boolean mTransEnable;
@@ -62,18 +66,37 @@ public class NavigationViewHelper {
     private View mContentView;
     private LinearLayout mLinearLayout;
     private LinearLayout mLayoutNavigation;
+    private TextView mTvNavigation;
     private int mNavigationHeight;
     private int mPaddingLeft;
     private int mPaddingTop;
     private int mPaddingRight;
     private int mPaddingBottom;
+    /**
+     * 记录原始颜色
+     */
+    private int mNavigationBarColor;
     private KeyboardHelper.OnKeyboardVisibilityChangedListener mOnKeyboardVisibilityChangedListener;
+    private ViewTreeObserver.OnGlobalLayoutListener mDecorGlobalLayoutListener;
 
     private NavigationViewHelper(Activity activity) {
+        this(activity, null);
+    }
+
+    private NavigationViewHelper(Activity activity, Dialog dialog) {
         mActivity = new WeakReference<>(activity);
         mDecorView = activity.getWindow().getDecorView();
         mDecorContentView = mDecorView.findViewById(android.R.id.content);
-        mContentView = ((ViewGroup) mDecorContentView).getChildAt(0);
+        mContentView = dialog == null ? ((ViewGroup) mDecorContentView).getChildAt(0) : mDecorContentView;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mNavigationBarColor = activity.getWindow().getNavigationBarColor();
+        }
+        if (dialog != null) {
+            mDialog = new WeakReference<>(dialog);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mNavigationBarColor = dialog.getWindow().getNavigationBarColor();
+            }
+        }
     }
 
     public static NavigationViewHelper with(Activity activity) {
@@ -81,6 +104,13 @@ public class NavigationViewHelper {
             throw new NullPointerException("null");
         }
         return new NavigationViewHelper(activity);
+    }
+
+    public static NavigationViewHelper with(Activity activity, Dialog dialog) {
+        if (activity == null) {
+            throw new NullPointerException("null");
+        }
+        return new NavigationViewHelper(activity, dialog);
     }
 
     /**
@@ -149,7 +179,9 @@ public class NavigationViewHelper {
     }
 
     /**
-     * @param listener
+     * 设置软键盘开关状态转换回调--即有软键盘开关变化才会回调
+     *
+     * @param listener {@link #setControlBottomEditTextEnable(boolean)} 为true方有效
      * @return
      */
     public NavigationViewHelper setOnKeyboardVisibilityChangedListener(KeyboardHelper.OnKeyboardVisibilityChangedListener listener) {
@@ -237,6 +269,8 @@ public class NavigationViewHelper {
             mPaddingRight = mBottomView.getPaddingRight();
             mPaddingBottom = mBottomView.getPaddingBottom();
         }
+        mBottomView.setTag(TAG_NAVIGATION_PADDING_BOTTOM, mPaddingBottom);
+        log("left:" + mPaddingLeft + ";top:" + mPaddingTop + ";right:" + mPaddingRight + ";bottom:" + mPaddingBottom);
         return this;
     }
 
@@ -252,11 +286,10 @@ public class NavigationViewHelper {
         if (activity == null || activity.isFinishing()) {
             return;
         }
+        final Dialog dialog = mDialog != null ? mDialog.get() : null;
         setControlEnable(mControlEnable);
-        final Window window = activity.getWindow();
+        final Window window = dialog != null ? dialog.getWindow() : activity.getWindow();
         mNavigationHeight = NavigationBarUtil.getNavigationBarHeight(activity);
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        //5.0默认半透明
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                 && (mPlusNavigationViewEnable || (!mPlusNavigationViewEnable && mTransEnable))) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -268,9 +301,10 @@ public class NavigationViewHelper {
                 window.setNavigationBarColor(Color.TRANSPARENT);
             }
         }
+        setNavigationBackground();
         if (!mIsInit) {
             if (mControlBottomEditTextEnable) {
-                KeyboardHelper.with(activity)
+                KeyboardHelper.with(activity, dialog)
                         .setOnKeyboardVisibilityChangedListener(mOnKeyboardVisibilityChangedListener)
                         .setLogEnable(mLogEnable)
                         .setEnable();
@@ -284,7 +318,7 @@ public class NavigationViewHelper {
             params.height = mPlusNavigationViewEnable ? mNavigationHeight : 0;
             mLayoutNavigation.setLayoutParams(params);
         }
-        log("mBottomView:" + mBottomView + ";mPlusNavigationViewEnable:" + mPlusNavigationViewEnable);
+        log("mBottomView:" + mBottomView + ";mPlusNavigationViewEnable:" + mPlusNavigationViewEnable+";mNavigationBarColor:"+mNavigationBarColor);
         if (mBottomView == null || mPlusNavigationViewEnable) {
             return;
         }
@@ -328,11 +362,17 @@ public class NavigationViewHelper {
      * Activity ContentView监听用于控制华为导航栏可隐藏问题
      */
     private void addOnGlobalLayoutListener() {
+        if (mDecorContentView == null) {
+            return;
+        }
         //控制华为
-        if (mDecorContentView != null) {
-            mDecorContentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        if (mDecorGlobalLayoutListener == null) {
+            mDecorGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+                    if (mActivity == null) {
+                        return;
+                    }
                     Activity activity = mActivity.get();
                     if (activity == null) {
                         return;
@@ -343,7 +383,8 @@ public class NavigationViewHelper {
                         init();
                     }
                 }
-            });
+            };
+            mDecorContentView.getViewTreeObserver().addOnGlobalLayoutListener(mDecorGlobalLayoutListener);
         }
     }
 
@@ -384,33 +425,37 @@ public class NavigationViewHelper {
 
                 //创建假的NavigationView包裹ViewGroup用于设置背景与mContentView一致
                 mLayoutNavigation = linearLayout.findViewById(R.id.fake_navigation_layout);
-                TextView viewNavigation;
+                ;
                 if (mLayoutNavigation == null) {
                     mLayoutNavigation = new LinearLayout(mContext);
                     mLayoutNavigation.setId(R.id.fake_navigation_layout);
                     //创建假的NavigationView
-                    viewNavigation = new TextView(mContext);
+                    mTvNavigation = new TextView(mContext);
                     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                    viewNavigation.setId(R.id.fake_navigation_view);
-                    viewNavigation.setCompoundDrawables(null, mNavigationViewDrawableTop, null, null);
-                    mLayoutNavigation.addView(viewNavigation, params);
+                    mTvNavigation.setId(R.id.fake_navigation_view);
+                    mTvNavigation.setCompoundDrawables(null, mNavigationViewDrawableTop, null, null);
+                    mLayoutNavigation.addView(mTvNavigation, params);
                     linearLayout.addView(mLayoutNavigation,
                             new ViewGroup.LayoutParams(
                                     ViewGroup.LayoutParams.MATCH_PARENT,
                                     mNavigationHeight));
                 } else {
-                    viewNavigation = mLayoutNavigation.findViewById(R.id.fake_navigation_view);
+                    mTvNavigation = mLayoutNavigation.findViewById(R.id.fake_navigation_view);
                 }
-                if (mLayoutNavigation != null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        mLayoutNavigation.setBackground(mNavigationLayoutDrawable);
-                        viewNavigation.setBackground(mNavigationViewDrawable);
-                    } else {
-                        mLayoutNavigation.setBackgroundDrawable(mNavigationLayoutDrawable);
-                        viewNavigation.setBackgroundDrawable(mNavigationViewDrawable);
-                    }
-                }
+                setNavigationBackground();
+            }
+        }
+    }
+
+    private void setNavigationBackground() {
+        if (mLayoutNavigation != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mLayoutNavigation.setBackground(mNavigationLayoutDrawable);
+                mTvNavigation.setBackground(mNavigationViewDrawable);
+            } else {
+                mLayoutNavigation.setBackgroundDrawable(mNavigationLayoutDrawable);
+                mTvNavigation.setBackgroundDrawable(mNavigationViewDrawable);
             }
         }
     }
@@ -423,5 +468,44 @@ public class NavigationViewHelper {
         if (mLogEnable) {
             Log.i(TAG, log);
         }
+    }
+
+    public void onDestroy() {
+        log("onDestroy");
+        if (mDecorContentView != null && mDecorGlobalLayoutListener != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mDecorContentView.getViewTreeObserver().removeOnGlobalLayoutListener(mDecorGlobalLayoutListener);
+            } else {
+                mDecorContentView.getViewTreeObserver().removeGlobalOnLayoutListener(mDecorGlobalLayoutListener);
+            }
+        }
+        //还原View原始paddingBottom或marginBottom
+        if (mBottomView != null) {
+            Object heightPadding = mBottomView.getTag(TAG_NAVIGATION_PADDING_BOTTOM);
+            int padding = heightPadding instanceof Integer ? (Integer) heightPadding : -1;
+            if (padding >= 0) {
+                if (mBottomViewMarginEnable) {
+                    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mBottomView.getLayoutParams();
+                    if (params != null) {
+                        params.bottomMargin = padding;
+                    }
+                }
+                mBottomView.setPadding(mBottomView.getPaddingLeft(), mBottomView.getPaddingTop(), mBottomView.getPaddingRight(), padding);
+            }
+            mBottomView.setTag(TAG_NAVIGATION_BAR_HEIGHT, 0);
+        }
+        mActivity = null;
+        mDialog = null;
+        mNavigationViewDrawableTop = null;
+        mNavigationViewDrawable = null;
+        mNavigationLayoutDrawable = null;
+        mBottomView = null;
+        mDecorView = null;
+        mDecorContentView = null;
+        mContentView = null;
+        mLinearLayout = null;
+        mLayoutNavigation = null;
+        mDecorGlobalLayoutListener = null;
+        System.gc();
     }
 }

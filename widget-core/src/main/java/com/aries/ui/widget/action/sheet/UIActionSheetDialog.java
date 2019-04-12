@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -50,6 +51,7 @@ import java.util.Map;
  * 8、2018-5-28 16:39:05 修改兼容Android O以上版本导航栏问题
  * 9、2018-5-31 16:48:38 删除TranslucentUtil控制导航栏透明度
  * 10、2019-3-11 15:40:52 修改Drawable 设置逻辑避免因Item高度变化适配问题
+ * 11、2019-4-11 10:20:43 新增底部导航栏控制相关{@link #onAttachedToWindow()}
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
@@ -1273,7 +1275,6 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             mDialog.setGravity(Gravity.BOTTOM);
             mDialog.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
             mDialog.setMargin(0, mMarginTop, 0, 0);
-            afterSetContentView(contentView);
             return (UIActionSheetDialog) mDialog;
         }
 
@@ -1333,9 +1334,9 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             mTvTitle.setText(mTitleStr);
             mTvTitle.setTextSize(mTextSizeUnit, mTitleTextSize);
             mTvTitle.setTextColor(mTitleTextColor);
-
-            if ((mListItem != null && mListItem.size() > 0) ||
-                    (!TextUtils.isEmpty(mCancelStr) && mCancelMarginTop <= 0)) {
+            boolean hasList = mListItem != null && mListItem.size() > 0;
+            boolean hasCancel = !TextUtils.isEmpty(mCancelStr) && mCancelMarginTop <= 0;
+            if (hasList || hasCancel) {
                 background = mStateDrawableTop.getCurrent();
             }
             setViewBackground(mTvTitle, DrawableUtil.getNewDrawable(background));
@@ -1442,6 +1443,14 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
         protected static class ViewHolder {
             ImageView imageView;
             TextView textView;
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (mContentView != null && mContentView.findViewById(R.id.lLayout_rootActionSheetDialog) != null) {
+            mNavigationBottomView = mContentView.findViewById(R.id.lLayout_rootActionSheetDialog);
         }
     }
 }

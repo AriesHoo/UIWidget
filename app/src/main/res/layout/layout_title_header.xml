@@ -5,6 +5,7 @@
               android:layout_marginTop="@dimen/dp_margin"
               android:background="@color/colorWhite"
               android:orientation="vertical">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,45 +14,21 @@
         android:textColor="@color/colorTextBlack"
         android:textSize="@dimen/dp_text_size_main"/>
 
-    <View style="@style/LineGray.Horizontal.BreakAll"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sBtn_immersible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:padding="12dp"
-        android:text="沉浸"
-        android:textColor="@color/colorTextBlack"
-        android:textSize="@dimen/dp_text_size_main"/>
-
-    <View style="@style/LineGray.Horizontal.BreakAll"/>
+        style="@style/SwitchStyle"
+        android:text="沉浸"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sBtn_light"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:padding="12dp"
-        android:text="5.0以上全透明"
-        android:textColor="@color/colorTextBlack"
-        android:textSize="@dimen/dp_text_size_main"/>
-
-    <View style="@style/LineGray.Horizontal.BreakAll"/>
-
+        style="@style/SwitchStyle"
+        android:text="5.0以上全透明"/>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sBtn_line"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:padding="12dp"
-        android:text="显示下划线"
-        android:textColor="@color/colorTextBlack"
-        android:textSize="@dimen/dp_text_size_main"/>
-
-    <View style="@style/LineGray.Horizontal.BreakAll"/>
-
+        style="@style/SwitchStyle"
+        android:text="显示下划线"/>
 
     <LinearLayout
         android:id="@+id/lLayout_alpha"
@@ -84,5 +61,4 @@
             android:textSize="@dimen/dp_text_size_main"/>
     </LinearLayout>
 
-    <View style="@style/LineGray.Horizontal.BreakAll"/>
 </LinearLayout>

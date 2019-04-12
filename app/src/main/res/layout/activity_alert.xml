@@ -53,70 +53,30 @@
                     android:textSize="@dimen/dp_text_size_main"/>
             </LinearLayout>
 
-            <View style="@style/LineGray.Horizontal"/>
-
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_titleAlert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="显示title"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="显示title"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_titleColorAlert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="自定义title文本颜色"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="自定义title文本颜色"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_msgColorAlert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="自定义Message文本颜色"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="自定义Message文本颜色"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_buttonColorAlert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="自定义Button文本颜色"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="自定义Button文本颜色"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_backAlert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="背景半透明"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
+                style="@style/SwitchStyle"
+                android:text="背景半透明"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showAlert"

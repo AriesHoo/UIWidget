@@ -20,82 +20,45 @@
             android:gravity="center"
             android:orientation="vertical">
 
-
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_titleActionSheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="显示title"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="显示title"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_titleColorActionSheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="自定义title文本颜色"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="自定义title文本颜色"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_itemColorActionSheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="自定义Item文本颜色"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="自定义Item文本颜色"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_cancelColorActionSheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="自定义Cancel文本颜色"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="自定义Cancel文本颜色"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_marginActionSheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="cancel按钮与item之间有间隙"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
-
-            <View style="@style/LineGray.Horizontal"/>
+                style="@style/SwitchStyle"
+                android:text="cancel按钮与item之间有间隙"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sBtn_backActionSheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
-                android:checked="false"
-                android:padding="12dp"
-                android:text="背景半透明"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="@dimen/dp_text_size_main"/>
+                style="@style/SwitchStyle"
+                android:text="背景半透明"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sBtn_navigationActionSheet"
+                style="@style/SwitchStyle"
+                android:text="控制底部虚拟导航栏"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sBtn_navigationPlusActionSheet"
+                style="@style/SwitchStyle"
+                android:text="底部虚拟导航栏增加View占位"/>
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showActionSheet"

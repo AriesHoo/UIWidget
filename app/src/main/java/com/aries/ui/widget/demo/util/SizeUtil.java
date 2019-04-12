@@ -4,10 +4,10 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
 /**
- * Created: AriesHoo on 2017/12/19 14:07
- * E-Mail: AriesHoo@126.com
- * Function:
- * Description:
+ * @Author: AriesHoo on 2019/4/12 11:19
+ * @E-Mail: AriesHoo@126.com
+ * @Function: 尺寸转换工具
+ * @Description:
  */
 public class SizeUtil {
     public static DisplayMetrics getDisplayMetrics() {

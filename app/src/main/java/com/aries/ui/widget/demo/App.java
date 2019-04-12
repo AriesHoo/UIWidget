@@ -15,6 +15,7 @@ import com.tencent.bugly.crashreport.CrashReport;
 
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
+import cn.bingoogolapple.swipebacklayout.BGASwipeBackHelper;
 
 /**
  * @Author: AriesHoo on 2018/7/19 9:31
@@ -29,6 +30,7 @@ public class App extends MultiDexApplication {
     }
 
     public static Context sContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -45,10 +47,44 @@ public class App extends MultiDexApplication {
             CrashReport.setAppChannel(getApplicationContext(), appChannel);
         }
         Log.i("appChannel", "appChannel2:" + appChannel);
+        BGASwipeBackHelper.init(this, null);
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Log.i("onActivityCreated", "isNavigationBarExist:" + NavigationBarUtil.hasNavBar(activity));
+                new BGASwipeBackHelper(activity, new BGASwipeBackHelper.Delegate() {
+                    @Override
+                    public boolean isSupportSwipeBack() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onSwipeBackLayoutSlide(float slideOffset) {
+
+                    }
+
+                    @Override
+                    public void onSwipeBackLayoutCancel() {
+
+                    }
+
+                    @Override
+                    public void onSwipeBackLayoutExecuted() {
+                        //设置退出动画-确保效果准确
+                        if (activity == null || activity.isFinishing()) {
+                            return;
+                        }
+                        KeyboardHelper.closeKeyboard(activity);
+                        activity.finish();
+                        activity.overridePendingTransition(0, R.anim.bga_sbl_activity_swipeback_exit);
+
+                    }
+                })
+                        //设置滑动背景
+                        .setShadowResId(R.drawable.bga_sbl_shadow)
+                        //底部导航条是否悬浮在内容上设置过NavigationViewHelper可以不用设置该属性
+                        .setIsNavigationBarOverlap(true)
+                        .setIsShadowAlphaGradient(true);
             }
 
             @Override

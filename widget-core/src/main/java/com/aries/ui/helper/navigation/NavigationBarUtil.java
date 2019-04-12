@@ -9,8 +9,10 @@ import android.graphics.Point;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.aries.ui.widget.R;
@@ -25,6 +27,7 @@ import java.lang.reflect.Method;
  * 1、2018-11-9 11:30:44 修改获取虚拟导航栏高度方法增加VIVO及MIUI全面屏判断
  * 2、2018-11-28 13:21:53 新增华为、三星导航栏可动态隐藏显示判断逻辑
  * 3、2018-12-17 10:11:29 新增是否开启全面屏手势方法{@link #isOpenFullScreenGestures(Context)}
+ * 4、2019-4-9 14:54:13 新参数Activity有关方法增加对应Window方法{@link #hasNavBar(Window)}
  */
 public class NavigationBarUtil {
 
@@ -45,6 +48,8 @@ public class NavigationBarUtil {
      */
     private static final String NAVIGATION_BAR_POLICY_CONTROL = "policy_control";
 
+    private static final String NAVIGATION_BAR_POLICY_CONTROL_VALUE = "immersive.navigation=*";
+
     /**
      * 判断是否是全面屏
      */
@@ -53,7 +58,7 @@ public class NavigationBarUtil {
     private volatile static float mAspectRatio = 1.97f;
 
     /**
-     * 判断手机是否开启全面屏手势
+     * 判断手机是否开启全面屏手势--根据判断系统是否开启虚拟导航栏(如华为可手动开关该方法不是完全正确的)
      *
      * @param context
      * @return
@@ -81,10 +86,11 @@ public class NavigationBarUtil {
             return true;
         }
         //其它导航栏隐藏
-        if ("immersive.navigation=*".equals(Settings.System.getString(context.getContentResolver(), NAVIGATION_BAR_POLICY_CONTROL))) {
+        if (NAVIGATION_BAR_POLICY_CONTROL_VALUE.equals(Settings.System.getString(context.getContentResolver(), NAVIGATION_BAR_POLICY_CONTROL))) {
             return true;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Log.i("isOpenFull","NavigationBar:"+(Settings.Global.getInt(context.getContentResolver(), NAVIGATION_BAR_IS_MIN, 0)));
             //华为导航栏隐藏
             if (Settings.Global.getInt(context.getContentResolver(), NAVIGATION_BAR_IS_MIN, 0) == 1) {
                 return true;
@@ -94,29 +100,36 @@ public class NavigationBarUtil {
                 return true;
             }
             //其它导航栏隐藏
-            if ("immersive.navigation=*".equals(Settings.Global.getString(context.getContentResolver(), NAVIGATION_BAR_POLICY_CONTROL))) {
+            if (NAVIGATION_BAR_POLICY_CONTROL_VALUE.equals(Settings.Global.getString(context.getContentResolver(), NAVIGATION_BAR_POLICY_CONTROL))) {
                 return true;
             }
         }
         return false;
     }
 
-    /**
-     * 是否开启虚拟导航栏
-     *
-     * @param activity
-     * @return
-     */
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public static boolean hasNavBar(Activity activity) {
         if (activity == null) {
             return false;
         }
-        if (isOpenFullScreenGestures(activity)) {
+        return hasNavBar(activity.getWindow());
+    }
+
+    /**
+     * 是否开启虚拟导航栏
+     *
+     * @param window
+     * @return
+     */
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    public static boolean hasNavBar(Window window) {
+        if (window == null) {
+            return false;
+        }
+        if (isOpenFullScreenGestures(window.getContext())) {
             return false;
         }
         //其他手机根据屏幕真实高度与显示高度是否相同来判断
-        WindowManager windowManager = activity.getWindowManager();
+        WindowManager windowManager = window.getWindowManager();
         Display d = windowManager.getDefaultDisplay();
         DisplayMetrics realDisplayMetrics = new DisplayMetrics();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -131,20 +144,34 @@ public class NavigationBarUtil {
         return (realWidth - displayWidth) > 0 || (realHeight - displayHeight) > 0;
     }
 
+    public static int getFakeNavigationBarHeight(Activity activity) {
+        if (activity == null) {
+            return 0;
+        }
+        return getFakeNavigationBarHeight(activity.getWindow());
+    }
+
     /**
      * 获取假导航栏高度
      *
      * @return
      */
-    public static int getFakeNavigationBarHeight(Activity activity) {
-        if (activity == null) {
+    public static int getFakeNavigationBarHeight(Window window) {
+        if (window == null) {
             return 0;
         }
-        View viewNavigation = activity.getWindow().getDecorView().findViewById(R.id.fake_navigation_layout);
+        View viewNavigation = window.getDecorView().findViewById(R.id.fake_navigation_layout);
         if (viewNavigation != null) {
             return viewNavigation.getMeasuredHeight();
         }
         return 0;
+    }
+
+    public static int getRealNavigationBarHeight(Activity activity) {
+        if (activity == null) {
+            return 0;
+        }
+        return getRealNavigationBarHeight(activity.getWindow());
     }
 
     /**
@@ -153,13 +180,13 @@ public class NavigationBarUtil {
      * 像华为这种可以动态隐藏的
      * 1-进入Activity 前没有打开导航栏 是获取不到导航栏View的,当上滑时才创建即可获取到，再关闭{@link View#getVisibility()}
      *
-     * @param activity
+     * @param window
      * @return 获取的前提是 window.getDecorView().setSystemUiVisibility 未设置 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
      * 设置后系统是不会生成那个View的
      */
-    public static int getRealNavigationBarHeight(Activity activity) {
-        if (activity != null) {
-            View viewNavigation = activity.getWindow().getDecorView().findViewById(android.R.id.navigationBarBackground);
+    public static int getRealNavigationBarHeight(Window window) {
+        if (window != null) {
+            View viewNavigation = window.getDecorView().findViewById(android.R.id.navigationBarBackground);
             if (viewNavigation != null) {
                 return viewNavigation.getMeasuredHeight();
             }
@@ -167,20 +194,24 @@ public class NavigationBarUtil {
         return 0;
     }
 
-    /**
-     * 获取导航栏高度
-     *
-     * @param activity
-     * @return
-     */
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     public static int getNavigationBarHeight(Activity activity) {
         if (activity == null) {
             return 0;
         }
+        return getNavigationBarHeight(activity.getWindow());
+    }
+
+    /**
+     * 获取导航栏高度
+     *
+     * @param window
+     * @return
+     */
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    public static int getNavigationBarHeight(Window window) {
         //是否横屏
         boolean landscape = Resources.getSystem().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
-        if (hasNavBar(activity)) {
+        if (hasNavBar(window)) {
             return getInternalDimensionSize(landscape ? NAV_BAR_HEIGHT_LANDSCAPE_RES_NAME : NAV_BAR_HEIGHT_RES_NAME);
         }
         return 0;

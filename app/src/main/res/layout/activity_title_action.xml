@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:background="@color/colorBackground">
+
+    <include layout="@layout/layout_title_bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.aries.ui.view.title.TitleBarView
+                style="@style/TitleBarStyle"
+                app:title_leftText="返回"
+                app:title_leftTextDrawable="@drawable/ic_title_back_normal"
+                app:title_rightText="确定"
+                app:title_titleMainText="主标题很长滚动主标题很长滚动主标题很长滚动主标题很长滚动主标题很长滚动"
+                app:title_titleMainTextMarquee="true"/>
+
+            <com.aries.ui.view.title.TitleBarView
+                style="@style/TitleBarStyle"
+                app:title_leftTextDrawable="@drawable/ic_title_back_normal"
+                app:title_leftTextDrawableTint="@android:color/holo_blue_dark"
+                app:title_rightTextDrawable="@drawable/ic_menu_share"
+                app:title_rightTextDrawableTint="@android:color/holo_red_dark"
+                app:title_titleMainText="左右icon颜色"
+                app:title_titleSubText="无需更换icon资源"/>
+
+            <com.aries.ui.view.title.TitleBarView
+                style="@style/TitleBarStyle"
+                app:title_outPadding="0px"
+                app:title_titleMainText="主标题很长滚动主标题很长滚动主标题很长滚动主标题很长滚动主标题很长滚动"/>
+
+            <com.aries.ui.view.title.TitleBarView
+                android:id="@+id/title_searchTitleAction"
+                style="@style/TitleBarStyle"
+                app:title_leftTextDrawable="@drawable/ic_title_back_normal"
+                app:title_rightText="确定"/>
+
+            <com.aries.ui.view.title.TitleBarView
+                android:id="@+id/title_qqTitleAction"
+                style="@style/TitleBarStyle"
+                android:background="@drawable/shape_qq_bg"
+                app:title_rightTextDrawable="@drawable/ic_qq_add"
+                app:title_rightTextDrawableHeight="30dp"
+                app:title_rightTextDrawableTint="@color/colorWhite"
+                app:title_rightTextDrawableWidth="30dp"
+                app:title_titleMainText="QQ效果页面"
+                app:title_titleMainTextColor="@color/colorWhite"/>
+
+            <com.aries.ui.view.title.TitleBarView
+                android:id="@+id/title_weChatTitleAction"
+                style="@style/TitleBarStyle"
+                android:background="#EDEDED"
+                app:title_actionPadding="16dp"
+                app:title_actionTint="@android:color/black"
+                app:title_centerGravityLeft="true"
+                app:title_leftText="微信"
+                app:title_leftTextSize="16dp"
+                app:title_outPadding="12dp"
+                app:title_rightTextDrawable="@drawable/ic_we_chat_add"
+                app:title_rightTextDrawableHeight="20dp"
+                app:title_rightTextDrawableWidth="20dp"
+                app:title_titleMainTextColor="@android:color/black"
+                app:title_titleMainTextFakeBold="true"/>
+
+            <com.aries.ui.view.title.TitleBarView
+                android:id="@+id/title_loadingTitleAction"
+                style="@style/TitleBarStyle"
+                app:title_titleMainText="标题栏带Loading"/>
+
+            <com.aries.ui.view.title.TitleBarView
+                android:id="@+id/title_tabTitleAction"
+                style="@style/TitleBarStyle"
+                app:title_outPadding="0px"/>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_contentTitleAction"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

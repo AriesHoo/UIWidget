@@ -1,5 +1,6 @@
 package com.aries.ui.widget.demo.module.title;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,6 +66,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     private BaseQuickAdapter mAdapter;
     protected View vHeader;
     private int mAlpha = 102;
+    private List<TitleEntity> mListTheme = new ArrayList<>();
 
     @Override
     protected boolean setLoadMore() {
@@ -132,9 +135,10 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
 
     @Override
     protected void initView(Bundle bundle) {
-        drawerRoot.setScrimColor(Color.argb(30, 0, 0, 0));//背景高亮
-        drawerRoot.setDrawerElevation(40);//海拔高度
-//        mContentView.setBackgroundDrawable(null);
+        //背景高亮
+        drawerRoot.setScrimColor(Color.argb(30, 0, 0, 0));
+        //海拔高度
+        drawerRoot.setDrawerElevation(40);
         GlideManager.loadCircleImg("https://avatars3.githubusercontent.com/u/19605922?v=4&s=460", ivHead);
         titleBarDrawer.setImmersible(mContext, isImmersible, isLight);
         vHeader = View.inflate(mContext, R.layout.layout_title_header, null);
@@ -161,19 +165,22 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
 
     private void initData() {
         List<TitleEntity> list = new ArrayList<>();
+        list.add(new TitleEntity("TitleBarView 自定义左中右View", "点击查看示例", TitleActionActivity.class));
         list.add(new TitleEntity("TitleBarView与底部EditText结合", "点击查看示例", TitleEditActivity.class));
         list.add(new TitleEntity("TitleBarView结合ConstraintLayout", "点击查看示例", TitleWithConstraintActivity.class));
         list.add(new TitleEntity("TitleBarView结合CollapsingTitleBarLayout", "点击查看示例", TitleWithCollapsingLayoutActivity.class));
         list.add(new TitleEntity("Toolbar结合CollapsingToolbarLayout", "点击查看示例", ToolWithCollapsingLayoutActivity.class));
-        list.add(new TitleEntity("白色主题", "点击切换白色主题", android.R.color.white));
-        list.add(new TitleEntity("红色主题", "点击切换红色主题", android.R.color.holo_red_light));
-        list.add(new TitleEntity("橙色主题", "点击切换橙色主题", android.R.color.holo_orange_light));
-        list.add(new TitleEntity("绿色主题", "点击切换绿色主题", android.R.color.holo_green_light));
-        list.add(new TitleEntity("蓝色主题", "点击切换蓝色主题", android.R.color.holo_blue_light));
-        list.add(new TitleEntity("紫色主题", "点击切换紫色主题", android.R.color.holo_purple));
+        list.add(new TitleEntity("切换TitleBarView颜色主题", "点击切换主题", true));
         mAdapter.setHeaderView(vHeader);
         mAdapter.setNewData(list);
         ViewUtil.getInstance().setViewHeight(fLayoutDrawer, (int) (getResources().getDimension(R.dimen.dp_drawer_header)) + TitleBarView.getStatusBarHeight());
+        mListTheme.add(new TitleEntity("白色主题", "点击切换白色主题", android.R.color.white));
+        mListTheme.add(new TitleEntity("红色主题", "点击切换红色主题", android.R.color.holo_red_light));
+        mListTheme.add(new TitleEntity("橙色主题", "点击切换橙色主题", android.R.color.holo_orange_light));
+        mListTheme.add(new TitleEntity("绿色主题", "点击切换绿色主题", android.R.color.holo_green_light));
+        mListTheme.add(new TitleEntity("蓝色主题", "点击切换蓝色主题", android.R.color.holo_blue_light));
+        mListTheme.add(new TitleEntity("紫色主题", "点击切换紫色主题", android.R.color.holo_purple));
+        mListTheme.add(new TitleEntity("黑色主题", "点击切换黑色主题", android.R.color.black));
     }
 
     private void initView() {
@@ -314,6 +321,37 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
             }
         } else if (entity.activity != null) {
             startActivity(entity.activity);
+        } else if (entity.dialog) {
+            CharSequence[] listItem = new CharSequence[mListTheme.size()];
+            for (int i = 0; i < mListTheme.size(); i++) {
+                listItem[i] = mListTheme.get(i).title;
+            }
+            new AlertDialog.Builder(mContext)
+                    .setTitle("切换TitleBarView颜色主题")
+                    .setItems(listItem, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onItemClick(mListTheme.get(which));
+                        }
+                    })
+                    .create()
+                    .show();
+        }
+    }
+
+    private void onItemClick(TitleEntity item) {
+        isWhite = item.colorRes == android.R.color.white;
+        titleBar.setBgResource(item.colorRes)
+                .setLeftTextDrawableTintResource(isWhite ? R.color.colorTextBlack : R.color.colorWhite)
+                .setRightTextDrawableTintResource(isWhite ? R.color.colorTextBlack : R.color.colorWhite)
+                .setTitleMainTextColorResource(isWhite ? R.color.colorTextBlack : R.color.colorWhite)
+                .setTitleSubTextColorResource(isWhite ? R.color.colorTextBlack : R.color.colorWhite);
+        if (type > 0 && isImmersible) {
+            if (isWhite) {
+                StatusBarUtil.setStatusBarLightMode(mContext);
+            } else {
+                StatusBarUtil.setStatusBarDarkMode(mContext);
+            }
         }
     }
 

@@ -18,9 +18,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Created: AriesHoo on 2017/7/19 10:53
- * Function: RadiusView示例
- * Desc:
+ * @Author: AriesHoo on 2019/4/11 15:32
+ * @E-Mail: AriesHoo@126.com
+ * @Function: RadiusView示例
+ * @Description:
  */
 public class RadiusActivity extends BaseActivity {
 
@@ -35,7 +36,6 @@ public class RadiusActivity extends BaseActivity {
 
     @Override
     protected void setTitleBar() {
-        titleBar.setTitleMainText("RadiusView");
     }
 
     @Override

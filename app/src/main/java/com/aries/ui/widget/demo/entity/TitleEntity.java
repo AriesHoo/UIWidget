@@ -3,9 +3,10 @@ package com.aries.ui.widget.demo.entity;
 import android.app.Activity;
 
 /**
- * Created: AriesHoo on 2017/7/14 9:45
- * Function: 应用实体
- * Desc:
+ * @Author: AriesHoo on 2019/4/11 14:17
+ * @E-Mail: AriesHoo@126.com
+ * @Function:
+ * @Description:
  */
 public class TitleEntity {
 
@@ -13,6 +14,7 @@ public class TitleEntity {
     public String content;
     public Class<? extends Activity> activity;
     public int colorRes;
+    public boolean dialog;
 
     public TitleEntity(String title, String content, Class<? extends Activity> activity) {
         this.title = title;
@@ -24,5 +26,11 @@ public class TitleEntity {
         this.title = title;
         this.content = content;
         this.colorRes = colorRes;
+    }
+
+    public TitleEntity(String title, String content, boolean dialog) {
+        this.title = title;
+        this.content = content;
+        this.dialog = dialog;
     }
 }

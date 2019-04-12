@@ -17,7 +17,7 @@
         <!--是否浮现在activity之上-->
         <item name="android:windowIsFloating">true</item>
         <!--是否半透明-->
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowIsTranslucent">false</item>
         <!--是否有遮盖-->
         <item name="android:windowContentOverlay">@null</item>
         <!--背景是否模糊显示-->

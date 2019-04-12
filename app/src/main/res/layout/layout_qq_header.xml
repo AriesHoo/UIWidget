@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:layout_width="38dp">
+
+    <ImageView
+        android:id="@+id/iv_headQQ"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_centerInParent="true"
+        android:src="@color/colorWhite"/>
+
+    <com.aries.ui.view.radius.RadiusTextView
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="4dp"
+        app:rv_backgroundColor="@android:color/holo_red_dark"
+        app:rv_radiusHalfHeightEnable="true"/>
+</RelativeLayout>

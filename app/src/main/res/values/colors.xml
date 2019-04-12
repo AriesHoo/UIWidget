@@ -11,4 +11,8 @@
     <color name="colorTextBlackLight">#636363</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorWhitePressed">#e8e8e8</color>
+
+    <color name="colorQQBackgroundStart">#4e8cfc</color>
+    <color name="colorQQBackgroundEnd">#33bafc</color>
+    <color name="colorQQBackgroundCenter">#34b0fc</color>
 </resources>

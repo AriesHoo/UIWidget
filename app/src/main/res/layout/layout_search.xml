@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:background="@color/colorBackground">
+
+    <com.aries.ui.view.radius.RadiusEditText
+        android:id="@+id/ret_search"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:drawablePadding="6dp"
+        android:drawableTint="@color/colorLineGray"
+        android:gravity="center_vertical"
+        android:hint="搜索"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="@dimen/dp_text_size_main"
+        app:rv_leftDrawable="@drawable/ic_search_normal"
+        app:rv_leftDrawableHeight="16dp"
+        app:rv_leftDrawableWidth="16dp"
+        app:rv_radius="6dp"
+        app:rv_strokeColor="@color/colorLineGray"
+        app:rv_strokeWidth="@dimen/dp_line_size"/>
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.aries.ui.widget;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -15,12 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aries.ui.helper.navigation.KeyboardHelper;
+import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.ResourceUtil;
+import com.aries.ui.widget.i.NavigationBarControl;
 
 /**
  * @Author: AriesHoo on 2018/7/19 8:46
@@ -32,6 +35,8 @@ import com.aries.ui.util.ResourceUtil;
  * 3、新增控制虚拟导航栏功能
  * 4、2018-4-3 12:51:47 移除控制虚拟导航栏功能
  * 5、2018-7-19 09:02:00 修改点击contentView 父容器逻辑处理
+ * 6、2019-4-11 12:40:03 新增底部虚拟导航栏控制{@link #setNavigationBarControl(NavigationBarControl)}
+ * 修改{@link #afterSetContentView(View)}逻辑
  */
 public class BasisDialog<T extends BasisDialog> extends Dialog {
 
@@ -45,7 +50,12 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     private int mHeight = WindowManager.LayoutParams.WRAP_CONTENT;
     private int mWindowAnimations = -1;
     protected boolean mCanceledOnTouchOutside;
-
+    protected NavigationBarControl mNavigationBarControl;
+    private NavigationViewHelper mNavigationViewHelper;
+    /**
+     * 虚拟导航栏底部View
+     */
+    protected View mNavigationBottomView;
 
     public interface OnTextViewLineListener {
         /**
@@ -63,6 +73,9 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
 
     public BasisDialog(Context context, int themeResId) {
         super(context, themeResId);
+        if (context instanceof Activity) {
+            setOwnerActivity((Activity) context);
+        }
     }
 
     protected int getScreenHeight() {
@@ -88,12 +101,12 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
             mLayoutParams.windowAnimations = mWindowAnimations;
         }
         mWindow.setAttributes(mLayoutParams);
+        mNavigationBottomView = mContentView;
     }
 
     @Override
     public void setContentView(int layoutResID) {
-        mContentView = View.inflate(getContext(), layoutResID, null);
-        super.setContentView(mContentView);
+        setContentView(View.inflate(getContext(), layoutResID, null));
     }
 
     @Override
@@ -118,6 +131,55 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     public void setCanceledOnTouchOutside(boolean cancel) {
         super.setCanceledOnTouchOutside(cancel);
         this.mCanceledOnTouchOutside = cancel;
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mContentView != null) {
+            afterSetContentView(mContentView);
+        }
+        Activity activity = getOwnerActivity();
+        if (activity == null || mNavigationBarControl == null) {
+            return;
+        }
+        mNavigationViewHelper = NavigationViewHelper.with(activity, this)
+                .setLogEnable(BuildConfig.DEBUG)
+                .setControlEnable(true)
+                .setTransEnable(true)
+                .setBottomView(mNavigationBottomView);
+        boolean isInit = mNavigationBarControl.setNavigationBar(this, mNavigationViewHelper, mNavigationBottomView);
+        if (isInit) {
+            mNavigationViewHelper.init();
+        }
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mNavigationViewHelper != null) {
+            mNavigationViewHelper.onDestroy();
+        }
+        mNavigationViewHelper = null;
+    }
+
+    protected void afterSetContentView(View parent) {
+        //当设置点击其它地方dialog可消失需对root的父容器处理
+        if (mCanceledOnTouchOutside) {
+            //设置点击事件防止事件透传至父容器
+            parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            ((ViewGroup) parent.getParent()).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+        }
     }
 
     /**
@@ -188,12 +250,19 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         return backDialog();
     }
 
+    /**
+     * 设置导航栏控制
+     *
+     * @param control
+     * @return
+     */
+    public T setNavigationBarControl(NavigationBarControl control) {
+        this.mNavigationBarControl = control;
+        return backDialog();
+    }
+
     protected void closeKeyboard() {
-        if (mContentView == null) {
-            return;
-        }
-        InputMethodManager imm = (InputMethodManager) mContentView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mContentView.getWindowToken(), 0);
+        KeyboardHelper.closeKeyboard(this);
     }
 
     /**
@@ -224,6 +293,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         protected OnKeyListener mOnKeyListener;
         protected OnCancelListener mOnCancelListener;
         protected OnShowListener mOnShowListener;
+        protected NavigationBarControl mNavigationBarControl;
 
 
         public BasisBuilder(Context context) {
@@ -458,6 +528,17 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         }
 
         /**
+         * 设置导航栏控制
+         *
+         * @param control
+         * @return
+         */
+        public T setNavigationBarControl(NavigationBarControl control) {
+            this.mNavigationBarControl = control;
+            return backBuilder();
+        }
+
+        /**
          * 设置Dialog通用属性
          */
         protected void setDialog() {
@@ -478,6 +559,9 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
             if (mOnShowListener != null) {
                 mDialog.setOnShowListener(mOnShowListener);
             }
+            if (mNavigationBarControl != null) {
+                mDialog.setNavigationBarControl(mNavigationBarControl);
+            }
         }
 
         protected void setRootView() {
@@ -489,31 +573,6 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
             mBackground = getBackground();
             if (mBackground != null) {
                 setViewBackground(mLLayoutRoot, mBackground);
-            }
-        }
-
-        protected void afterSetContentView() {
-            afterSetContentView(mLLayoutRoot);
-        }
-
-        protected void afterSetContentView(View parent) {
-            //当设置点击其它地方dialog可消失需对root的父容器处理
-            if (mCanceledOnTouchOutside) {
-                //设置点击事件防止事件透传至父容器
-                parent.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-                ((ViewGroup) parent.getParent()).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mDialog.mCanceledOnTouchOutside) {
-                            mDialog.dismiss();
-                        }
-                    }
-                });
             }
         }
 

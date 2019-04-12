@@ -17,6 +17,8 @@ import java.lang.reflect.Method;
  * Function: 状态栏工具类(状态栏文字颜色)
  * Description:
  * 1、修改状态栏黑白字 功能逻辑--参考 https://github.com/QMUI/QMUI_Android  QMUIStatusBarHelper类
+ * 2、2019-4-11 10:42:27 新增Activity参数相关的Window参数方法
+ * {@link #setStatusBarDarkMode(Window)} {@link #setStatusBarLightMode(Window)}
  */
 public class StatusBarUtil {
 
@@ -25,44 +27,61 @@ public class StatusBarUtil {
     public static final int STATUS_BAR_TYPE_FLY_ME = 2;
     public static final int STATUS_BAR_TYPE_ANDROID_M = 3;
 
+    public static int setStatusBarLightMode(Activity activity) {
+        if (activity == null) {
+            return -1;
+        }
+        return setStatusBarLightMode(activity.getWindow());
+    }
+
     /**
      * 设置状态栏浅色模式--黑色字体图标，
      *
-     * @param activity
+     * @param window
      * @return
      */
-    public static int setStatusBarLightMode(Activity activity) {
+    public static int setStatusBarLightMode(Window window) {
+        if (window == null) {
+            return -1;
+        }
         int result = STATUS_BAR_TYPE_DEFAULT;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //MIUI 9版本开始状态栏文字颜色恢复为系统原生方案-为防止反复修改先进行6.0方案
-            if (setStatusBarModeForAndroidM(activity.getWindow(), true)) {
+            if (setStatusBarModeForAndroidM(window, true)) {
                 result = STATUS_BAR_TYPE_ANDROID_M;
             }
-            if (setStatusBarModeForMIUI(activity.getWindow(), true)) {
+            if (setStatusBarModeForMIUI(window, true)) {
                 result = STATUS_BAR_TYPE_MI_UI;
-            } else if (setStatusBarModeForFlyMe(activity.getWindow(), true)) {
+            } else if (setStatusBarModeForFlyMe(window, true)) {
                 result = STATUS_BAR_TYPE_FLY_ME;
             }
         }
         return result;
     }
 
+    public static int setStatusBarDarkMode(Activity activity) {
+        if (activity == null) {
+            return -1;
+        }
+        return setStatusBarDarkMode(activity.getWindow());
+    }
+
     /**
      * 设置状态栏深色模式--白色字体图标，
      *
-     * @param activity
+     * @param window
      * @return
      */
-    public static int setStatusBarDarkMode(Activity activity) {
+    public static int setStatusBarDarkMode(Window window) {
         int result = STATUS_BAR_TYPE_DEFAULT;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //MIUI 9版本开始状态栏文字颜色恢复为系统原生方案-为防止反复修改先进行6.0方案
-            if (setStatusBarModeForAndroidM(activity.getWindow(), false)) {
+            if (setStatusBarModeForAndroidM(window, false)) {
                 result = STATUS_BAR_TYPE_ANDROID_M;
             }
-            if (setStatusBarModeForMIUI(activity.getWindow(), false)) {
+            if (setStatusBarModeForMIUI(window, false)) {
                 result = STATUS_BAR_TYPE_MI_UI;
-            } else if (setStatusBarModeForFlyMe(activity.getWindow(), false)) {
+            } else if (setStatusBarModeForFlyMe(window, false)) {
                 result = STATUS_BAR_TYPE_FLY_ME;
             }
         }
