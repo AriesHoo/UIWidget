@@ -26,6 +26,7 @@ import java.lang.ref.WeakReference;
  * @E-Mail: AriesHoo@126.com
  * Function: 沉浸式状态栏控制帮助类
  * Description:
+ * 1、2019-4-15 10:39:33 增加状态栏深色图标及文字颜色api {@link #setStatusBarLightMode(boolean)}支持 MIUI V6及以上、Flyme及Android M以上
  */
 public class StatusViewHelper {
 
@@ -46,6 +47,10 @@ public class StatusViewHelper {
      * 设置activity最顶部View用于是否增加导航栏margin
      */
     private boolean mTopViewMarginEnable;
+    /**
+     * 设置状态栏白底深色文字图标模式
+     */
+    private boolean mStatusBarLightMode;
     /**
      * activity xml设置根布局
      */
@@ -127,6 +132,17 @@ public class StatusViewHelper {
     }
 
     /**
+     * 设置状态栏白底深色文字图标模式 支持 MIUI V6及以上、Flyme及Android M以上
+     *
+     * @param statusBarLightMode
+     * @return
+     */
+    public StatusViewHelper setStatusBarLightMode(boolean statusBarLightMode) {
+        this.mStatusBarLightMode = statusBarLightMode;
+        return this;
+    }
+
+    /**
      * 设置 StatusView背景颜色
      *
      * @param StatusViewColor ColorInt
@@ -194,6 +210,11 @@ public class StatusViewHelper {
             throw new NullPointerException("not exist");
         }
         setControlEnable(mControlEnable);
+        if (mStatusBarLightMode) {
+            StatusBarUtil.setStatusBarLightMode(activity);
+        } else {
+            StatusBarUtil.setStatusBarDarkMode(activity);
+        }
         final Window window = activity.getWindow();
         //透明状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -216,6 +237,7 @@ public class StatusViewHelper {
             }
 
         }
+        StatusBarUtil.fitsNotchScreen(window,mControlEnable);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            // 透明状态栏
 //            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

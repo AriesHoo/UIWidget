@@ -45,10 +45,10 @@ public class TitleEditActivity extends BaseActivity implements KeyboardHelper.On
     @Override
     public boolean onKeyboardVisibilityChanged(Activity activity, boolean isOpen, int heightDiff, int navigationHeight) {
         mTvTip.setText("软键盘开启状态:" + isOpen + ";追加paddingBottom:" + heightDiff + ";虚拟导航栏高度:" + navigationHeight);
-        mTvTip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14f);
+        mTvTip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f);
         mTvTip.getPaint().setFakeBoldText(true);
         int padding = SizeUtil.dp2px(12);
-        mTvTip.setPadding(padding, padding, padding, padding);
+        mTvTip.setPadding(padding, padding, padding, 0);
         return false;
     }
 }

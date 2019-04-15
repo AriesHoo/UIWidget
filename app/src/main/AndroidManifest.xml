@@ -40,16 +40,21 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".module.alert.AlertActivity"
+        <activity
+            android:name=".module.alert.AlertActivity"
             android:label="UIAlertDialog示例"/>
-        <activity android:name=".module.action.ActionSheetActivity"
-                  android:label="UIActionSheetDialog示例"/>
-        <activity android:name=".module.loading.LoadingActivity"
-                  android:label="UIProgressDialog示例"/>
-        <activity android:name=".module.radius.RadiusActivity"
-                  android:label="RadiusView示例"/>
+        <activity
+            android:name=".module.action.ActionSheetActivity"
+            android:label="UIActionSheetDialog示例"/>
+        <activity
+            android:name=".module.loading.LoadingActivity"
+            android:label="UIProgressDialog示例"/>
+        <activity
+            android:name=".module.radius.RadiusActivity"
+            android:label="RadiusView示例"/>
         <activity android:name=".module.title.TitleActivity"/>
-        <activity android:name=".module.title.TitleEditActivity"
+        <activity
+            android:name=".module.title.TitleEditActivity"
             android:label="KeyboardHelper示例"/>
         <activity android:name=".module.title.TitleWithConstraintActivity"/>
         <activity android:name=".module.title.TitleWithCollapsingLayoutActivity"/>

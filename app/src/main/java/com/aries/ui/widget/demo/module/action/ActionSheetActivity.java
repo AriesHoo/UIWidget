@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aries.ui.helper.navigation.NavigationBarUtil;
 import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.StatusBarUtil;
@@ -269,8 +270,10 @@ public class ActionSheetActivity extends BaseActivity implements NavigationBarCo
         DrawableUtil.setDrawableWidthHeight(drawableTop, SizeUtil.getScreenWidth(), SizeUtil.dp2px(0.5f));
         helper.setNavigationViewDrawableTop(drawableTop)
                 .setPlusNavigationViewEnable(isNavigationPlus)
+                .setNavigationBarLightMode(true)
                 .setNavigationViewColor(Color.argb(isTrans() ? 0 : 102, 0, 0, 0))
                 .setNavigationLayoutColor(Color.WHITE);
-        return isNavigation;
+        //导航栏在底部控制才有意义,不然会很丑;开发者自己决定;这里仅供参考
+        return NavigationBarUtil.isNavigationAtBottom(dialog.getWindow()) && isNavigation;
     }
 }

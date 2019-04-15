@@ -81,7 +81,7 @@ public class TitleBarView extends ViewGroup {
     /**
      * 副标题默认size dp
      */
-    private static final float DEFAULT_SUB_TEXT_SIZE = 14;
+    private static final float DEFAULT_SUB_TEXT_SIZE = 12;
     /**
      * 左右padding dp--ToolBar默认16dp
      */
@@ -537,12 +537,13 @@ public class TitleBarView extends ViewGroup {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.getDecorView().setSystemUiVisibility(
-                        mImmersible ? window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN :
+                        mImmersible ? window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |SYSTEM_UI_FLAG_LAYOUT_STABLE:
                                 window.getDecorView().getSystemUiVisibility() ^ View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(!mImmersible ? Color.BLACK : Color.TRANSPARENT);
             }
         }
+        StatusBarUtil.fitsNotchScreen(window,mImmersible);
         setStatusAlpha(immersible ? isTransStatusBar ? 0 : 102 : 255);
         return this;
     }

@@ -81,7 +81,7 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
         mTextView = new TextView(mContext);
         mTextView.setTextColor(ContextCompat.getColor(mContext, R.color.colorTextBlack));
         mTextView.setPadding(padding, padding, padding, padding);
-        mTextView.setLineSpacing(2f, 2f);
+        mTextView.setLineSpacing(1.5f, 1f);
         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.dp_text_size_main));
         mTextView.setBackgroundColor(Color.WHITE);
         mAdapter.addHeaderView(mTextView);

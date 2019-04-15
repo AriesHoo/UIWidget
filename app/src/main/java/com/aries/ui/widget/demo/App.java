@@ -51,7 +51,7 @@ public class App extends MultiDexApplication {
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                Log.i("onActivityCreated", "isNavigationBarExist:" + NavigationBarUtil.hasNavBar(activity));
+                Log.e("onActivityCreated", "isNavigationBarExist:" + NavigationBarUtil.hasNavBar(activity) + ";isNavigationAtBottom:" + NavigationBarUtil.isNavigationAtBottom(activity.getWindow()));
                 new BGASwipeBackHelper(activity, new BGASwipeBackHelper.Delegate() {
                     @Override
                     public boolean isSupportSwipeBack() {
@@ -83,7 +83,7 @@ public class App extends MultiDexApplication {
                         //设置滑动背景
                         .setShadowResId(R.drawable.bga_sbl_shadow)
                         //底部导航条是否悬浮在内容上设置过NavigationViewHelper可以不用设置该属性
-                        .setIsNavigationBarOverlap(true)
+                        .setIsNavigationBarOverlap(NavigationBarUtil.isNavigationAtBottom(activity))
                         .setIsShadowAlphaGradient(true);
             }
 
@@ -117,7 +117,7 @@ public class App extends MultiDexApplication {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
-
+                Log.e("onActivityDestroyed", "isNavigationBarExist:" + NavigationBarUtil.hasNavBar(activity) + ";isNavigationAtBottom:" + NavigationBarUtil.isNavigationAtBottom(activity.getWindow()));
             }
         });
         if (LeakCanary.isInAnalyzerProcess(this)) {

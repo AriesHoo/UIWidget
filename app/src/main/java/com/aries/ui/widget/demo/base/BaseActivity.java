@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.aries.ui.helper.navigation.KeyboardHelper;
+import com.aries.ui.helper.navigation.NavigationBarUtil;
 import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.RomUtil;
@@ -86,7 +87,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         initTitle();
         this.beforeInitView();
         Drawable drawableTop = new ColorDrawable(Color.LTGRAY);
-        DrawableUtil.setDrawableWidthHeight(drawableTop, SizeUtil.getScreenWidth(), SizeUtil.dp2px(0.5f));
+        Log.i("BaseActivity", "height:" + SizeUtil.getScreenHeight() + ";width:" + SizeUtil.getScreenWidth());
+        DrawableUtil.setDrawableWidthHeight(drawableTop,
+                NavigationBarUtil.isNavigationAtBottom(mContext) ? SizeUtil.getScreenWidth() : SizeUtil.dp2px(0.5f),
+                NavigationBarUtil.isNavigationAtBottom(mContext) ? SizeUtil.dp2px(0.5f) : SizeUtil.getScreenHeight());
         mNavigationViewHelper = NavigationViewHelper.with(this)
                 .setLogEnable(BuildConfig.DEBUG)
                 .setControlEnable(true)
@@ -94,6 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setPlusNavigationViewEnable(isTrans())
                 .setControlBottomEditTextEnable(true)
                 .setNavigationViewDrawableTop(drawableTop)
+                .setNavigationBarLightMode(true)
                 .setNavigationViewColor(Color.argb(isTrans() ? 0 : 102, 0, 0, 0))
                 .setNavigationLayoutColor(Color.WHITE)
                 .setBottomView(mContentView);
@@ -189,4 +194,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     private boolean isControlNavigation() {
         return true;
     }
+
+    boolean dark = false;
+
+//    @Override
+//    public void onWindowFocusChanged(boolean hasFocus) {
+//        super.onWindowFocusChanged(hasFocus);
+//        if (hasFocus) {
+//            if (dark) {
+//                NavigationBarUtil.setNavigationBarDarkMode(this);
+//            } else {
+//                NavigationBarUtil.setNavigationBarLightMode(this);
+//            }
+//            dark = !dark;
+//        }
+//    }
 }

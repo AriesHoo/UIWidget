@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Created: AriesHoo on 2017/7/14 9:41
- * Function: 有RecycleView Activity
- * Desc:
+ * @Author: AriesHoo on 2019/4/15 13:26
+ * @E-Mail: AriesHoo@126.com
+ * @Function: 有RecycleView Activity
+ * @Description:
  */
 public abstract class BaseRecycleActivity<T> extends BaseActivity
         implements BaseQuickAdapter.RequestLoadMoreListener {

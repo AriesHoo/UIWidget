@@ -78,4 +78,10 @@ public class TitleFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+    }
+
 }

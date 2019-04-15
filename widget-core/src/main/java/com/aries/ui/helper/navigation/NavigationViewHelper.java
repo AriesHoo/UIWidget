@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aries.ui.util.FindViewUtil;
+import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.widget.R;
 
 import java.lang.ref.WeakReference;
@@ -24,7 +26,7 @@ import java.lang.ref.WeakReference;
 /**
  * @Author: AriesHoo on 2018/11/27 18:14
  * @E-Mail: AriesHoo@126.com
- * Function: 虚拟导航栏控制帮助类
+ * Function: 虚拟导航栏控制帮助类-因导航栏情况过于复杂建议一次Activity/Dialog 只进行一次{@link #init()} 同时建议在竖屏时使用
  * Description:
  * 1、修改NavigationLayoutDrawable默认保持与activity的根布局背景一致
  * 2、2018-2-26 15:56:47 新增setBottomView(View bottomView, boolean enable)用于控制底部View设置padding/margin
@@ -44,6 +46,7 @@ public class NavigationViewHelper {
     private boolean mControlEnable;
     private boolean mTransEnable;
     private boolean mPlusNavigationViewEnable;
+    private boolean mNavigationBarLightMode;
     private boolean mControlBottomEditTextEnable = true;
     private Drawable mNavigationViewDrawableTop;
     private Drawable mNavigationViewDrawable;
@@ -168,6 +171,17 @@ public class NavigationViewHelper {
     }
 
     /**
+     * 设置导航栏图标深色模式-Android O 以上 及MIUI V6以上-Dialog貌似不支持
+     *
+     * @param navigationBarLightMode
+     * @return
+     */
+    public NavigationViewHelper setNavigationBarLightMode(boolean navigationBarLightMode) {
+        this.mNavigationBarLightMode = navigationBarLightMode;
+        return this;
+    }
+
+    /**
      * 设置是否自动控制底部输入框
      *
      * @param controlBottomEditTextEnable
@@ -243,7 +257,7 @@ public class NavigationViewHelper {
     }
 
     /**
-     * 设置最底部--虚拟状态栏上边的View
+     * 设置最底部--虚拟状态栏上边的View 一般用于底部Button,不推荐使用Activity 根布局Margin
      *
      * @param view
      * @param enable 是否设置Margin
@@ -289,6 +303,11 @@ public class NavigationViewHelper {
         final Dialog dialog = mDialog != null ? mDialog.get() : null;
         setControlEnable(mControlEnable);
         final Window window = dialog != null ? dialog.getWindow() : activity.getWindow();
+        if (mNavigationBarLightMode) {
+            NavigationBarUtil.setNavigationBarLightMode(window);
+        } else {
+            NavigationBarUtil.setNavigationBarDarkMode(window);
+        }
         mNavigationHeight = NavigationBarUtil.getNavigationBarHeight(activity);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                 && (mPlusNavigationViewEnable || (!mPlusNavigationViewEnable && mTransEnable))) {
@@ -301,7 +320,7 @@ public class NavigationViewHelper {
                 window.setNavigationBarColor(Color.TRANSPARENT);
             }
         }
-        setNavigationBackground();
+        setNavigationBackground(window);
         if (!mIsInit) {
             if (mControlBottomEditTextEnable) {
                 KeyboardHelper.with(activity, dialog)
@@ -310,15 +329,11 @@ public class NavigationViewHelper {
                         .setEnable();
             }
             addOnGlobalLayoutListener();
+            StatusBarUtil.fitsNotchScreen(window,true);
             mIsInit = true;
         }
         addNavigationBar(window);
-        if (mLayoutNavigation != null) {
-            ViewGroup.LayoutParams params = mLayoutNavigation.getLayoutParams();
-            params.height = mPlusNavigationViewEnable ? mNavigationHeight : 0;
-            mLayoutNavigation.setLayoutParams(params);
-        }
-        log("mBottomView:" + mBottomView + ";mPlusNavigationViewEnable:" + mPlusNavigationViewEnable+";mNavigationBarColor:"+mNavigationBarColor);
+        log("mBottomView:" + mBottomView + ";mPlusNavigationViewEnable:" + mPlusNavigationViewEnable + ";mNavigationBarColor:" + mNavigationBarColor);
         if (mBottomView == null || mPlusNavigationViewEnable) {
             return;
         }
@@ -388,11 +403,6 @@ public class NavigationViewHelper {
         }
     }
 
-    /**
-     * 添加假导航栏
-     *
-     * @param window
-     */
     private void addNavigationBar(Window window) {
         if (!isSupportNavigationBarControl()) {
             return;
@@ -425,7 +435,6 @@ public class NavigationViewHelper {
 
                 //创建假的NavigationView包裹ViewGroup用于设置背景与mContentView一致
                 mLayoutNavigation = linearLayout.findViewById(R.id.fake_navigation_layout);
-                ;
                 if (mLayoutNavigation == null) {
                     mLayoutNavigation = new LinearLayout(mContext);
                     mLayoutNavigation.setId(R.id.fake_navigation_layout);
@@ -434,22 +443,36 @@ public class NavigationViewHelper {
                     ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     mTvNavigation.setId(R.id.fake_navigation_view);
-                    mTvNavigation.setCompoundDrawables(null, mNavigationViewDrawableTop, null, null);
                     mLayoutNavigation.addView(mTvNavigation, params);
-                    linearLayout.addView(mLayoutNavigation,
-                            new ViewGroup.LayoutParams(
-                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                    mNavigationHeight));
+                    linearLayout.addView(mLayoutNavigation);
                 } else {
                     mTvNavigation = mLayoutNavigation.findViewById(R.id.fake_navigation_view);
                 }
-                setNavigationBackground();
+                setNavigationBackground(window);
             }
         }
     }
 
-    private void setNavigationBackground() {
+
+    private void setNavigationBackground(Window window) {
         if (mLayoutNavigation != null) {
+            //根据屏幕旋转角度重新设置宽高
+            int angle = ((WindowManager) window.getDecorView().getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+            int navigationHeight = NavigationBarUtil.getNavigationBarHeight(window);
+            //当旋转270°时导航栏和状态栏在同一边如果是刘海屏
+            navigationHeight += angle == Surface.ROTATION_270 && navigationHeight > 0 ? StatusBarUtil.getStatusBarHeight() : 0;
+            boolean isNavigationAtBottom = NavigationBarUtil.isNavigationAtBottom(window);
+            View child = mLinearLayout.getChildAt(mLinearLayout.indexOfChild(mLayoutNavigation) - 1);
+            //设置排列方式
+            mLinearLayout.setOrientation(isNavigationAtBottom ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
+            mLayoutNavigation.setLayoutParams(
+                    new LinearLayout.LayoutParams(
+                            isNavigationAtBottom ? ViewGroup.LayoutParams.MATCH_PARENT : navigationHeight,
+                            isNavigationAtBottom ? navigationHeight : ViewGroup.LayoutParams.MATCH_PARENT));
+            child.setLayoutParams(new LinearLayout.LayoutParams(
+                    isNavigationAtBottom ? ViewGroup.LayoutParams.MATCH_PARENT : 0,
+                    isNavigationAtBottom ? 0 : ViewGroup.LayoutParams.MATCH_PARENT, 1.0f));
+            mTvNavigation.setCompoundDrawables(isNavigationAtBottom ? null : mNavigationViewDrawableTop, isNavigationAtBottom ? mNavigationViewDrawableTop : null, null, null);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 mLayoutNavigation.setBackground(mNavigationLayoutDrawable);
                 mTvNavigation.setBackground(mNavigationViewDrawable);

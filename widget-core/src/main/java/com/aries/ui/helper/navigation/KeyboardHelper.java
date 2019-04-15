@@ -314,7 +314,11 @@ public class KeyboardHelper {
                     }
                 }
             }
-            log("fakeNavigation:" + NavigationBarUtil.getFakeNavigationBarHeight(activity) + ";navigation:" + NavigationBarUtil.getNavigationBarHeight(activity) + ";diff:" + heightDiff + ";paddingBottom:" + mPaddingBottom);
+            log("fakeNavigation:" + NavigationBarUtil.getFakeNavigationBarHeight(activity) +
+                    ";navigation:" + NavigationBarUtil.getNavigationBarHeight(activity)
+                    + ";diff:" + heightDiff
+                    + ";paddingBottom原始:" + mPaddingBottom
+                    + ";paddingBottom:" + contentView.getPaddingBottom());
         }
     };
 

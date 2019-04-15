@@ -1,5 +1,6 @@
 package com.aries.ui.helper.navigation;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.view.WindowManager;
 
 import com.aries.ui.widget.R;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -27,7 +29,10 @@ import java.lang.reflect.Method;
  * 1、2018-11-9 11:30:44 修改获取虚拟导航栏高度方法增加VIVO及MIUI全面屏判断
  * 2、2018-11-28 13:21:53 新增华为、三星导航栏可动态隐藏显示判断逻辑
  * 3、2018-12-17 10:11:29 新增是否开启全面屏手势方法{@link #isOpenFullScreenGestures(Context)}
- * 4、2019-4-9 14:54:13 新参数Activity有关方法增加对应Window方法{@link #hasNavBar(Window)}
+ * 4、2019-4-9 14:54:13 新增参数Activity有关方法增加对应Window方法{@link #hasNavBar(Window)}
+ * 5、2019-4-15 09:51:42 新增判断导航栏是否位于底部方法{@link #isNavigationAtBottom(Window)}{@link #isNavigationAtBottom(Activity)}
+ * 6、2019-4-15 10:30:13 新增导航栏图标颜色深浅方法{@link #setNavigationBarDarkMode(Window)}{@link #setNavigationBarDarkMode(Activity)}
+ * {@link #setNavigationBarLightMode(Window)} {@link #setNavigationBarLightMode(Activity)}
  */
 public class NavigationBarUtil {
 
@@ -90,7 +95,7 @@ public class NavigationBarUtil {
             return true;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            Log.i("isOpenFull","NavigationBar:"+(Settings.Global.getInt(context.getContentResolver(), NAVIGATION_BAR_IS_MIN, 0)));
+            Log.i("isOpenFull", "NavigationBar:" + (Settings.Global.getInt(context.getContentResolver(), NAVIGATION_BAR_IS_MIN, 0)));
             //华为导航栏隐藏
             if (Settings.Global.getInt(context.getContentResolver(), NAVIGATION_BAR_IS_MIN, 0) == 1) {
                 return true;
@@ -211,6 +216,7 @@ public class NavigationBarUtil {
     public static int getNavigationBarHeight(Window window) {
         //是否横屏
         boolean landscape = Resources.getSystem().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+
         if (hasNavBar(window)) {
             return getInternalDimensionSize(landscape ? NAV_BAR_HEIGHT_LANDSCAPE_RES_NAME : NAV_BAR_HEIGHT_RES_NAME);
         }
@@ -311,5 +317,151 @@ public class NavigationBarUtil {
             return height / width;
         }
         return 0f;
+    }
+
+    @SuppressLint("NewApi")
+    private static float getSmallestWidthDp(Window window) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            window.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+        } else {
+            // TODO this is not correct, but we don't really care pre-kitkat
+            window.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        }
+        float widthDp = metrics.widthPixels / metrics.density;
+        float heightDp = metrics.heightPixels / metrics.density;
+        return Math.min(widthDp, heightDp);
+    }
+
+    public static boolean isNavigationAtBottom(Activity activity) {
+        if (activity == null) {
+            return false;
+        }
+        return isNavigationAtBottom(activity.getWindow());
+    }
+
+    /**
+     * 判断导航栏是否在底部
+     *
+     * @param window
+     * @return
+     */
+    public static boolean isNavigationAtBottom(Window window) {
+        if (window == null) {
+            return false;
+        }
+        boolean mInPortrait = (Resources.getSystem().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
+        float mSmallestWidthDp = getSmallestWidthDp(window);
+        return (mSmallestWidthDp >= 600 || mInPortrait);
+    }
+
+
+    public static final int NAVIGATION_BAR_TYPE_DEFAULT = 0;
+    public static final int NAVIGATION_BAR_TYPE_MI_UI = 1;
+    public static final int NAVIGATION_BAR_TYPE_ANDROID_O = 2;
+
+    public static int setNavigationBarLightMode(Activity activity) {
+        if (activity == null) {
+            return -1;
+        }
+        return setNavigationBarLightMode(activity.getWindow());
+    }
+
+    /**
+     * 设置导航栏栏浅色模式--黑色字体图标，
+     *
+     * @param window
+     * @return
+     */
+    public static int setNavigationBarLightMode(Window window) {
+        if (window == null) {
+            return -1;
+        }
+        int result = NAVIGATION_BAR_TYPE_DEFAULT;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //MIUI 9版本开始状态栏文字颜色恢复为系统原生方案-为防止反复修改先进行6.0方案
+            if (setStatusBarModeForAndroidO(window, true)) {
+                result = NAVIGATION_BAR_TYPE_ANDROID_O;
+            }
+            if (setNavigationBarModeForMIUI(window, true)) {
+                result = NAVIGATION_BAR_TYPE_MI_UI;
+            }
+        }
+        return result;
+    }
+
+    public static int setNavigationBarDarkMode(Activity activity) {
+        if (activity == null) {
+            return -1;
+        }
+        return setNavigationBarDarkMode(activity.getWindow());
+    }
+
+    /**
+     * 设置导航栏深色模式--白色字体图标，
+     *
+     * @param window
+     * @return
+     */
+    public static int setNavigationBarDarkMode(Window window) {
+        int result = NAVIGATION_BAR_TYPE_DEFAULT;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //MIUI 9版本开始状态栏文字颜色恢复为系统原生方案-为防止反复修改先进行6.0方案
+            if (setStatusBarModeForAndroidO(window, false)) {
+                result = NAVIGATION_BAR_TYPE_ANDROID_O;
+            }
+            if (setNavigationBarModeForMIUI(window, false)) {
+                result = NAVIGATION_BAR_TYPE_MI_UI;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 设置MIUI导航栏深色
+     *
+     * @param window   需要设置的窗口
+     * @param darkText 是否把导航栏字体及图标颜色设置为深色
+     * @return boolean 成功执行返回true
+     */
+    private static boolean setNavigationBarModeForMIUI(Window window, boolean darkText) {
+        boolean result = false;
+        if (window != null) {
+            Class clazz = window.getClass();
+            try {
+                int darkModeFlag = 0;
+                Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+                Field field = layoutParams.getField("EXTRA_FLAG_NAVIGATION_BAR_DARK_MODE");
+                darkModeFlag = field.getInt(layoutParams);
+                Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+                if (darkText) {
+                    //状态栏透明且黑色字体
+                    extraFlagField.invoke(window, darkModeFlag, darkModeFlag);
+                } else {
+                    //清除黑色字体
+                    extraFlagField.invoke(window, 0, darkModeFlag);
+                }
+                result = true;
+            } catch (Exception e) {
+
+            }
+        }
+        return result;
+    }
+
+    private static boolean setStatusBarModeForAndroidO(Window window, boolean darkText) {
+        if (window == null) {
+            return false;
+        }
+        boolean result = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int now = window.getDecorView().getSystemUiVisibility();
+            int systemUi = darkText ?
+                    now | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR :
+                    (now & View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR) == View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR ? now ^ View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR : now;
+            window.getDecorView().setSystemUiVisibility(systemUi);
+            result = true;
+        }
+        return result;
     }
 }

@@ -96,7 +96,7 @@
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_editAlert"
                 style="@style/RadiusStyleButton"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/dp_margin"
                 android:text="ShowEditText"/>
         </LinearLayout>
     </ScrollView>

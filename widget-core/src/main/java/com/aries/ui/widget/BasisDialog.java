@@ -23,6 +23,7 @@ import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.ResourceUtil;
+import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.widget.i.NavigationBarControl;
 
 /**
@@ -139,6 +140,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         if (mContentView != null) {
             afterSetContentView(mContentView);
         }
+        StatusBarUtil.fitsNotchScreen(getWindow(),true);
         Activity activity = getOwnerActivity();
         if (activity == null || mNavigationBarControl == null) {
             return;

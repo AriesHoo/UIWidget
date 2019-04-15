@@ -299,6 +299,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
         } else {
             sBarAlpha.setProgress(0);
         }
+        sBtnLine.setChecked(true);
     }
 
     @Override
