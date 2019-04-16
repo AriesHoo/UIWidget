@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aries.ui.util.FindViewUtil;
+import com.aries.ui.util.RomUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.widget.R;
 
@@ -26,7 +27,7 @@ import java.lang.ref.WeakReference;
 /**
  * @Author: AriesHoo on 2018/11/27 18:14
  * @E-Mail: AriesHoo@126.com
- * Function: 虚拟导航栏控制帮助类-因导航栏情况过于复杂建议一次Activity/Dialog 只进行一次{@link #init()} 同时建议在竖屏时使用
+ * Function: 虚拟导航栏控制帮助类-因导航栏情况过于复杂建议一次Activity/Dialog 只进行一次{@link #init()} 同时建议在竖屏时使用能应用内固定竖屏最好
  * Description:
  * 1、修改NavigationLayoutDrawable默认保持与activity的根布局背景一致
  * 2、2018-2-26 15:56:47 新增setBottomView(View bottomView, boolean enable)用于控制底部View设置padding/margin
@@ -320,7 +321,6 @@ public class NavigationViewHelper {
                 window.setNavigationBarColor(Color.TRANSPARENT);
             }
         }
-        setNavigationBackground(window);
         if (!mIsInit) {
             if (mControlBottomEditTextEnable) {
                 KeyboardHelper.with(activity, dialog)
@@ -329,10 +329,11 @@ public class NavigationViewHelper {
                         .setEnable();
             }
             addOnGlobalLayoutListener();
-            StatusBarUtil.fitsNotchScreen(window,true);
+            StatusBarUtil.fitsNotchScreen(window, true);
             mIsInit = true;
         }
         addNavigationBar(window);
+        setNavigationView(window);
         log("mBottomView:" + mBottomView + ";mPlusNavigationViewEnable:" + mPlusNavigationViewEnable + ";mNavigationBarColor:" + mNavigationBarColor);
         if (mBottomView == null || mPlusNavigationViewEnable) {
             return;
@@ -448,19 +449,22 @@ public class NavigationViewHelper {
                 } else {
                     mTvNavigation = mLayoutNavigation.findViewById(R.id.fake_navigation_view);
                 }
-                setNavigationBackground(window);
             }
         }
     }
 
-
-    private void setNavigationBackground(Window window) {
+    /**
+     * 设置假导航栏样式效果
+     *
+     * @param window
+     */
+    private void setNavigationView(Window window) {
         if (mLayoutNavigation != null) {
             //根据屏幕旋转角度重新设置宽高
             int angle = ((WindowManager) window.getDecorView().getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
             int navigationHeight = NavigationBarUtil.getNavigationBarHeight(window);
-            //当旋转270°时导航栏和状态栏在同一边如果是刘海屏
-            navigationHeight += angle == Surface.ROTATION_270 && navigationHeight > 0 ? StatusBarUtil.getStatusBarHeight() : 0;
+            //当旋转270°时导航栏和状态栏在同一边如果是刘海屏--华为系统才会
+            navigationHeight += angle == Surface.ROTATION_270 && navigationHeight > 0 && RomUtil.isEMUI() ? StatusBarUtil.getStatusBarHeight() : 0;
             boolean isNavigationAtBottom = NavigationBarUtil.isNavigationAtBottom(window);
             View child = mLinearLayout.getChildAt(mLinearLayout.indexOfChild(mLayoutNavigation) - 1);
             //设置排列方式
@@ -480,6 +484,21 @@ public class NavigationViewHelper {
                 mLayoutNavigation.setBackgroundDrawable(mNavigationLayoutDrawable);
                 mTvNavigation.setBackgroundDrawable(mNavigationViewDrawable);
             }
+            //获取假状态栏位置--此处是有BUG的
+            int index = mLinearLayout.indexOfChild(mLayoutNavigation);
+            if (!RomUtil.isEMUI() && !isNavigationAtBottom && angle == Surface.ROTATION_270 && index != 0) {
+                ViewGroup.LayoutParams params = mLayoutNavigation.getLayoutParams();
+                mLinearLayout.removeView(mLayoutNavigation);
+                mLinearLayout.addView(mLayoutNavigation, 0, params);
+                mTvNavigation.setCompoundDrawables(null, null, mNavigationViewDrawableTop, null);
+            } else {
+                if (index == 0) {
+                    ViewGroup.LayoutParams params = mLayoutNavigation.getLayoutParams();
+                    mLinearLayout.removeView(mLayoutNavigation);
+                    mLinearLayout.addView(mLayoutNavigation, params);
+                }
+            }
+            log("angle:" + angle);
         }
     }
 
@@ -493,6 +512,9 @@ public class NavigationViewHelper {
         }
     }
 
+    /**
+     * 销毁
+     */
     public void onDestroy() {
         log("onDestroy");
         if (mDecorContentView != null && mDecorGlobalLayoutListener != null) {

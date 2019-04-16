@@ -536,14 +536,18 @@ public class TitleBarView extends ViewGroup {
             //Android 5.1以上
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                window.getDecorView().setSystemUiVisibility(
-                        mImmersible ? window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |SYSTEM_UI_FLAG_LAYOUT_STABLE:
-                                window.getDecorView().getSystemUiVisibility() ^ View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                int now = window.getDecorView().getSystemUiVisibility();
+                int systemUi = mImmersible ?
+                        now | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN :
+                        (now & View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) == View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN ? now ^ View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN : now;
+                window.getDecorView().setSystemUiVisibility(systemUi);
+                if (mImmersible) {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                }
                 window.setStatusBarColor(!mImmersible ? Color.BLACK : Color.TRANSPARENT);
             }
         }
-        StatusBarUtil.fitsNotchScreen(window,mImmersible);
+        StatusBarUtil.fitsNotchScreen(window, mImmersible);
         setStatusAlpha(immersible ? isTransStatusBar ? 0 : 102 : 255);
         return this;
     }
@@ -1876,7 +1880,7 @@ public class TitleBarView extends ViewGroup {
     }
 
     private boolean isNeedStatusBar() {
-        return mStatusBarPlusEnable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        return mImmersible && mStatusBarPlusEnable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
     /**

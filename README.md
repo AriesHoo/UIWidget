@@ -25,29 +25,37 @@
 
 ## 录屏预览
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/widget.png)
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/widget.gif)
 
-[UIAlertDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/statusViewHelper.gif)
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/alert.gif)
-
-[UIActionSheetDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/action.gif)
-
-[UIProgressDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/loading.gif)
-
-[RadiusView](https://github.com/AriesHoo/RadiusView)
-
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/radius.gif)
+[StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)
 
 [TitleBarView](https://github.com/AriesHoo/TitleBarView)
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/title.gif)
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/title.gif)
 
-[KeyboardHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
+[TitleBarView-添加自定义Action](https://github.com/AriesHoo/UIWidget/blob/dev/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleActionActivity.java)
+
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/titleAction.gif)
+
+[UIAlertDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)
+
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/alert.gif)
+
+[UIActionSheetDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)
+
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/action.gif)
+
+[UIProgressDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)
+
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/loading.gif)
+
+[RadiusView](https://github.com/AriesHoo/RadiusView)
+
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/radius.gif)
+
+[KeyboardHelper](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
 
 模拟器软键盘控制
 

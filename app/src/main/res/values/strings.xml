@@ -7,6 +7,11 @@
     二、该功能通过 KeyboardHelper 代理类内部实现 activity.getWindow().getDecorView() 为目标View监听软键盘开启后给View追加paddingBottom以解决问题\n
     三、NavigationViewHelper.setControlBottomEditTextEnable 方法决定是否内部调用KeyboardHelper实现\n
     四、点击非输入框位置关闭软键盘KeyboardHelper.handleAutoCloseKeyboard 具体参考BaseActivity dispatchTouchEvent </string>
+
+    <string name="title_status_view_tip">该功能通过StatusViewHelper帮助类实现\n
+    一、建议一个Activity设置一次(即调用一次init()方法)\n
+    二、示例调用多次init()方法主要为了演示不同场景,开发者实际开发过程不建议多次init().以免出现不可预知问题\n
+    三、推荐在Activity onDestroy() 生命周期调用StatusViewHelper.onDestroy() </string>
     <string-array name="arrays_items_action">
         <item>条目0</item>
         <item>条目1</item>

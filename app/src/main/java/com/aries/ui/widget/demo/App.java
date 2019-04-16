@@ -52,6 +52,7 @@ public class App extends MultiDexApplication {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Log.e("onActivityCreated", "isNavigationBarExist:" + NavigationBarUtil.hasNavBar(activity) + ";isNavigationAtBottom:" + NavigationBarUtil.isNavigationAtBottom(activity.getWindow()));
+
                 new BGASwipeBackHelper(activity, new BGASwipeBackHelper.Delegate() {
                     @Override
                     public boolean isSupportSwipeBack() {

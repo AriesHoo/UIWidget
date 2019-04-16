@@ -166,8 +166,13 @@ public class StatusBarUtil {
     private static boolean setStatusBarModeForAndroidM(Window window, boolean darkText) {
         boolean result = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int systemUi = darkText ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            systemUi = changeStatusBarModeRetainFlag(window, systemUi);
+//            int systemUi = darkText ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+//            systemUi = changeStatusBarModeRetainFlag(window, systemUi);
+//            window.getDecorView().setSystemUiVisibility(systemUi);
+            int now = window.getDecorView().getSystemUiVisibility();
+            int systemUi = darkText ?
+                    now | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR :
+                    (now & View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR) == View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR ? now ^ View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : now;
             window.getDecorView().setSystemUiVisibility(systemUi);
             result = true;
         }

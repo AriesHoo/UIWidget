@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -70,6 +71,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void beforeInitView() {
     }
 
+    /**
+     * @param var1
+     */
     protected abstract void initView(Bundle var1);
 
     @Override
@@ -95,7 +99,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setLogEnable(BuildConfig.DEBUG)
                 .setControlEnable(true)
                 .setTransEnable(isTrans())
-                .setPlusNavigationViewEnable(isTrans())
+                .setPlusNavigationViewEnable(true)
                 .setControlBottomEditTextEnable(true)
                 .setNavigationViewDrawableTop(drawableTop)
                 .setNavigationBarLightMode(true)
@@ -181,8 +185,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(ev);
     }
 
+    /**
+     * EMUI +MIUI +Android O -支持导航栏icon颜色变黑
+     *
+     * @return
+     */
     protected boolean isTrans() {
-        return RomUtil.isEMUI() && (RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0);
+        return (RomUtil.isEMUI() && (RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0)) || RomUtil.isMIUI() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
     /**

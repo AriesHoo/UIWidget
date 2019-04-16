@@ -30,9 +30,23 @@ import java.lang.ref.WeakReference;
  */
 public class StatusViewHelper {
 
+    /**
+     * 设置padding
+     */
     public final static int TAG_SET_STATUS_CONTROL = 0x10000012;
+    /**
+     * 设置margin
+     */
+    public final static int TAG_SET_STATUS_CONTROL_MARGIN = 0x10000013;
     private String TAG = getClass().getSimpleName();
     private WeakReference<Activity> mActivity;
+    /**
+     * activity xml设置根布局
+     */
+    private View mContentView;
+    private LinearLayout mLinearLayout;
+    private LinearLayout mLayoutStatus;
+    private View mViewStatus;
     private boolean mLogEnable;
     private boolean mControlEnable;
     private boolean mTransEnable;
@@ -51,19 +65,8 @@ public class StatusViewHelper {
      * 设置状态栏白底深色文字图标模式
      */
     private boolean mStatusBarLightMode;
-    /**
-     * activity xml设置根布局
-     */
-    private View mContentView;
-    private int mStatusBarColor;
-    private LinearLayout mLinearLayout;
-    private LinearLayout mLayoutStatus;
-    private View mViewStatus;
 
     private StatusViewHelper(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mStatusBarColor = activity.getWindow().getStatusBarColor();
-        }
         mActivity = new WeakReference<>(activity);
         mContentView = ((ViewGroup) activity.getWindow().getDecorView()
                 .findViewById(android.R.id.content)).getChildAt(0);
@@ -96,7 +99,9 @@ public class StatusViewHelper {
     public StatusViewHelper setControlEnable(boolean controlEnable) {
         mControlEnable = controlEnable;
         if (!controlEnable) {
-            setPlusStatusViewEnable(false);
+            setPlusStatusViewEnable(true)
+                    .setStatusLayoutDrawableColor(Color.BLACK)
+                    .setStatusViewColor(Color.BLACK);
         }
         return this;
     }
@@ -174,6 +179,16 @@ public class StatusViewHelper {
     }
 
     /**
+     * 设置假StatusView父ViewGroup背景颜色
+     *
+     * @param colorInt
+     * @return
+     */
+    public StatusViewHelper setStatusLayoutDrawableColor(int colorInt) {
+        return setStatusLayoutDrawable(new ColorDrawable(colorInt));
+    }
+
+    /**
      * 设置假StatusView父ViewGroup背景资源
      *
      * @param StatusLayoutDrawable
@@ -192,6 +207,9 @@ public class StatusViewHelper {
      * @return
      */
     public StatusViewHelper setTopView(View view, boolean enable) {
+        if (mTopView != null) {
+            resetStatusView(mTopView);
+        }
         mTopView = view;
         mTopViewMarginEnable = enable;
         return this;
@@ -210,6 +228,7 @@ public class StatusViewHelper {
             throw new NullPointerException("not exist");
         }
         setControlEnable(mControlEnable);
+        resetStatusView(mTopView);
         if (mStatusBarLightMode) {
             StatusBarUtil.setStatusBarLightMode(activity);
         } else {
@@ -226,86 +245,33 @@ public class StatusViewHelper {
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                window.getDecorView().setSystemUiVisibility(
-                        mControlEnable ? window.getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN :
-                                window.getDecorView().getSystemUiVisibility() ^ View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                int now = window.getDecorView().getSystemUiVisibility();
+                int systemUi = mControlEnable ?
+                        now | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN :
+                        (now & View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) == View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN ? now ^ View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN : now;
+                window.getDecorView().setSystemUiVisibility(systemUi);
+                if (mControlEnable) {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                }
                 window.setStatusBarColor(!mControlEnable ? Color.BLACK : Color.TRANSPARENT);
                 if (!mTransEnable) {
-                    window.setStatusBarColor(Color.argb(102, 0, 0, 0));
+                    window.setStatusBarColor(Color.argb(mControlEnable ? 102 : 0, 0, 0, 0));
                 }
             }
 
         }
-        StatusBarUtil.fitsNotchScreen(window,mControlEnable);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            // 透明状态栏
-//            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-//                    && (mPlusStatusViewEnable || (!mPlusStatusViewEnable && mTransEnable))) {
-//
-//                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-////                window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
-////                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-////                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-//                window.getDecorView().setSystemUiVisibility(window.getDecorView().getSystemUiVisibility()
-//                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-//                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//                if (mTransEnable || mPlusStatusViewEnable) {
-//                    window.setStatusBarColor(Color.TRANSPARENT);
-//                }
-//            }
-//
-//        }
+        StatusBarUtil.fitsNotchScreen(window, mControlEnable);
         addStatusBar(window);
-        if (mLayoutStatus != null) {
-            mLayoutStatus.setVisibility(mPlusStatusViewEnable ? View.VISIBLE : View.GONE);
-        }
-        if (mTopView == null) {
-            return;
-        }
-        mTopView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mTopView.getLayoutParams();
-                //是否处理过topView
-                Object control = mTopView.getTag(TAG_SET_STATUS_CONTROL);
-                boolean isSet = control != null && control instanceof Boolean ? ((Boolean) control) : false;
-                if (mTopViewMarginEnable) {
-                    if (params != null) {
-                        params.topMargin += isSet ? 0 : StatusBarUtil.getStatusBarHeight();
-                        params.topMargin -= !mPlusStatusViewEnable ? 0 : StatusBarUtil.getStatusBarHeight();
-                    }
-                } else {
-                    //默认
-                    if (params != null && params.height >= 0) {
-                        params.height += isSet ? 0 : StatusBarUtil.getStatusBarHeight();
-                        params.height -= !mPlusStatusViewEnable ? 0 : StatusBarUtil.getStatusBarHeight();
-                    }
-                    mTopView.setPadding(
-                            mTopView.getPaddingLeft(),
-                            mTopView.getPaddingTop() + (isSet ? 0 : StatusBarUtil.getStatusBarHeight()),
-                            mTopView.getPaddingRight(),
-                            mTopView.getPaddingBottom());
-                    mTopView.setPadding(
-                            mTopView.getPaddingLeft(),
-                            mTopView.getPaddingTop() - (!mPlusStatusViewEnable ? 0 : StatusBarUtil.getStatusBarHeight()),
-                            mTopView.getPaddingRight(),
-                            mTopView.getPaddingBottom());
-                    log("mTopView:" + mTopView + "设置成功");
-                }
-                mTopView.setTag(TAG_SET_STATUS_CONTROL, !mPlusStatusViewEnable);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mTopView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                } else {
-                    mTopView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                }
-            }
-        });
+        setStatusView();
+        setTopView();
     }
 
+    /**
+     * 添加假状态栏
+     *
+     * @param window
+     */
     private void addStatusBar(Window window) {
-        setStatusView();
         if (!isSupportStatusBarControl()) {
             return;
         }
@@ -324,7 +290,7 @@ public class StatusViewHelper {
                 //创建假的StatusView
                 mViewStatus = new View(mContext);
                 ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, StatusBarUtil.getStatusBarHeight());
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 mViewStatus.setId(R.id.fake_status_view);
                 mLayoutStatus.addView(mViewStatus, params);
                 linearLayout.addView(mLayoutStatus, 0,
@@ -334,11 +300,13 @@ public class StatusViewHelper {
             } else {
                 mViewStatus = mLayoutStatus.findViewById(R.id.fake_status_view);
             }
-            setStatusView();
         }
 
     }
 
+    /**
+     * 设置假状态栏样式
+     */
     private void setStatusView() {
         if (mLayoutStatus != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -348,11 +316,57 @@ public class StatusViewHelper {
                 mLayoutStatus.setBackgroundDrawable(mStatusLayoutDrawable);
                 mViewStatus.setBackgroundDrawable(mStatusViewDrawable);
             }
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewStatus.getLayoutParams();
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mLayoutStatus.getLayoutParams();
             if (params != null) {
                 params.height = isSupportStatusBarControl() && mPlusStatusViewEnable ? StatusBarUtil.getStatusBarHeight() : 0;
             }
         }
+    }
+
+    /**
+     * 设置顶部状态栏效果-padding或margin
+     */
+    private void setTopView() {
+        if (mTopView == null || mPlusStatusViewEnable || !mControlEnable) {
+            return;
+        }
+        mTopView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mTopView.getLayoutParams();
+                //是否处理过topView
+                Object control = mTopView.getTag(TAG_SET_STATUS_CONTROL);
+                boolean isSet = control != null && control instanceof Boolean ? ((Boolean) control) : false;
+                if (mTopViewMarginEnable) {
+                    control = mTopView.getTag(TAG_SET_STATUS_CONTROL_MARGIN);
+                    isSet = control != null && control instanceof Boolean ? ((Boolean) control) : false;
+                    if (params != null) {
+                        params.topMargin += isSet ? 0 : StatusBarUtil.getStatusBarHeight();
+                        mTopView.setLayoutParams(params);
+                    }
+                    log("mTopView:" + mTopView + "设置margin成功:" + control + ";params:" + params);
+                    mTopView.setTag(TAG_SET_STATUS_CONTROL_MARGIN, true);
+                } else {
+                    //默认
+                    if (params != null && params.height >= 0) {
+                        params.height += isSet ? 0 : StatusBarUtil.getStatusBarHeight();
+                    }
+                    mTopView.setPadding(
+                            mTopView.getPaddingLeft(),
+                            mTopView.getPaddingTop() + (isSet ? 0 : StatusBarUtil.getStatusBarHeight()),
+                            mTopView.getPaddingRight(),
+                            mTopView.getPaddingBottom());
+                    log("mTopView:" + mTopView + "设置padding成功:" + control + ";params:" + params);
+                    mTopView.setTag(TAG_SET_STATUS_CONTROL, true);
+                }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    mTopView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    mTopView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+            }
+        });
     }
 
     protected boolean isSupportStatusBarControl() {
@@ -363,5 +377,58 @@ public class StatusViewHelper {
         if (mLogEnable) {
             Log.i(TAG, log);
         }
+    }
+
+    /**
+     * 重置状态
+     */
+    private void resetStatusView(View topView) {
+        if (topView == null) {
+            return;
+        }
+        Object control = topView.getTag(TAG_SET_STATUS_CONTROL);
+        boolean isSet = control != null && control instanceof Boolean ? ((Boolean) control) : false;
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) topView.getLayoutParams();
+        //设置了paddingTop
+        if (isSet) {
+            //默认
+            if (params != null && params.height >= 0) {
+                params.height -= StatusBarUtil.getStatusBarHeight();
+            }
+            topView.setPadding(
+                    topView.getPaddingLeft(),
+                    topView.getPaddingTop() - StatusBarUtil.getStatusBarHeight(),
+                    topView.getPaddingRight(),
+                    topView.getPaddingBottom());
+            log("resetStatusView_padding:" + topView + "恢复成功");
+            topView.setTag(TAG_SET_STATUS_CONTROL, false);
+        }
+        control = topView.getTag(TAG_SET_STATUS_CONTROL_MARGIN);
+        isSet = control != null && control instanceof Boolean ? ((Boolean) control) : false;
+        if (isSet) {
+            if (params != null) {
+                params.topMargin -= StatusBarUtil.getStatusBarHeight();
+            }
+            topView.setTag(TAG_SET_STATUS_CONTROL_MARGIN, false);
+            log("resetStatusView_margin:" + topView + "恢复成功");
+        }
+    }
+
+    /**
+     * 销毁
+     */
+    public void onDestroy() {
+        log("onDestroy");
+        if (mLinearLayout != null) {
+            mLinearLayout.removeAllViews();
+            mLinearLayout = null;
+        }
+        resetStatusView(mTopView);
+        mActivity = null;
+        mContentView = null;
+        mViewStatus = null;
+        mStatusViewDrawable = null;
+        mStatusLayoutDrawable = null;
+        System.gc();
     }
 }

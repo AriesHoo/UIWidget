@@ -9,6 +9,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.aries.ui.helper.status.StatusViewHelper;
+import com.aries.ui.widget.demo.BuildConfig;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
 
@@ -52,6 +53,10 @@ public class StatusViewHelperActivity extends BaseActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mSBtnImmersible.setText(isChecked ? "沉浸" : "不沉浸");
+                mSBtnTrans.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                mSBtnMargin.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                mSBtnPlus.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                mLLayoutAlpha.setVisibility(mSBtnPlus.isChecked() && isChecked ? View.VISIBLE : View.GONE);
                 setStatus();
             }
         });
@@ -77,6 +82,8 @@ public class StatusViewHelperActivity extends BaseActivity {
                 if (isChecked) {
                     mSBtnTrans.setChecked(true);
                 }
+                mSBtnTrans.setVisibility(isChecked ? View.GONE : View.VISIBLE);
+                mSBtnMargin.setVisibility(isChecked ? View.GONE : View.VISIBLE);
                 setStatus();
             }
         });
@@ -108,6 +115,7 @@ public class StatusViewHelperActivity extends BaseActivity {
         mStatusViewHelper.setTopView(mTvTitle, mSBtnMargin.isChecked())
                 .setControlEnable(mSBtnImmersible.isChecked())
                 .setTransEnable(mSBtnTrans.isChecked())
+                .setLogEnable(BuildConfig.DEBUG)
                 .setPlusStatusViewEnable(mLLayoutAlpha.getVisibility() == View.VISIBLE ? mSBtnPlus.isChecked() : false)
                 .setStatusLayoutDrawable(mTvTitle.getBackground())
                 .setStatusViewColor(Color.argb(mSBarAlpha.getProgress(), 0, 0, 0))
@@ -121,5 +129,13 @@ public class StatusViewHelperActivity extends BaseActivity {
                 onBackPressed();
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mStatusViewHelper != null) {
+            mStatusViewHelper.onDestroy();
+        }
+        super.onDestroy();
     }
 }
