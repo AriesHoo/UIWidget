@@ -27,7 +27,7 @@
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/widget.gif)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/statusViewHelper.gif)
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/StatusViewHelper.gif)
 
 [StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)
 
