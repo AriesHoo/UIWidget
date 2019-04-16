@@ -31,44 +31,43 @@
 
 [StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)
 
-[TitleBarView](https://github.com/AriesHoo/TitleBarView)
-
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/title.gif)
 
-[TitleBarView-添加自定义Action](https://github.com/AriesHoo/UIWidget/blob/dev/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleActionActivity.java)
+[TitleBarView](https://github.com/AriesHoo/TitleBarView)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/titleAction.gif)
 
-[UIAlertDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)
+[TitleBarView-添加自定义Action](https://github.com/AriesHoo/UIWidget/blob/dev/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleActionActivity.java)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/alert.gif)
 
-[UIActionSheetDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)
+[UIAlertDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/action.gif)
 
-[UIProgressDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)
+[UIActionSheetDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/loading.gif)
 
-[RadiusView](https://github.com/AriesHoo/RadiusView)
+[UIProgressDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/radius.gif)
 
-[KeyboardHelper](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
+[RadiusView](https://github.com/AriesHoo/UIWidget/blob/dev/app/src/main/java/com/aries/ui/widget/demo/module/radius/RadiusActivity.java)
 
 模拟器软键盘控制
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard01.gif)
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/keyboard01.gif)
 
 华为可隐藏软键盘控制
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard02.gif)
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/keyboard02.gif)
 
 华为全面屏手势控制
 
-![](https://github.com/AriesHoo/UIWidget/blob/master/screenshot/keyboard03.gif)
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/keyboard03.gif)
 
+[KeyboardHelper](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
   
 **Gradle集成**
 
