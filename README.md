@@ -25,6 +25,11 @@
 
 ## 重大更新日志
 
+**特别声明:**
+**1、3.2.7 是最后一个support包版本**
+**2、3.2.7-androidx 为第一个androidx版本 以后版本均为androidx版本注意不要support与androidx冲突**
+**3、多看源码注释及Demo演示,学会自己解决问题**
+
 * 3.2.11
 
     * TitleBarView增加addLeftAction、addCenterAction、addRightAction 重写Api并重新优化撤销沉浸逻辑
