@@ -8,8 +8,8 @@
 [![](https://img.shields.io/badge/简书-AriesHoo-blue.svg)](http://www.jianshu.com/u/a229eee96115)
 <!-- [![GitHub stars](https://img.shields.io/github/stars/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/stargazers) -->
 <!-- [![GitHub forks](https://img.shields.io/github/forks/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/network) -->
+[![](https://img.shields.io/badge/特别声明-3.2.7为最后一个support包版本,3.2.7-androi为第一个androidx包版本注意不要冲突-red.svg)](http://www.jianshu.com/u/a229eee96115)
 
-(https://img.shields.io/badge/特别声明-3.2.7为最后一个support包版本,3.2.7-androi为第一个androidx包版本注意不要冲突-red.svg)
 
 ## 简介：
 
