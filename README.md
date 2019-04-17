@@ -23,6 +23,69 @@
 
 ![Download-github](/apk/qr.png)
 
+## 重大更新日志
+
+* 3.2.11
+
+    * TitleBarView增加addLeftAction、addCenterAction、addRightAction 重写Api并重新优化撤销沉浸逻辑
+    * StatusViewHelper修订Api并增加撤销效果逻辑
+    * NavigationBarUtil 增加导航栏深色图标模式Api
+    * NavigationViewHelper增加Dialog支持配置KeyboardHelper也增加Dialog支持,并优化增加假导航栏逻辑
+    * UIActionSheetDialog增加导航控制监听方法
+    
+* 3.2.7-androidx
+
+    * 3.2.7 更换androidx支持
+    
+* 3.2.7 更新
+      
+    * 3.2.6 beta 的最后一个稳定support版本
+    
+* 3.2.3 更新
+      
+    * 优化:优化UIActionSheetDialog 导航栏控制逻辑 
+    * 优化:新增NavigationViewHelper 设置假View DrawableTop属性
+    * 优化:调整RadiusView Drawable及TextColor、BackgroundColor、StrokeColor 设置逻辑
+
+* 3.2.1 更新
+        
+    * 修复:RadiusView下新增TextView及CheckBox等代理类用于解决泛型错误BUG
+    * 优化:使用AS 3.1.2 + Gradle 4.4进行优化
+    * 优化:增加AlphaViewHelper 按下及不可操作 alpha值通过Style 设置--参考demo Style样式
+    * 优化:去掉默认控制是否可点击控制,调整水波纹效果开启逻辑
+	
+* 3.1.0 更新
+        
+	* 发布正式版本
+	
+* 3.0.0-alpha5 更新
+        
+	* 修改TitleBarView 方法setOutPadding 逻辑以增加左右TextView 点击范围
+	* 修改UIActionSheetDialog 控制Title、Item、Cancel已经CancelMarginTop逻辑方法控制各种形式下背景Drawable
+	
+* 3.0.0-alpha4 更新
+        
+	* 新增BasisDialog控制虚拟导航栏效果的方法-初试
+	* 新增UIActionSheetDialog 控制View是否手指拖拽(通过V4包ViewDragHelper实现)
+	
+* 3.0.0-alpha3 更新
+        
+	* 新增UIActionSheetDialog 设置文本与图片间隔
+	* 删除UIAlertView、UIActionSheetView、UIProgressView及相应的资源文件
+	
+* 3.0.0-alpha 更新
+	* 完整重构整个UI库-拆分库为widget-core(TitleBarView、RadiusView、AlphaView、Helper、UIActionSheetDialog、UIProgressDialog)、widget-alert、widget-collapsing
+	* widget-core新增状态栏控制帮助类[StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)及虚拟导航栏控制帮助类[NavigationViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/NavigationViewHelper.java)
+	* widget-core新增控制View按下透明度变化帮助类[AlphaViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/alpha/AlphaViewHelper.java) 并增加对应常用View控件AlphaTextView、AlphaCheckBox、AlphaRadioButton、AlphaRelativeLayout等基础控件
+	* TitleBarView属性规范并删除部分冗余属性;增加与widget-collapsing库中CollapsingTitleBarLayout配合达到CollapsingToolbarLayout+Toolbar效果参考[TitleWithCollapsingLayoutActivity](https://github.com/AriesHoo/UIWidget/blob/master/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleWithCollapsingLayoutActivity.java)
+	* RadiusView 增加RadiusSwitch并将属性规范并拆分不同的delegate代理类管理
+	* 新增UIActionSheetDialog 添加不同Builder用于替换原有UIActionSheetView控件UIActionSheetView标记为废弃正式版本移除
+	* 新增UIProgressDialog 添加不同Builder用于替换原有UIProgressView控件UIProgressView标记为废弃正式版本移除
+	* 新增UIAlertDialog 添加不同Builder用于替换原有UIAlertView控件UIAlertView标记为废弃正式版本移除
+	
+* 2.0.5 更新
+    * TitleBarView父容器为ConstraintLayout高度测量不准BUG-参考[TitleWithConstraintActivity](https://github.com/AriesHoo/UIWidget/blob/master/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleWithConstraintActivity.java)
+
 ## 录屏预览
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/widget.gif)
@@ -311,69 +374,6 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
                 alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
                 alertDialog.show();
 ```
-
-## 重大更新日志
-
-* 3.2.11
-
-    * TitleBarView增加addLeftAction、addCenterAction、addRightAction 重写Api并重新优化撤销沉浸逻辑
-    * StatusViewHelper修订Api并增加撤销效果逻辑
-    * NavigationBarUtil 增加导航栏深色图标模式Api
-    * NavigationViewHelper增加Dialog支持配置KeyboardHelper也增加Dialog支持,并优化增加假导航栏逻辑
-    * UIActionSheetDialog增加导航控制监听方法
-    
-* 3.2.7-androidx
-
-    * 3.2.7 更换androidx支持
-    
-* 3.2.7 更新
-      
-    * 3.2.6 beta 的最后一个稳定support版本
-    
-* 3.2.3 更新
-      
-    * 优化:优化UIActionSheetDialog 导航栏控制逻辑 
-    * 优化:新增NavigationViewHelper 设置假View DrawableTop属性
-    * 优化:调整RadiusView Drawable及TextColor、BackgroundColor、StrokeColor 设置逻辑
-
-* 3.2.1 更新
-        
-    * 修复:RadiusView下新增TextView及CheckBox等代理类用于解决泛型错误BUG
-    * 优化:使用AS 3.1.2 + Gradle 4.4进行优化
-    * 优化:增加AlphaViewHelper 按下及不可操作 alpha值通过Style 设置--参考demo Style样式
-    * 优化:去掉默认控制是否可点击控制,调整水波纹效果开启逻辑
-	
-* 3.1.0 更新
-        
-	* 发布正式版本
-	
-* 3.0.0-alpha5 更新
-        
-	* 修改TitleBarView 方法setOutPadding 逻辑以增加左右TextView 点击范围
-	* 修改UIActionSheetDialog 控制Title、Item、Cancel已经CancelMarginTop逻辑方法控制各种形式下背景Drawable
-	
-* 3.0.0-alpha4 更新
-        
-	* 新增BasisDialog控制虚拟导航栏效果的方法-初试
-	* 新增UIActionSheetDialog 控制View是否手指拖拽(通过V4包ViewDragHelper实现)
-	
-* 3.0.0-alpha3 更新
-        
-	* 新增UIActionSheetDialog 设置文本与图片间隔
-	* 删除UIAlertView、UIActionSheetView、UIProgressView及相应的资源文件
-	
-* 3.0.0-alpha 更新
-	* 完整重构整个UI库-拆分库为widget-core(TitleBarView、RadiusView、AlphaView、Helper、UIActionSheetDialog、UIProgressDialog)、widget-alert、widget-collapsing
-	* widget-core新增状态栏控制帮助类[StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)及虚拟导航栏控制帮助类[NavigationViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/NavigationViewHelper.java)
-	* widget-core新增控制View按下透明度变化帮助类[AlphaViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/alpha/AlphaViewHelper.java) 并增加对应常用View控件AlphaTextView、AlphaCheckBox、AlphaRadioButton、AlphaRelativeLayout等基础控件
-	* TitleBarView属性规范并删除部分冗余属性;增加与widget-collapsing库中CollapsingTitleBarLayout配合达到CollapsingToolbarLayout+Toolbar效果参考[TitleWithCollapsingLayoutActivity](https://github.com/AriesHoo/UIWidget/blob/master/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleWithCollapsingLayoutActivity.java)
-	* RadiusView 增加RadiusSwitch并将属性规范并拆分不同的delegate代理类管理
-	* 新增UIActionSheetDialog 添加不同Builder用于替换原有UIActionSheetView控件UIActionSheetView标记为废弃正式版本移除
-	* 新增UIProgressDialog 添加不同Builder用于替换原有UIProgressView控件UIProgressView标记为废弃正式版本移除
-	* 新增UIAlertDialog 添加不同Builder用于替换原有UIAlertView控件UIAlertView标记为废弃正式版本移除
-	
-* 2.0.5 更新
-    * TitleBarView父容器为ConstraintLayout高度测量不准BUG-参考[TitleWithConstraintActivity](https://github.com/AriesHoo/UIWidget/blob/master/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleWithConstraintActivity.java)
 
 ## License
 
