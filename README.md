@@ -9,6 +9,8 @@
 <!-- [![GitHub stars](https://img.shields.io/github/stars/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/stargazers) -->
 <!-- [![GitHub forks](https://img.shields.io/github/forks/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/network) -->
 
+(https://img.shields.io/badge/特别声明-3.2.7为最后一个support包版本,3.2.7-androi为第一个androidx包版本注意不要冲突-red.svg)
+
 ## 简介：
 
 一个集成[UIAlertDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)、[UIActionSheetDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)、[UIProgressDialog](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)、[RadiusView](https://github.com/AriesHoo/RadiusView)、[TitleBarView](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/view/title/TitleBarView.java)、
