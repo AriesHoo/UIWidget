@@ -314,6 +314,14 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 
 ## 重大更新日志
 
+* 3.2.11
+
+    * TitleBarView增加addLeftAction、addCenterAction、addRightAction 重写Api并重新优化撤销沉浸逻辑
+    * StatusViewHelper修订Api并增加撤销效果逻辑
+    * NavigationBarUtil 增加导航栏深色图标模式Api
+    * NavigationViewHelper增加Dialog支持配置KeyboardHelper也增加Dialog支持,并优化增加假导航栏逻辑
+    * UIActionSheetDialog增加导航控制监听方法
+    
 * 3.2.7-androidx
 
     * 3.2.7 更换androidx支持
