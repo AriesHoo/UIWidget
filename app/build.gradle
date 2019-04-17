@@ -82,7 +82,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.0+'
     implementation 'com.tencent.bugly:crashreport:2.8.6.0'
     //快速Tab库
-    implementation 'com.github.AriesHoo:TabLayout:1.0.2'
+    implementation 'com.github.AriesHoo:TabLayout:1.0.5'
     //滑动返回Activity
     implementation 'cn.bingoogolapple:bga-swipebacklayout:1.2.0@aar'
 }

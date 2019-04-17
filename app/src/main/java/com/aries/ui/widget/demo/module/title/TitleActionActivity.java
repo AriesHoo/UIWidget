@@ -1,14 +1,18 @@
 package com.aries.ui.widget.demo.module.title;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.aries.ui.view.tab.IndicatorStyle;
 import com.aries.ui.view.tab.SlidingTabLayout;
+import com.aries.ui.view.tab.TextBold;
 import com.aries.ui.view.title.TitleBarView;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
@@ -40,7 +44,6 @@ public class TitleActionActivity extends BaseActivity {
     @BindView(R.id.title_tabTitleAction) TitleBarView mTitleTab;
     @BindView(R.id.vp_contentTitleAction) ViewPager mVpContent;
 
-    private SlidingTabLayout mSlidingTab;
     private List<Fragment> mListFragment = new ArrayList<>();
     private List<String> mListTitle = new ArrayList<>();
 
@@ -92,19 +95,31 @@ public class TitleActionActivity extends BaseActivity {
         margin.rightMargin = SizeUtil.dp2px(10);
         mTitleLoading.addCenterAction(mTitleLoading.new ViewAction(progressBar), 0, margin);
 
-        //中间Tab效果
-        mSlidingTab = (SlidingTabLayout) View.inflate(mContext, R.layout.layout_tab_sliding, null);
-        mTitleTab.addCenterAction(mTitleTab.new ViewAction(mSlidingTab), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        setTab();
+        SlidingTabLayout slidingTabLayout = new SlidingTabLayout(mContext);
+
+        mTitleTab.addCenterAction(mTitleTab.new ViewAction(slidingTabLayout), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        setTab(slidingTabLayout);
+        slidingTabLayout.getDelegate()
+                .setIndicatorColor(ContextCompat.getColor(mContext, R.color.colorTextBlack))
+                .setIndicatorGravity(Gravity.BOTTOM)
+                .setIndicatorHeight(3f)
+                .setIndicatorStyle(IndicatorStyle.NORMAL)
+                .setIndicatorWidthEqualTitle(false)
+                .setTabPadding(SizeUtil.dp2px(6))
+                .setTextBold(TextBold.SELECT)
+                .setTextSelectColor(ContextCompat.getColor(mContext, R.color.colorTextBlack))
+                .setTextUnSelectColor(Color.parseColor("#99333333"))
+                .setTextSelectSize(TypedValue.COMPLEX_UNIT_DIP, 18f)
+                .setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16f);
     }
 
 
-    private void setTab() {
+    private void setTab(SlidingTabLayout slidingTabLayout) {
         for (int i = 0; i < 20; i++) {
             mListFragment.add(TabFragment.newInstance());
             mListTitle.add("Tab" + i);
         }
-        TabLayoutManager.getInstance().setSlidingTabData(this, mSlidingTab, mVpContent, mListTitle, mListFragment);
-        mSlidingTab.setCurrentTab(0);
+        TabLayoutManager.getInstance().setSlidingTabData(this, slidingTabLayout, mVpContent, mListTitle, mListFragment);
+        slidingTabLayout.setCurrentTab(0);
     }
 }
