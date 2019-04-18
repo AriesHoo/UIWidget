@@ -457,7 +457,7 @@ public class NavigationBarUtil {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int now = window.getDecorView().getSystemUiVisibility();
             int systemUi = darkText ?
-                    (now & View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR) == View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR ?now:systemUi|View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR  :
+                    (now & View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR) == View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR ? now : now | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR :
                     (now & View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR) == View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR ? now ^ View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR : now;
             window.getDecorView().setSystemUiVisibility(systemUi);
             result = true;

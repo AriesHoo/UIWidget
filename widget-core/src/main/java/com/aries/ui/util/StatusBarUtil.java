@@ -171,8 +171,8 @@ public class StatusBarUtil {
             //window.getDecorView().setSystemUiVisibility(systemUi);
             int now = window.getDecorView().getSystemUiVisibility();
             int systemUi = darkText ?
-                     now | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR :
-                   (now & View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR) == View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR ? now ^ View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : now;
+                    now | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR :
+                    (now & View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR) == View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR ? now ^ View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : now;
             window.getDecorView().setSystemUiVisibility(systemUi);
             result = true;
         }
