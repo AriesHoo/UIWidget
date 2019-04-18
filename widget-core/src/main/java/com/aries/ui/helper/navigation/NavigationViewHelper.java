@@ -310,15 +310,18 @@ public class NavigationViewHelper {
             NavigationBarUtil.setNavigationBarDarkMode(window);
         }
         mNavigationHeight = NavigationBarUtil.getNavigationBarHeight(activity);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
                 && (mPlusNavigationViewEnable || (!mPlusNavigationViewEnable && mTransEnable))) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            window.getDecorView().setSystemUiVisibility(
-                    window.getDecorView().getSystemUiVisibility()
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            if (mTransEnable || mPlusNavigationViewEnable) {
-                window.setNavigationBarColor(Color.TRANSPARENT);
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+                window.getDecorView().setSystemUiVisibility(
+                        window.getDecorView().getSystemUiVisibility()
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                if (mTransEnable || mPlusNavigationViewEnable) {
+                    window.setNavigationBarColor(Color.TRANSPARENT);
+                }
             }
         }
         if (!mIsInit) {

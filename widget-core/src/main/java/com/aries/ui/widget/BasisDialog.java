@@ -38,6 +38,7 @@ import com.aries.ui.widget.i.NavigationBarControl;
  * 5、2018-7-19 09:02:00 修改点击contentView 父容器逻辑处理
  * 6、2019-4-11 12:40:03 新增底部虚拟导航栏控制{@link #setNavigationBarControl(NavigationBarControl)}
  * 修改{@link #afterSetContentView(View)}逻辑
+ * 7、2019-4-18 11:39:46 修改{@link #backDialog(boolean)}逻辑使其可即时生效
  */
 public class BasisDialog<T extends BasisDialog> extends Dialog {
 
@@ -140,7 +141,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         if (mContentView != null) {
             afterSetContentView(mContentView);
         }
-        StatusBarUtil.fitsNotchScreen(getWindow(),true);
+        StatusBarUtil.fitsNotchScreen(getWindow(), true);
         Activity activity = getOwnerActivity();
         if (activity == null || mNavigationBarControl == null) {
             return;
@@ -194,37 +195,55 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     }
 
     protected T backDialog() {
+        return backDialog(false);
+    }
+
+    protected T backDialog(boolean attributes) {
+        if (attributes && mWindow != null && mLayoutParams != null) {
+            mLayoutParams.width = mWidth;
+            mLayoutParams.height = mHeight;
+            mLayoutParams.gravity = mGravity;
+            // 透明度
+            mLayoutParams.alpha = mAlpha;
+            // 黑暗度
+            mLayoutParams.dimAmount = mDimAmount;
+            if (mWindowAnimations != -1) {
+                // 动画
+                mLayoutParams.windowAnimations = mWindowAnimations;
+            }
+            mWindow.setAttributes(mLayoutParams);
+        }
         return (T) this;
     }
 
     public T setAttributes(WindowManager.LayoutParams params) {
         this.mLayoutParams = params;
-        return backDialog();
+        return backDialog(true);
     }
 
     public T setAlpha(float alpha) {
         mAlpha = alpha;
-        return backDialog();
+        return backDialog(true);
     }
 
     public T setDimAmount(float dimAmount) {
         mDimAmount = dimAmount;
-        return backDialog();
+        return backDialog(true);
     }
 
     public T setGravity(int gravity) {
         mGravity = gravity;
-        return backDialog();
+        return backDialog(true);
     }
 
     public T setWidth(int w) {
         this.mWidth = w;
-        return backDialog();
+        return backDialog(true);
     }
 
     public T setHeight(int h) {
         this.mHeight = h;
-        return backDialog();
+        return backDialog(true);
     }
 
     /**
@@ -235,7 +254,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
      */
     public T setWindowAnimations(int res) {
         this.mWindowAnimations = res;
-        return backDialog();
+        return backDialog(true);
     }
 
     /**

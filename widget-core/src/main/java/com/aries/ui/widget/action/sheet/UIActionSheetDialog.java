@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -52,6 +53,7 @@ import java.util.Map;
  * 9、2018-5-31 16:48:38 删除TranslucentUtil控制导航栏透明度
  * 10、2019-3-11 15:40:52 修改Drawable 设置逻辑避免因Item高度变化适配问题
  * 11、2019-4-11 10:20:43 新增底部导航栏控制相关{@link #onAttachedToWindow()}
+ * 12、2019-4-18 11:32:04 修改{@link GridBuilder.GridAdapter#getView(int, View, ViewGroup)}txt.setLayoutParams 避免5.0以下 崩溃
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
@@ -665,6 +667,8 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
             mGvContainer = new GridView(mContext);
             mGvContainer.setLayoutParams(new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
+
+
             mLLayoutRoot.addView(mGvContainer);
 
             //设置GridView相关属性
@@ -708,7 +712,8 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                 if (convertView == null) {
                     holder = new ViewHolder();
                     AlphaTextView txt = new AlphaTextView(mContext);
-                    txt.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                    // 此处必须为AbsListView否则5.0以下会崩
+                    txt.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.MATCH_PARENT));
                     convertView = txt;
                     holder.textView = txt;
                     convertView.setTag(holder);
