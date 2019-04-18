@@ -380,7 +380,7 @@ public class NavigationBarUtil {
         int result = NAVIGATION_BAR_TYPE_DEFAULT;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //MIUI 9版本开始状态栏文字颜色恢复为系统原生方案-为防止反复修改先进行6.0方案
-            if (setStatusBarModeForAndroidO(window, true)) {
+            if (setNavigationBarModeForAndroidO(window, true)) {
                 result = NAVIGATION_BAR_TYPE_ANDROID_O;
             }
             if (setNavigationBarModeForMIUI(window, true)) {
@@ -407,7 +407,7 @@ public class NavigationBarUtil {
         int result = NAVIGATION_BAR_TYPE_DEFAULT;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //MIUI 9版本开始状态栏文字颜色恢复为系统原生方案-为防止反复修改先进行6.0方案
-            if (setStatusBarModeForAndroidO(window, false)) {
+            if (setNavigationBarModeForAndroidO(window, false)) {
                 result = NAVIGATION_BAR_TYPE_ANDROID_O;
             }
             if (setNavigationBarModeForMIUI(window, false)) {
@@ -449,7 +449,7 @@ public class NavigationBarUtil {
         return result;
     }
 
-    private static boolean setStatusBarModeForAndroidO(Window window, boolean darkText) {
+    private static boolean setNavigationBarModeForAndroidO(Window window, boolean darkText) {
         if (window == null) {
             return false;
         }
@@ -457,7 +457,7 @@ public class NavigationBarUtil {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int now = window.getDecorView().getSystemUiVisibility();
             int systemUi = darkText ?
-                    now | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR :
+                    (now & View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR) == View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR ?now:systemUi|View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR  :
                     (now & View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR) == View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR ? now ^ View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR : now;
             window.getDecorView().setSystemUiVisibility(systemUi);
             result = true;
