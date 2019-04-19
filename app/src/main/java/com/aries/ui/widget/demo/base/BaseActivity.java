@@ -20,6 +20,7 @@ import com.aries.ui.widget.demo.BuildConfig;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.util.AppUtil;
 import com.aries.ui.widget.demo.util.SizeUtil;
+import com.squareup.leakcanary.internal.DisplayLeakActivity;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -98,12 +99,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         mNavigationViewHelper = NavigationViewHelper.with(this)
                 .setLogEnable(BuildConfig.DEBUG)
                 .setControlEnable(true)
-                .setTransEnable(isTrans())
-                .setPlusNavigationViewEnable(true)
+                .setTransEnable(true)
+                .setPlusNavigationViewEnable(isPlusView(this))
+                .setNavigationBarLightMode(isDarkIcon() && isPlusView(this))
                 .setControlBottomEditTextEnable(true)
                 .setNavigationViewDrawableTop(drawableTop)
-                .setNavigationBarLightMode(true)
-                .setNavigationViewColor(Color.argb(isTrans() ? 0 : 102, 0, 0, 0))
+                .setNavigationViewColor(Color.argb(isDarkIcon() && isPlusView(this) ? 0 : 102, 0, 0, 0))
                 .setNavigationLayoutColor(Color.WHITE)
                 .setBottomView(mContentView);
         beforeControlNavigation(mNavigationViewHelper);
@@ -204,18 +205,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    boolean dark = false;
+    /**
+     * 是否全透明-华为4.1以上、小米V6以上及Android O以上版本
+     * 可根据导航栏位置颜色设置导航图标颜色
+     *
+     * @return
+     */
+    protected boolean isDarkIcon() {
+        return (RomUtil.isEMUI() && (RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0))
+                || RomUtil.isMIUI() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
 
-//    @Override
-//    public void onWindowFocusChanged(boolean hasFocus) {
-//        super.onWindowFocusChanged(hasFocus);
-//        if (hasFocus) {
-//            if (dark) {
-//                NavigationBarUtil.setNavigationBarDarkMode(this);
-//            } else {
-//                NavigationBarUtil.setNavigationBarLightMode(this);
-//            }
-//            dark = !dark;
-//        }
-//    }
+    /**
+     * 是否增加假导航栏占位
+     *
+     * @param activity
+     * @return
+     */
+    protected boolean isPlusView(Activity activity) {
+        return !(activity instanceof DisplayLeakActivity);
+    }
+
 }
