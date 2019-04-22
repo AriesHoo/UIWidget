@@ -22,8 +22,10 @@ import android.widget.TextView;
 import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
+import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.util.StatusBarUtil;
+import com.aries.ui.view.DragLayout;
 import com.aries.ui.widget.i.NavigationBarControl;
 
 /**
@@ -39,6 +41,7 @@ import com.aries.ui.widget.i.NavigationBarControl;
  * 6、2019-4-11 12:40:03 新增底部虚拟导航栏控制{@link #setNavigationBarControl(NavigationBarControl)}
  * 修改{@link #afterSetContentView(View)}逻辑
  * 7、2019-4-18 11:39:46 修改{@link #backDialog(boolean)}逻辑使其可即时生效
+ * 8、2019-4-22 16:50:33 新增{@link #setDragEnable(boolean)}手指跟随滑动关闭功能
  */
 public class BasisDialog<T extends BasisDialog> extends Dialog {
 
@@ -52,6 +55,10 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     private int mHeight = WindowManager.LayoutParams.WRAP_CONTENT;
     private int mWindowAnimations = -1;
     protected boolean mCanceledOnTouchOutside;
+    /**
+     * 是否允许手指拖动关闭
+     */
+    protected boolean mDragEnable = false;
     protected NavigationBarControl mNavigationBarControl;
     private NavigationViewHelper mNavigationViewHelper;
     /**
@@ -103,6 +110,9 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
             mLayoutParams.windowAnimations = mWindowAnimations;
         }
         mWindow.setAttributes(mLayoutParams);
+        if (mDragEnable) {
+            setDragEnable(true);
+        }
         mNavigationBottomView = mContentView;
     }
 
@@ -113,8 +123,11 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
 
     @Override
     public void setContentView(View view) {
-        super.setContentView(view);
-        this.mContentView = view;
+        ViewGroup.LayoutParams params = view != null ? view.getLayoutParams() : null;
+        if (params == null) {
+            params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+        setContentView(view, params);
     }
 
     @Override
@@ -258,6 +271,42 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
     }
 
     /**
+     * 是否开启手指拖拽
+     *
+     * @param enable
+     * @return
+     */
+    public T setDragEnable(boolean enable) {
+        this.mDragEnable = enable;
+        if (mContentView != null) {
+            DragLayout dragLayout = FindViewUtil.getTargetView(mContentView, DragLayout.class);
+            if (dragLayout != null) {
+                dragLayout.setDragEnable(mDragEnable);
+            } else {
+                ViewGroup group = (ViewGroup) mContentView.getParent();
+                group.removeView(mContentView);
+                dragLayout = new DragLayout(getContext());
+                dragLayout.addView(mContentView);
+                dragLayout.setDragEnable(mDragEnable);
+                dragLayout.setOnDragListener(new DragLayout.OnDragListener() {
+                    @Override
+                    public void onClosed() {
+                        dismiss();
+                    }
+
+                    @Override
+                    public void onOpened() {
+
+                    }
+                });
+                mContentView = dragLayout;
+                group.addView(dragLayout);
+            }
+        }
+        return backDialog();
+    }
+
+    /**
      * 设置ContentView margin属性
      *
      * @return
@@ -309,6 +358,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
 
         protected boolean mCancelable = true;
         protected boolean mCanceledOnTouchOutside = true;
+        protected boolean mDragEnable = false;
         protected OnTextViewLineListener mOnTextViewLineListener;
         protected OnDismissListener mOnDismissListener;
         protected OnKeyListener mOnKeyListener;
@@ -489,6 +539,18 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
         }
 
         /**
+         * 是否开启手指拖拽--通过添加
+         *
+         * @param enable
+         * @return
+         */
+
+        public T setDragEnable(boolean enable) {
+            this.mDragEnable = enable;
+            return backBuilder();
+        }
+
+        /**
          * 设置TextView 文本行数监听
          * {@link TextView#post(Runnable)}
          *
@@ -566,6 +628,7 @@ public class BasisDialog<T extends BasisDialog> extends Dialog {
             if (mDialog == null) {
                 return;
             }
+            mDialog.setDragEnable(mDragEnable);
             mDialog.setCancelable(mCancelable);
             mDialog.setCanceledOnTouchOutside(mCanceledOnTouchOutside);
             if (mOnDismissListener != null) {

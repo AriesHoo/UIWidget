@@ -104,7 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setNavigationBarLightMode(isDarkIcon() && isPlusView(this))
                 .setControlBottomEditTextEnable(true)
                 .setNavigationViewDrawableTop(drawableTop)
-                .setNavigationViewColor(Color.argb(isDarkIcon() && isPlusView(this) ? 0 : 102, 0, 0, 0))
+                .setNavigationViewColor(Color.argb(isDarkIcon() && isPlusView(this) ? 0 : 60, 0, 0, 0))
                 .setNavigationLayoutColor(Color.WHITE)
                 .setBottomView(mContentView);
         beforeControlNavigation(mNavigationViewHelper);
@@ -133,7 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         //无法设置白底黑字
         if (type <= 0) {
             //5.0 半透明模式alpha-102
-            titleBar.setStatusAlpha(102);
+            titleBar.setStatusAlpha(60);
         }
         titleBar.setTitleMainText(getTitle());
         titleBar.setOnLeftTextClickListener(new View.OnClickListener() {
@@ -184,15 +184,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean dispatchTouchEvent(MotionEvent ev) {
         KeyboardHelper.handleAutoCloseKeyboard(true, getCurrentFocus(), ev, this);
         return super.dispatchTouchEvent(ev);
-    }
-
-    /**
-     * EMUI +MIUI +Android O -支持导航栏icon颜色变黑
-     *
-     * @return
-     */
-    protected boolean isTrans() {
-        return (RomUtil.isEMUI() && (RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0)) || RomUtil.isMIUI() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
     /**

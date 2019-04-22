@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.aries.ui.helper.navigation.NavigationBarUtil;
 import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
+import com.aries.ui.util.RomUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.view.title.TitleBarView;
@@ -219,9 +220,10 @@ public class ActionSheetActivity extends BaseActivity implements NavigationBarCo
                         .addItem("分享短信", R.drawable.ic_more_operation_share_chat)
                         .setNavigationBarControl(isNavigation ? ActionSheetActivity.this : null)
                         //设置手指拖拽
-                        .setDragEnable(true)
+//                        .setDragEnable(true)
                         .setTextDrawablePadding(SizeUtil.dp2px(28))
                         .create()
+                        .setDragEnable(true)
                         .setDimAmount(isBackDim ? 0.6f : 0f);
                 sheetDialog.getListView().setPadding(0, SizeUtil.dp2px(10), 0, SizeUtil.dp2px(10));
                 sheetDialog.show();
@@ -271,9 +273,13 @@ public class ActionSheetActivity extends BaseActivity implements NavigationBarCo
         helper.setNavigationViewDrawableTop(drawableTop)
                 .setPlusNavigationViewEnable(isNavigationPlus)
                 .setNavigationBarLightMode(true)
-                .setNavigationViewColor(Color.argb(isTrans() ? 0 : 102, 0, 0, 0))
+                .setNavigationViewColor(Color.argb(isDialogDarkIcon() ? 0 : 60, 0, 0, 0))
                 .setNavigationLayoutColor(Color.WHITE);
         //导航栏在底部控制才有意义,不然会很丑;开发者自己决定;这里仅供参考
         return NavigationBarUtil.isNavigationAtBottom(dialog.getWindow()) && isNavigation;
+    }
+
+    protected boolean isDialogDarkIcon() {
+        return (RomUtil.isEMUI() && (RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0));
     }
 }

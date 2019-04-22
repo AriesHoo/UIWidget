@@ -25,7 +25,6 @@ import android.widget.TextView;
 
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.FindViewUtil;
-import com.aries.ui.view.DragLayout;
 import com.aries.ui.view.alpha.AlphaTextView;
 import com.aries.ui.widget.BasisDialog;
 import com.aries.ui.widget.R;
@@ -54,6 +53,7 @@ import java.util.Map;
  * 10、2019-3-11 15:40:52 修改Drawable 设置逻辑避免因Item高度变化适配问题
  * 11、2019-4-11 10:20:43 新增底部导航栏控制相关{@link #onAttachedToWindow()}
  * 12、2019-4-18 11:32:04 修改{@link GridBuilder.GridAdapter#getView(int, View, ViewGroup)}txt.setLayoutParams 避免5.0以下 崩溃
+ * 13、2019-4-22 16:51:54 将view拖拽关闭交互效果移至BasisDialog{@link Builder#setDragEnable(boolean)}
  */
 public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
@@ -71,6 +71,14 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
 
     public UIActionSheetDialog(Context context) {
         super(context, R.style.ActionSheetViewDialogStyle);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (mContentView != null && mContentView.findViewById(R.id.lLayout_rootActionSheetDialog) != null) {
+            mNavigationBottomView = mContentView.findViewById(R.id.lLayout_rootActionSheetDialog);
+        }
     }
 
     /**
@@ -758,7 +766,6 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
         protected Drawable mSingleDrawable;
         protected Drawable mSinglePressedDrawable;
 
-        protected boolean mDragEnable = false;
         protected int mMarginTop;
         protected List<SheetItem> mListItem;
 
@@ -808,17 +815,6 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
                     .setItemsMinHeight(dp2px(45))
                     .setTextDrawablePadding(dp2px(12))
                     .setPadding(0);
-        }
-
-        /**
-         * 是否开启手指拖拽
-         *
-         * @param enable
-         * @return
-         */
-        public T setDragEnable(boolean enable) {
-            this.mDragEnable = enable;
-            return backBuilder();
         }
 
         /**
@@ -1292,30 +1288,16 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
          */
         private View createContentView() {
             createDrawable();
-            DragLayout dragLayout = new DragLayout(mContext);
             mLLayoutRoot = new LinearLayout(mContext);
             mLLayoutRoot.setId(R.id.lLayout_rootActionSheetDialog);
             mLLayoutRoot.setOrientation(LinearLayout.VERTICAL);
             mLLayoutRoot.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             mAdapter = mAdapter == null ? getDefaultAdapter() : mAdapter;
-            dragLayout.addView(mLLayoutRoot);
-            dragLayout.setDragEnable(mDragEnable);
-            dragLayout.setOnDragListener(new DragLayout.OnDragListener() {
-                @Override
-                public void onClosed() {
-                    mDialog.dismiss();
-                }
-
-                @Override
-                public void onOpened() {
-
-                }
-            });
             setRootView();
             createTitle();
             mViewItem = createItemView();
             createCancel();
-            return dragLayout;
+            return mLLayoutRoot;
         }
 
         /**
@@ -1448,14 +1430,6 @@ public class UIActionSheetDialog extends BasisDialog<UIActionSheetDialog> {
         protected static class ViewHolder {
             ImageView imageView;
             TextView textView;
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (mContentView != null && mContentView.findViewById(R.id.lLayout_rootActionSheetDialog) != null) {
-            mNavigationBottomView = mContentView.findViewById(R.id.lLayout_rootActionSheetDialog);
         }
     }
 }

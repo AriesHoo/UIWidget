@@ -33,8 +33,6 @@ import com.aries.ui.view.alpha.AlphaTextView;
 import com.aries.ui.view.title.util.ViewGroupUtils;
 import com.aries.ui.widget.R;
 
-import androidx.core.graphics.drawable.DrawableCompat;
-
 /**
  * @Author: AriesHoo on 2018/7/19 10:21
  * @E-Mail: AriesHoo@126.com
@@ -998,24 +996,11 @@ public class TitleBarView extends ViewGroup {
         for (Drawable item : drawables) {
             if (item != null) {
                 item = item.mutate();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    try {
-                        if (tint != null) {
-                            DrawableCompat.setTintList(item, tint);
-                        }
-                        if (tintMode != null) {
-                            DrawableCompat.setTintMode(item, tintMode);
-                        }
-                    } catch (Exception e) {
-                        if (tint != null) {
-                            item = item.mutate();
-                            item.setColorFilter(tint.getDefaultColor(), tintMode != null ? tintMode : PorterDuff.Mode.SRC_ATOP);
-                        }
-                    }
-                } else {
-                    if (tint != null) {
-                        item.setColorFilter(tint.getDefaultColor(), tintMode != null ? tintMode : PorterDuff.Mode.SRC_ATOP);
-                    }
+                if (tint != null) {
+                    DrawableUtil.setTintDrawable(item, tint);
+                }
+                if (tintMode != null) {
+                    DrawableUtil.setTintMode(item, tintMode, tint != null ? tint.getDefaultColor() : Color.BLACK);
                 }
             }
         }

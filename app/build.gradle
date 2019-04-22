@@ -62,13 +62,13 @@ dependencies {
     //只包含常用(TitleBarView、RadiusView、StatusViewHelper、NavigationViewHelper)
 //    implementation project(':widget-core')
     //TitleBarView+CollapsingTitleBarLayout实现CollapsingToolbarLayout+Toolbar效果
-//    implementation project(':widget-collapsing')
+    implementation project(':widget-collapsing')
     //UIAlertView
-//    implementation project(':widget-alert')
+    implementation project(':widget-alert')
 
-    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.12'
-    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.12'
-    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.12'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.12'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.12'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.12'
 
     //图片加载
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
