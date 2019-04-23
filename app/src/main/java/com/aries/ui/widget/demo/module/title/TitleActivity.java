@@ -76,7 +76,11 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     @Override
     protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
         super.beforeControlNavigation(navigationHelper);
-        navigationHelper.setBottomView(mRecyclerView, true);
+        navigationHelper.setBottomView(mRecyclerView)
+                .setPlusNavigationViewEnable(!isDarkIcon());
+        if (isDarkIcon()) {
+            mRecyclerView.setBackgroundColor(Color.WHITE);
+        }
     }
 
     @Override
