@@ -16,6 +16,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.view.radius.RadiusEditText;
 import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.widget.BasisDialog;
@@ -136,7 +137,8 @@ public class AlertActivity extends BaseActivity {
         sBarNum.setProgress(1);
     }
 
-    @OnClick({R.id.rtv_showAlert, R.id.rtv_showQqAlert, R.id.rtv_showAllAlert, R.id.rtv_editAlert})
+    @OnClick({R.id.rtv_showAlert, R.id.rtv_showQqAlert, R.id.rtv_showAllAlert, R.id.rtv_editAlert
+            , R.id.rtv_fragmentAlert})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rtv_showAlert:
@@ -381,7 +383,12 @@ public class AlertActivity extends BaseActivity {
                         .setGravity(Gravity.BOTTOM)
                         .show();
                 //决定是否自动弹出软键盘
-                editText.requestFocus();
+                KeyboardHelper.openKeyboard(editText);
+                break;
+            case R.id.rtv_fragmentAlert:
+                new AlertDialogFragment().show(getSupportFragmentManager(),"AlertDialogFragment");
+                break;
+            default:
                 break;
 
         }

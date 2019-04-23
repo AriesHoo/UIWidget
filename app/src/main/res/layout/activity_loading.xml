@@ -65,8 +65,13 @@
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showMaterialLoading"
                 style="@style/RadiusStyleButton"
-                android:layout_marginBottom="@dimen/dp_margin"
                 android:text="ShowMaterialStyle"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_showFragmentLoading"
+                style="@style/RadiusStyleButton"
+                android:layout_marginBottom="@dimen/dp_margin"
+                android:text="ShowDialogFragment"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

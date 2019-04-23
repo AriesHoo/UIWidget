@@ -87,7 +87,8 @@ public class LoadingActivity extends BaseActivity {
         sBtnBack.setChecked(true);
     }
 
-    @OnClick({R.id.rtv_showLoading, R.id.rtv_showWeiBoLoading, R.id.rtv_showWeiXinLoading, R.id.rtv_showMaterialLoading})
+    @OnClick({R.id.rtv_showLoading, R.id.rtv_showWeiBoLoading, R.id.rtv_showWeiXinLoading,
+            R.id.rtv_showMaterialLoading, R.id.rtv_showFragmentLoading})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rtv_showLoading:
@@ -124,6 +125,11 @@ public class LoadingActivity extends BaseActivity {
                         .create()
                         .setDimAmount(isBackDim ? 0.6f : 0f)
                         .show();
+                break;
+            case R.id.rtv_showFragmentLoading:
+                new ProgressDialogFragment().show(getSupportFragmentManager(),"ProgressDialogFragment");
+                break;
+            default:
                 break;
         }
     }

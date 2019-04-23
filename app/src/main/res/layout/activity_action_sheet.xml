@@ -83,8 +83,13 @@
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_showGridActionSheet"
                 style="@style/RadiusStyleButton"
-                android:layout_marginBottom="12dp"
                 android:text="Grid风格"/>
+
+            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_showFragmentActionSheet"
+                style="@style/RadiusStyleButton"
+                android:layout_marginBottom="@dimen/dp_margin"
+                android:text="DialogFragment"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
