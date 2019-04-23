@@ -140,7 +140,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
     @Override
     protected void initView(Bundle bundle) {
         //背景高亮
-        drawerRoot.setScrimColor(Color.argb(30, 0, 0, 0));
+        drawerRoot.setScrimColor(Color.argb(10, 0, 0, 0));
         //海拔高度
         drawerRoot.setDrawerElevation(40);
         GlideManager.loadCircleImg("https://avatars3.githubusercontent.com/u/19605922?v=4&s=460", ivHead);
