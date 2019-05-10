@@ -177,7 +177,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
         list.add(new TitleEntity("切换TitleBarView颜色主题", "点击切换主题", true));
         mAdapter.setHeaderView(vHeader);
         mAdapter.setNewData(list);
-        ViewUtil.getInstance().setViewHeight(fLayoutDrawer, (int) (getResources().getDimension(R.dimen.dp_drawer_header)) + TitleBarView.getStatusBarHeight());
+        ViewUtil.getInstance().setViewHeight(fLayoutDrawer, (int) (getResources().getDimension(R.dimen.dp_drawer_header)) + StatusBarUtil.getStatusBarHeight());
         mListTheme.add(new TitleEntity("白色主题", "点击切换白色主题", android.R.color.white));
         mListTheme.add(new TitleEntity("红色主题", "点击切换红色主题", android.R.color.holo_red_light));
         mListTheme.add(new TitleEntity("橙色主题", "点击切换橙色主题", android.R.color.holo_orange_light));

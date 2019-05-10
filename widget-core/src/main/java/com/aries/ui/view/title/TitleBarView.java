@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.DrawableUtil;
+import com.aries.ui.util.NotchUtil;
 import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.alpha.AlphaImageView;
@@ -57,6 +58,7 @@ import com.aries.ui.widget.R;
  * 17、2019-4-10 15:29:00 新增左边、中间、右边布局全部Api对应ViewGroup addView
  * {@link #addLeftAction(Action, int, LayoutParams)}{@link #addCenterAction(Action, int, LayoutParams)}{@link #addRightAction(Action, int, LayoutParams)}
  * 18、2019-4-12 10:19:16 修改{@link #setImmersible(Activity, boolean, boolean, boolean)}逻辑以达到真正意义上撤销沉浸功能
+ * 19、2019-5-10 17:27:26 新增刘海屏适配{@link NotchUtil}
  */
 public class TitleBarView extends ViewGroup {
 
@@ -364,7 +366,7 @@ public class TitleBarView extends ViewGroup {
      */
     private void setViewAttributes(final Context context) {
         mScreenWidth = getMeasuredWidth();
-        mStatusBarHeight = getStatusBarHeight();
+        mStatusBarHeight = getNeedStatusBarHeight();
         if (context instanceof Activity) {
             setImmersible((Activity) context, mImmersible);
             if (mStatusBarLightMode) {
@@ -1847,7 +1849,9 @@ public class TitleBarView extends ViewGroup {
      * @return
      */
     private int getNeedStatusBarHeight() {
-        return isNeedStatusBar() ? getStatusBarHeight() : 0;
+        int status = StatusBarUtil.getStatusBarHeight();
+        int safe = NotchUtil.getSafeInsetTop(this);
+        return isNeedStatusBar() ? status >= safe ? status : safe : 0;
     }
 
     /**
@@ -1868,6 +1872,7 @@ public class TitleBarView extends ViewGroup {
      *
      * @return
      */
+    @Deprecated
     public static int getStatusBarHeight() {
         return StatusBarUtil.getStatusBarHeight();
     }

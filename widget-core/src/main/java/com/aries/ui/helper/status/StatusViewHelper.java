@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.FindViewUtil;
+import com.aries.ui.util.NotchUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.widget.R;
 
@@ -27,6 +28,7 @@ import java.lang.ref.WeakReference;
  * Function: 沉浸式状态栏控制帮助类
  * Description:
  * 1、2019-4-15 10:39:33 增加状态栏深色图标及文字颜色api {@link #setStatusBarLightMode(boolean)}支持 MIUI V6及以上、Flyme及Android M以上
+ * 2、2019-5-10 17:27:26 新增刘海屏适配{@link NotchUtil}
  */
 public class StatusViewHelper {
 
@@ -314,9 +316,15 @@ public class StatusViewHelper {
             }
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mLayoutStatus.getLayoutParams();
             if (params != null) {
-                params.height = isSupportStatusBarControl() && mPlusStatusViewEnable ? StatusBarUtil.getStatusBarHeight() : 0;
+                params.height = isSupportStatusBarControl() && mPlusStatusViewEnable ? getNeedTop(mLayoutStatus) : 0;
             }
         }
+    }
+
+    private int getNeedTop(View view) {
+        int status = StatusBarUtil.getStatusBarHeight();
+        int safe = NotchUtil.getSafeInsetTop(view);
+        return isSupportStatusBarControl() ? status >= safe ? status : safe : 0;
     }
 
     /**
@@ -337,7 +345,7 @@ public class StatusViewHelper {
                     control = mTopView.getTag(TAG_SET_STATUS_CONTROL_MARGIN);
                     isSet = control != null && control instanceof Boolean ? ((Boolean) control) : false;
                     if (params != null) {
-                        params.topMargin += isSet ? 0 : StatusBarUtil.getStatusBarHeight();
+                        params.topMargin += isSet ? 0 : getNeedTop(mTopView);
                         mTopView.setLayoutParams(params);
                     }
                     log("mTopView:" + mTopView + "设置margin成功:" + control + ";params:" + params);
@@ -345,11 +353,11 @@ public class StatusViewHelper {
                 } else {
                     //默认
                     if (params != null && params.height >= 0) {
-                        params.height += isSet ? 0 : StatusBarUtil.getStatusBarHeight();
+                        params.height += isSet ? 0 : getNeedTop(mTopView);
                     }
                     mTopView.setPadding(
                             mTopView.getPaddingLeft(),
-                            mTopView.getPaddingTop() + (isSet ? 0 : StatusBarUtil.getStatusBarHeight()),
+                            mTopView.getPaddingTop() + (isSet ? 0 : getNeedTop(mTopView)),
                             mTopView.getPaddingRight(),
                             mTopView.getPaddingBottom());
                     log("mTopView:" + mTopView + "设置padding成功:" + control + ";params:" + params);
@@ -389,11 +397,11 @@ public class StatusViewHelper {
         if (isSet) {
             //默认
             if (params != null && params.height >= 0) {
-                params.height -= StatusBarUtil.getStatusBarHeight();
+                params.height -= getNeedTop(topView);
             }
             topView.setPadding(
                     topView.getPaddingLeft(),
-                    topView.getPaddingTop() - StatusBarUtil.getStatusBarHeight(),
+                    topView.getPaddingTop() - getNeedTop(topView),
                     topView.getPaddingRight(),
                     topView.getPaddingBottom());
             log("resetStatusView_padding:" + topView + "恢复成功");
@@ -403,7 +411,7 @@ public class StatusViewHelper {
         isSet = control != null && control instanceof Boolean ? ((Boolean) control) : false;
         if (isSet) {
             if (params != null) {
-                params.topMargin -= StatusBarUtil.getStatusBarHeight();
+                params.topMargin -= getNeedTop(topView);
             }
             topView.setTag(TAG_SET_STATUS_CONTROL_MARGIN, false);
             log("resetStatusView_margin:" + topView + "恢复成功");

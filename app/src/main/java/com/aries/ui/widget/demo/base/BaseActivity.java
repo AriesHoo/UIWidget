@@ -20,7 +20,6 @@ import com.aries.ui.widget.demo.BuildConfig;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.util.AppUtil;
 import com.aries.ui.widget.demo.util.SizeUtil;
-import com.squareup.leakcanary.internal.DisplayLeakActivity;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -214,7 +213,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @return
      */
     protected boolean isPlusView(Activity activity) {
-        return !(activity instanceof DisplayLeakActivity);
+        return !(activity.getClass().getSimpleName().equals("DisplayLeakActivity"));
     }
 
 }

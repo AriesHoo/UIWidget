@@ -11,6 +11,8 @@ import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.aries.ui.helper.navigation.NavigationBarUtil;
+import com.aries.ui.util.NotchUtil;
+import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.widget.demo.adapter.WidgetAdapter;
 import com.aries.ui.widget.demo.base.BaseRecycleActivity;
 import com.aries.ui.widget.demo.entity.WidgetEntity;
@@ -28,6 +30,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 
 /**
@@ -72,6 +75,20 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
                     }
                 })
                 .setTitleSubTextMarquee(true);
+
+    }
+
+    private void showNotch() {
+        new AlertDialog.Builder(this)
+                .setTitle("刘海屏信息")
+                .setMessage("SafeInsetLeft:" + NotchUtil.getSafeInsetLeft(this)
+                        + "\nSafeInsetTop:" + NotchUtil.getSafeInsetTop(this)
+                        + "\nSafeInsetRight:" + NotchUtil.getSafeInsetRight(this)
+                        + "\nSafeInsetBottom:" + NotchUtil.getSafeInsetBottom(this)
+                        + "\nStatusBarHeight:" + StatusBarUtil.getStatusBarHeight())
+                .setPositiveButton(R.string.ensure, null)
+                .create()
+                .show();
     }
 
     @Override
@@ -133,6 +150,20 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
                             + "<br>是否开启全面屏手势:根据判断系统是否开启虚拟导航栏(如华为可手动开关该方法不是完全正确的):" + NavigationBarUtil.isOpenFullScreenGestures(mContext)
                             + "<br>是否有导航栏:" + NavigationBarUtil.hasNavBar(mContext)
                             + "<br>导航栏高度:" + NavigationBarUtil.getNavigationBarHeight(mContext)));
+        }
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (titleBar != null && NotchUtil.hasNotch(this)) {
+            titleBar.setRightTextDrawable(R.drawable.ic_menu)
+                    .setOnRightTextClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showNotch();
+                        }
+                    });
         }
     }
 }
