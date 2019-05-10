@@ -35,6 +35,11 @@
 
 **3、多看源码注释及Demo演示,学会自己解决问题**
 
+* 3.2.14
+
+    * 新增刘海屏工具类NotchUtil并优化TitleBarView及StatusViewHelper对刘海屏的兼容
+    * 新增滚动ObservableScrollView及ObservableWebView添加滚动监听事件
+    
 * 3.2.11
 
     * TitleBarView增加addLeftAction、addCenterAction、addRightAction 重写Api并重新优化撤销沉浸逻辑
@@ -97,6 +102,10 @@
     * TitleBarView父容器为ConstraintLayout高度测量不准BUG-参考[TitleWithConstraintActivity](https://github.com/AriesHoo/UIWidget/blob/master/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleWithConstraintActivity.java)
 
 ## 录屏预览
+
+刘海屏适配
+
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/Notch.gif)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/widget.gif)
 
