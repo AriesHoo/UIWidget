@@ -6,7 +6,7 @@ android {
     compileSdkVersion ext.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion ext.minSdkVersion
+        minSdkVersion ext.minLibSdkVersion
         targetSdkVersion ext.targetSdkVersion
         versionCode ext.versionCode
         versionName ext.versionName

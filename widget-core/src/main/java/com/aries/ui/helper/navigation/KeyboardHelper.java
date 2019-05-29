@@ -32,6 +32,7 @@ import java.lang.ref.WeakReference;
  * 4、2018-12-3 17:44:59 修改设置padding逻辑避免部分情况计算底部padding错误问题
  * 5、2019-2-25 14:00:37 将activity对象弱引用避免内存泄露;优化注册activity 销毁逻辑
  * 6、2019-4-11 13:10:30 优化Dialog 参数定义{@link #KeyboardHelper(Activity, Dialog)}
+ * 7、2019-5-29 15:39:37 增加获取 findViewById(android.R.id.content) 非空判断避免系统空指针异常
  */
 public class KeyboardHelper {
 
@@ -93,7 +94,8 @@ public class KeyboardHelper {
     }
 
     private KeyboardHelper(Activity activity) {
-        this(activity, ((ViewGroup) activity.getWindow().getDecorView().findViewById(android.R.id.content)).getChildAt(0));
+        this(activity, activity != null && activity.getWindow().getDecorView().findViewById(android.R.id.content) != null ?
+                ((ViewGroup) activity.getWindow().getDecorView().findViewById(android.R.id.content)).getChildAt(0) : null);
     }
 
     private KeyboardHelper(Activity activity, View contentView) {
@@ -101,7 +103,7 @@ public class KeyboardHelper {
     }
 
     private KeyboardHelper(Activity activity, Dialog dialog) {
-        this(activity, dialog, dialog != null ? dialog.getWindow().findViewById(android.R.id.content) :
+        this(activity, dialog, dialog != null || dialog.getWindow().findViewById(android.R.id.content) == null ? dialog.getWindow().findViewById(android.R.id.content) :
                 ((ViewGroup) activity.getWindow().getDecorView().findViewById(android.R.id.content)).getChildAt(0));
     }
 
@@ -120,7 +122,7 @@ public class KeyboardHelper {
         checkNull();
         register();
         ViewGroup frameLayout = window.getDecorView().findViewById(android.R.id.content);
-        View contentView = frameLayout.getChildAt(0) != null ? frameLayout.getChildAt(0) : frameLayout;
+        View contentView = frameLayout != null && frameLayout.getChildAt(0) != null ? frameLayout.getChildAt(0) : frameLayout;
         mPaddingBottom = contentView.getPaddingBottom();
         this.mContentView = new WeakReference<>(contentView);
     }
