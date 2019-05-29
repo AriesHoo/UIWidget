@@ -98,6 +98,10 @@
 
 ## 录屏预览
 
+刘海屏适配
+
+![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/Notch.gif)
+
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/widget.gif)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/StatusViewHelper.gif)
