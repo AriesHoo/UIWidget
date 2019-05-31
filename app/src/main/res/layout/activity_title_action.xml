@@ -32,7 +32,7 @@
                 app:title_leftTextDrawable="@drawable/ic_title_back_normal"
                 app:title_leftTextDrawableTint="@android:color/holo_blue_dark"
                 app:title_rightTextDrawable="@drawable/ic_menu_share"
-                app:title_rightTextDrawableTint="@android:color/holo_red_dark"
+                app:title_rightTextDrawableTint="@android:color/holo_purple"
                 app:title_titleMainText="左右icon颜色"
                 app:title_titleSubText="无需更换icon资源"/>
 

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aries.ui.view.radius.RadiusEditText;
 import com.aries.ui.view.radius.RadiusRadioButton;
 import com.aries.ui.view.radius.RadiusTextView;
 import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
@@ -32,6 +33,9 @@ public class RadiusActivity extends BaseActivity {
     @BindView(R.id.rtv_drawableRadius) RadiusTextView rtvDrawable;
     @BindView(R.id.rtv_selectRadius) RadiusTextView rtvSelect;
     @BindView(R.id.radioTest_radius) RadiusRadioButton mRadioButtonTest;
+
+    @BindView(R.id.ret_circle) RadiusEditText mRetCircle;
+
     private GradientDrawable mBgDrawable = new GradientDrawable();
 
     @Override
@@ -91,6 +95,9 @@ public class RadiusActivity extends BaseActivity {
         mRadioButtonTest.getDelegate()
                 .setButtonPressedDrawable(R.drawable.ic_cb_normal)
                 .init();
+
+        mRetCircle.requestFocus();
+        mRetCircle.setText("我就试一试光标位置");
     }
 
 

@@ -70,8 +70,12 @@ public class StatusViewHelper {
 
     private StatusViewHelper(Activity activity) {
         mActivity = new WeakReference<>(activity);
-        mContentView = ((ViewGroup) activity.getWindow().getDecorView()
-                .findViewById(android.R.id.content)).getChildAt(0);
+        try {
+            mContentView = ((ViewGroup) activity.getWindow().getDecorView()
+                    .findViewById(android.R.id.content)).getChildAt(0);
+        } catch (Exception e) {
+            log("mContentView:" + e.getMessage());
+        }
     }
 
     public static StatusViewHelper with(Activity activity) {
