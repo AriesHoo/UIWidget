@@ -103,7 +103,7 @@ public class KeyboardHelper {
     }
 
     private KeyboardHelper(Activity activity, Dialog dialog) {
-        this(activity, dialog, dialog != null || dialog.getWindow().findViewById(android.R.id.content) == null ? dialog.getWindow().findViewById(android.R.id.content) :
+        this(activity, dialog, dialog != null && dialog.getWindow().findViewById(android.R.id.content) == null ? dialog.getWindow().findViewById(android.R.id.content) :
                 ((ViewGroup) activity.getWindow().getDecorView().findViewById(android.R.id.content)).getChildAt(0));
     }
 

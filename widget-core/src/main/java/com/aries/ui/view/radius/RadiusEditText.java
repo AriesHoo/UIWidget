@@ -1,9 +1,11 @@
 package com.aries.ui.view.radius;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
+import com.aries.ui.view.radius.delegate.RadiusEditTextDelegate;
 import com.aries.ui.view.radius.delegate.RadiusTextViewDelegate;
 
 /**
@@ -15,7 +17,12 @@ import com.aries.ui.view.radius.delegate.RadiusTextViewDelegate;
  * 2、2018-6-13 11:28:09 默认设置不可点击
  */
 public class RadiusEditText extends EditText {
-    private RadiusTextViewDelegate delegate;
+
+    /**
+     * 是否设置完成光标标识
+     */
+    private boolean mSelectionEndDone;
+    private RadiusEditTextDelegate delegate;
 
     public RadiusEditText(Context context) {
         this(context, null);
@@ -28,7 +35,7 @@ public class RadiusEditText extends EditText {
     public RadiusEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setClickable(false);
-        delegate = new RadiusTextViewDelegate(this, context, attrs);
+        delegate = new RadiusEditTextDelegate(this, context, attrs);
         setFocusableInTouchMode(true);
     }
 
@@ -37,8 +44,25 @@ public class RadiusEditText extends EditText {
      *
      * @return
      */
-    public RadiusTextViewDelegate getDelegate() {
+    public RadiusEditTextDelegate getDelegate() {
         return delegate;
+    }
+
+
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        super.setText(text, type);
+        if (TextUtils.isEmpty(text)) {
+            return;
+        }
+        if (!delegate.isSelectionEndEnable()) {
+            return;
+        }
+        if (mSelectionEndDone) {
+            return;
+        }
+        setSelection(text.length());
+        mSelectionEndDone = delegate.isSelectionEndOnceEnable();
     }
 
     @Override

@@ -69,6 +69,11 @@
     <!-- 文字颜色Checked-->
     <attr name="rv_textCheckedColor" format="color"/>
 
+    <!--设置EditText在调用setText后默认光标置于末尾-->
+    <attr name="rv_selectionEndEnable" format="boolean"/>
+    <!--设置EditText在调用setText后默认光标置于末尾只执行一次-->
+    <attr name="rv_selectionEndOnceEnable" format="boolean"/>
+
     <!--以下为TextView Drawable Left Top Right Bottom 宽高及各种状态属性-->
     <!--是否系统自带drawableLeft样式-->
     <attr name="rv_leftDrawableSystemEnable" format="boolean"/>
@@ -579,6 +584,9 @@
         <attr name="rv_textDisabledColor"/>
         <attr name="rv_textSelectedColor"/>
         <attr name="rv_textCheckedColor"/>
+
+        <attr name="rv_selectionEndEnable"/>
+        <attr name="rv_selectionEndOnceEnable"/>
 
         <attr name="rv_leftDrawableSystemEnable"/>
         <attr name="rv_leftDrawableColorRadius"/>
