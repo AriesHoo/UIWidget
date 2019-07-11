@@ -6,7 +6,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.widget.R;
@@ -35,7 +34,7 @@ public class RadiusCompoundDelegate<T extends RadiusCompoundDelegate> extends Ra
     private Drawable mButtonCheckedDrawable;
 
 
-    public RadiusCompoundDelegate(TextView view, Context context, AttributeSet attrs) {
+    public RadiusCompoundDelegate(CompoundButton view, Context context, AttributeSet attrs) {
         super(view, context, attrs);
     }
 

@@ -3,7 +3,7 @@ package com.aries.ui.view.radius.delegate;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.aries.ui.widget.R;
 
@@ -18,7 +18,7 @@ public class RadiusEditTextDelegate extends RadiusTextDelegate<RadiusEditTextDel
     private boolean mSelectionEndEnable;
     private boolean mSelectionEndOnceEnable;
 
-    public RadiusEditTextDelegate(TextView view, Context context, AttributeSet attrs) {
+    public RadiusEditTextDelegate(EditText view, Context context, AttributeSet attrs) {
         super(view, context, attrs);
     }
 

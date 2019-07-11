@@ -197,7 +197,7 @@
             <Switch
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="false"
                 android:text="Switch+drawable文件"
                 android:thumb="@drawable/selector_thumb"
                 android:track="@drawable/selector_track"/>
@@ -227,6 +227,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
+                android:checked="true"
                 android:text="默认属性颜色值来自colorAccent--微信样式"/>
 
 

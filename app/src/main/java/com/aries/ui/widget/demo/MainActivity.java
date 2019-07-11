@@ -75,6 +75,20 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
                     }
                 })
                 .setTitleSubTextMarquee(true);
+        titleBar.post(new Runnable() {
+            @Override
+            public void run() {
+                if (titleBar != null && NotchUtil.hasNotch(titleBar)) {
+                    titleBar.setRightTextDrawable(R.drawable.ic_menu)
+                            .setOnRightTextClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    showNotch();
+                                }
+                            });
+                }
+            }
+        });
 
     }
 
@@ -150,20 +164,6 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
                             + "<br>是否开启全面屏手势:根据判断系统是否开启虚拟导航栏(如华为可手动开关该方法不是完全正确的):" + NavigationBarUtil.isOpenFullScreenGestures(mContext)
                             + "<br>是否有导航栏:" + NavigationBarUtil.hasNavBar(mContext)
                             + "<br>导航栏高度:" + NavigationBarUtil.getNavigationBarHeight(mContext)));
-        }
-    }
-
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        if (titleBar != null && NotchUtil.hasNotch(this)) {
-            titleBar.setRightTextDrawable(R.drawable.ic_menu)
-                    .setOnRightTextClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            showNotch();
-                        }
-                    });
         }
     }
 }

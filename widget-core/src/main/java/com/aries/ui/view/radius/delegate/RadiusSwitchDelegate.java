@@ -9,7 +9,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import com.aries.ui.widget.R;
 
@@ -65,7 +64,7 @@ public class RadiusSwitchDelegate extends RadiusCompoundDelegate<RadiusSwitchDel
 
     //以上为xml对应属性解析
 
-    public RadiusSwitchDelegate(TextView view, Context context, AttributeSet attrs) {
+    public RadiusSwitchDelegate(Switch view, Context context, AttributeSet attrs) {
         super(view, context, attrs);
     }
 
