@@ -26,6 +26,9 @@ public class StatusBarUtil {
     public static final int STATUS_BAR_TYPE_MI_UI = 1;
     public static final int STATUS_BAR_TYPE_FLY_ME = 2;
     public static final int STATUS_BAR_TYPE_ANDROID_M = 3;
+    public static final int STATUS_BAR_TYPE_COLOR_OS = 4;
+
+    private static final int SYSTEM_UI_FLAG_COLOR_OS_STATUS_BAR_TINT = 0x00000010;
 
     public static int setStatusBarLightMode(Activity activity) {
         if (activity == null) {
@@ -54,6 +57,8 @@ public class StatusBarUtil {
                 result = STATUS_BAR_TYPE_MI_UI;
             } else if (setStatusBarModeForFlyMe(window, true)) {
                 result = STATUS_BAR_TYPE_FLY_ME;
+            } else if (setStatusBarModeForColorOS(window, true)) {
+                result = STATUS_BAR_TYPE_COLOR_OS;
             }
         }
         return result;
@@ -83,6 +88,8 @@ public class StatusBarUtil {
                 result = STATUS_BAR_TYPE_MI_UI;
             } else if (setStatusBarModeForFlyMe(window, false)) {
                 result = STATUS_BAR_TYPE_FLY_ME;
+            } else if (setStatusBarModeForColorOS(window, false)) {
+                result = STATUS_BAR_TYPE_COLOR_OS;
             }
         }
         return result;
@@ -100,7 +107,7 @@ public class StatusBarUtil {
         if (window != null) {
             Class clazz = window.getClass();
             try {
-                int darkModeFlag = 0;
+                int darkModeFlag;
                 Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
                 Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
                 darkModeFlag = field.getInt(layoutParams);
@@ -157,6 +164,32 @@ public class StatusBarUtil {
     }
 
     /**
+     * 设置状态栏图标为深色和OPPO特定的文字风格
+     * 可以用来判断是否为Color用户
+     *
+     * @param window   需要设置的窗口
+     * @param darkText 是否把状态栏字体及图标颜色设置为深色
+     * @return boolean 成功执行返回true
+     */
+    private static boolean setStatusBarModeForColorOS(Window window, boolean darkText) {
+        if (!RomUtil.isOPPO()) {
+            return false;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int vis = window.getDecorView().getSystemUiVisibility();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            if (darkText) {
+                vis |= SYSTEM_UI_FLAG_COLOR_OS_STATUS_BAR_TINT;
+            } else {
+                vis &= ~SYSTEM_UI_FLAG_COLOR_OS_STATUS_BAR_TINT;
+            }
+            window.getDecorView().setSystemUiVisibility(vis);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 设置原生Android 6.0以上系统状态栏
      *
      * @param window
@@ -169,6 +202,7 @@ public class StatusBarUtil {
             //int systemUi = darkText ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             //systemUi = changeStatusBarModeRetainFlag(window, systemUi);
             //window.getDecorView().setSystemUiVisibility(systemUi);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             int now = window.getDecorView().getSystemUiVisibility();
             int systemUi = darkText ?
                     now | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR :
@@ -182,9 +216,12 @@ public class StatusBarUtil {
     /**
      * 判断系统是否支持状态栏文字及图标颜色变化
      *
-     * @return
+     * @return true支持状态栏文字颜色变化
      */
     public static boolean isSupportStatusBarFontChange() {
+        if (RomUtil.isOPPO() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return true;
+        }
         if (RomUtil.getMIUIVersionCode() >= 6 || RomUtil.getFlymeVersionCode() >= 4
                 || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
             return true;

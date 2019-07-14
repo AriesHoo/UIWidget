@@ -68,6 +68,10 @@ public class NavigationViewHelper {
      * activity xml设置根布局
      */
     private View mContentView;
+    /**
+     * 软键盘控制根布局
+     */
+    private View mKeyboardContentView;
     private LinearLayout mLinearLayout;
     private LinearLayout mLayoutNavigation;
     private TextView mTvNavigation;
@@ -189,7 +193,19 @@ public class NavigationViewHelper {
      * @return
      */
     public NavigationViewHelper setControlBottomEditTextEnable(boolean controlBottomEditTextEnable) {
+        return setControlBottomEditTextEnable(controlBottomEditTextEnable, null);
+    }
+
+    /**
+     * 设置是否自动控制底部输入框
+     *
+     * @param controlBottomEditTextEnable 是否控制
+     * @param keyboardContentView         基准View
+     * @return
+     */
+    public NavigationViewHelper setControlBottomEditTextEnable(boolean controlBottomEditTextEnable, View keyboardContentView) {
         mControlBottomEditTextEnable = controlBottomEditTextEnable;
+        this.mKeyboardContentView = keyboardContentView;
         return this;
     }
 
@@ -326,7 +342,7 @@ public class NavigationViewHelper {
         }
         if (!mIsInit) {
             if (mControlBottomEditTextEnable) {
-                KeyboardHelper.with(activity, dialog)
+                KeyboardHelper.with(activity, dialog,mKeyboardContentView)
                         .setOnKeyboardVisibilityChangedListener(mOnKeyboardVisibilityChangedListener)
                         .setLogEnable(mLogEnable)
                         .setEnable();

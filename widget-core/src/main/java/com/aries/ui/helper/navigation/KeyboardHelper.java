@@ -80,17 +80,23 @@ public class KeyboardHelper {
     }
 
     public static KeyboardHelper with(Activity activity) {
-        if (activity == null) {
-            throw new IllegalArgumentException("Activity不能为null");
-        }
         return new KeyboardHelper(activity);
     }
 
-    public static KeyboardHelper with(Activity activity, Dialog dialog) {
+    public static KeyboardHelper with(Activity activity, View contentView) {
         if (activity == null) {
             throw new IllegalArgumentException("Activity不能为null");
         }
-        return new KeyboardHelper(activity, dialog);
+        return new KeyboardHelper(activity, contentView);
+    }
+    public static KeyboardHelper with(Activity activity, Dialog dialog) {
+        return with(activity,dialog,null);
+    }
+    public static KeyboardHelper with(Activity activity, Dialog dialog, View contentView) {
+        if (activity == null) {
+            throw new IllegalArgumentException("Activity不能为null");
+        }
+        return new KeyboardHelper(activity, dialog,contentView);
     }
 
     private KeyboardHelper(Activity activity) {
@@ -320,7 +326,7 @@ public class KeyboardHelper {
                     ";navigation:" + NavigationBarUtil.getNavigationBarHeight(activity)
                     + ";diff:" + heightDiff
                     + ";paddingBottom原始:" + mPaddingBottom
-                    + ";paddingBottom:" + contentView.getPaddingBottom());
+                    + ";paddingBottom:" + contentView.getPaddingBottom()+";contentView:"+contentView);
         }
     };
 
