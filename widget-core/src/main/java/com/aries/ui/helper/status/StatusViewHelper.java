@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.aries.ui.impl.ActivityLifecycleCallbacksImpl;
 import com.aries.ui.util.DrawableUtil;
 import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.util.NotchUtil;
@@ -29,6 +30,7 @@ import java.lang.ref.WeakReference;
  * Description:
  * 1、2019-4-15 10:39:33 增加状态栏深色图标及文字颜色api {@link #setStatusBarLightMode(boolean)}支持 MIUI V6及以上、Flyme及Android M以上
  * 2、2019-5-10 17:27:26 新增刘海屏适配{@link NotchUtil}
+ * 3、2019-7-19 10:33:05 新增{@link #register()}监听生命周期自动进行资源回收
  */
 public class StatusViewHelper {
 
@@ -67,6 +69,7 @@ public class StatusViewHelper {
      * 设置状态栏白底深色文字图标模式
      */
     private boolean mStatusBarLightMode;
+    private boolean mIsInit;
 
     private StatusViewHelper(Activity activity) {
         mActivity = new WeakReference<>(activity);
@@ -83,6 +86,34 @@ public class StatusViewHelper {
             throw new NullPointerException("null");
         }
         return new StatusViewHelper(activity);
+    }
+
+    /**
+     * 注册Activity生命周期监听
+     */
+    private void register() {
+        Activity activity = mActivity.get();
+        if (activity == null) {
+            return;
+        }
+        activity.getApplication().registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacksImpl() {
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                if (activity == null) {
+                    return;
+                }
+                Activity current = mActivity.get();
+                log("onActivityDestroyed--" + activity.getClass().getSimpleName()
+                        + ";isFinishing:" + activity.isFinishing() + ";current:" + current);
+                //只移除当前Activity对象监听
+                if (current == null || current != activity) {
+                    return;
+                }
+                //移除监听
+                activity.getApplication().unregisterActivityLifecycleCallbacks(this);
+                destroy();
+            }
+        });
     }
 
     /**
@@ -232,6 +263,10 @@ public class StatusViewHelper {
         Activity activity = mActivity.get();
         if (activity == null || activity.isFinishing()) {
             throw new NullPointerException("not exist");
+        }
+        if (!mIsInit) {
+            mIsInit = true;
+            register();
         }
         setControlEnable(mControlEnable);
         resetStatusView(mTopView);
@@ -422,14 +457,10 @@ public class StatusViewHelper {
         }
     }
 
-    /**
-     * 销毁
-     */
-    public void onDestroy() {
+    protected void destroy() {
         log("onDestroy");
-        if (mLinearLayout != null) {
-            mLinearLayout.removeAllViews();
-            mLinearLayout = null;
+        if (mLinearLayout != null && mLayoutStatus != null) {
+            mLinearLayout.removeView(mLayoutStatus);
         }
         resetStatusView(mTopView);
         mActivity = null;
@@ -437,6 +468,15 @@ public class StatusViewHelper {
         mViewStatus = null;
         mStatusViewDrawable = null;
         mStatusLayoutDrawable = null;
-        System.gc();
+        mLayoutStatus = null;
+        mTopView = null;
+    }
+
+    /**
+     * 销毁
+     */
+    @Deprecated
+    public void onDestroy() {
+        log("Deprecated_onDestroy");
     }
 }

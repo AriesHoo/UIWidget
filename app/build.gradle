@@ -66,9 +66,9 @@ dependencies {
     //UIAlertView
     implementation project(':widget-alert')
 
-//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.14'
-//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.14'
-//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.14'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.16'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.16'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.16'
 
     //图片加载
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
@@ -84,5 +84,5 @@ dependencies {
     //快速Tab库
     implementation 'com.github.AriesHoo:TabLayout:1.0.5'
     //滑动返回Activity
-    implementation 'cn.bingoogolapple:bga-swipebacklayout:1.2.0@aar'
+    implementation 'com.github.ParfoisMeng:SlideBack:1.0.6'
 }

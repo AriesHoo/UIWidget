@@ -1,9 +1,10 @@
 package com.aries.ui.widget.demo.entity;
 
 /**
- * Created: AriesHoo on 2017/7/14 9:45
- * Function: 应用实体
- * Desc:
+ * @Author: AriesHoo on 2019/7/19 9:40
+ * @E-Mail: AriesHoo@126.com
+ * @Function: 抽屉栏实体
+ * @Description:
  */
 public class DrawerEntity {
 

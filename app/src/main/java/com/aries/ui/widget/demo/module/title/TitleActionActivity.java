@@ -46,6 +46,11 @@ public class TitleActionActivity extends BaseActivity {
 
     private List<Fragment> mListFragment = new ArrayList<>();
     private List<String> mListTitle = new ArrayList<>();
+    private View mViewSearch;
+    private View mViewQq;
+    private ImageView mIvQq;
+    private ProgressBar mProgressBar;
+    private SlidingTabLayout mSlidingTabLayout;
 
     @Override
     protected int getLayout() {
@@ -62,23 +67,23 @@ public class TitleActionActivity extends BaseActivity {
     protected void initView(Bundle var1) {
 
         //中间搜索框样式
-        View view = View.inflate(mContext, R.layout.layout_search, null);
+        mViewSearch = View.inflate(mContext, R.layout.layout_search, null);
         ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, SizeUtil.dp2px(32));
         params.rightMargin = SizeUtil.dp2px(4);
-        view.setLayoutParams(params);
+        mViewSearch.setLayoutParams(params);
         mTitleSearch.addCenterAction(
-                mTitleSearch.new ViewAction(view));
+                mTitleSearch.new ViewAction(mViewSearch));
         //QQ TitleBar样式
-        View viewQq = View.inflate(mContext, R.layout.layout_qq_header, null);
-        ImageView imgQq = viewQq.findViewById(R.id.iv_headQQ);
-        GlideManager.loadCircleImg("https://avatars3.githubusercontent.com/u/19605922?v=4&s=460", imgQq);
-        mTitleQQ.addLeftAction(mTitleQQ.new ViewAction(viewQq), 0, new ViewGroup.LayoutParams(SizeUtil.dp2px(42), SizeUtil.dp2px(42)));
+        mViewQq = View.inflate(mContext, R.layout.layout_qq_header, null);
+        mIvQq = mViewQq.findViewById(R.id.iv_headQQ);
+        GlideManager.loadCircleImg("https://avatars3.githubusercontent.com/u/19605922?v=4&s=460", mIvQq);
+        mTitleQQ.addLeftAction(mTitleQQ.new ViewAction(mViewQq), 0, new ViewGroup.LayoutParams(SizeUtil.dp2px(42), SizeUtil.dp2px(42)));
 
         //微信TitleBar样式
         mTitleWeChat.setOnRightTextClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "打开操作菜单", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "打开操作菜单", Toast.LENGTH_SHORT).show();
             }
         })
                 .addRightAction(mTitleWeChat.new ImageAction(R.drawable.ic_search_normal, new View.OnClickListener() {
@@ -89,17 +94,17 @@ public class TitleActionActivity extends BaseActivity {
                 }), 0);
 
         //中间loading效果
-        ProgressBar progressBar = new ProgressBar(mContext);
-        progressBar.setIndeterminateDrawable(ContextCompat.getDrawable(mContext, R.drawable.dialog_loading_wei_bo));
+        mProgressBar = new ProgressBar(mContext);
+        mProgressBar.setIndeterminateDrawable(ContextCompat.getDrawable(mContext, R.drawable.dialog_loading_wei_bo));
         ViewGroup.MarginLayoutParams margin = new ViewGroup.MarginLayoutParams(SizeUtil.dp2px(20), SizeUtil.dp2px(20));
         margin.rightMargin = SizeUtil.dp2px(10);
-        mTitleLoading.addCenterAction(mTitleLoading.new ViewAction(progressBar), 0, margin);
+        mTitleLoading.addCenterAction(mTitleLoading.new ViewAction(mProgressBar), 0, margin);
 
-        SlidingTabLayout slidingTabLayout = new SlidingTabLayout(mContext);
+        mSlidingTabLayout = new SlidingTabLayout(mContext);
 
-        mTitleTab.addCenterAction(mTitleTab.new ViewAction(slidingTabLayout), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        setTab(slidingTabLayout);
-        slidingTabLayout.getDelegate()
+        mTitleTab.addCenterAction(mTitleTab.new ViewAction(mSlidingTabLayout), new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        setTab(mSlidingTabLayout);
+        mSlidingTabLayout.getDelegate()
                 .setIndicatorColor(ContextCompat.getColor(mContext, R.color.colorTextBlack))
                 .setIndicatorGravity(Gravity.BOTTOM)
                 .setIndicatorHeight(3f)
@@ -121,5 +126,23 @@ public class TitleActionActivity extends BaseActivity {
         }
         TabLayoutManager.getInstance().setSlidingTabData(this, slidingTabLayout, mVpContent, mListTitle, mListFragment);
         slidingTabLayout.setCurrentTab(0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mListFragment != null) {
+            mListFragment.clear();
+        }
+        if (mListTitle != null) {
+            mListTitle.clear();
+        }
+        mViewSearch = null;
+        mViewQq = null;
+        mIvQq = null;
+        mProgressBar = null;
+        mSlidingTabLayout = null;
+        mListTitle = null;
+        mListFragment = null;
+        super.onDestroy();
     }
 }

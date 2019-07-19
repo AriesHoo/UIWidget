@@ -133,9 +133,7 @@ public class StatusViewHelperActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        if (mStatusViewHelper != null) {
-            mStatusViewHelper.onDestroy();
-        }
+        mStatusViewHelper = null;
         super.onDestroy();
     }
 }

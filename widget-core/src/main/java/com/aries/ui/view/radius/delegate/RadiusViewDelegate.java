@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 
 import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.view.radius.RadiusSwitch;
@@ -110,6 +111,7 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
         this.mContext = context;
         this.mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.RadiusSwitch);
         this.mResourceUtil = new ResourceUtil(context);
+        mSelected = mView.isSelected();
         initAttributes(context, attrs);
         view.setSelected(mSelected);
         setBackgroundPressedAlpha(mBackgroundPressedAlpha)
@@ -147,7 +149,7 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
 
         mRippleColor = mTypedArray.getColor(R.styleable.RadiusSwitch_rv_rippleColor, mResourceUtil.getColor(R.color.colorRadiusDefaultRipple));
         mRippleEnable = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_rippleEnable, mView.isClickable() && !(mView instanceof RadiusSwitch));
-        mSelected = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_selected, false);
+        mSelected = mTypedArray.getBoolean(R.styleable.RadiusSwitch_rv_selected, mSelected);
         mEnterFadeDuration = mTypedArray.getInteger(R.styleable.RadiusSwitch_rv_enterFadeDuration, 0);
         mExitFadeDuration = mTypedArray.getInteger(R.styleable.RadiusSwitch_rv_exitFadeDuration, 0);
         mTypedArray.recycle();
@@ -452,9 +454,12 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
                 if (mOnSelectedChangeListener != null) {
                     mOnSelectedChangeListener.onSelectedChanged(mView, mSelected);
                 }
+                mView.setSelected(selected);
+            } else if (mView instanceof Switch) {
+                //Switch 必须进行drawable重新设置不然会变形,未知什么情况引起
+                init();
             }
         }
-        init();
     }
 
     /**

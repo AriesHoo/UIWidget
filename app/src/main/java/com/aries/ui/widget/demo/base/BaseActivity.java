@@ -78,10 +78,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("getSystemUiVisibility", getWindow().getDecorView().getSystemUiVisibility() + ";onCreate");
+        Log.i("getSystemUiVisibility", getWindow().getDecorView().getSystemUiVisibility() + ";window:" + getWindow());
         super.onCreate(savedInstanceState);
         Log.i("savedInstanceState", "savedInstanceState:" + savedInstanceState);
-        Log.d(TAG, "onCreate");
+        Log.d(TAG, "lifecycle_onCreate");
         this.mContext = this;
         this.beforeSetView();
         mContentView = View.inflate(mContext, getLayout(), null);
@@ -103,8 +103,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 .setNavigationBarLightMode(isDarkIcon() && isPlusView(this))
                 .setControlBottomEditTextEnable(true)
                 .setNavigationViewDrawableTop(drawableTop)
-                .setNavigationViewColor(Color.argb(isDarkIcon() && isPlusView(this) ? 0 : 60, 0, 0, 0))
-                .setNavigationLayoutColor(Color.WHITE)
+                .setNavigationViewColor(Color.argb(isDarkIcon() && isPlusView(this) ? 30 : 80, 0, 0, 0))
+                .setNavigationViewColor(Color.argb(isDarkIcon() ? 30 : 80, 0, 0, 0))
+                .setNavigationLayoutColor(Color.TRANSPARENT)
                 .setBottomView(mContentView);
         beforeControlNavigation(mNavigationViewHelper);
         //不推荐4.4版本使用透明导航栏--话说现在谁还用那么低版本的手机
@@ -164,14 +165,45 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mUnBinder.unbind();
-        if (mNavigationViewHelper != null) {
-            mNavigationViewHelper.onDestroy();
+        Log.d(TAG, "lifecycle_onDestroy_isFinishing" + isFinishing());
+        if (mUnBinder != null) {
+            mUnBinder.unbind();
         }
+        mContext=null;
+        mUnBinder = null;
+        mContentView = null;
+        titleBar = null;
+        TAG=null;
+        mNavigationViewHelper = null;
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "lifecycle_onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "lifecycle_onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.d(TAG, "lifecycle_onRestart");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.d(TAG, "lifecycle_onStart");
+        super.onStart();
     }
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "lifecycle_onResume");
         if (this.mIsFirstShow) {
             this.mIsFirstShow = false;
             this.loadData();
@@ -216,4 +248,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         return !(activity.getClass().getSimpleName().equals("DisplayLeakActivity"));
     }
 
+    @Override
+    public void onContentChanged() {
+        Log.d(TAG, "lifecycle_onContentChanged");
+        super.onContentChanged();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "lifecycle_onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.d(TAG, "lifecycle_onRestoreInstanceState");
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }

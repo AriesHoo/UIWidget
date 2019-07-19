@@ -1,13 +1,11 @@
 package com.aries.ui.helper.navigation;
 
 import android.app.Activity;
-import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -18,6 +16,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import com.aries.ui.impl.ActivityLifecycleCallbacksImpl;
 
 import java.lang.ref.WeakReference;
 
@@ -89,14 +89,16 @@ public class KeyboardHelper {
         }
         return new KeyboardHelper(activity, contentView);
     }
+
     public static KeyboardHelper with(Activity activity, Dialog dialog) {
-        return with(activity,dialog,null);
+        return with(activity, dialog, null);
     }
+
     public static KeyboardHelper with(Activity activity, Dialog dialog, View contentView) {
         if (activity == null) {
             throw new IllegalArgumentException("Activity不能为null");
         }
-        return new KeyboardHelper(activity, dialog,contentView);
+        return new KeyboardHelper(activity, dialog, contentView);
     }
 
     private KeyboardHelper(Activity activity) {
@@ -144,15 +146,7 @@ public class KeyboardHelper {
         if (activity == null) {
             return;
         }
-        activity.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-            }
-
+        activity.getApplication().registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacksImpl() {
             @Override
             public void onActivityResumed(Activity activity) {
                 log("onActivityResumed--" + activity.getClass().getSimpleName() + ";KeyboardOpened:" + mIsKeyboardOpened + ";focus:" + activity.getCurrentFocus());
@@ -168,35 +162,20 @@ public class KeyboardHelper {
             }
 
             @Override
-            public void onActivityPaused(Activity activity) {
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-            }
-
-            @Override
             public void onActivityDestroyed(Activity activity) {
                 if (activity == null) {
                     return;
                 }
+                Activity current = mActivity.get();
                 log("onActivityDestroyed--" + activity.getClass().getSimpleName() + ";KeyboardOpened:" + mIsKeyboardOpened +
-                        ";isFinishing:" + activity.isFinishing());
+                        ";isFinishing:" + activity.isFinishing() + ";current:" + current);
                 //被系统回收后还可以恢复
-                if (!activity.isFinishing()) {
+                if (current == null || current != activity || !current.isFinishing()) {
                     return;
                 }
                 //移除监听
                 activity.getApplication().unregisterActivityLifecycleCallbacks(this);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    activity.getWindow().getDecorView().getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
-                } else {
-                    activity.getWindow().getDecorView().getViewTreeObserver().removeGlobalOnLayoutListener(onGlobalLayoutListener);
-                }
+                destroy();
             }
         });
     }
@@ -243,10 +222,8 @@ public class KeyboardHelper {
             return this;
         }
         activity.getWindow().setSoftInputMode(mode);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 当在一个视图树中全局布局发生改变或者视图树中的某个视图的可视状态发生改变时,所要调用的回调函数的接口类
-            activity.getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
-        }
+        // 当在一个视图树中全局布局发生改变或者视图树中的某个视图的可视状态发生改变时,所要调用的回调函数的接口类
+        activity.getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
         return this;
     }
 
@@ -269,8 +246,10 @@ public class KeyboardHelper {
             return this;
         }
         activity.getWindow().setSoftInputMode(mode);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             activity.getWindow().getDecorView().getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
+        } else {
+            activity.getWindow().getDecorView().getViewTreeObserver().removeGlobalOnLayoutListener(onGlobalLayoutListener);
         }
         return this;
     }
@@ -326,7 +305,7 @@ public class KeyboardHelper {
                     ";navigation:" + NavigationBarUtil.getNavigationBarHeight(activity)
                     + ";diff:" + heightDiff
                     + ";paddingBottom原始:" + mPaddingBottom
-                    + ";paddingBottom:" + contentView.getPaddingBottom()+";contentView:"+contentView);
+                    + ";paddingBottom:" + contentView.getPaddingBottom() + ";contentView:" + contentView);
         }
     };
 
@@ -334,6 +313,14 @@ public class KeyboardHelper {
         if (mLogEnable) {
             Log.i(getClass().getSimpleName(), log);
         }
+    }
+
+    protected void destroy() {
+        log("onDestroy");
+        setDisable();
+        mOnKeyboardVisibilityChangedListener = null;
+        mActivity = null;
+        mContentView = null;
     }
 
     /**

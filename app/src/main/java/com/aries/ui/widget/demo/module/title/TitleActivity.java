@@ -13,7 +13,6 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.RomUtil;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.title.TitleBarView;
@@ -73,15 +72,15 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
         return false;
     }
 
-    @Override
-    protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
-        super.beforeControlNavigation(navigationHelper);
-        navigationHelper.setBottomView(mRecyclerView)
-                .setPlusNavigationViewEnable(!isDarkIcon());
-        if (isDarkIcon()) {
-            mRecyclerView.setBackgroundColor(Color.WHITE);
-        }
-    }
+//    @Override
+//    protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
+//        super.beforeControlNavigation(navigationHelper);
+//        navigationHelper.setBottomView(mRecyclerView)
+//                .setPlusNavigationViewEnable(!isDarkIcon());
+//        if (isDarkIcon()) {
+//            mRecyclerView.setBackgroundColor(Color.WHITE);
+//        }
+//    }
 
     @Override
     protected void setTitleBar() {
@@ -128,7 +127,7 @@ public class TitleActivity extends BaseRecycleActivity<TitleEntity> {
 
     @Override
     protected BaseQuickAdapter<TitleEntity, BaseViewHolder> getAdapter() {
-        mAdapter = new TitleAdapter(mContext);
+        mAdapter = new TitleAdapter();
         return mAdapter;
     }
 

@@ -38,7 +38,7 @@ public class TitleWithCollapsingLayoutActivity extends BaseRecycleActivity<Widge
 
     @Override
     protected BaseQuickAdapter<WidgetEntity, BaseViewHolder> getAdapter() {
-        mAdapter = new TitleAdapter(mContext);
+        mAdapter = new TitleAdapter();
         return mAdapter;
     }
 

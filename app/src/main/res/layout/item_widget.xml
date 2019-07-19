@@ -4,14 +4,14 @@
     xmlns:rv="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
     android:minHeight="80dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    rv:rv_enterFadeDuration="500"
-    rv:rv_exitFadeDuration="500"
-    android:clickable="true"
     rv:rv_backgroundColor="@color/colorWhite"
-    rv:rv_backgroundPressedColor="@color/colorWhitePressed">
+    rv:rv_backgroundPressedColor="@color/colorWhitePressed"
+    rv:rv_enterFadeDuration="500"
+    rv:rv_exitFadeDuration="500">
 
     <TextView
         android:id="@+id/tv_titleWidget"
@@ -32,6 +32,22 @@
         android:text="context"
         android:textColor="@color/colorTextBlackLight"
         android:textSize="14dp"/>
+
+    <com.aries.ui.view.radius.RadiusTextView
+        android:id="@+id/rtv_status_widget"
+        android:layout_width="60dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="测试状态"
+        android:textSize="14dp"
+        android:visibility="gone"
+        rv:rv_backgroundColor="#cccccc"
+        rv:rv_backgroundSelectedColor="#4e7afa"
+        rv:rv_radius="4dp"
+        rv:rv_selected="true"
+        rv:rv_textColor="@color/white"/>
 
     <View
         style="@style/LineGray.Horizontal"/>

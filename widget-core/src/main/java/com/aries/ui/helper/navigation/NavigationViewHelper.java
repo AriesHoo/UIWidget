@@ -8,15 +8,19 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aries.ui.impl.ActivityLifecycleCallbacksImpl;
 import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.util.RomUtil;
 import com.aries.ui.util.StatusBarUtil;
@@ -35,6 +39,9 @@ import java.lang.ref.WeakReference;
  * 4、2018-6-2 20:32:35 新增自定义NavigationView 增加DrawableTop属性
  * 5、2018-11-28 14:52:23 修改导航栏控制逻辑新增软键盘开关状态监听
  * 6、2019-4-10 16:26:38 新增Dialog底部导航栏沉浸控制效果{@link #with(Activity, Dialog)}{@link #init()} 并增加{@link #onDestroy()}
+ * 7、2019-7-17 14:54:14 新增{@link #setPlusNavigationViewEnable(boolean, boolean)}和
+ * {@link #setPlusNavigationViewEnable(boolean, boolean, boolean)}
+ * 用于确定假导航栏位置是否添加在DecorView并增加添加在DecorView情况下是否设置paddingBottom以避免内容被导航栏遮住
  */
 public class NavigationViewHelper {
 
@@ -47,6 +54,11 @@ public class NavigationViewHelper {
     private boolean mControlEnable;
     private boolean mTransEnable;
     private boolean mPlusNavigationViewEnable;
+    /**
+     * 增加假View是否覆盖在DecorView
+     */
+    private boolean mPlusDecorViewEnable;
+    private boolean mPlusDecorViewPaddingEnable;
     private boolean mNavigationBarLightMode;
     private boolean mControlBottomEditTextEnable = true;
     private Drawable mNavigationViewDrawableTop;
@@ -122,6 +134,34 @@ public class NavigationViewHelper {
     }
 
     /**
+     * 注册Activity生命周期监听
+     */
+    private void register() {
+        Activity activity = mActivity.get();
+        if (activity == null) {
+            return;
+        }
+        activity.getApplication().registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacksImpl() {
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                if (activity == null) {
+                    return;
+                }
+                Activity current = mActivity.get();
+                log("onActivityDestroyed--" + activity.getClass().getSimpleName()
+                        + ";isFinishing:" + activity.isFinishing() + ";current:" + current);
+                //只移除当前Activity对象监听
+                if (current == null || current != activity) {
+                    return;
+                }
+                //移除监听
+                activity.getApplication().unregisterActivityLifecycleCallbacks(this);
+                destroy();
+            }
+        });
+    }
+
+    /**
      * 是否打印log
      *
      * @param logEnable
@@ -167,12 +207,37 @@ public class NavigationViewHelper {
     /**
      * 是否设置假的导航栏--用于沉浸遮挡
      *
-     * @param plusNavigationViewEnable
+     * @param plusNavigationViewEnable   是否增加假状态栏
+     * @param plusDecorViewEnable        是否添加在DecorView上层
+     * @param plusDecorViewPaddingEnable plusDecorViewEnable为true时是否预留padding
+     * @return
+     */
+    public NavigationViewHelper setPlusNavigationViewEnable(boolean plusNavigationViewEnable, boolean plusDecorViewEnable, boolean plusDecorViewPaddingEnable) {
+        this.mPlusNavigationViewEnable = plusNavigationViewEnable;
+        this.mPlusDecorViewEnable = plusDecorViewEnable;
+        this.mPlusDecorViewPaddingEnable = plusDecorViewPaddingEnable;
+        return this;
+    }
+
+    /**
+     * 是否设置假的导航栏--用于沉浸遮挡
+     *
+     * @param plusNavigationViewEnable 是否增加假状态栏
+     * @param plusDecorViewEnable      是否添加在DecorView上层
+     * @return
+     */
+    public NavigationViewHelper setPlusNavigationViewEnable(boolean plusNavigationViewEnable, boolean plusDecorViewEnable) {
+        return setPlusNavigationViewEnable(plusNavigationViewEnable, plusDecorViewEnable, false);
+    }
+
+    /**
+     * 是否设置假的导航栏--用于沉浸遮挡
+     *
+     * @param plusNavigationViewEnable 是否增加假状态栏
      * @return
      */
     public NavigationViewHelper setPlusNavigationViewEnable(boolean plusNavigationViewEnable) {
-        this.mPlusNavigationViewEnable = plusNavigationViewEnable;
-        return this;
+        return setPlusNavigationViewEnable(plusNavigationViewEnable, false, false);
     }
 
     /**
@@ -342,20 +407,29 @@ public class NavigationViewHelper {
         }
         if (!mIsInit) {
             if (mControlBottomEditTextEnable) {
-                KeyboardHelper.with(activity, dialog,mKeyboardContentView)
+                KeyboardHelper.with(activity, dialog, mKeyboardContentView)
                         .setOnKeyboardVisibilityChangedListener(mOnKeyboardVisibilityChangedListener)
                         .setLogEnable(mLogEnable)
                         .setEnable();
             }
             addOnGlobalLayoutListener();
+            register();
             StatusBarUtil.fitsNotchScreen(window, true);
             mIsInit = true;
         }
         addNavigationBar(window);
         setNavigationView(window);
         log("mBottomView:" + mBottomView + ";mPlusNavigationViewEnable:" + mPlusNavigationViewEnable + ";mNavigationBarColor:" + mNavigationBarColor);
-        if (mBottomView == null || mPlusNavigationViewEnable) {
+        if (mBottomView == null) {
             return;
+        }
+        if (mPlusNavigationViewEnable) {
+            if (!mPlusDecorViewEnable) {
+                return;
+            }
+            if (mPlusDecorViewEnable && !mPlusDecorViewPaddingEnable) {
+                return;
+            }
         }
         mBottomView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -397,7 +471,7 @@ public class NavigationViewHelper {
      * Activity ContentView监听用于控制华为导航栏可隐藏问题
      */
     private void addOnGlobalLayoutListener() {
-        if (mDecorContentView == null) {
+        if (mDecorView == null) {
             return;
         }
         //控制华为
@@ -419,10 +493,15 @@ public class NavigationViewHelper {
                     }
                 }
             };
-            mDecorContentView.getViewTreeObserver().addOnGlobalLayoutListener(mDecorGlobalLayoutListener);
+            mDecorView.getViewTreeObserver().addOnGlobalLayoutListener(mDecorGlobalLayoutListener);
         }
     }
 
+    /**
+     * 添加假导航栏占位
+     *
+     * @param window
+     */
     private void addNavigationBar(Window window) {
         if (!isSupportNavigationBarControl()) {
             return;
@@ -431,19 +510,41 @@ public class NavigationViewHelper {
             mLinearLayout = FindViewUtil.getTargetView(window.getDecorView(), LinearLayout.class);
         }
         //避免重复添加
-        if (mLinearLayout != null
-                && mPlusNavigationViewEnable
-                && mLayoutNavigation == null) {
-            final LinearLayout linearLayout = mLinearLayout;
+        if (mLinearLayout != null && mPlusNavigationViewEnable) {
+            //创建假的NavigationView包裹ViewGroup用于设置背景与mContentView一致
+            mLayoutNavigation = FindViewUtil.getTargetView(window.getDecorView(), R.id.fake_navigation_layout);
             Context mContext = window.getContext();
-            int count = linearLayout.getChildCount();
+            if (mLayoutNavigation == null) {
+                mLayoutNavigation = new LinearLayout(mContext);
+                mLayoutNavigation.setId(R.id.fake_navigation_layout);
+                //创建假的NavigationView
+                mTvNavigation = new TextView(mContext);
+                ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                mTvNavigation.setId(R.id.fake_navigation_view);
+                mLayoutNavigation.addView(mTvNavigation, params);
+            }
+            ViewParent parent = mLayoutNavigation.getParent();
+            log("ViewParent1:" + parent);
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(mLayoutNavigation);
+            }
+            //添加到window.getDecorView()
+            if (mPlusDecorViewEnable) {
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        NavigationBarUtil.getNavigationBarHeight(window));
+                params.gravity = Gravity.BOTTOM;
+                ((FrameLayout) window.getDecorView()).addView(mLayoutNavigation, params);
+                return;
+            }
+            int count = mLinearLayout.getChildCount();
             //其实也只有2个子View
             if (count >= 2) {
                 View viewChild = null;
                 if (count == 2) {
-                    viewChild = linearLayout.getChildAt(1);
+                    viewChild = mLinearLayout.getChildAt(1);
                 } else if (count >= 3) {
-                    viewChild = linearLayout.getChildAt(count - 1);
+                    viewChild = mLinearLayout.getChildAt(count - 1);
                 }
                 if (viewChild == null) {
                     return;
@@ -452,22 +553,7 @@ public class NavigationViewHelper {
                 // 预留假的NavigationView位置并保证Navigation始终在最底部--被虚拟导航栏遮住
                 viewChild.setLayoutParams(new LinearLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, 0, 1.0f));
-
-                //创建假的NavigationView包裹ViewGroup用于设置背景与mContentView一致
-                mLayoutNavigation = linearLayout.findViewById(R.id.fake_navigation_layout);
-                if (mLayoutNavigation == null) {
-                    mLayoutNavigation = new LinearLayout(mContext);
-                    mLayoutNavigation.setId(R.id.fake_navigation_layout);
-                    //创建假的NavigationView
-                    mTvNavigation = new TextView(mContext);
-                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                    mTvNavigation.setId(R.id.fake_navigation_view);
-                    mLayoutNavigation.addView(mTvNavigation, params);
-                    linearLayout.addView(mLayoutNavigation);
-                } else {
-                    mTvNavigation = mLayoutNavigation.findViewById(R.id.fake_navigation_view);
-                }
+                mLinearLayout.addView(mLayoutNavigation);
             }
         }
     }
@@ -485,6 +571,27 @@ public class NavigationViewHelper {
             //当旋转270°时导航栏和状态栏在同一边如果是刘海屏--华为系统才会
             navigationHeight += angle == Surface.ROTATION_270 && navigationHeight > 0 && RomUtil.isEMUI() ? StatusBarUtil.getStatusBarHeight() : 0;
             boolean isNavigationAtBottom = NavigationBarUtil.isNavigationAtBottom(window);
+            mTvNavigation.setCompoundDrawables(isNavigationAtBottom ? null : mNavigationViewDrawableTop, isNavigationAtBottom ? mNavigationViewDrawableTop : null, null, null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mLayoutNavigation.setBackground(mNavigationLayoutDrawable);
+                mTvNavigation.setBackground(mNavigationViewDrawable);
+            } else {
+                mLayoutNavigation.setBackgroundDrawable(mNavigationLayoutDrawable);
+                mTvNavigation.setBackgroundDrawable(mNavigationViewDrawable);
+            }
+            //添加DecorView
+            if (mPlusDecorViewEnable) {
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mLayoutNavigation.getLayoutParams();
+                params.width = isNavigationAtBottom ? ViewGroup.LayoutParams.MATCH_PARENT : navigationHeight;
+                params.height = isNavigationAtBottom ? navigationHeight : ViewGroup.LayoutParams.MATCH_PARENT;
+                params.gravity = angle == 0 ? Gravity.BOTTOM : angle == 3 ? Gravity.START : angle == 1 ? Gravity.END : Gravity.TOP;
+                if (!RomUtil.isEMUI() && !isNavigationAtBottom && angle == Surface.ROTATION_270) {
+                    params.gravity = Gravity.START;
+                }
+                mLayoutNavigation.setLayoutParams(params);
+                log("angle:" + angle + ";isNavigationAtBottom:" + isNavigationAtBottom);
+                return;
+            }
             View child = mLinearLayout.getChildAt(mLinearLayout.indexOfChild(mLayoutNavigation) - 1);
             //设置排列方式
             mLinearLayout.setOrientation(isNavigationAtBottom ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
@@ -496,13 +603,7 @@ public class NavigationViewHelper {
                     isNavigationAtBottom ? ViewGroup.LayoutParams.MATCH_PARENT : 0,
                     isNavigationAtBottom ? 0 : ViewGroup.LayoutParams.MATCH_PARENT, 1.0f));
             mTvNavigation.setCompoundDrawables(isNavigationAtBottom ? null : mNavigationViewDrawableTop, isNavigationAtBottom ? mNavigationViewDrawableTop : null, null, null);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mLayoutNavigation.setBackground(mNavigationLayoutDrawable);
-                mTvNavigation.setBackground(mNavigationViewDrawable);
-            } else {
-                mLayoutNavigation.setBackgroundDrawable(mNavigationLayoutDrawable);
-                mTvNavigation.setBackgroundDrawable(mNavigationViewDrawable);
-            }
+
             //获取假状态栏位置--此处是有BUG的
             int index = mLinearLayout.indexOfChild(mLayoutNavigation);
             if (!RomUtil.isEMUI() && !isNavigationAtBottom && angle == Surface.ROTATION_270 && index != 0) {
@@ -517,7 +618,7 @@ public class NavigationViewHelper {
                     mLinearLayout.addView(mLayoutNavigation, params);
                 }
             }
-            log("angle:" + angle);
+
         }
     }
 
@@ -531,16 +632,13 @@ public class NavigationViewHelper {
         }
     }
 
-    /**
-     * 销毁
-     */
-    public void onDestroy() {
+    protected void destroy() {
         log("onDestroy");
-        if (mDecorContentView != null && mDecorGlobalLayoutListener != null) {
+        if (mDecorView != null && mDecorGlobalLayoutListener != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mDecorContentView.getViewTreeObserver().removeOnGlobalLayoutListener(mDecorGlobalLayoutListener);
+                mDecorView.getViewTreeObserver().removeOnGlobalLayoutListener(mDecorGlobalLayoutListener);
             } else {
-                mDecorContentView.getViewTreeObserver().removeGlobalOnLayoutListener(mDecorGlobalLayoutListener);
+                mDecorView.getViewTreeObserver().removeGlobalOnLayoutListener(mDecorGlobalLayoutListener);
             }
         }
         //还原View原始paddingBottom或marginBottom
@@ -570,6 +668,14 @@ public class NavigationViewHelper {
         mLinearLayout = null;
         mLayoutNavigation = null;
         mDecorGlobalLayoutListener = null;
-        System.gc();
+        mOnKeyboardVisibilityChangedListener = null;
+    }
+
+    /**
+     * 销毁
+     */
+    @Deprecated
+    public void onDestroy() {
+        log("Deprecated_onDestroy");
     }
 }

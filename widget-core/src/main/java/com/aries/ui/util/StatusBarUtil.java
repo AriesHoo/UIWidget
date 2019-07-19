@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
  * 1、修改状态栏黑白字 功能逻辑--参考 https://github.com/QMUI/QMUI_Android  QMUIStatusBarHelper类
  * 2、2019-4-11 10:42:27 新增Activity参数相关的Window参数方法
  * {@link #setStatusBarDarkMode(Window)} {@link #setStatusBarLightMode(Window)}
+ * 3、2019-7-15 13:13:46 新增OPPO 4.4(含)-6.0(不含) ColorOS 状态栏黑色文字方法{@link #setStatusBarModeForColorOS(Window, boolean)}
  */
 public class StatusBarUtil {
 
@@ -104,7 +105,7 @@ public class StatusBarUtil {
      */
     private static boolean setStatusBarModeForMIUI(Window window, boolean darkText) {
         boolean result = false;
-        if (window != null) {
+        if (window != null && isSupportStatusBarFontChange()) {
             Class clazz = window.getClass();
             try {
                 int darkModeFlag;
@@ -137,7 +138,7 @@ public class StatusBarUtil {
      */
     private static boolean setStatusBarModeForFlyMe(Window window, boolean darkText) {
         boolean result = false;
-        if (window != null) {
+        if (window != null && isSupportStatusBarFontChange()) {
             try {
                 WindowManager.LayoutParams lp = window.getAttributes();
                 Field darkFlag = WindowManager.LayoutParams.class
@@ -172,10 +173,7 @@ public class StatusBarUtil {
      * @return boolean 成功执行返回true
      */
     private static boolean setStatusBarModeForColorOS(Window window, boolean darkText) {
-        if (!RomUtil.isOPPO()) {
-            return false;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (RomUtil.isOPPO() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int vis = window.getDecorView().getSystemUiVisibility();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             if (darkText) {
@@ -219,15 +217,16 @@ public class StatusBarUtil {
      * @return true支持状态栏文字颜色变化
      */
     public static boolean isSupportStatusBarFontChange() {
-        if (RomUtil.isOPPO() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (RomUtil.isOPPO() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             return true;
         }
-        if (RomUtil.getMIUIVersionCode() >= 6 || RomUtil.getFlymeVersionCode() >= 4
-                || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+        if (RomUtil.getMIUIVersionCode() >= 6 || RomUtil.getFlymeVersionCode() >= 4) {
             return true;
-        } else {
-            return false;
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return true;
+        }
+        return false;
     }
 
     /**

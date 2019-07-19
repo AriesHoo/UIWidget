@@ -203,13 +203,14 @@ public class RomUtil {
      * @return
      */
     public static String getSystemProperty(String key, String defaultValue) {
+        String result = defaultValue;
         try {
             Class<?> clz = Class.forName("android.os.SystemProperties");
             Method get = clz.getMethod("get", String.class, String.class);
-            return (String) get.invoke(clz, key, defaultValue);
+            result = (String) get.invoke(clz, key, defaultValue);
         } catch (Exception e) {
         }
-        return defaultValue;
+        return result;
     }
 
     public static String getSystemProperty(String key) {

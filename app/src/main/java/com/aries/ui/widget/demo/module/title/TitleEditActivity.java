@@ -3,12 +3,15 @@ package com.aries.ui.widget.demo.module.title;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
+import com.aries.ui.widget.demo.module.alert.AlertActivity;
 import com.aries.ui.widget.demo.util.SizeUtil;
 
 import butterknife.BindView;
@@ -21,6 +24,8 @@ import butterknife.BindView;
  */
 public class TitleEditActivity extends BaseActivity implements KeyboardHelper.OnKeyboardVisibilityChangedListener {
 
+
+    @BindView(R.id.et_bottomTitle) EditText mEtBottom;
     @BindView(R.id.tv_tipTitleEdit) TextView mTvTip;
 
     @Override
@@ -31,6 +36,13 @@ public class TitleEditActivity extends BaseActivity implements KeyboardHelper.On
 
     @Override
     protected void setTitleBar() {
+        titleBar.setRightTextDrawable(R.drawable.ic_menu)
+                .setOnRightTextClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity( AlertActivity.class);
+                    }
+                });
     }
 
     @Override

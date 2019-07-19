@@ -40,7 +40,7 @@ public class ToolWithCollapsingLayoutActivity extends BaseRecycleActivity<Widget
 
     @Override
     protected BaseQuickAdapter<WidgetEntity, BaseViewHolder> getAdapter() {
-        mAdapter = new TitleAdapter(mContext);
+        mAdapter = new TitleAdapter();
         return mAdapter;
     }
 

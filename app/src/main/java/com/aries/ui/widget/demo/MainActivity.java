@@ -1,7 +1,6 @@
 package com.aries.ui.widget.demo;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -51,7 +50,7 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
 
     @Override
     protected BaseQuickAdapter<WidgetEntity, BaseViewHolder> getAdapter() {
-        mAdapter = new WidgetAdapter(mContext);
+        mAdapter = new WidgetAdapter();
         return mAdapter;
     }
 
@@ -107,7 +106,6 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
 
     @Override
     protected void initView(Bundle bundle) {
-        getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(this);
         int padding = getResources().getDimensionPixelSize(R.dimen.dp_margin);
         mTextView = new TextView(mContext);
         mTextView.setTextColor(ContextCompat.getColor(mContext, R.color.colorTextBlack));
@@ -146,17 +144,8 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            getWindow().getDecorView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-        } else {
-            getWindow().getDecorView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
-        }
-    }
-
-    @Override
     public void onGlobalLayout() {
+        super.onGlobalLayout();
         if (mTextView != null) {
             mTextView.setText(Html.fromHtml(
                     "是否全面屏:" + NavigationBarUtil.isFullScreenDevice(mContext)

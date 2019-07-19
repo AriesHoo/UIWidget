@@ -1,8 +1,13 @@
 package com.aries.ui.widget.demo.base;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
+import com.aries.ui.helper.navigation.NavigationBarUtil;
+import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.widget.demo.R;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -18,13 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
  * @Description:
  */
 public abstract class BaseRecycleActivity<T> extends BaseActivity
-        implements BaseQuickAdapter.RequestLoadMoreListener {
+        implements BaseQuickAdapter.RequestLoadMoreListener, ViewTreeObserver.OnGlobalLayoutListener {
 
     protected RecyclerView mRecyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected BaseQuickAdapter<T, BaseViewHolder> mAdapter;
-    protected int DEFAULT_PAGE = 0;
-    protected int DEFAULT_PAGE_SIZE = 10;
 
     protected abstract void loadData(int page);
 
@@ -39,8 +42,18 @@ public abstract class BaseRecycleActivity<T> extends BaseActivity
     protected abstract BaseQuickAdapter<T, BaseViewHolder> getAdapter();
 
     @Override
+    protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
+        super.beforeControlNavigation(navigationHelper);
+        navigationHelper.setPlusNavigationViewEnable(isPlusView(this), true)
+                .setNavigationViewDrawableTop(null)
+                .setNavigationViewColor(Color.argb(isDarkIcon() ? 30 : 80, 0, 0, 0));
+    }
+
+    @Override
     protected void beforeInitView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_content);
+        navigationHeight = NavigationBarUtil.getNavigationBarHeight(this);
+        getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(this);
+        mRecyclerView = findViewById(R.id.rv_content);
         if (mRecyclerView != null) {
             initRecyclerView();
         }
@@ -71,7 +84,7 @@ public abstract class BaseRecycleActivity<T> extends BaseActivity
     protected RecyclerView.Adapter initAdapter() {
         mAdapter = getAdapter();
         if (mAdapter != null && setLoadMore()) {
-            mAdapter.setOnLoadMoreListener(this);
+            mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         }
         return mAdapter;
     }
@@ -82,11 +95,35 @@ public abstract class BaseRecycleActivity<T> extends BaseActivity
 
     @Override
     public void onLoadMoreRequested() {
-        loadData(DEFAULT_PAGE++);
+        loadData(0);
     }
 
     @Override
     protected void loadData() {
-        loadData(DEFAULT_PAGE);
+        loadData(0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            getWindow().getDecorView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        } else {
+            getWindow().getDecorView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
+        }
+    }
+
+    int navigationHeight;
+
+    /**
+     * Callback method to be invoked when the global layout state or the visibility of views
+     * within the view tree changes
+     */
+    @Override
+    public void onGlobalLayout() {
+        if (mAdapter != null && navigationHeight != NavigationBarUtil.getNavigationBarHeight(this)) {
+            navigationHeight = NavigationBarUtil.getNavigationBarHeight(getWindow());
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

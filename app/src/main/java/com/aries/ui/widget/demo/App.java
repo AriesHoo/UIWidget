@@ -1,6 +1,13 @@
 package com.aries.ui.widget.demo;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
+
+import com.parfoismeng.slidebacklib.SlideBack;
+import com.parfoismeng.slidebacklib.callback.SlideBackCallBack;
+import com.squareup.leakcanary.LeakCanary;
 
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -11,7 +18,7 @@ import androidx.multidex.MultiDexApplication;
  * Function:
  * Description:
  */
-public class App extends MultiDexApplication {
+public class App extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
 
     public static Context getContext() {
         return sContext;
@@ -35,92 +42,64 @@ public class App extends MultiDexApplication {
 //            CrashReport.setAppChannel(getApplicationContext(), appChannel);
 //        }
 //        Log.i("appChannel", "appChannel2:" + appChannel);
-//        BGASwipeBackHelper.init(this, null);
-//        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-//            @Override
-//            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-//                Log.e("onActivityCreated", "isNavigationBarExist:" + NavigationBarUtil.hasNavBar(activity) + ";isNavigationAtBottom:" + NavigationBarUtil.isNavigationAtBottom(activity.getWindow()));
-//
-//                new BGASwipeBackHelper(activity, new BGASwipeBackHelper.Delegate() {
-//                    @Override
-//                    public boolean isSupportSwipeBack() {
-//                        return true;
-//                    }
-//
-//                    @Override
-//                    public void onSwipeBackLayoutSlide(float slideOffset) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onSwipeBackLayoutCancel() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onSwipeBackLayoutExecuted() {
-//                        //设置退出动画-确保效果准确
-//                        if (activity == null || activity.isFinishing()) {
-//                            return;
-//                        }
-//                        KeyboardHelper.closeKeyboard(activity);
-//                        activity.finish();
-//                        activity.overridePendingTransition(0, R.anim.bga_sbl_activity_swipeback_exit);
-//
-//                    }
-//                })
-//                        //设置滑动背景
-//                        .setShadowResId(R.drawable.bga_sbl_shadow)
-//                        //底部导航条是否悬浮在内容上设置过NavigationViewHelper可以不用设置该属性
-//                        .setIsNavigationBarOverlap(NavigationBarUtil.isNavigationAtBottom(activity))
-//                        .setIsShadowAlphaGradient(true);
-//            }
-//
-//            @Override
-//            public void onActivityStarted(Activity activity) {
-//
-//            }
-//
-//            @Override
-//            public void onActivityResumed(Activity activity) {
-//
-//            }
-//
-//            @Override
-//            public void onActivityPaused(Activity activity) {
-//                //Activity销毁前的时机需要关闭软键盘-在onActivityStopped及onActivityDestroyed生命周期内已无法关闭
-//                if (activity.isFinishing()) {
-//                    KeyboardHelper.closeKeyboard(activity);
-//                }
-//            }
-//
-//            @Override
-//            public void onActivityStopped(Activity activity) {
-//
-//            }
-//
-//            @Override
-//            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-//
-//            }
-//
-//            @Override
-//            public void onActivityDestroyed(Activity activity) {
-//                Log.e("onActivityDestroyed", "isNavigationBarExist:" + NavigationBarUtil.hasNavBar(activity) + ";isNavigationAtBottom:" + NavigationBarUtil.isNavigationAtBottom(activity.getWindow()));
-//            }
-//        });
-//        if (LeakCanary.isInAnalyzerProcess(this)) {
-//            // This process is dedicated to LeakCanary for heap analysis.
-//            // You should not init your app in this process.
-//            return;
-//        }
-//        LeakCanary.install(this);
 
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+        registerActivityLifecycleCallbacks(this);
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+    }
+
+    @Override
+    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        // 在需要滑动返回的Activity中注册，最好但非必须在onCreate中
+        SlideBack.with(activity)
+                .haveScroll(true)
+                .edgeMode(SlideBack.EDGE_LEFT)
+                .callBack(new SlideBackCallBack() {
+                    @Override
+                    public void onSlideBack() {
+                        activity.finish();
+                    }
+                })
+                .register();
+    }
+
+    @Override
+    public void onActivityStarted(Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityResumed(Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityPaused(Activity activity) {
+
+    }
+
+    @Override
+    public void onActivityStopped(Activity activity) {
+
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+    }
+
+    @Override
+    public void onActivityDestroyed(Activity activity) {
+        SlideBack.unregister(activity);
     }
 }

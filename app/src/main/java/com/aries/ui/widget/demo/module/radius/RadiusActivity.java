@@ -113,4 +113,13 @@ public class RadiusActivity extends BaseActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        if(mBgDrawable!=null){
+           rtvJavaBg.setBackgroundColor(Color.TRANSPARENT);
+           mBgDrawable =null;
+        }
+        super.onDestroy();
+    }
 }
