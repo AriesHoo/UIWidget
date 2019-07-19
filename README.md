@@ -25,6 +25,76 @@
 
 ![Download-github](/apk/qr.png)
 
+**Gradle集成**
+
+```
+allprojects {
+    repositories {
+        ...
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+[![](https://jitpack.io/v/AriesHoo/UIWidget.svg)](https://jitpack.io/#AriesHoo/UIWidget)
+[![](https://img.shields.io/github/release/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/releases)
+
+##### 3.0.0及以后版本-core为核心库、alert及collapsing默认compile了core库
+
+```
+dependencies {
+     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.16'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.16'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.16'
+     implementation 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
+     implementation 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
+     implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
+}
+```
+
+##### 3.0.0以前版本
+
+```
+dependencies {
+     //implementation 'com.github.AriesHoo:UIWidget:2.0.9'
+     implementation 'com.github.AriesHoo:UIWidget:${LATEST_VERSION}'
+}
+```
+
+
+**Maven集成**
+
+```
+<repositories>
+     <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+     </repository>
+</repositories>
+```
+
+##### 3.0.0以后版本
+
+```
+<dependency>
+    <groupId>com.github.AriesHoo.UIWidget</groupId>
+    <artifactId>widget-core</artifactId>
+    <artifactId>widget-collapsing</artifactId>
+    <artifactId>widget-alert</artifactId>
+    <version>3.2.10</version>
+</dependency>
+```
+
+##### 3.0.0以前版本
+
+```
+<dependency>
+    <groupId>com.github.AriesHoo</groupId>
+    <artifactId>UIWidget</artifactId>
+    <version>2.0.9</version>
+</dependency>
+```
+
 ## 重大更新日志
 
 **特别声明**
@@ -151,76 +221,6 @@
 
 [KeyboardHelper](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
   
-**Gradle集成**
-
-```
-allprojects {
-    repositories {
-        ...
-        maven { url "https://jitpack.io" }
-    }
-}
-```
-
-[![](https://jitpack.io/v/AriesHoo/UIWidget.svg)](https://jitpack.io/#AriesHoo/UIWidget)
-[![](https://img.shields.io/github/release/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/releases)
-
-##### 3.0.0及以后版本-core为核心库、alert及collapsing默认compile了core库
-
-```
-dependencies {
-     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.10'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.10'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.10'
-     implementation 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
-     implementation 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
-     implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
-}
-```
-
-##### 3.0.0以前版本
-
-```
-dependencies {
-     //implementation 'com.github.AriesHoo:UIWidget:2.0.9'
-     implementation 'com.github.AriesHoo:UIWidget:${LATEST_VERSION}'
-}
-```
-
-
-**Maven集成**
-
-```
-<repositories>
-     <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-     </repository>
-</repositories>
-```
-
-##### 3.0.0以后版本
-
-```
-<dependency>
-    <groupId>com.github.AriesHoo.UIWidget</groupId>
-    <artifactId>widget-core</artifactId>
-    <artifactId>widget-collapsing</artifactId>
-    <artifactId>widget-alert</artifactId>
-    <version>3.2.10</version>
-</dependency>
-```
-
-##### 3.0.0以前版本
-
-```
-<dependency>
-    <groupId>com.github.AriesHoo</groupId>
-    <artifactId>UIWidget</artifactId>
-    <version>2.0.9</version>
-</dependency>
-```
-
 
 **UIAlertDialog属性控制**
 
