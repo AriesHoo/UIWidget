@@ -33,6 +33,7 @@ import java.lang.ref.WeakReference;
  * 5、2019-2-25 14:00:37 将activity对象弱引用避免内存泄露;优化注册activity 销毁逻辑
  * 6、2019-4-11 13:10:30 优化Dialog 参数定义{@link #KeyboardHelper(Activity, Dialog)}
  * 7、2019-5-29 15:39:37 增加获取 findViewById(android.R.id.content) 非空判断避免系统空指针异常
+ * 8、2019-7-22 09:19:45 移除设置contentView相关with方法
  */
 public class KeyboardHelper {
 
@@ -80,25 +81,17 @@ public class KeyboardHelper {
     }
 
     public static KeyboardHelper with(Activity activity) {
+        if (activity == null) {
+            throw new IllegalArgumentException("Activity不能为null");
+        }
         return new KeyboardHelper(activity);
     }
 
-    public static KeyboardHelper with(Activity activity, View contentView) {
-        if (activity == null) {
-            throw new IllegalArgumentException("Activity不能为null");
-        }
-        return new KeyboardHelper(activity, contentView);
-    }
-
     public static KeyboardHelper with(Activity activity, Dialog dialog) {
-        return with(activity, dialog, null);
-    }
-
-    public static KeyboardHelper with(Activity activity, Dialog dialog, View contentView) {
         if (activity == null) {
             throw new IllegalArgumentException("Activity不能为null");
         }
-        return new KeyboardHelper(activity, dialog, contentView);
+        return new KeyboardHelper(activity, dialog);
     }
 
     private KeyboardHelper(Activity activity) {
