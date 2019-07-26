@@ -40,10 +40,15 @@ public class RadiusCheckBox extends CheckBox {
             int max = Math.max(getWidth(), getHeight());
             int measureSpec = MeasureSpec.makeMeasureSpec(max, MeasureSpec.EXACTLY);
             super.onMeasure(measureSpec, measureSpec);
+            if (delegate != null) {
+                delegate.init();
+            }
             return;
         }
-
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (delegate != null) {
+            delegate.init();
+        }
     }
 
     @Override

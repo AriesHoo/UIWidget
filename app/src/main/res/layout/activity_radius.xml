@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:rv="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +9,7 @@
     android:orientation="vertical"
     tools:background="@color/colorBackground">
 
-    <include layout="@layout/layout_title_bar"/>
+    <include layout="@layout/layout_title_bar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,29 +24,7 @@
             android:padding="10dp">
 
             <com.aries.ui.view.radius.RadiusTextView
-                android:id="@+id/rtv_loginRadius"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:text="登录"
-                rv:rv_backgroundColor="@android:color/holo_red_dark"
-                android:clickable="true"
-                android:enabled="false"
-                rv:rv_rippleEnable="true"
-                rv:rv_backgroundDisabledColor="@color/colorWhitePressed"
-                rv:rv_textColor="@color/colorWhite"
-                rv:rv_textDisabledColor="@android:color/holo_red_dark">
-
-            </com.aries.ui.view.radius.RadiusTextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_github"
-                android:drawablePadding="40dp"
-                android:text="Test"/>
-
-            <com.aries.ui.view.radius.RadiusTextView
+                android:id="@+id/rtv_drawable_radius"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="10dp"
@@ -61,15 +39,7 @@
                 rv:rv_rightDrawable="@drawable/ic_github"
                 rv:rv_selected="true"
                 rv:rv_textColor="#1a20d8"
-                rv:rv_textSelectedColor="#5526a6"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="说明:以下所有展示的RadiusTextView、RadiusEditText、RadiusCheckBox等常用控件效果均通过xml属性控制并未设置shape文件背景"
-                android:textColor="@color/colorTextBlack"
-                android:textSize="16dp"/>
+                rv:rv_textSelectedColor="#5526a6" />
 
             <TextView
                 android:id="@+id/tv_shapeRadius"
@@ -77,7 +47,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/shape_bg_radius"
                 android:gravity="center"
-                android:text="shape文件背景"/>
+                android:text="shape文件背景" />
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_javaBg"
@@ -86,7 +56,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="java代码设置背景"/>
+                android:text="java代码设置背景" />
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:layout_width="match_parent"
@@ -98,7 +68,7 @@
                 rv:rv_strokeColor="@android:color/holo_purple"
                 rv:rv_strokeDashGap="@dimen/dp_dash_gap"
                 rv:rv_strokeDashWidth="@dimen/dp_dash_width"
-                rv:rv_strokeWidth="2dp"/>
+                rv:rv_strokeWidth="2dp" />
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_selectRadius"
@@ -107,7 +77,7 @@
                 android:layout_marginBottom="@dimen/dp_margin"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="测试Select"
+                android:hint="测试Select"
                 rv:rv_backgroundColor="@android:color/white"
                 rv:rv_backgroundDisabledColor="@android:color/holo_red_dark"
                 rv:rv_backgroundSelectedColor="@android:color/holo_purple"
@@ -117,7 +87,7 @@
                 rv:rv_strokeSelectedColor="@android:color/holo_red_dark"
                 rv:rv_strokeWidth="2dp"
                 rv:rv_textColor="@android:color/holo_purple"
-                rv:rv_textSelectedColor="@android:color/white"/>
+                rv:rv_textSelectedColor="@android:color/white" />
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_tagChooseChannel"
@@ -141,58 +111,12 @@
                 rv:rv_strokeSelectedColor="@color/colorPrimary"
                 rv:rv_strokeWidth="@dimen/dp_line_size"
                 rv:rv_textColor="@android:color/holo_purple"
-                rv:rv_textSelectedColor="@color/colorWhite"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.aries.ui.view.radius.RadiusTextView
-                    android:id="@+id/rtv_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="normal"
-                    rv:rv_backgroundColor="@android:color/holo_blue_bright"
-                    rv:rv_backgroundPressedColor="#383838"
-                    rv:rv_strokeColor="#383838"
-                    rv:rv_strokeWidth="1dp"
-                    rv:rv_textColor="@android:color/white"
-                    rv:rv_textDisabledColor="@android:color/holo_blue_bright"
-                    rv:rv_textPressedColor="#ffffff"/>
-
-                <com.aries.ui.view.radius.RadiusTextView
-                    android:id="@+id/rtv_disable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:elevation="10dp"
-                    android:enabled="true"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="disabled"
-                    rv:rv_backgroundColor="@android:color/holo_blue_bright"
-                    rv:rv_backgroundDisabledColor="@android:color/black"
-                    rv:rv_backgroundPressedColor="#383838"
-                    rv:rv_strokeColor="#383838"
-                    rv:rv_strokeWidth="1dp"
-                    rv:rv_textColor="@android:color/white"
-                    rv:rv_textDisabledColor="@android:color/holo_blue_bright"
-                    rv:rv_textPressedColor="#ffffff"/>
-            </LinearLayout>
+                rv:rv_textSelectedColor="@color/colorWhite" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SwitchCompat"/>
+                android:text="SwitchCompat" />
 
             <Switch
                 android:layout_width="match_parent"
@@ -200,13 +124,14 @@
                 android:checked="false"
                 android:text="Switch+drawable文件"
                 android:thumb="@drawable/selector_thumb"
-                android:track="@drawable/selector_track"/>
+                android:track="@drawable/selector_track" />
 
             <com.aries.ui.view.radius.RadiusSwitch
                 android:id="@+id/radiusSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:checked="true"
+                android:clickable="true"
                 android:text="RadiusSwitch+xml属性"
                 rv:rv_thumbDrawable="@color/white"
                 rv:rv_thumbDrawableHeight="24dp"
@@ -221,14 +146,14 @@
                 rv:rv_trackRadius="30dp"
                 rv:rv_trackStrokeCheckedColor="#33da33"
                 rv:rv_trackStrokeColor="#BEBEBE"
-                rv:rv_trackStrokeWidth="2dp"/>
+                rv:rv_trackStrokeWidth="2dp" />
 
             <com.aries.ui.view.radius.RadiusSwitch
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
                 android:checked="true"
-                android:text="默认属性颜色值来自colorAccent--微信样式"/>
+                android:minHeight="48dp"
+                android:text="默认属性颜色值来自colorAccent--微信样式" />
 
 
             <com.aries.ui.view.radius.RadiusSwitch
@@ -251,7 +176,7 @@
                 rv:rv_trackRadius="2dp"
                 rv:rv_trackStrokeCheckedColor="#075fb7"
                 rv:rv_trackStrokeColor="@android:color/darker_gray"
-                rv:rv_trackStrokeWidth="2dp"/>
+                rv:rv_trackStrokeWidth="2dp" />
 
             <com.aries.ui.view.radius.RadiusSwitch
                 android:layout_width="match_parent"
@@ -273,7 +198,7 @@
                 rv:rv_trackRadius="20dp"
                 rv:rv_trackStrokeCheckedColor="@android:color/darker_gray"
                 rv:rv_trackStrokeColor="@android:color/darker_gray"
-                rv:rv_trackStrokeWidth="0.5dp"/>
+                rv:rv_trackStrokeWidth="0.5dp" />
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:layout_width="100dp"
@@ -286,7 +211,7 @@
                 android:textColor="@color/colorWhite"
                 rv:rv_backgroundColor="@android:color/holo_blue_light"
                 rv:rv_backgroundPressedColor="@android:color/holo_purple"
-                rv:rv_rippleColor="@android:color/holo_purple"/>
+                rv:rv_rippleColor="@android:color/holo_purple" />
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_radiusHalfHeight"
@@ -308,7 +233,7 @@
                 rv:rv_strokePressedColor="#6D8FB0"
                 rv:rv_strokeWidth="1dp"
                 rv:rv_textColor="#03A9F4"
-                rv:rv_textPressedColor="#ffffff"/>
+                rv:rv_textPressedColor="#ffffff" />
 
             <com.aries.ui.view.radius.RadiusEditText
                 android:id="@+id/ret_radius"
@@ -327,7 +252,7 @@
                 rv:rv_radius="10dp"
                 rv:rv_strokeColor="#03A9F4"
                 rv:rv_strokeWidth="1dp"
-                rv:rv_textColor="#03A9F4"/>
+                rv:rv_textColor="#03A9F4" />
 
             <com.aries.ui.view.radius.RadiusEditText
                 android:id="@+id/ret_circle"
@@ -346,7 +271,7 @@
                 rv:rv_radiusHalfHeightEnable="true"
                 rv:rv_strokeColor="#03A9F4"
                 rv:rv_strokeWidth="1dp"
-                rv:rv_textColor="#03A9F4"/>
+                rv:rv_textColor="#03A9F4" />
 
             <com.aries.ui.view.radius.RadiusTextView
                 android:id="@+id/rtv_drawableRadius"
@@ -378,7 +303,7 @@
                 rv:rv_topDrawableColorRadius="5dp"
                 rv:rv_topDrawableHeight="60dp"
                 rv:rv_topDrawableWidth="60dp"
-                rv:rv_topSelectedDrawable="#ddff00"/>
+                rv:rv_topSelectedDrawable="#ddff00" />
 
 
             <RadioGroup
@@ -400,19 +325,19 @@
                     rv:rv_buttonDrawableColorCircleEnable="true"
                     rv:rv_buttonDrawableHeight="60dp"
                     rv:rv_buttonDrawableWidth="60dp"
-                    rv:rv_textCheckedColor="@android:color/holo_red_dark"/>
+                    rv:rv_textCheckedColor="@android:color/holo_red_dark" />
 
                 <com.aries.ui.view.radius.RadiusRadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="RadiusRadioButton System"
                     rv:rv_buttonDrawableSystemEnable="true"
-                    rv:rv_textCheckedColor="@android:color/holo_blue_dark"/>
+                    rv:rv_textCheckedColor="@android:color/holo_blue_dark" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="RadioButton System"/>
+                    android:text="RadioButton System" />
             </RadioGroup>
 
             <com.aries.ui.view.radius.RadiusCheckBox
@@ -420,7 +345,7 @@
                 android:layout_height="wrap_content"
                 android:text="RadiusCheckBox"
                 rv:rv_textCheckedColor="@android:color/holo_red_dark"
-                rv:rv_textColor="@android:color/holo_purple"/>
+                rv:rv_textColor="@android:color/holo_purple" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -443,7 +368,7 @@
                     rv:rv_rippleEnable="true"
                     rv:rv_strokeColor="@color/black"
                     rv:rv_strokeWidth="2dp"
-                    rv:rv_topLeftRadius="10dp"/>
+                    rv:rv_topLeftRadius="10dp" />
 
                 <com.aries.ui.view.radius.RadiusTextView
                     android:layout_width="0dp"
@@ -457,7 +382,7 @@
                     android:textColor="#ffffff"
                     rv:rv_backgroundColor="#F08A5D"
                     rv:rv_rippleEnable="true"
-                    rv:rv_topRightRadius="10dp"/>
+                    rv:rv_topRightRadius="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -484,7 +409,7 @@
                     rv:rv_backgroundSelectedColor="#b54ad5"
                     rv:rv_bottomLeftRadius="10dp"
                     rv:rv_selected="true"
-                    rv:rv_textPressedColor="@color/black"/>
+                    rv:rv_textPressedColor="@color/black" />
 
                 <com.aries.ui.view.radius.RadiusTextView
                     android:layout_width="0dp"
@@ -497,7 +422,7 @@
                     android:text="bottomRightRadius"
                     android:textColor="#ffffff"
                     rv:rv_backgroundColor="#7A9EAF"
-                    rv:rv_bottomRightRadius="10dp"/>
+                    rv:rv_bottomRightRadius="10dp" />
             </LinearLayout>
 
             <com.aries.ui.view.radius.RadiusFrameLayout
@@ -514,7 +439,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="RadiusFrameLayout"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
             </com.aries.ui.view.radius.RadiusFrameLayout>
 
             <com.aries.ui.view.radius.RadiusLinearLayout
@@ -536,14 +461,14 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_logo"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="RadiusLinearLayout"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
             </com.aries.ui.view.radius.RadiusLinearLayout>
 
             <com.aries.ui.view.radius.RadiusRelativeLayout
@@ -565,7 +490,7 @@
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_logo"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -574,7 +499,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/iv_portrait"
                     android:text="RadiusRelativeLayout"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
             </com.aries.ui.view.radius.RadiusRelativeLayout>
 
             <com.aries.ui.view.radius.RadiusLinearLayout
@@ -593,7 +518,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_logo"
-                    android:textColor="#ffffff"/>
+                    android:textColor="#ffffff" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -601,7 +526,7 @@
                     android:layout_marginTop="2dp"
                     android:text="Width=Height"
                     android:textColor="#ffffff"
-                    android:textSize="10sp"/>
+                    android:textSize="10sp" />
             </com.aries.ui.view.radius.RadiusLinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -15,13 +15,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Switch;
+
+import androidx.annotation.ColorInt;
 
 import com.aries.ui.util.ResourceUtil;
 import com.aries.ui.view.radius.RadiusSwitch;
 import com.aries.ui.widget.R;
-
-import androidx.annotation.ColorInt;
 
 /**
  * @Author: AriesHoo on 2018/7/19 10:01
@@ -455,9 +454,6 @@ public class RadiusViewDelegate<T extends RadiusViewDelegate> {
                     mOnSelectedChangeListener.onSelectedChanged(mView, mSelected);
                 }
                 mView.setSelected(selected);
-            } else if (mView instanceof Switch) {
-                //Switch 必须进行drawable重新设置不然会变形,未知什么情况引起
-                init();
             }
         }
     }

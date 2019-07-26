@@ -27,7 +27,6 @@ import butterknife.OnClick;
 public class RadiusActivity extends BaseActivity {
 
     @BindView(R.id.rtv_testRadius) RadiusTextView rtvTest;
-    @BindView(R.id.rtv_disable) RadiusTextView rtvDisable;
     @BindView(R.id.tv_shapeRadius) TextView tvShape;
     @BindView(R.id.rtv_javaBg) RadiusTextView rtvJavaBg;
     @BindView(R.id.rtv_drawableRadius) RadiusTextView rtvDrawable;
@@ -105,8 +104,6 @@ public class RadiusActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rtv_testRadius:
-                boolean enable = rtvDisable.isEnabled();
-                rtvDisable.setEnabled(!enable);
                 break;
             case R.id.rtv_drawableRadius:
                 rtvDrawable.setSelected(!rtvDrawable.isSelected());
