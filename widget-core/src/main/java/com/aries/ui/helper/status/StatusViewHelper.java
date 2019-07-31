@@ -257,6 +257,52 @@ public class StatusViewHelper {
     }
 
     /**
+     * 快速设置状态栏白色样式、注意和其它方法调用顺序
+     *
+     * @return StatusViewHelper 对象
+     */
+    public StatusViewHelper setWhiteStyle() {
+        return setControlEnable(true)
+                .setTransEnable(true)
+                .setPlusStatusViewEnable(true)
+                .setTopView(getTopView(mContentView))
+                .setStatusBarLightMode(StatusBarUtil.isSupportStatusBarFontChange())
+                .setStatusViewColor(Color.argb(StatusBarUtil.isSupportStatusBarFontChange() ? 0 : 102, 0, 0, 0))
+                .setStatusLayoutDrawableColor(Color.WHITE);
+    }
+
+    /**
+     * 快速设置状态栏黑色样式、注意和其它方法调用顺序
+     *
+     * @return StatusViewHelper 对象
+     */
+    public StatusViewHelper setBlackStyle() {
+        return setControlEnable(true)
+                .setTransEnable(true)
+                .setPlusStatusViewEnable(true)
+                .setTopView(getTopView(mContentView))
+                .setStatusBarLightMode(false)
+                .setStatusViewColor(Color.BLACK)
+                .setStatusLayoutDrawableColor(Color.BLACK);
+    }
+
+    /**
+     * 获取顶部View
+     *
+     * @param target 目标View
+     * @return 返回顶部View
+     */
+    private View getTopView(View target) {
+        if (target != null && target instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) target;
+            if (group.getChildCount() > 0) {
+                target = ((ViewGroup) target).getChildAt(0);
+            }
+        }
+        return target;
+    }
+
+    /**
      * 开始设置StatusView相应效果
      */
     public void init() {

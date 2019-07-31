@@ -45,7 +45,7 @@ public abstract class BaseRecycleActivity<T> extends BaseActivity
     protected void beforeControlNavigation(NavigationViewHelper navigationHelper) {
         super.beforeControlNavigation(navigationHelper);
         navigationHelper.setPlusNavigationViewEnable(isPlusView(this), true)
-                .setNavigationViewDrawableTop(null)
+                .setNavigationLayoutColor(Color.TRANSPARENT)
                 .setNavigationViewColor(Color.argb(isDarkIcon() ? 30 : 80, 0, 0, 0));
     }
 

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.aries.ui.util.RomUtil;
 import com.aries.ui.widget.R;
 
 import java.lang.reflect.Field;
@@ -33,6 +34,7 @@ import java.lang.reflect.Method;
  * 5、2019-4-15 09:51:42 新增判断导航栏是否位于底部方法{@link #isNavigationAtBottom(Window)}{@link #isNavigationAtBottom(Activity)}
  * 6、2019-4-15 10:30:13 新增导航栏图标颜色深浅方法{@link #setNavigationBarDarkMode(Window)}{@link #setNavigationBarDarkMode(Activity)}
  * {@link #setNavigationBarLightMode(Window)} {@link #setNavigationBarLightMode(Activity)}
+ * 7、2019-7-31 21:20:50 增加判断是否支持导航栏文字及icon黑色变化方法{@link #isSupportNavigationBarFontChange()}
  */
 public class NavigationBarUtil {
 
@@ -267,6 +269,21 @@ public class NavigationBarUtil {
     }
 
     /**
+     * 判断系统是否支持导航栏文字及图标颜色变化
+     *
+     * @return true支持导航栏文字颜色变化
+     */
+    public static boolean isSupportNavigationBarFontChange() {
+        if (RomUtil.isEMUI() && RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0) {
+            return true;
+        }
+        if (RomUtil.getMIUIVersionCode() >= 6) {
+            return true;
+        }
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
+
+    /**
      * 判断当前手机是否为全面屏--通过纵横比
      *
      * @param context
@@ -457,7 +474,7 @@ public class NavigationBarUtil {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int now = window.getDecorView().getSystemUiVisibility();
             int systemUi = darkText ?
-                     now | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR :
+                    now | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR :
                     (now & View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR) == View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR ? now ^ View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR : now;
             window.getDecorView().setSystemUiVisibility(systemUi);
             result = true;

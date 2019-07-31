@@ -97,16 +97,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 NavigationBarUtil.isNavigationAtBottom(mContext) ? SizeUtil.dp2px(0.5f) : SizeUtil.getScreenHeight());
         mNavigationViewHelper = NavigationViewHelper.with(this)
                 .setLogEnable(BuildConfig.DEBUG)
-                .setControlEnable(true)
-                .setTransEnable(true)
-                .setPlusNavigationViewEnable(isPlusView(this))
                 .setNavigationBarLightMode(isDarkIcon() && isPlusView(this))
-                .setControlBottomEditTextEnable(true)
-                .setNavigationViewDrawableTop(drawableTop)
-                .setNavigationViewColor(Color.argb(isDarkIcon() && isPlusView(this) ? 30 : 80, 0, 0, 0))
-                .setNavigationViewColor(Color.argb(isDarkIcon() ? 30 : 80, 0, 0, 0))
-                .setNavigationLayoutColor(Color.TRANSPARENT)
-                .setBottomView(mContentView);
+                .setWhiteStyle();
         beforeControlNavigation(mNavigationViewHelper);
         //不推荐4.4版本使用透明导航栏--话说现在谁还用那么低版本的手机
         if (isControlNavigation()) {
@@ -169,11 +161,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mUnBinder != null) {
             mUnBinder.unbind();
         }
-        mContext=null;
+        mContext = null;
         mUnBinder = null;
         mContentView = null;
         titleBar = null;
-        TAG=null;
+        TAG = null;
         mNavigationViewHelper = null;
     }
 

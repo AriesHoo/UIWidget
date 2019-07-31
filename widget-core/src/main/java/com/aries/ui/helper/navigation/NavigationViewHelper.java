@@ -359,6 +359,36 @@ public class NavigationViewHelper {
     }
 
     /**
+     * 快速设置导航栏白色样式、注意和其它方法调用顺序
+     *
+     * @return NavigationViewHelper 对象
+     */
+    public NavigationViewHelper setWhiteStyle() {
+        return setControlEnable(true)
+                .setTransEnable(true)
+                .setPlusNavigationViewEnable(true)
+                .setBottomView(mContentView)
+                .setNavigationBarLightMode(NavigationBarUtil.isSupportNavigationBarFontChange())
+                .setNavigationViewColor(Color.argb(NavigationBarUtil.isSupportNavigationBarFontChange() ? 0 : 102, 0, 0, 0))
+                .setNavigationLayoutColor(Color.WHITE);
+    }
+
+    /**
+     * 快速设置导航栏黑色样式、注意和其它方法调用顺序
+     *
+     * @return NavigationViewHelper 对象
+     */
+    public NavigationViewHelper setBlackStyle() {
+        return setControlEnable(true)
+                .setTransEnable(true)
+                .setPlusNavigationViewEnable(true)
+                .setBottomView(mContentView)
+                .setNavigationBarLightMode(false)
+                .setNavigationViewColor(Color.BLACK)
+                .setNavigationLayoutColor(Color.BLACK);
+    }
+
+    /**
      * 开始设置NavigationView相应效果
      */
     public void init() {
