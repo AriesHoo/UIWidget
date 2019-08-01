@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.aries.ui.helper.navigation.NavigationBarUtil;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -20,6 +22,7 @@ import java.lang.reflect.Method;
  * 2、2019-4-11 10:42:27 新增Activity参数相关的Window参数方法
  * {@link #setStatusBarDarkMode(Window)} {@link #setStatusBarLightMode(Window)}
  * 3、2019-7-15 13:13:46 新增OPPO 4.4(含)-6.0(不含) ColorOS 状态栏黑色文字方法{@link #setStatusBarModeForColorOS(Window, boolean)}
+ * 4、2019-8-1 10:45:32 增加设置全屏方法{@link #setFullScreen(Window, boolean)}{@link #setFullScreen(Activity, boolean)}
  */
 public class StatusBarUtil {
 
@@ -197,9 +200,6 @@ public class StatusBarUtil {
     private static boolean setStatusBarModeForAndroidM(Window window, boolean darkText) {
         boolean result = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //int systemUi = darkText ? View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR : View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            //systemUi = changeStatusBarModeRetainFlag(window, systemUi);
-            //window.getDecorView().setSystemUiVisibility(systemUi);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             int now = window.getDecorView().getSystemUiVisibility();
             int systemUi = darkText ?
@@ -261,6 +261,12 @@ public class StatusBarUtil {
         return out;
     }
 
+    /**
+     * 刘海屏控制
+     *
+     * @param window window 对象
+     * @param fit    true 控制刘海 false 退出控制
+     */
     public static void fitsNotchScreen(Window window, boolean fit) {
         if (window == null) {
             return;
@@ -270,5 +276,102 @@ public class StatusBarUtil {
             lp.layoutInDisplayCutoutMode = fit ? WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES : WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT;
             window.setAttributes(lp);
         }
+    }
+
+    /**
+     * 刘海屏控制
+     *
+     * @param activity Activity 对象
+     * @param fit      true 控制刘海 false 退出控制
+     */
+    public static void fitsNotchScreen(Activity activity, boolean fit) {
+        fitsNotchScreen(activity.getWindow(), fit);
+    }
+
+    /**
+     * 是否隐藏状态栏
+     *
+     * @param activity Activity 对象
+     * @return 是否隐藏
+     */
+    public static boolean isStatusBar(Activity activity) {
+        if (activity == null) {
+            return false;
+        }
+        return isStatusBar(activity.getWindow());
+    }
+
+    /**
+     * 是否隐藏状态栏
+     *
+     * @param window Window对象
+     * @return 是否隐藏
+     */
+    public static boolean isStatusBar(Window window) {
+        if (window == null) {
+            return false;
+        }
+        return (window.getDecorView().getSystemUiVisibility() & View.INVISIBLE)
+                == View.INVISIBLE;
+    }
+
+    /**
+     * 隐藏状态栏
+     *
+     * @param activity Activity 对象
+     * @param isHide   是否隐藏
+     */
+    public static void hideStatusBar(Activity activity, boolean isHide) {
+        if (activity == null) {
+            return;
+        }
+        hideStatusBar(activity.getWindow(), isHide);
+    }
+
+    /**
+     * 隐藏状态栏
+     *
+     * @param window Window 对象
+     * @param isHide 是否隐藏
+     */
+    public static void hideStatusBar(Window window, boolean isHide) {
+        if (window == null) {
+            return;
+        }
+        //防止系统栏隐藏时内容区域大小发生变化
+        int uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | window.getDecorView().getSystemUiVisibility();
+        if (isHide) {
+            if (!isStatusBar(window)) {
+                uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.INVISIBLE;
+            }
+        } else {
+            if (isStatusBar(window)) {
+                uiFlags ^= View.INVISIBLE;
+            }
+        }
+        uiFlags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        window.getDecorView().setSystemUiVisibility(uiFlags);
+    }
+
+    /**
+     * 设置全屏效果
+     *
+     * @param window window 对象
+     * @param isFull true 全屏 false 退出全屏
+     */
+    public static void setFullScreen(Window window, boolean isFull) {
+        hideStatusBar(window, isFull);
+        NavigationBarUtil.hideNavigationBar(window, isFull);
+    }
+
+    /**
+     * 设置全屏效果
+     *
+     * @param activity Activity 对象
+     * @param isFull   true 全屏 false 退出全屏
+     */
+    public static void setFullScreen(Activity activity, boolean isFull) {
+        setFullScreen(activity.getWindow(), isFull);
     }
 }

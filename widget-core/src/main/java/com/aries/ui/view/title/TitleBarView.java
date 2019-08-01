@@ -575,11 +575,6 @@ public class TitleBarView extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         mStatusBarHeight = getNeedStatusBarHeight();
         //测量子控件宽高
-//        measureChild(mLLayoutLeft, widthMeasureSpec, heightMeasureSpec);
-//        measureChild(mLLayoutRight, widthMeasureSpec, heightMeasureSpec);
-//        measureChild(mLLayoutCenter, widthMeasureSpec, heightMeasureSpec);
-//        measureChild(mVDivider, widthMeasureSpec, heightMeasureSpec);
-//        measureChild(mVStatus, widthMeasureSpec, heightMeasureSpec);
         measureChildren(widthMeasureSpec, heightMeasureSpec);
         //重新测量宽高--增加状态栏及下划线的高度开始
         //父容器为ConstraintLayout约束布局特殊处理

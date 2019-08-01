@@ -2,7 +2,6 @@ package com.aries.ui.view.radius;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.aries.ui.view.radius.delegate.RadiusTextViewDelegate;
@@ -41,7 +40,6 @@ public class RadiusTextView extends TextView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Log.i("onMeasure", "viewId:" + this);
         if (delegate != null && delegate.getWidthHeightEqualEnable() && getWidth() > 0 && getHeight() > 0) {
             int max = Math.max(getWidth(), getHeight());
             int measureSpec = MeasureSpec.makeMeasureSpec(max, MeasureSpec.EXACTLY);
@@ -59,7 +57,6 @@ public class RadiusTextView extends TextView {
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        Log.i("onLayout", "viewId:" + this);
         super.onLayout(changed, left, top, right, bottom);
         if (delegate != null) {
             if (delegate.getRadiusHalfHeightEnable()) {

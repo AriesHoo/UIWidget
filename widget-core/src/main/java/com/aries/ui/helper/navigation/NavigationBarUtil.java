@@ -35,6 +35,7 @@ import java.lang.reflect.Method;
  * 6、2019-4-15 10:30:13 新增导航栏图标颜色深浅方法{@link #setNavigationBarDarkMode(Window)}{@link #setNavigationBarDarkMode(Activity)}
  * {@link #setNavigationBarLightMode(Window)} {@link #setNavigationBarLightMode(Activity)}
  * 7、2019-7-31 21:20:50 增加判断是否支持导航栏文字及icon黑色变化方法{@link #isSupportNavigationBarFontChange()}
+ * 8、2019-8-1 11:26:10 增加判断是否隐藏导航栏方法{@link #isHideNavigationBar(Window)}{@link #isHideNavigationBar(Activity)}
  */
 public class NavigationBarUtil {
 
@@ -114,6 +115,97 @@ public class NavigationBarUtil {
         return false;
     }
 
+    public static boolean isNavigationAtBottom(Activity activity) {
+        if (activity == null) {
+            return false;
+        }
+        return isNavigationAtBottom(activity.getWindow());
+    }
+
+    /**
+     * 判断导航栏是否在底部
+     *
+     * @param window
+     * @return
+     */
+    public static boolean isNavigationAtBottom(Window window) {
+        if (window == null) {
+            return false;
+        }
+        boolean mInPortrait = (Resources.getSystem().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
+        float mSmallestWidthDp = getSmallestWidthDp(window);
+        return (mSmallestWidthDp >= 600 || mInPortrait);
+    }
+
+    /**
+     * 是否隐藏状态栏
+     *
+     * @param activity Activity对象
+     * @return 是否隐藏
+     */
+    public static boolean isHideNavigationBar(Activity activity) {
+        if (activity == null) {
+            return false;
+        }
+        return isHideNavigationBar(activity.getWindow());
+    }
+
+    /**
+     * 是否隐藏状态栏
+     *
+     * @param window Window对象
+     * @return 是否隐藏
+     */
+    public static boolean isHideNavigationBar(Window window) {
+        if (window == null) {
+            return false;
+        }
+        return (window.getDecorView().getSystemUiVisibility() & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+                == View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+    }
+
+    /**
+     * 判断系统是否支持导航栏文字及图标颜色变化
+     *
+     * @return true支持导航栏文字颜色变化
+     */
+    public static boolean isSupportNavigationBarFontChange() {
+        if (RomUtil.isEMUI() && RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0) {
+            return true;
+        }
+        if (RomUtil.getMIUIVersionCode() >= 6) {
+            return true;
+        }
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
+
+    /**
+     * 判断当前手机是否为全面屏--通过纵横比
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isFullScreenDevice(Context context) {
+        if (context == null) {
+            return false;
+        }
+        if (mHasCheckFullScreen) {
+            return mIsFullScreenDevice;
+        }
+        mHasCheckFullScreen = true;
+        mIsFullScreenDevice = false;
+        // 低于 API 21的，都不会是全面屏
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return false;
+        }
+        mIsFullScreenDevice = getAspectRatio(context) >= mAspectRatio;
+        return mIsFullScreenDevice;
+    }
+
+    /**
+     * @param activity
+     * @return
+     */
     public static boolean hasNavBar(Activity activity) {
         if (activity == null) {
             return false;
@@ -135,6 +227,9 @@ public class NavigationBarUtil {
         if (isOpenFullScreenGestures(window.getContext())) {
             return false;
         }
+        if (isHideNavigationBar(window)) {
+            return false;
+        }
         //其他手机根据屏幕真实高度与显示高度是否相同来判断
         WindowManager windowManager = window.getWindowManager();
         Display d = windowManager.getDefaultDisplay();
@@ -149,6 +244,46 @@ public class NavigationBarUtil {
         int displayHeight = displayMetrics.heightPixels;
         int displayWidth = displayMetrics.widthPixels;
         return (realWidth - displayWidth) > 0 || (realHeight - displayHeight) > 0;
+    }
+
+    /**
+     * 隐藏导航栏
+     *
+     * @param activity Activity 对象
+     * @param isHide   是否隐藏
+     */
+    public static void hideNavigationBar(Activity activity, boolean isHide) {
+        if (activity == null) {
+            return;
+        }
+        hideNavigationBar(activity.getWindow(), isHide);
+    }
+
+    /**
+     * 隐藏导航栏
+     *
+     * @param window Window 对象
+     * @param isHide 是否隐藏
+     */
+    public static void hideNavigationBar(Window window, boolean isHide) {
+        if (window == null) {
+            return;
+        }
+        //防止系统栏隐藏时内容区域大小发生变化
+        int uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | window.getDecorView().getSystemUiVisibility();
+        if (isHide) {
+            if (!isHideNavigationBar(window)) {
+                uiFlags |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+            }
+        } else {
+            if (isHideNavigationBar(window)) {
+                uiFlags ^= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        ^ View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+            }
+        }
+        uiFlags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        window.getDecorView().setSystemUiVisibility(uiFlags);
     }
 
     public static int getFakeNavigationBarHeight(Activity activity) {
@@ -269,44 +404,6 @@ public class NavigationBarUtil {
     }
 
     /**
-     * 判断系统是否支持导航栏文字及图标颜色变化
-     *
-     * @return true支持导航栏文字颜色变化
-     */
-    public static boolean isSupportNavigationBarFontChange() {
-        if (RomUtil.isEMUI() && RomUtil.getEMUIVersion().compareTo("EmotionUI_4.1") > 0) {
-            return true;
-        }
-        if (RomUtil.getMIUIVersionCode() >= 6) {
-            return true;
-        }
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
-    }
-
-    /**
-     * 判断当前手机是否为全面屏--通过纵横比
-     *
-     * @param context
-     * @return
-     */
-    public static boolean isFullScreenDevice(Context context) {
-        if (context == null) {
-            return false;
-        }
-        if (mHasCheckFullScreen) {
-            return mIsFullScreenDevice;
-        }
-        mHasCheckFullScreen = true;
-        mIsFullScreenDevice = false;
-        // 低于 API 21的，都不会是全面屏
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return false;
-        }
-        mIsFullScreenDevice = getAspectRatio(context) >= mAspectRatio;
-        return mIsFullScreenDevice;
-    }
-
-    /**
      * 获取手机纵横比
      *
      * @param context
@@ -348,28 +445,6 @@ public class NavigationBarUtil {
         float widthDp = metrics.widthPixels / metrics.density;
         float heightDp = metrics.heightPixels / metrics.density;
         return Math.min(widthDp, heightDp);
-    }
-
-    public static boolean isNavigationAtBottom(Activity activity) {
-        if (activity == null) {
-            return false;
-        }
-        return isNavigationAtBottom(activity.getWindow());
-    }
-
-    /**
-     * 判断导航栏是否在底部
-     *
-     * @param window
-     * @return
-     */
-    public static boolean isNavigationAtBottom(Window window) {
-        if (window == null) {
-            return false;
-        }
-        boolean mInPortrait = (Resources.getSystem().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
-        float mSmallestWidthDp = getSmallestWidthDp(window);
-        return (mSmallestWidthDp >= 600 || mInPortrait);
     }
 
 

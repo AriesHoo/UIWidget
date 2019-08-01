@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+
 import com.aries.ui.helper.navigation.NavigationBarUtil;
 import com.aries.ui.util.NotchUtil;
 import com.aries.ui.util.StatusBarUtil;
@@ -28,9 +31,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 
 /**
  * @Author: AriesHoo on 2019/4/11 13:08
@@ -104,6 +104,8 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
                 .show();
     }
 
+    boolean mIsFull;
+
     @Override
     protected void initView(Bundle bundle) {
         int padding = getResources().getDimensionPixelSize(R.dimen.dp_margin);
@@ -114,6 +116,13 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
         mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.dp_text_size_main));
         mTextView.setBackgroundColor(Color.WHITE);
         mAdapter.addHeaderView(mTextView);
+        mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StatusBarUtil.setFullScreen(mContext, !mIsFull);
+                mIsFull = !mIsFull;
+            }
+        });
         List<WidgetEntity> list = new ArrayList<>();
         list.add(new WidgetEntity("StatusViewHelper", "支持顶部自定义标题栏沉浸效果帮助类。", StatusViewHelperActivity.class));
         list.add(new WidgetEntity("KeyboardHelper", "解决软键盘遮住底部输入框问题帮助类。", TitleEditActivity.class));
@@ -152,7 +161,9 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
                             + "<br>屏幕纵横比:" + NavigationBarUtil.getAspectRatio(mContext)
                             + "<br>是否开启全面屏手势:根据判断系统是否开启虚拟导航栏(如华为可手动开关该方法不是完全正确的):" + NavigationBarUtil.isOpenFullScreenGestures(mContext)
                             + "<br>是否有导航栏:" + NavigationBarUtil.hasNavBar(mContext)
-                            + "<br>导航栏高度:" + NavigationBarUtil.getNavigationBarHeight(mContext)));
+                            + "<br>导航栏高度:" + NavigationBarUtil.getNavigationBarHeight(mContext)
+                            + "<br>是否隐藏状态栏:" + StatusBarUtil.isStatusBar(mContext)
+                            + "<br>是否隐藏导航栏:" + NavigationBarUtil.isHideNavigationBar(mContext)));
         }
     }
 }
