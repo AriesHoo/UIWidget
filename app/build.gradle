@@ -66,9 +66,9 @@ dependencies {
     //UIAlertView
     implementation project(':widget-alert')
 
-//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.16'
-//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.16'
-//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.16'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.19'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.19'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.19'
 
     //图片加载
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
