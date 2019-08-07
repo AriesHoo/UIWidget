@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.LayoutRes;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.aries.ui.helper.navigation.KeyboardHelper;
 import com.aries.ui.helper.navigation.NavigationBarUtil;
 import com.aries.ui.helper.navigation.NavigationViewHelper;
@@ -21,8 +24,8 @@ import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.util.AppUtil;
 import com.aries.ui.widget.demo.util.SizeUtil;
 
-import androidx.annotation.LayoutRes;
-import androidx.appcompat.app.AppCompatActivity;
+import org.simple.eventbus.EventBus;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -79,6 +82,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("getSystemUiVisibility", getWindow().getDecorView().getSystemUiVisibility() + ";window:" + getWindow());
+        EventBus.getDefault().register(this);
         super.onCreate(savedInstanceState);
         Log.i("savedInstanceState", "savedInstanceState:" + savedInstanceState);
         Log.d(TAG, "lifecycle_onCreate");
@@ -156,6 +160,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
         Log.d(TAG, "lifecycle_onDestroy_isFinishing" + isFinishing());
         if (mUnBinder != null) {

@@ -65,10 +65,13 @@ dependencies {
     implementation project(':widget-collapsing')
     //UIAlertView
     implementation project(':widget-alert')
+    //TabLayout
+    implementation project(':tab-layout')
 
-//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.19'
-//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.19'
-//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.19'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.20'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.20'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.20'
+//    implementation 'com.github.AriesHoo.UIWidget:tab-layout:3.2.20'
 
     //图片加载
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
@@ -81,8 +84,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     implementation 'androidx.multidex:multidex:2.0.0+'
     implementation 'com.tencent.bugly:crashreport:2.8.6.0'
-    //快速Tab库
-    implementation 'com.github.AriesHoo:TabLayout:1.0.5'
     //滑动返回Activity
     implementation 'com.github.ParfoisMeng:SlideBack:1.0.6'
+    //页面事件交互
+    implementation 'org.simple:androideventbus:1.0.5.1'
 }

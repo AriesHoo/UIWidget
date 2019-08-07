@@ -1,1 +1,1 @@
-include ':app', ':widget-core', ':widget-collapsing', ':widget-alert'
+include ':app', ':widget-core', ':widget-collapsing', ':widget-alert', ':tab-layout'

@@ -67,8 +67,19 @@
             android:name=".module.status.StatusViewHelperActivity"
             android:label="StatusViewHelper示例"/>
         <activity
-            android:name=".module.navigation.NavigationViewHelperActivity"
-            android:label="NavigationViewHelper示例"/>
+            android:name=".module.tab.SimpleTabActivity"
+            android:label="TabLayout示例"/>
+        <activity
+            android:name=".module.tab.CommonTabActivity"
+            android:label="CommonTabLayout示例"/>
+        <activity
+            android:name=".module.tab.SlidingTabActivity"
+            android:label="SlidingTabLayout示例"/>
+        <activity
+            android:name=".module.tab.SegmentTabActivity"
+            android:label="SegmentTabLayout示例"/>
+        <activity
+            android:name=".module.tab.EventBusActivity"/>
         <activity
             android:name=".WebViewActivity"
             android:configChanges="locale|layoutDirection|mcc|mnc|orientation|screenSize"

@@ -23,6 +23,7 @@ import com.aries.ui.widget.demo.module.alert.AlertActivity;
 import com.aries.ui.widget.demo.module.loading.LoadingActivity;
 import com.aries.ui.widget.demo.module.radius.RadiusActivity;
 import com.aries.ui.widget.demo.module.status.StatusViewHelperActivity;
+import com.aries.ui.widget.demo.module.tab.SimpleTabActivity;
 import com.aries.ui.widget.demo.module.title.TitleActivity;
 import com.aries.ui.widget.demo.module.title.TitleEditActivity;
 import com.aries.ui.widget.demo.util.SizeUtil;
@@ -124,6 +125,7 @@ public class MainActivity extends BaseRecycleActivity<WidgetEntity> implements V
             }
         });
         List<WidgetEntity> list = new ArrayList<>();
+        list.add(new WidgetEntity("TabLayout", "快速创建Tab控件包括CommonTabLayout、SlidingTabLayout及SegmentTabLayout三种类型Tab", SimpleTabActivity.class));
         list.add(new WidgetEntity("StatusViewHelper", "支持顶部自定义标题栏沉浸效果帮助类。", StatusViewHelperActivity.class));
         list.add(new WidgetEntity("KeyboardHelper", "解决软键盘遮住底部输入框问题帮助类。", TitleEditActivity.class));
         list.add(new WidgetEntity("TitleBarView", "一款支持沉浸状态栏效果设置的ToolBar控件:支持xml设置是否沉浸、主标题及副标题、左边文字及icon、右边文字及icon、下划线;支持添加左边、中间及右边view方便扩展。", TitleActivity.class));
