@@ -2,8 +2,8 @@ package com.aries.ui.view.radius;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
 
+import com.aries.ui.view.nested.NestedRelativeLayout;
 import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
 
 /**
@@ -12,7 +12,7 @@ import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
  * Function:用于需要圆角矩形框背景的RelativeLayout的情况,减少直接使用RelativeLayout时引入的shape资源文件
  * Description:
  */
-public class RadiusRelativeLayout extends RelativeLayout {
+public class RadiusRelativeLayout extends NestedRelativeLayout {
     private RadiusViewDelegate delegate;
 
     public RadiusRelativeLayout(Context context) {
@@ -68,5 +68,4 @@ public class RadiusRelativeLayout extends RelativeLayout {
             delegate.setSelected(selected);
         }
     }
-
 }

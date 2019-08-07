@@ -2,8 +2,8 @@ package com.aries.ui.view.radius;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
 
+import com.aries.ui.view.nested.NestedFrameLayout;
 import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
 
 /**
@@ -12,7 +12,7 @@ import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
  * Function: 用于需要圆角矩形框背景的FrameLayout的情况,减少直接使用FrameLayout时引入的shape资源文件
  * Description:
  */
-public class RadiusFrameLayout extends FrameLayout {
+public class RadiusFrameLayout extends NestedFrameLayout {
     private RadiusViewDelegate delegate;
 
     public RadiusFrameLayout(Context context) {

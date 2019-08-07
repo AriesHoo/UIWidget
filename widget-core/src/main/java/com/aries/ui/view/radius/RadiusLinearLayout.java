@@ -2,8 +2,8 @@ package com.aries.ui.view.radius;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
 
+import com.aries.ui.view.nested.NestedLinearLayout;
 import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
 
 /**
@@ -12,7 +12,7 @@ import com.aries.ui.view.radius.delegate.RadiusViewDelegate;
  * Function: 用于需要圆角矩形框背景的LinearLayout的情况,减少直接使用LinearLayout时引入的shape资源文件
  * Description:
  */
-public class RadiusLinearLayout extends LinearLayout {
+public class RadiusLinearLayout extends NestedLinearLayout {
     private RadiusViewDelegate delegate;
 
     public RadiusLinearLayout(Context context) {
