@@ -108,6 +108,25 @@ dependencies {
 
 **3、多看源码注释及Demo演示,学会自己解决问题**
 
+* 3.2.20
+
+    * 将原TabLayout库移至本库维护
+    
+* 3.2.19
+
+    * NavigationBarUtil 判断是否支持导航栏黑、白色文字icon变换方法isSupportNavigationBarFontChange
+    * NavigationViewHelper、StatusViewHelper增加快速设置黑色、白色沉浸效果方法setWhiteStyle及setBlackStyle
+    * StatusBarUtil增加判断是否状态栏隐藏isHideStatusBar、隐藏状态栏hideStatusBar、设置全屏setFullScreen方法fix33
+    * NavigationBarUtil增加判断是否导航栏隐藏isHideNavigationBar、隐藏导航栏hideNavigationBar方法
+
+* 3.2.17
+
+    * 新增:StatusBarUtil增加OPPO 4.4至6.0状态栏黑色文字图标相关Api-开发者无需变更代码逻辑
+    * 新增:NavigationViewHelper增加setPlusNavigationViewEnable参数以直接添加View只Window根布局及设置paddingBottom 生命周期监听控制销毁相关逻辑
+    * 修复:修复RadiusViewDelegate 里setSelected发送效果不生效BUG
+    * 修改NavigationBarUtil Android O 导航栏黑色图标版本判断问题
+    * 移除KeyboardHelper with方法设置contentView参数同步移除NavigationViewHelper中对应方法
+
 * 3.2.14
 
     * 新增刘海屏工具类NotchUtil并优化TitleBarView及StatusViewHelper对刘海屏的兼容
