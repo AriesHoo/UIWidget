@@ -32,6 +32,7 @@
             android:background="@color/colorWhite"
             android:ellipsize="none"
             android:lineSpacingExtra="4dp"
+            android:textSize="@dimen/dp_text_size_main"
             android:padding="@dimen/dp_margin"
             android:text="@string/title_edit_tip"
             android:textColor="@color/colorTextBlack"/>

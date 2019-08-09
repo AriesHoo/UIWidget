@@ -33,6 +33,6 @@ ext {
     minLibSdkVersion = 15
     targetSdkVersion = 28
     supportVersion = "1.0.0"
-    versionCode = 50
-    versionName = "3.2.20"
+    versionCode = 51
+    versionName = "3.2.21"
 }
