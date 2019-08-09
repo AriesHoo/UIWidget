@@ -21,7 +21,7 @@
 
 ![Download-蒲公英](/apk/qr_pgyer.png)
 
-[[Download-github]](https://raw.githubusercontent.com/AriesHoo/UIWidget/master/apk/sample.apk)
+[[Download-github]](https://raw.githubusercontent.com/AriesHoo/UIWidget/dev/apk/sample.apk)
 
 ![Download-github](/apk/qr.png)
 
