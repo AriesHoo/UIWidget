@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,6 +25,7 @@ import com.aries.ui.view.tab.widget.MsgView;
 import com.aries.ui.widget.demo.R;
 import com.aries.ui.widget.demo.base.BaseActivity;
 import com.aries.ui.widget.demo.module.tab.entity.TabEntity;
+import com.aries.ui.widget.demo.util.SizeUtil;
 
 import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
@@ -57,6 +62,8 @@ public class CommonTabActivity extends BaseActivity {
     private CommonTabLayout mTabLayout_6;
     private CommonTabLayout mTabLayout_7;
     private CommonTabLayout mTabLayout_8;
+    private LinearLayout mLLayoutContainer;
+    private Handler mHander = new Handler();
 
     @Override
     protected void setTitleBar() {
@@ -81,6 +88,7 @@ public class CommonTabActivity extends BaseActivity {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnSelectIds[i]));
         }
 
+        mLLayoutContainer = findViewById(R.id.lLayout_container_common_tab);
         mDecorView = getWindow().getDecorView();
         mViewPager = FindViewUtil.getTargetView(mDecorView, R.id.vp_2);
         mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -164,6 +172,17 @@ public class CommonTabActivity extends BaseActivity {
                 startActivity(new Intent(CommonTabActivity.this, EventBusActivity.class));
             }
         });
+
+        ImageView imageView = new ImageView(mContext);
+        imageView.setImageResource(R.drawable.ic_logo);
+
+        mTabLayout_1.setCenterView(imageView, SizeUtil.dp2px(36), SizeUtil.dp2px(36), -1, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "点击中间图片", Toast.LENGTH_SHORT).show();
+            }
+        }).getDelegate()
+                .setIndicatorHeight(0);
     }
 
     Random mRandom = new Random();
@@ -224,6 +243,7 @@ public class CommonTabActivity extends BaseActivity {
         public Fragment getItem(int position) {
             return mFragments.get(position);
         }
+
     }
 
     protected int dp2px(float dp) {

@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/lLayout_container_common_tab"
         android:orientation="vertical">
 
         <include layout="@layout/layout_title_bar" />
@@ -21,7 +22,8 @@
             android:paddingBottom="5dp"
             tl:tl_indicator_color="#2C97DE"
             tl:tl_textSelectColor="#2C97DE"
-            tl:tl_textSelectSize="20dp"
+            tl:tl_textSelectSize="14dp"
+            tl:tl_textSize="14dp"
             tl:tl_textUnSelectColor="#66000000"
             tl:tl_underline_color="#DDDDDD"
             tl:tl_underline_height="1dp" />

@@ -8,6 +8,8 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.SwitchCompat;
+
 import com.aries.ui.helper.navigation.NavigationViewHelper;
 import com.aries.ui.util.StatusBarUtil;
 import com.aries.ui.view.radius.RadiusTextView;
@@ -19,7 +21,6 @@ import com.aries.ui.widget.demo.base.BaseActivity;
 import com.aries.ui.widget.demo.util.NavigationBarControlUtil;
 import com.aries.ui.widget.demo.util.SizeUtil;
 
-import androidx.appcompat.widget.SwitchCompat;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -171,7 +172,7 @@ public class ActionSheetActivity extends BaseActivity {
                         .setTitle(isShowTitle ? "标题" : null)
                         .setCancel(R.string.cancel)
                         .setItemsMinHeight(200)
-                        .setNavigationBarControl(isNavigation ? NavigationBarControlUtil.getNavigationBarControl(isNavigation,isNavigationPlus) : null)
+                        .setNavigationBarControl(isNavigation ? NavigationBarControlUtil.getNavigationBarControl(isNavigation, isNavigationPlus) : null)
                         .setCancelMarginTop(SizeUtil.dp2px(isShowMargin ? 8 : 0))
                         .setCancelTextColorResource(isDefaultCancelColor ? R.color.colorActionSheetNormalItemText : android.R.color.darker_gray)
                         .setOnItemClickListener(mOnItemClickListener)
@@ -181,7 +182,7 @@ public class ActionSheetActivity extends BaseActivity {
                 break;
             case R.id.rtv_showIOSActionSheet:
                 new UIActionSheetDialog.ListIOSBuilder(this)
-                        .setNavigationBarControl(isNavigation ? NavigationBarControlUtil.getNavigationBarControl(isNavigation,isNavigationPlus) : null)
+                        .setNavigationBarControl(isNavigation ? NavigationBarControlUtil.getNavigationBarControl(isNavigation, isNavigationPlus) : null)
 //                        .addItem(Html.fromHtml(String.format(mFormat, mFilePath)))
                         .addItems(R.array.arrays_items_action)
                         .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetItemText : android.R.color.holo_purple)
@@ -202,7 +203,7 @@ public class ActionSheetActivity extends BaseActivity {
 //                        .setTitle(isShowTitle ? "标题" : null)
                         .setCancelTextColorResource(isDefaultCancelColor ? R.color.colorActionSheetWeiXinText : android.R.color.darker_gray)
                         .setOnItemClickListener(mOnItemClickListener)
-                        .setNavigationBarControl(isNavigation ?NavigationBarControlUtil.getNavigationBarControl(isNavigation,isNavigationPlus) : null)
+                        .setNavigationBarControl(isNavigation ? NavigationBarControlUtil.getNavigationBarControl(isNavigation, isNavigationPlus) : null)
                         .create().setDimAmount(isBackDim ? 0.6f : 0f)
                         .show();
                 break;
@@ -213,7 +214,7 @@ public class ActionSheetActivity extends BaseActivity {
                         .addItem("分享朋友圈", R.drawable.ic_more_operation_share_moment)
                         .addItem("分享微博", R.drawable.ic_more_operation_share_weibo)
                         .addItem("分享短信", R.drawable.ic_more_operation_share_chat)
-                        .setNavigationBarControl(isNavigation ?NavigationBarControlUtil.getNavigationBarControl(isNavigation,isNavigationPlus) : null)
+                        .setNavigationBarControl(isNavigation ? NavigationBarControlUtil.getNavigationBarControl(isNavigation, isNavigationPlus) : null)
                         //设置手指拖拽
 //                        .setDragEnable(true)
                         .setTextDrawablePadding(SizeUtil.dp2px(28))
@@ -224,38 +225,40 @@ public class ActionSheetActivity extends BaseActivity {
                 sheetDialog.show();
                 break;
             case R.id.rtv_showGridActionSheet:
-                mDialog = new UIActionSheetDialog.GridBuilder(this)
-                        .addItem("分享微信", R.drawable.ic_more_operation_share_friend)
-                        .addItem("分享朋友圈", R.drawable.ic_more_operation_share_moment)
-                        .addItem("分享微博", R.drawable.ic_more_operation_share_weibo)
-                        .addItem("分享短信", R.drawable.ic_more_operation_share_chat)
-                        .addItem("保存本地", R.drawable.ic_more_operation_save)
-                        .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetNormalItemText : android.R.color.holo_green_dark)
-                        .setTitle(isShowTitle ? "请选择分享平台" : "")
-                        .setCancel(R.string.cancel)
-                        .setOnShowListener(new DialogInterface.OnShowListener() {
-                            @Override
-                            public void onShow(DialogInterface dialog) {
-                                StatusBarUtil.setStatusBarDarkMode(mDialog.getWindow());
-                            }
-                        })
-                        .setCancelMarginTop(SizeUtil.dp2px(isShowMargin ? 8 : 0))
-                        .setNumColumns(3)
-                        .setItemsTextSize(12)
-                        .setItemsImageWidth(SizeUtil.dp2px(60))
-                        .setItemsImageHeight(SizeUtil.dp2px(60))
-                        .setItemsClickBackgroundEnable(false)
-                        .setOnItemClickListener(new UIActionSheetDialog.OnItemClickListener() {
-                            @Override
-                            public void onClick(BasisDialog dialog, View itemView, int position) {
-                                if (itemView instanceof TextView) {
-                                    Toast.makeText(ActionSheetActivity.this, ((TextView) itemView).getText(), Toast.LENGTH_SHORT).show();
+                if (mDialog == null) {
+                    mDialog = new UIActionSheetDialog.GridBuilder(this)
+                            .addItem("分享微信", R.drawable.ic_more_operation_share_friend)
+                            .addItem("分享朋友圈", R.drawable.ic_more_operation_share_moment)
+                            .addItem("分享微博", R.drawable.ic_more_operation_share_weibo)
+                            .addItem("分享短信", R.drawable.ic_more_operation_share_chat)
+                            .addItem("保存本地", R.drawable.ic_more_operation_save)
+                            .setItemsTextColorResource(isDefaultItemColor ? R.color.colorActionSheetNormalItemText : android.R.color.holo_green_dark)
+                            .setTitle(isShowTitle ? "请选择分享平台" : "")
+                            .setCancel(R.string.cancel)
+                            .setOnShowListener(new DialogInterface.OnShowListener() {
+                                @Override
+                                public void onShow(DialogInterface dialog) {
+                                    StatusBarUtil.setStatusBarDarkMode(mDialog.getWindow());
                                 }
-                            }
-                        })
-                        .setNavigationBarControl(isNavigation ?NavigationBarControlUtil.getNavigationBarControl(isNavigation,isNavigationPlus) : null)
-                        .create()
-                        .setDimAmount(isBackDim ? 0.6f : 0f);
+                            })
+                            .setCancelMarginTop(SizeUtil.dp2px(isShowMargin ? 8 : 0))
+                            .setNumColumns(3)
+                            .setItemsTextSize(12)
+                            .setItemsImageWidth(SizeUtil.dp2px(60))
+                            .setItemsImageHeight(SizeUtil.dp2px(60))
+                            .setItemsClickBackgroundEnable(false)
+                            .setOnItemClickListener(new UIActionSheetDialog.OnItemClickListener() {
+                                @Override
+                                public void onClick(BasisDialog dialog, View itemView, int position) {
+                                    if (itemView instanceof TextView) {
+                                        Toast.makeText(ActionSheetActivity.this, ((TextView) itemView).getText(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            })
+                            .setNavigationBarControl(isNavigation ? NavigationBarControlUtil.getNavigationBarControl(isNavigation, isNavigationPlus) : null)
+                            .create()
+                            .setDimAmount(isBackDim ? 0.6f : 0f);
+                }
                 mDialog.show();
                 break;
             case R.id.rtv_showFragmentActionSheet:
@@ -265,5 +268,5 @@ public class ActionSheetActivity extends BaseActivity {
                 break;
         }
     }
-    
+
 }

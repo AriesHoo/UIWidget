@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
@@ -44,6 +45,7 @@ import java.util.ArrayList;
  * 3、2018-11-30 10:08:19 增加java方法回调值方便链式调用
  * 4、2018-11-30 11:18:41 修改原库 https://github.com/H07000223/FlycoTabLayout 选中粗体当初始化选中第一项不生效BUG{@link #updateTabStyles()}
  * 5、2018-12-13 09:40:51 新增选中文字字号设置 textSelectSize
+ * 6、2019-9-6 10:26:33 新增{@link #setCenterView(View, int, int, int, OnClickListener)}设置中间View方法
  */
 public class CommonTabLayout extends FrameLayout implements ValueAnimator.AnimatorUpdateListener, ITabLayout {
     private TabCommonDelegate mDelegate;
@@ -63,6 +65,10 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
     private Paint mTrianglePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Path mTrianglePath = new Path();
     private int mHeight;
+
+    private OnTabSelectListener mListener;
+
+    private boolean mIsFirstDraw = true;
 
     /**
      * anim
@@ -119,7 +125,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
 
         this.mTabEntity.clear();
         this.mTabEntity.addAll(tabEntity);
-
+        this.mTabCount = mTabEntity.size();
         notifyDataSetChanged();
         return this;
     }
@@ -137,7 +143,6 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
      */
     public void notifyDataSetChanged() {
         mTabsContainer.removeAllViews();
-        this.mTabCount = mTabEntity.size();
         View tabView;
         for (int i = 0; i < mTabCount; i++) {
             if (getDelegate().getIconGravity() == Gravity.LEFT) {
@@ -187,7 +192,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
     public void updateTabStyles() {
         for (int i = 0; i < mTabCount; i++) {
             View tabView = mTabsContainer.getChildAt(i);
-            tabView.setPadding((int) getDelegate().getTabPadding(), 0, (int) getDelegate().getTabPadding(), 0);
+            tabView.setPadding(getDelegate().getTabPadding(), 0, getDelegate().getTabPadding(), 0);
             TextView tv_tab_title = tabView.findViewById(R.id.tv_tab_title);
             tv_tab_title.setTextColor(i == mCurrentTab ? getDelegate().getTextSelectColor() : getDelegate().getTextUnSelectColor());
             tv_tab_title.setTextSize(getDelegate().getTextSizeUnit(), mCurrentTab == i ? getDelegate().getTextSelectSize() : getDelegate().getTextSize());
@@ -231,13 +236,15 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
             View tabView = mTabsContainer.getChildAt(i);
             final boolean isSelect = i == position;
             TextView tab_title = tabView.findViewById(R.id.tv_tab_title);
-            tab_title.setTextColor(isSelect ? getDelegate().getTextSelectColor() : getDelegate().getTextUnSelectColor());
-            tab_title.setTextSize(getDelegate().getTextSizeUnit(), isSelect ? getDelegate().getTextSelectSize() : getDelegate().getTextSize());
-            ImageView iv_tab_icon = tabView.findViewById(R.id.iv_tab_icon);
-            CustomTabEntity tabEntity = mTabEntity.get(i);
-            iv_tab_icon.setImageResource(isSelect ? tabEntity.getTabSelectedIcon() : tabEntity.getTabUnselectedIcon());
-            if (getDelegate().getTextBold() == TextBold.SELECT) {
-                tab_title.getPaint().setFakeBoldText(isSelect);
+            if (tab_title != null) {
+                tab_title.setTextColor(isSelect ? getDelegate().getTextSelectColor() : getDelegate().getTextUnSelectColor());
+                tab_title.setTextSize(getDelegate().getTextSizeUnit(), isSelect ? getDelegate().getTextSelectSize() : getDelegate().getTextSize());
+                ImageView iv_tab_icon = tabView.findViewById(R.id.iv_tab_icon);
+                CustomTabEntity tabEntity = mTabEntity.get(i);
+                iv_tab_icon.setImageResource(isSelect ? tabEntity.getTabSelectedIcon() : tabEntity.getTabUnselectedIcon());
+                if (getDelegate().getTextBold() == TextBold.SELECT) {
+                    tab_title.getPaint().setFakeBoldText(isSelect);
+                }
             }
         }
     }
@@ -301,16 +308,12 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
         invalidate();
     }
 
-    private boolean mIsFirstDraw = true;
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         if (isInEditMode() || mTabCount <= 0) {
             return;
         }
-
         int height = getHeight();
         int paddingLeft = getPaddingLeft();
         // draw divider
@@ -322,7 +325,6 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
                 canvas.drawLine(paddingLeft + tab.getRight(), getDelegate().getDividerPadding(), paddingLeft + tab.getRight(), height - getDelegate().getDividerPadding(), mDividerPaint);
             }
         }
-
         // draw underline
         if (getDelegate().getUnderlineHeight() > 0) {
             mRectPaint.setColor(getDelegate().getUnderlineColor());
@@ -332,7 +334,6 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
                 canvas.drawRect(paddingLeft, 0, mTabsContainer.getWidth() + paddingLeft, getDelegate().getUnderlineHeight(), mRectPaint);
             }
         }
-
         //draw indicator line
         if (getDelegate().isIndicatorAnimEnable()) {
             if (mIsFirstDraw) {
@@ -342,8 +343,6 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
         } else {
             calcIndicatorRect();
         }
-
-
         if (getDelegate().getIndicatorStyle() == IndicatorStyle.TRIANGLE) {
             if (getDelegate().getIndicatorHeight() > 0) {
                 mTrianglePaint.setColor(getDelegate().getIndicatorColor());
@@ -566,12 +565,90 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
         return tipView;
     }
 
-    private OnTabSelectListener mListener;
 
-    public void setOnTabSelectListener(OnTabSelectListener listener) {
+    public CommonTabLayout setOnTabSelectListener(OnTabSelectListener listener) {
         this.mListener = listener;
+        return this;
     }
 
+    private View mCenterView;
+
+    /**
+     * 设置中间View tab必须为偶数否则抛异常
+     *
+     * @param centerView 中间view
+     * @param width      view宽度
+     * @param height     view高度
+     * @param margin     centerView 左右tabView margin用于留出centerView位置
+     * @param listener   centerView点击事件
+     * @return-
+     */
+    public CommonTabLayout setCenterView(final View centerView, final int width, final int height, int margin, final OnClickListener listener) {
+        if (centerView == null) {
+            return this;
+        }
+        if (mTabCount <= 0) {
+            throw new IllegalStateException("please setTabData first!");
+        }
+        if (mTabCount % 2 != 0) {
+            throw new IllegalStateException("the number of tabs must be even , like 4");
+        }
+        if (margin <= 0 && getMeasuredWidth() == 0) {
+            final int finalMargin = margin;
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    setCenterView(centerView, width, height, finalMargin, listener);
+                }
+            });
+            return this;
+        }
+        if (indexOfChild(mCenterView) != -1) {
+            removeView(mCenterView);
+        }
+        margin = margin > 0 ? margin : (getMeasuredWidth() / (mTabCount + 1)) / 2;
+        mCenterView = centerView;
+        LayoutParams params = new LayoutParams(width, height);
+        params.gravity = Gravity.CENTER;
+        addView(mCenterView, params);
+        MarginLayoutParams marginLeft = (MarginLayoutParams) mTabsContainer.getChildAt(mTabCount / 2 - 1).getLayoutParams();
+        mTabsContainer.getChildAt(mTabCount / 2 - 1).setBackgroundColor(Color.TRANSPARENT);
+        if (marginLeft != null) {
+            marginLeft.rightMargin = margin;
+        }
+        MarginLayoutParams marginRight = (MarginLayoutParams) mTabsContainer.getChildAt(mTabCount / 2).getLayoutParams();
+        if (marginRight != null) {
+            marginRight.leftMargin = margin;
+        }
+        if (listener != null) {
+            mCenterView.setOnClickListener(listener);
+        }
+        return this;
+    }
+
+    public CommonTabLayout setCenterView(View centerView, int width, int height, int margin) {
+        return setCenterView(centerView, width, height, margin, null);
+    }
+
+    public CommonTabLayout setCenterView(View centerView, int width, int height) {
+        return setCenterView(centerView, width, height, -1);
+    }
+
+    public CommonTabLayout setCenterView(View centerView) {
+        return setCenterView(centerView, -1, -1);
+    }
+
+    public CommonTabLayout setCenterView(View centerView, int width, int height, OnClickListener listener) {
+        return setCenterView(centerView, width, height, -1, listener);
+    }
+
+    public CommonTabLayout setCenterView(View centerView, int margin) {
+        return setCenterView(centerView, -1, -1, margin, null);
+    }
+
+    public CommonTabLayout setCenterView(View centerView, int margin, OnClickListener listener) {
+        return setCenterView(centerView, -1, -1, margin, listener);
+    }
 
     @Override
     protected Parcelable onSaveInstanceState() {

@@ -15,4 +15,4 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--keep public class com.aries.ui.view.tab**
+-keep public class com.aries.ui.view.tab.**

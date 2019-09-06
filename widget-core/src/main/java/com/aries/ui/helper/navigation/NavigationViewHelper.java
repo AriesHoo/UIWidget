@@ -42,6 +42,7 @@ import java.lang.ref.WeakReference;
  * 7、2019-7-17 14:54:14 新增{@link #setPlusNavigationViewEnable(boolean, boolean)}和
  * {@link #setPlusNavigationViewEnable(boolean, boolean, boolean)}
  * 用于确定假导航栏位置是否添加在DecorView并增加添加在DecorView情况下是否设置paddingBottom以避免内容被导航栏遮住
+ * 8、2019-9-4 17:38:20 修改{@link #setNavigationView(Window)} 未检测子view非空判断造成异常闪退问题
  */
 public class NavigationViewHelper {
 
@@ -579,6 +580,7 @@ public class NavigationViewHelper {
      */
     private void setNavigationView(Window window) {
         if (mLayoutNavigation != null) {
+            mTvNavigation = mLayoutNavigation.findViewById(R.id.fake_navigation_view);
             //根据屏幕旋转角度重新设置宽高
             int angle = ((WindowManager) window.getDecorView().getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
             int navigationHeight = NavigationBarUtil.getNavigationBarHeight(window);
