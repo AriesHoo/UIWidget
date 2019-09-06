@@ -46,6 +46,7 @@ import java.util.ArrayList;
  * 4、2018-11-30 11:18:41 修改原库 https://github.com/H07000223/FlycoTabLayout 选中粗体当初始化选中第一项不生效BUG{@link #updateTabStyles()}
  * 5、2018-12-13 09:40:51 新增选中文字字号设置 textSelectSize
  * 6、2019-9-6 10:26:33 新增{@link #setCenterView(View, int, int, int, OnClickListener)}设置中间View方法
+ * 7、2019-9-6 16:00:31 修改{@link #setCenterView(View, int, int, int, OnClickListener)} 默认宽高
  */
 public class CommonTabLayout extends FrameLayout implements ValueAnimator.AnimatorUpdateListener, ITabLayout {
     private TabCommonDelegate mDelegate;
@@ -635,7 +636,7 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
     }
 
     public CommonTabLayout setCenterView(View centerView) {
-        return setCenterView(centerView, -1, -1);
+        return setCenterView(centerView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     }
 
     public CommonTabLayout setCenterView(View centerView, int width, int height, OnClickListener listener) {
@@ -643,11 +644,15 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
     }
 
     public CommonTabLayout setCenterView(View centerView, int margin) {
-        return setCenterView(centerView, -1, -1, margin, null);
+        return setCenterView(centerView, margin, null);
     }
 
     public CommonTabLayout setCenterView(View centerView, int margin, OnClickListener listener) {
-        return setCenterView(centerView, -1, -1, margin, listener);
+        return setCenterView(centerView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, margin, listener);
+    }
+
+    public CommonTabLayout setCenterView(View centerView, OnClickListener listener) {
+        return setCenterView(centerView, -1, listener);
     }
 
     @Override
