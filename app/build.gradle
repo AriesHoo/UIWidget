@@ -70,10 +70,10 @@ dependencies {
     //TabLayout
     implementation project(':tab-layout')
 
-//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.20'
-//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.20'
-//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.20'
-//    implementation 'com.github.AriesHoo.UIWidget:tab-layout:3.2.20'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.23'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.23'
+//    implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.23'
+//    implementation 'com.github.AriesHoo.UIWidget:tab-layout:3.2.23'
 
     //图片加载
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
