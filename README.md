@@ -21,7 +21,7 @@
 
 ![Download-蒲公英](/apk/qr_pgyer.png)
 
-[[Download-github]](https://raw.githubusercontent.com/AriesHoo/UIWidget/master/apk/sample.apk)
+[[Download-github]](https://raw.githubusercontent.com/AriesHoo/UIWidget/dev/apk/sample.apk)
 
 ![Download-github](/apk/qr.png)
 
@@ -43,10 +43,10 @@ allprojects {
 
 ```
 dependencies {
-     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.20'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.20'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.20'
-     //implementation 'com.github.AriesHoo.UIWidget:tab-layout:3.2.20'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.21'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.21'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.21'
+     //implementation 'com.github.AriesHoo.UIWidget:tab-layout:3.2.21'
      implementation 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
@@ -97,6 +97,13 @@ dependencies {
     <version>2.0.9</version>
 </dependency>
 ```
+
+## 关于混淆
+
+1、**3.2.21版本**开始自带混淆规则，并且会自动导入，正常情况下无需手动导入。
+
+2、**3.2.21以前版本**设置混淆貌似也正常运行。-如有问题麻烦反馈
+
 
 ## 重大更新日志
 
