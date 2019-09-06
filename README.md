@@ -84,7 +84,7 @@ dependencies {
     <artifactId>widget-collapsing</artifactId>
     <artifactId>widget-alert</artifactId>
     <artifactId>tab-layout</artifactId>
-    <version>3.2.22</version>
+    <version>3.2.23</version>
 </dependency>
 ```
 
