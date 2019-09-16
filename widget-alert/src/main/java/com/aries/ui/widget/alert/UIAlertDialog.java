@@ -32,6 +32,7 @@ import java.util.List;
  * Description:
  * 1、2018-3-29 14:07:04 新增获取Title及Message回调
  * 2、新增控制Button点击是否关闭弹框属性{@link Builder#setButtonClickDismissEnable(boolean)}
+ * 3、2019-9-16 13:29:33 修改{@link Builder#createButtons()}多个button 高度默认值避免高度适配异常
  */
 public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
 
@@ -383,7 +384,7 @@ public class UIAlertDialog extends BasisDialog<UIAlertDialog> {
             for (int i = 0; i < size; i++) {
                 Button btn = mListButton.get(i);
                 btn.setLayoutParams(new LinearLayout.LayoutParams(
-                        0, minHeight, 1.0f));
+                        0, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f));
                 mLLayoutButton.addView(btn);
                 if (i != mListButton.size() - 1) {
                     //设置竖直分割线

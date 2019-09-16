@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -43,6 +44,7 @@ import java.util.Collections;
  * {@link #updateTabStyles()}
  * 2、2018-12-4 14:12:34 新增部分设置方法返回值方便链式调用;删除原库相应xml属性 set/get方法
  * 3、2018-12-13 09:40:51 新增选中文字字号设置 textSelectSize
+ * 4、2019-9-16 12:38:57 修改{@link #notifyDataSetChanged()}及{@link #addNewTab(String)} pageTitle 非空判断
  */
 public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.OnPageChangeListener, ITabLayout {
     private TabSlidingDelegate mDelegate;
@@ -184,7 +186,7 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
         for (int i = 0; i < mTabCount; i++) {
             tabView = View.inflate(mContext, R.layout.layout_tab, null);
             CharSequence pageTitle = mTitles == null ? mViewPager.getAdapter().getPageTitle(i) : mTitles.get(i);
-            addTab(i, pageTitle.toString(), tabView);
+            addTab(i, TextUtils.isEmpty(pageTitle) ? "" : pageTitle.toString(), tabView);
         }
         if (mCurrentTab != mViewPager.getCurrentItem()) {
             setCurrentTab(mViewPager.getCurrentItem());
@@ -199,7 +201,7 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
         }
 
         CharSequence pageTitle = mTitles == null ? mViewPager.getAdapter().getPageTitle(mTabCount) : mTitles.get(mTabCount);
-        addTab(mTabCount, pageTitle.toString(), tabView);
+        addTab(mTabCount, TextUtils.isEmpty(pageTitle) ? "" : pageTitle.toString(), tabView);
         this.mTabCount = mTitles == null ? mViewPager.getAdapter().getCount() : mTitles.size();
 
         updateTabStyles();
