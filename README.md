@@ -204,59 +204,59 @@ dependencies {
 
 TabLayout
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/common.gif)
+![](/screenshot/common.gif)
 
 ![](/screenshot/sliding.gif)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/segment.gif)
+![](/screenshot/segment.gif)
 
 刘海屏适配
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/Notch.gif)
+![](/screenshot/Notch.gif)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/widget.gif)
+![](/screenshot/widget.gif)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/StatusViewHelper.gif)
+![](/screenshot/StatusViewHelper.gif)
 
-[StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)
+[StatusViewHelper](/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/title.gif)
+![](/screenshot/title.gif)
 
 [TitleBarView](https://github.com/AriesHoo/TitleBarView)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/titleAction.gif)
+![](/screenshot/titleAction.gif)
 
-[TitleBarView-添加自定义Action](https://github.com/AriesHoo/UIWidget/blob/dev/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleActionActivity.java)
+[TitleBarView-添加自定义Action](/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleActionActivity.java)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/alert.gif)
+![](/screenshot/alert.gif)
 
-[UIAlertDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)
+[UIAlertDialog](/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/action.gif)
+![](/screenshot/action.gif)
 
-[UIActionSheetDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)
+[UIActionSheetDialog](/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/loading.gif)
+![](/screenshot/loading.gif)
 
-[UIProgressDialog](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)
+[UIProgressDialog](/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/radius.gif)
+![](/screenshot/radius.gif)
 
-[RadiusView](https://github.com/AriesHoo/UIWidget/blob/dev/app/src/main/java/com/aries/ui/widget/demo/module/radius/RadiusActivity.java)
+[RadiusView](/app/src/main/java/com/aries/ui/widget/demo/module/radius/RadiusActivity.java)
 
 模拟器软键盘控制
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/keyboard01.gif)
+![](/screenshot/keyboard01.gif)
 
 华为可隐藏软键盘控制
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/keyboard02.gif)
+![](/screenshot/keyboard02.gif)
 
 华为全面屏手势控制
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/keyboard03.gif)
+![](/screenshot/keyboard03.gif)
 
-[KeyboardHelper](https://github.com/AriesHoo/UIWidget/blob/dev/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
+[KeyboardHelper](/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
 
 **TabLayout-FlycoTabLayout 2.1.2版本基础上优化修改的快速创建Tab库**  [![](https://img.shields.io/badge/Forked-FlycoTabLayoutV2.1.2-green.svg)](https://github.com/H07000223/FlycoTabLayout)
 
