@@ -20,13 +20,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import com.aries.ui.view.tab.delegate.TabSlidingDelegate;
 import com.aries.ui.view.tab.listener.ITabLayout;
 import com.aries.ui.view.tab.listener.OnTabSelectListener;
@@ -35,6 +28,13 @@ import com.aries.ui.view.tab.widget.MsgView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * @Author: AriesHoo on 2018/11/30 11:18
