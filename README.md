@@ -43,10 +43,10 @@ allprojects {
 
 ```
 dependencies {
-     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.24'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.24'
-     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.24'
-     //implementation 'com.github.AriesHoo.UIWidget:tab-layout:3.2.24'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-core:3.2.25'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-alert:3.2.25'
+     //implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:3.2.25'
+     //implementation 'com.github.AriesHoo.UIWidget:tab-layout:3.2.25'
      implementation 'com.github.AriesHoo.UIWidget:widget-core:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-alert:${LATEST_VERSION}'
      implementation 'com.github.AriesHoo.UIWidget:widget-collapsing:${LATEST_VERSION}'
@@ -84,7 +84,7 @@ dependencies {
     <artifactId>widget-collapsing</artifactId>
     <artifactId>widget-alert</artifactId>
     <artifactId>tab-layout</artifactId>
-    <version>3.2.24</version>
+    <version>3.2.25</version>
 </dependency>
 ```
 
