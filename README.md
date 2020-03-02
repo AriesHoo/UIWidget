@@ -206,7 +206,7 @@ TabLayout
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/common.gif)
 
-![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/sliding.gif)
+![](/screenshot/sliding.gif)
 
 ![](https://github.com/AriesHoo/UIWidget/blob/dev/screenshot/segment.gif)
 
