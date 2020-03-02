@@ -45,6 +45,7 @@ import androidx.viewpager.widget.ViewPager;
  * 2、2018-12-4 14:12:34 新增部分设置方法返回值方便链式调用;删除原库相应xml属性 set/get方法
  * 3、2018-12-13 09:40:51 新增选中文字字号设置 textSelectSize
  * 4、2019-9-16 12:38:57 修改{@link #notifyDataSetChanged()}及{@link #addNewTab(String)} pageTitle 非空判断
+ * 5、2020-3-2 17:29:40 新增变量以修复点击及二次点击回调错误问题{@link #setCurrentTab(int)}
  */
 public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.OnPageChangeListener, ITabLayout {
     private TabSlidingDelegate mDelegate;
@@ -52,6 +53,7 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
     private ViewPager mViewPager;
     private ArrayList<String> mTitles;
     private LinearLayout mTabsContainer;
+    private int mCurrentSelected = -1;
     private int mCurrentTab;
     private float mCurrentPositionOffset;
     private int mTabCount;
@@ -484,8 +486,9 @@ public class SlidingTabLayout extends HorizontalScrollView implements ViewPager.
     }
 
     public SlidingTabLayout setCurrentTab(int currentTab, boolean smoothScroll) {
-        if (getCurrentTab() != currentTab) {
+        if (mCurrentSelected != currentTab) {
             this.mCurrentTab = currentTab;
+            this.mCurrentSelected=currentTab;
             mViewPager.setCurrentItem(currentTab, mSnapOnTabClick ? false : smoothScroll);
             if (mListener != null) {
                 mListener.onTabSelect(currentTab);

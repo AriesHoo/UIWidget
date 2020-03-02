@@ -6,12 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
-
 import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.view.tab.SegmentTabLayout;
 import com.aries.ui.view.tab.listener.OnTabSelectListener;
@@ -23,6 +17,12 @@ import org.simple.eventbus.Subscriber;
 import org.simple.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * @Author: AriesHoo on 2019/4/16 17:47
@@ -99,12 +99,13 @@ public class SegmentTabActivity extends BaseActivity {
         mTabLayout_3.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-                Toast.makeText(SegmentTabActivity.this, "position:" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SegmentTabActivity.this, "onTabSelect:" + position, Toast.LENGTH_SHORT).show();
                 vp_3.setCurrentItem(position);
             }
 
             @Override
             public void onTabReselect(int position) {
+                Toast.makeText(SegmentTabActivity.this, "onTabReselect:" + position, Toast.LENGTH_SHORT).show();
             }
         });
 

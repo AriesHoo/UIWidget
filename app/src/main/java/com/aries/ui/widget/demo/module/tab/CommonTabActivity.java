@@ -10,12 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
-
 import com.aries.ui.util.FindViewUtil;
 import com.aries.ui.view.tab.CommonTabLayout;
 import com.aries.ui.view.tab.listener.CustomTabEntity;
@@ -32,6 +26,12 @@ import org.simple.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * @Author: AriesHoo on 2019/4/16 17:47
@@ -122,7 +122,7 @@ public class CommonTabActivity extends BaseActivity {
             @Override
             public void onTabSelect(int position) {
                 mTabLayout_1.setCurrentTab(position);
-                mTabLayout_2.setCurrentTab(position);
+//                mTabLayout_2.setCurrentTab(position);
                 mTabLayout_4.setCurrentTab(position);
                 mTabLayout_5.setCurrentTab(position);
                 mTabLayout_6.setCurrentTab(position);
@@ -183,6 +183,18 @@ public class CommonTabActivity extends BaseActivity {
             }
         }).getDelegate()
                 .setIndicatorHeight(0);
+
+        mTabLayout_2.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelect(int position) {
+                Toast.makeText(mContext, "onTabSelect:" + position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTabReselect(int position) {
+                Toast.makeText(mContext, "onTabReselect:" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     Random mRandom = new Random();

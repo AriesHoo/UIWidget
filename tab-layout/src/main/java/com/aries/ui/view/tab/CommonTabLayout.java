@@ -23,9 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
 import com.aries.ui.view.tab.delegate.TabCommonDelegate;
 import com.aries.ui.view.tab.listener.CustomTabEntity;
 import com.aries.ui.view.tab.listener.ITabLayout;
@@ -35,6 +32,9 @@ import com.aries.ui.view.tab.utils.UnreadMsgUtils;
 import com.aries.ui.view.tab.widget.MsgView;
 
 import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 /**
  * @Author: AriesHoo on 2018/11/30 9:48
@@ -47,12 +47,14 @@ import java.util.ArrayList;
  * 5、2018-12-13 09:40:51 新增选中文字字号设置 textSelectSize
  * 6、2019-9-6 10:26:33 新增{@link #setCenterView(View, int, int, int, OnClickListener)}设置中间View方法
  * 7、2019-9-6 16:00:31 修改{@link #setCenterView(View, int, int, int, OnClickListener)} 默认宽高
+ * 8、2020-3-2 17:29:40 新增变量以修复点击及二次点击回调错误问题{@link #setCurrentTab(int)}
  */
 public class CommonTabLayout extends FrameLayout implements ValueAnimator.AnimatorUpdateListener, ITabLayout {
     private TabCommonDelegate mDelegate;
     private Context mContext;
     private ArrayList<CustomTabEntity> mTabEntity = new ArrayList<>();
     private LinearLayout mTabsContainer;
+    private int mCurrentSelected = -1;
     private int mCurrentTab;
     private int mLastTab;
     private int mTabCount;
@@ -397,9 +399,10 @@ public class CommonTabLayout extends FrameLayout implements ValueAnimator.Animat
      * @return
      */
     public CommonTabLayout setCurrentTab(int currentTab) {
-        if (mCurrentTab != currentTab) {
+        if (mCurrentSelected != currentTab) {
             mLastTab = this.mCurrentTab;
             this.mCurrentTab = currentTab;
+            this.mCurrentSelected = currentTab;
             updateTabSelection(currentTab);
             if (getDelegate().isIndicatorAnimEnable()) {
                 calcOffset();

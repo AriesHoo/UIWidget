@@ -21,9 +21,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
 import com.aries.ui.view.tab.delegate.TabSegmentDelegate;
 import com.aries.ui.view.tab.listener.ITabLayout;
 import com.aries.ui.view.tab.listener.OnTabSelectListener;
@@ -33,6 +30,9 @@ import com.aries.ui.view.tab.widget.MsgView;
 
 import java.util.ArrayList;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 /**
  * @Author: AriesHoo on 2018/11/30 11:22
  * @E-Mail: AriesHoo@126.com
@@ -41,12 +41,14 @@ import java.util.ArrayList;
  * * * {@link #updateTabStyles()}
  * 2、2018-12-3 13:03:31 将xml属性解析及设置移植到代理类{@link TabSegmentDelegate}
  * 3、2018-12-13 09:40:51 新增选中文字字号设置 textSelectSize
+ * 4、2020-3-2 17:29:40 新增变量以修复点击及二次点击回调错误问题{@link #setCurrentTab(int)}
  */
 public class SegmentTabLayout extends FrameLayout implements ValueAnimator.AnimatorUpdateListener, ITabLayout {
     private TabSegmentDelegate mDelegate;
     private Context mContext;
     private String[] mTitles;
     private LinearLayout mTabsContainer;
+    private int mCurrentSelected = -1;
     private int mCurrentTab;
     private int mLastTab;
     private int mTabCount;
@@ -361,9 +363,10 @@ public class SegmentTabLayout extends FrameLayout implements ValueAnimator.Anima
      * @return
      */
     public SegmentTabLayout setCurrentTab(int currentTab) {
-        if (mCurrentTab != currentTab) {
+        if (mCurrentSelected != currentTab) {
             mLastTab = this.mCurrentTab;
             this.mCurrentTab = currentTab;
+            this.mCurrentSelected = currentTab;
             updateTabSelection(currentTab);
             if (getDelegate().isIndicatorAnimEnable()) {
                 calcOffset();
