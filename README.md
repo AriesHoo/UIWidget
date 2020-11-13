@@ -6,10 +6,12 @@
 [![API](https://img.shields.io/badge/API-11%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=11)
 [![GitHub license](https://img.shields.io/github/license/AriesHoo/UIWidget.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![](https://img.shields.io/badge/简书-AriesHoo-blue.svg)](http://www.jianshu.com/u/a229eee96115)
+[![](https://img.shields.io/badge/Github-Github主仓库-blue.svg)](https://github.com/AriesHoo/UIWidget)
+[![](https://img.shields.io/badge/Gitee-Gitee备用仓库-red.svg)](https://gitee.com/AriesHoo/UIWidget)
 <!-- [![GitHub stars](https://img.shields.io/github/stars/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/stargazers) -->
 <!-- [![GitHub forks](https://img.shields.io/github/forks/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/network) -->
 
-
+[因Github图片解析异常可使用Gitee备用仓库查看](https://gitee.com/AriesHoo/UIWidget)
 
 ## 简介：
 
@@ -19,7 +21,7 @@
 
 [[Download-蒲公英(安装密码1)]](https://www.pgyer.com/BN1z)
 
-![Download-蒲公英](/apk/qr_pgyer.png)
+![Download-蒲公英](https://www.pgyer.com/app/qrcode/BN1z)
 
 [[Download-github]](/apk/sample.apk)
 
