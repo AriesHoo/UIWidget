@@ -3,8 +3,8 @@
 [![](https://img.shields.io/badge/download-demo-blue.svg)](https://raw.githubusercontent.com/AriesHoo/UIWidget/master/apk/sample.apk)
 [![](https://jitpack.io/v/AriesHoo/UIWidget.svg)](https://jitpack.io/#AriesHoo/UIWidget)
 [![](https://img.shields.io/github/release/AriesHoo/UIWidget.svg)](https://github.com/AriesHoo/UIWidget/releases)
-[![API](https://img.shields.io/badge/API-11%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=11)
-[![GitHub license](https://img.shields.io/github/license/AriesHoo/UIWidget.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![](https://img.shields.io/badge/API-11%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=11)
+[![](https://img.shields.io/github/license/AriesHoo/UIWidget.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![](https://img.shields.io/badge/简书-AriesHoo-blue.svg)](http://www.jianshu.com/u/a229eee96115)
 [![](https://img.shields.io/badge/Github-Github主仓库-blue.svg)](https://github.com/AriesHoo/UIWidget)
 [![](https://img.shields.io/badge/Gitee-Gitee备用仓库-red.svg)](https://gitee.com/AriesHoo/UIWidget)
@@ -19,13 +19,10 @@
 [CollapsingTitleBarLayout](https://github.com/AriesHoo/UIWidget/blob/master/widget-collapsing/src/main/java/com/aries/ui/view/title/CollapsingTitleBarLayout.java)、[StatusViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)、[NavigationViewHelper](https://github.com/AriesHoo/UIWidget/blob/master/widget-core/src/main/java/com/aries/ui/helper/navigation/NavigationViewHelper.java)
 等项目常用UI库
 
-[[Download-蒲公英(安装密码1)]](https://www.pgyer.com/BN1z)
+![Download-蒲公英(安装密码1)](https://upload-images.jianshu.io/upload_images/2828782-0c5b7aa9800e3141.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/720)
 
-![Download-蒲公英](https://www.pgyer.com/app/qrcode/BN1z)
+![Download-github](https://upload-images.jianshu.io/upload_images/2828782-8a380e5f1c7a7f8c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/720)
 
-[[Download-github]](/apk/sample.apk)
-
-![Download-github](/apk/qr.png)
 
 **Gradle集成**
 
@@ -206,59 +203,35 @@ dependencies {
 
 TabLayout
 
-![](/screenshot/common.gif)
+![CommonTabLayout](https://upload-images.jianshu.io/upload_images/2828782-4b7f7b4b6189e7ef.gif?imageMogr2/auto-orient/strip)
 
-![](/screenshot/sliding.gif)
+![SlidingTabLayout](https://upload-images.jianshu.io/upload_images/2828782-e74c6fdc46f29bcb.gif?imageMogr2/auto-orient/strip)
 
-![](/screenshot/segment.gif)
+![SegmentTabLayout](https://upload-images.jianshu.io/upload_images/2828782-8559b141f730fa49.gif?imageMogr2/auto-orient/strip)
 
-刘海屏适配
+![刘海屏](https://upload-images.jianshu.io/upload_images/2828782-b0cba2d0ddb93d27.gif?imageMogr2/auto-orient/strip)
 
-![](/screenshot/Notch.gif)
+![widget](https://upload-images.jianshu.io/upload_images/2828782-677956f4a7062840.gif?imageMogr2/auto-orient/strip)
 
-![](/screenshot/widget.gif)
+![StatusViewHelper](https://upload-images.jianshu.io/upload_images/2828782-a10f182a6a96e837.gif?imageMogr2/auto-orient/strip)
 
-![](/screenshot/StatusViewHelper.gif)
+![TitleBarView](https://upload-images.jianshu.io/upload_images/2828782-e22bc7223d5f4dd9.gif?imageMogr2/auto-orient/strip)
 
-[StatusViewHelper](/widget-core/src/main/java/com/aries/ui/helper/status/StatusViewHelper.java)
+![TitleBarView-添加自定义Action](https://upload-images.jianshu.io/upload_images/2828782-728a588549393dbd.gif?imageMogr2/auto-orient/strip)
 
-![](/screenshot/title.gif)
+![UIAlertDialog](https://upload-images.jianshu.io/upload_images/2828782-4c1af6b325abbd17.gif?imageMogr2/auto-orient/strip)
 
-[TitleBarView](https://github.com/AriesHoo/TitleBarView)
+![UIActionSheetDialog](https://upload-images.jianshu.io/upload_images/2828782-8b414d987690959e.gif?imageMogr2/auto-orient/strip)
 
-![](/screenshot/titleAction.gif)
+![UIProgressDialog](https://upload-images.jianshu.io/upload_images/2828782-6fecd53bb8bc072d.gif?imageMogr2/auto-orient/strip)
 
-[TitleBarView-添加自定义Action](/app/src/main/java/com/aries/ui/widget/demo/module/title/TitleActionActivity.java)
+![RadiusView](https://upload-images.jianshu.io/upload_images/2828782-9436123ad973a58c.gif?imageMogr2/auto-orient/strip)
 
-![](/screenshot/alert.gif)
+![模拟器软键盘控制](https://upload-images.jianshu.io/upload_images/2828782-a2f5ad4ed2156fb5.gif?imageMogr2/auto-orient/strip)
 
-[UIAlertDialog](/widget-alert/src/main/java/com/aries/ui/widget/alert/UIAlertDialog.java)
+![华为可隐藏软键盘控制](https://upload-images.jianshu.io/upload_images/2828782-05934e6ccbde6ece.gif?imageMogr2/auto-orient/strip)
 
-![](/screenshot/action.gif)
-
-[UIActionSheetDialog](/widget-core/src/main/java/com/aries/ui/widget/action/sheet/UIActionSheetDialog.java)
-
-![](/screenshot/loading.gif)
-
-[UIProgressDialog](/widget-core/src/main/java/com/aries/ui/widget/progress/UIProgressDialog.java)
-
-![](/screenshot/radius.gif)
-
-[RadiusView](/app/src/main/java/com/aries/ui/widget/demo/module/radius/RadiusActivity.java)
-
-模拟器软键盘控制
-
-![](/screenshot/keyboard01.gif)
-
-华为可隐藏软键盘控制
-
-![](/screenshot/keyboard02.gif)
-
-华为全面屏手势控制
-
-![](/screenshot/keyboard03.gif)
-
-[KeyboardHelper](/widget-core/src/main/java/com/aries/ui/helper/navigation/KeyboardHelper.java)
+![华为全面屏手势控制](https://upload-images.jianshu.io/upload_images/2828782-03289ee7a9a0d518.gif?imageMogr2/auto-orient/strip)
 
 **TabLayout-FlycoTabLayout 2.1.2版本基础上优化修改的快速创建Tab库**  [![](https://img.shields.io/badge/Forked-FlycoTabLayoutV2.1.2-green.svg)](https://github.com/H07000223/FlycoTabLayout)
 
@@ -503,7 +476,7 @@ UIAlertDialog alertDialog = new UIAlertDialog.DividerQQBuilder(this)
 ## License
 
 ```
-Copyright 2016-2019 Aries Hoo
+Copyright 2016-2021 Aries Hoo
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
